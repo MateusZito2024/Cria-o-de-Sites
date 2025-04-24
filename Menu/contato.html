@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <!-- Meta tags for character encoding and responsive viewport -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Good Vibes - Contato</title>
+
+    <!-- External dependencies: Tailwind CSS and Google Fonts -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;600&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+
+    <!-- Internal CSS for custom styling -->
+    <style>
+        /* -------------------------------------
+           Global Styles
+        ------------------------------------- */
+        html, body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1e293b, #2d3748, #000000, #0f172a, #1e293b, #2d3748, #000000, #0f172a);
+            background-size: 400% 400%;
+            animation: gradientTransition 20s ease-in-out infinite;
+            color: #f8f8f8;
+            margin: 0;
+            padding: 0;
+            position: relative;
+            overflow-x: hidden;
+            min-height: 100%;
+        }
+
+        @keyframes gradientTransition {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* -------------------------------------
+           Star Animation in Background
+        ------------------------------------- */
+        .stars-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #ffffff;
+            border-radius: 50%;
+            box-shadow: 0 0 5px 1px rgba(255, 255, 255, 0.5);
+            opacity: 0.3;
+            animation: floatStar 15s infinite ease-in-out;
+        }
+
+        .star.purple {
+            background: #6a0dad;
+            box-shadow: 0 0 5px 1px rgba(106, 13, 173, 0.5);
+        }
+
+        .star.pink {
+            background: #e879f9;
+            box-shadow: 0 0 5px 1px rgba(232, 121, 249, 0.5);
+        }
+
+        .star.white {
+            background: #ffffff;
+            box-shadow: 0 0 5px 1px rgba(255, 255, 255, 0.5);
+        }
+
+        @keyframes floatStar {
+            0% {
+                opacity: 0.3;
+                transform: translate(0, 0);
+            }
+            50% {
+                opacity: 0.6;
+                transform: translate(var(--move-x), var(--move-y));
+            }
+            100% {
+                opacity: 0.3;
+                transform: translate(0, 0);
+            }
+        }
+
+        /* -------------------------------------
+           Header Styles
+        ------------------------------------- */
+        .brand-name {
+            font-family: 'Great Vibes', cursive;
+            line-height: 2;
+            padding: 1rem;
+            display: block;
+            overflow: visible;
+        }
+
+        .flex.items-center.content-layer {
+            overflow: visible;
+        }
+
+        .nav-link {
+            font-family: 'Montserrat', sans-serif;
+            position: relative;
+            text-decoration: none;
+            color: #f8f8f8;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background: linear-gradient(135deg, #a5b4fc, #e879f9);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-link:hover {
+            color: #e879f9;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #a5b4fc, #e879f9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 10;
+            background: transparent;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 0 1rem;
+        }
+
+        nav > div {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        nav .flex.items-center.content-layer:first-child {
+            margin-right: auto;
+        }
+
+        nav .flex.items-center.content-layer:last-child {
+            margin-left: auto;
+        }
+
+        nav, section, footer {
+            position: relative;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        nav *, section *, footer * {
+            pointer-events: auto;
+        }
+
+        .content-layer {
+            position: relative;
+            z-index: 2;
+        }
+
+        h1, h2, h3, p, a, input, textarea, button, img, svg {
+            position: relative;
+            z-index: 30;
+            opacity: 1 !important;
+        }
+
+        h2, h3 {
+            color: #f8f8f8;
+            text-align: center;
+            opacity: 0; /* Inicialmente invisível até a animação ser acionada */
+        }
+
+        .cursive-text {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2rem;
+            line-height: 1.4;
+            color: #e2e8f0;
+        }
+
+        /* -------------------------------------
+           Animated Gradient for Titles
+        ------------------------------------- */
+        .animated-gradient-text {
+            background: linear-gradient(90deg, #6a0dad, #ffffff, #e879f9, #6a0dad);
+            background-size: 400% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 8s ease-in-out infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* -------------------------------------
+           Puzzle Animation Styles
+        ------------------------------------- */
+        @keyframes slideInLeftPiece {
+            from { opacity: 0; transform: translateX(-50px) rotate(-5deg); }
+            to { opacity: 1; transform: translateX(0) rotate(0); }
+        }
+
+        @keyframes slideOutLeftPiece {
+            from { opacity: 1; transform: translateX(0) rotate(0); }
+            to { opacity: 0; transform: translateX(-50px) rotate(-5deg); }
+        }
+
+        @keyframes slideInRightPiece {
+            from { opacity: 0; transform: translateX(50px) rotate(5deg); }
+            to { opacity: 1; transform: translateX(0) rotate(0); }
+        }
+
+        @keyframes slideOutRightPiece {
+            from { opacity: 1; transform: translateX(0) rotate(0); }
+            to { opacity: 0; transform: translateX(50px) rotate(5deg); }
+        }
+
+        @keyframes slideInTopPiece {
+            from { opacity: 0; transform: translateY(-30px) rotate(-3deg); }
+            to { opacity: 1; transform: translateY(0) rotate(0); }
+        }
+
+        @keyframes slideInBottomPiece {
+            from { opacity: 0; transform: translateY(30px) rotate(3deg); }
+            to { opacity: 1; transform: translateY(0) rotate(0); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes slideCarousel {
+            0% { transform: translateX(0); }
+            45% { transform: translateX(0); }
+            50% { transform: translateX(-100%); }
+            95% { transform: translateX(-100%); }
+            100% { transform: translateX(0); }
+        }
+
+        .puzzle-piece {
+            opacity: 0;
+            display: inline-block;
+        }
+
+        .puzzle-piece-left {
+            animation: slideInLeftPiece 0.8s ease-out forwards;
+        }
+
+        .puzzle-piece-left-exit {
+            animation: slideOutLeftPiece 0.8s ease-out forwards;
+        }
+
+        .puzzle-piece-right {
+            animation: slideInRightPiece 0.8s ease-out forwards;
+        }
+
+        .puzzle-piece-right-exit {
+            animation: slideOutRightPiece 0.8s ease-out forwards;
+        }
+
+        .puzzle-piece-top {
+            animation: slideInTopPiece 0.8s ease-out forwards;
+        }
+
+        .puzzle-piece-bottom {
+            animation: slideInBottomPiece 0.8s ease-out forwards;
+        }
+
+        .float-effect {
+            animation: float 3s infinite ease-in-out;
+        }
+
+        /* -------------------------------------
+           Card Styles with Squishy Animation
+        ------------------------------------- */
+        .puzzle-section {
+            position: relative;
+            background: #2d3748;
+            border-radius: 1rem;
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 800px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            border: 2px solid #a5b4fc;
+            animation: squish 30s infinite ease-in-out;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .puzzle-section:hover {
+            background: #374151;
+            box-shadow: 0 10px 20px rgba(106, 13, 173, 0.3);
+        }
+
+        .puzzle-section::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            width: 40px;
+            height: 20px;
+            background: #2d3748;
+            border: 2px solid #a5b4fc;
+            border-bottom: none;
+            border-radius: 50% 50% 0 0;
+            transform: translateX(-50%);
+        }
+
+        .puzzle-section::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            width: 40px;
+            height: 20px;
+            background: #2d3748;
+            border: 2px solid #a5b4fc;
+            border-top: none;
+            border-radius: 0 0 50% 50%;
+            transform: translateX(-50%);
+        }
+
+        .puzzle-section:hover::before,
+        .puzzle-section:hover::after {
+            background: #374151;
+        }
+
+        @keyframes squish {
+            0% {
+                transform: scale(1, 1);
+            }
+            20% {
+                transform: scale(1.05, 0.95);
+            }
+            40% {
+                transform: scale(0.95, 1.05);
+            }
+            60% {
+                transform: scale(1.03, 0.97);
+            }
+            80% {
+                transform: scale(0.97, 1.03);
+            }
+            100% {
+                transform: scale(1, 1);
+            }
+        }
+
+        /* -------------------------------------
+           Form Styles
+        ------------------------------------- */
+        .contact-form input,
+        .contact-form select,
+        .contact-form textarea {
+            width: 100%;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            border: 2px solid #a5b4fc;
+            border-radius: 0.5rem;
+            background: #4b5563;
+            color: #e2e8f0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .contact-form select {
+            padding: 0.75rem;
+        }
+
+        .contact-form textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        /* -------------------------------------
+           Button Styles
+        ------------------------------------- */
+        .whatsapp-button {
+            display: inline-block;
+            background: #25D366; /* Verde para o botão do WhatsApp */
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 2rem;
+            font-size: 0.9rem;
+            font-weight: bold;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .whatsapp-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.5);
+        }
+
+        .form-button {
+            display: inline-block;
+            background: #a78bfa; /* Roxo mais claro para o botão do formulário */
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 2rem;
+            font-size: 0.9rem;
+            font-weight: bold;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: none;
+        }
+
+        .form-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(167, 139, 250, 0.5);
+        }
+
+        .schedule-button {
+            display: inline-block;
+            background: #1e3a8a; /* Azul-marinho para o botão de agendar */
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 2rem;
+            font-size: 0.9rem;
+            font-weight: bold;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .schedule-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(30, 58, 138, 0.5);
+        }
+
+        .feedback-button {
+            display: inline-block;
+            background: #be185d; /* Rosa escuro para o botão de feedback */
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 2rem;
+            font-size: 0.9rem;
+            font-weight: bold;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feedback-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(190, 24, 93, 0.5);
+        }
+
+        .testimonial-button {
+            display: inline-block;
+            background: #166534; /* Verde escuro para o botão de depoimento */
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 2rem;
+            font-size: 0.9rem;
+            font-weight: bold;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .testimonial-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(22, 101, 52, 0.5);
+        }
+
+        /* Alinhar botões à esquerda nos cards */
+        .puzzle-section .whatsapp-button,
+        .puzzle-section .form-button,
+        .puzzle-section .schedule-button,
+        .puzzle-section .feedback-button,
+        .puzzle-section .testimonial-button {
+            margin-right: auto;
+            margin-left: 0;
+            display: inline-block;
+        }
+
+        /* Ajustar botão do formulário para ficar à esquerda */
+        .contact-form .form-button {
+            margin-right: auto;
+            margin-left: 0;
+        }
+
+        /* -------------------------------------
+           Testimonial Carousel
+        ------------------------------------- */
+        .testimonial-carousel {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            height: 150px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .testimonial-wrapper {
+            display: flex;
+            width: 200%;
+            height: 100%;
+            animation: slideCarousel 8s infinite;
+        }
+
+        .testimonial-slide {
+            width: 50%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        .testimonial-card {
+            background: #374151;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            border: 2px solid #a5b4fc;
+            text-align: center;
+            color: #e2e8f0;
+            width: 100%;
+        }
+
+        .testimonial-card p {
+            font-size: 1.1rem;
+            color: #e2e8f0;
+            margin-bottom: 10px;
+        }
+
+        .testimonial-card .client-name {
+            color: #e2e8f0;
+            font-style: italic;
+            font-weight: 600;
+        }
+
+        /* Centralizar parágrafos dentro de seções */
+        section p {
+            text-align: center;
+        }
+
+        /* Centralizar o rodapé */
+        footer p {
+            text-align: center;
+        }
+    </style>
+</head>
+<body class="text-gray-100">
+    <!-- Star Container for Background Animation -->
+    <div class="stars-container" id="stars-container"></div>
+
+    <!-- Navigation Bar -->
+    <nav class="shadow-lg fixed w-full z-10">
+        <div class="flex justify-between h-16">
+            <div class="flex items-center content-layer">
+                <h1 class="text-4xl brand-name gradient-text">Good Vibes</h1>
+            </div>
+            <div class="flex items-center space-x-6 content-layer">
+                <a href="index.html#home" class="nav-link text-lg transition">Início</a>
+                <a href="index.html#services" class="nav-link text-lg transition">Serviços</a>
+                <a href="index.html#about" class="nav-link text-lg transition">Sobre</a>
+                <a href="portfolio.html" class="nav-link text-lg transition">Portfólio</a>
+                <a href="contact.html" class="nav-link text-lg transition">Contato</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Intro Section -->
+    <section class="py-32 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 content-layer">
+            <h2 class="text-5xl font-bold animated-gradient-text">
+                Fale com a Good Vibes
+            </h2>
+            <p class="text-xl text-gray-200 mt-6 max-w-2xl mx-auto">
+                <span class="puzzle-piece puzzle-piece-left">Tem uma ideia incrível?</span>
+                <span class="puzzle-piece puzzle-piece-right">Quer tirar uma dúvida ou só bater um papo sobre o seu projeto?</span>
+                <span class="puzzle-piece puzzle-piece-top">A gente adora conversar!</span>
+                <span class="puzzle-piece puzzle-piece-bottom">Escolha o melhor canal e fale com a gente.</span>
+            </p>
+        </div>
+    </section>
+
+    <!-- Contact Form Section -->
+    <section class="py-20 relative">
+        <div class="puzzle-section">
+            <h3 class="text-3xl font-bold mb-6 animated-gradient-text">
+                Formulário de Contato
+            </h3>
+            <form class="contact-form">
+                <input type="text" placeholder="Nome" class="puzzle-piece puzzle-piece-left" required>
+                <input type="email" placeholder="E-mail" class="puzzle-piece puzzle-piece-right" required>
+                <select class="puzzle-piece puzzle-piece-top" required>
+                    <option value="" disabled selected>Tipo de projeto</option>
+                    <option value="site">Site</option>
+                    <option value="identidade-visual">Identidade Visual</option>
+                    <option value="redes-sociais">Redes Sociais</option>
+                    <option value="outros">Outros</option>
+                </select>
+                <textarea placeholder="Sua mensagem" class="puzzle-piece puzzle-piece-bottom" rows="5" required></textarea>
+                <button type="submit" class="form-button puzzle-piece puzzle-piece-top float-effect">Enviar Boas Vibrações</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- WhatsApp Section -->
+    <section class="py-20 relative">
+        <div class="puzzle-section">
+            <h3 class="text-3xl font-bold mb-6 animated-gradient-text">
+                Atendimento via WhatsApp
+            </h3>
+            <p class="text-lg text-gray-200 mb-6">
+                <span class="puzzle-piece puzzle-piece-top">Quer uma resposta rápida?</span>
+                <span class="puzzle-piece puzzle-piece-bottom">Chama a gente no WhatsApp!</span>
+            </p>
+            <a href="https://wa.me/SEUNUMERO" target="_blank" class="whatsapp-button float-effect puzzle-piece puzzle-piece-top">
+                Conversar Agora
+            </a>
+        </div>
+    </section>
+
+    <!-- Location Section -->
+    <section class="py-20 relative">
+        <div class="puzzle-section">
+            <h3 class="text-3xl font-bold mb-6 animated-gradient-text">
+                Onde estamos?
+            </h3>
+            <p class="text-lg text-gray-200 max-w-xl mx-auto">
+                <span class="puzzle-piece puzzle-piece-top">A Good Vibes é 100% digital, mas nosso</span>
+                <span class="puzzle-piece puzzle-piece-bottom">coração está no Brasil — espalhando criatividade pra todos os cantos.</span>
+            </p>
+        </div>
+    </section>
+
+    <!-- Meeting Scheduler Section -->
+    <section class="py-20 relative">
+        <div class="puzzle-section">
+            <h3 class="text-3xl font-bold mb-6 animated-gradient-text">
+                Agende uma reunião
+            </h3>
+            <p class="text-lg text-gray-200 mb-6 max-w-xl mx-auto">
+                <span class="puzzle-piece puzzle-piece-top">Prefere uma conversa mais detalhada?</span>
+                <span class="puzzle-piece puzzle-piece-bottom">Agende um horário com a gente e vamos trocar uma ideia sobre seu projeto.</span>
+            </p>
+            <a href="https://calendly.com/your-link" target="_blank" class="schedule-button float-effect puzzle-piece puzzle-piece-top">
+                Agendar Reunião
+            </a>
+        </div>
+    </section>
+
+    <!-- Feedback Section -->
+    <section class="py-20 relative">
+        <div class="puzzle-section">
+            <h3 class="text-3xl font-bold mb-6 animated-gradient-text">
+                Feedback ou sugestão?
+            </h3>
+            <p class="text-lg text-gray-200 mb-6 max-w-xl mx-auto">
+                <span class="puzzle-piece puzzle-piece-top">Se você já é nosso cliente ou quer</span>
+                <span class="puzzle-piece puzzle-piece-bottom">compartilhar uma sugestão, estamos ouvindo! Feedbacks ajudam a gente a melhorar cada vez mais.</span>
+            </p>
+            <a href="feedback.html" class="feedback-button float-effect puzzle-piece puzzle-piece-top">
+                Enviar Feedback
+            </a>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-20 relative">
+        <div class="puzzle-section">
+            <h3 class="text-3xl font-bold mb-6 animated-gradient-text">
+                Depoimentos Rápidos
+            </h3>
+            <div class="testimonial-carousel">
+                <div class="testimonial-wrapper">
+                    <div class="testimonial-slide">
+                        <div class="testimonial-card puzzle-piece puzzle-piece-top">
+                            <p>"Eles captaram minha ideia logo de cara e transformaram em um site que é a cara da minha marca."</p>
+                            <p class="client-name mt-2">— Cliente X, Empreendedor</p>
+                        </div>
+                    </div>
+                    <div class="testimonial-slide">
+                        <div class="testimonial-card puzzle-piece puzzle-piece-bottom">
+                            <p>"A comunicação foi perfeita, e o projeto ficou incrível. Estou muito satisfeito!"</p>
+                            <p class="client-name mt-2">— Cliente Y, Designer</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a href="testimonials.html" class="testimonial-button float-effect puzzle-piece puzzle-piece-top mt-6">
+                Enviar Depoimento
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-gray-200 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 content-layer">
+            <p>© 2025 Good Vibes. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript for interactivity and star generation -->
+    <script>
+        // Smooth scroll for nav links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Puzzle animation on scroll for non-title elements
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.querySelectorAll('.puzzle-piece').forEach((el, index) => {
+                        el.style.animationDelay = `${index * 0.2}s`;
+                        el.classList.add(el.classList.contains('puzzle-piece-left') ? 'puzzle-piece-left' :
+                                         el.classList.contains('puzzle-piece-right') ? 'puzzle-piece-right' :
+                                         el.classList.contains('puzzle-piece-top') ? 'puzzle-piece-top' :
+                                         'puzzle-piece-bottom');
+                    });
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.3 });
+
+        document.querySelectorAll('.puzzle-section, .content-layer').forEach(el => observer.observe(el));
+
+        // Animation for titles (h2 and h3) on scroll with entry and exit
+        const titleObserver = new IntersectionObserver(entries => {
+            entries.forEach((entry, index) => {
+                const title = entry.target;
+                // Determina a direção com base no índice (esquerda ou direita)
+                const direction = index % 2 === 0 ? 'left' : 'right';
+                
+                if (entry.isIntersecting) {
+                    // Remove qualquer animação de saída anterior
+                    title.classList.remove('puzzle-piece-left-exit', 'puzzle-piece-right-exit');
+                    // Adiciona a animação de entrada
+                    title.classList.add(`puzzle-piece-${direction}`);
+                } else {
+                    // Remove qualquer animação de entrada anterior
+                    title.classList.remove('puzzle-piece-left', 'puzzle-piece-right');
+                    // Adiciona a animação de saída
+                    title.classList.add(`puzzle-piece-${direction}-exit`);
+                }
+            });
+        }, { threshold: 0.3 });
+
+        // Aplica o observador a todos os títulos (h2 e h3)
+        document.querySelectorAll('h2, h3').forEach((title, index) => {
+            titleObserver.observe(title);
+        });
+
+        // Generate stars dynamically across the entire page
+        const starsContainer = document.getElementById('stars-container');
+        const colors = ['purple', 'pink', 'white'];
+        const numStars = 150;
+
+        const documentHeight = document.body.scrollHeight;
+
+        for (let i = 0; i < numStars; i++) {
+            const star = document.createElement('span');
+            star.classList.add('star');
+            star.classList.add(colors[Math.floor(Math.random() * colors.length)]);
+
+            star.style.left = `${Math.random() * 100}vw`;
+            star.style.top = `${Math.random() * documentHeight}px`;
+
+            const moveX = (Math.random() - 0.5) * 300;
+            const moveY = (Math.random() - 0.5) * 300;
+            star.style.setProperty('--move-x', `${moveX}px`);
+            star.style.setProperty('--move-y', `${moveY}px`);
+
+            star.style.animationDelay = `${Math.random() * 15}s`;
+
+            starsContainer.appendChild(star);
+        }
+
+        document.querySelectorAll('.puzzle-section').forEach(section => {
+            const delay = Math.random() * 30;
+            section.style.animationDelay = `${delay}s`;
+        });
+    </script>
+</body>
+</html>
