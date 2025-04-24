@@ -6,7 +6,7 @@
     <title>Good Vibes - Quem Somos</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;600&family=Montserrat:wght@700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -14,13 +14,30 @@
             overflow-x: hidden;
             background: transparent;
         }
+
+        /* -------------------------------------
+           Header Styles (Copied from contact.html)
+        ------------------------------------- */
         .brand-name {
-            font-family: 'Dancing Script', cursive;
+            font-family: 'Great Vibes', cursive;
+            line-height: 2;
+            padding: 1rem;
+            display: block;
+            overflow: visible;
         }
+
+        .flex.items-center.content-layer {
+            overflow: visible;
+        }
+
         .nav-link {
             font-family: 'Montserrat', sans-serif;
             position: relative;
+            text-decoration: none;
+            color: #f8f8f8;
+            transition: color 0.3s ease;
         }
+
         .nav-link::after {
             content: '';
             position: absolute;
@@ -31,67 +48,137 @@
             background: linear-gradient(135deg, #a5b4fc, #e879f9);
             transition: width 0.3s ease;
         }
+
         .nav-link:hover::after {
             width: 100%;
         }
+
         .nav-link:hover {
-            transform: translateY(-2px);
             color: #e879f9;
         }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #a5b4fc, #e879f9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 10;
+            background: transparent;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 0 1rem;
+        }
+
+        nav > div {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        nav .flex.items-center.content-layer:first-child {
+            margin-right: auto;
+        }
+
+        nav .flex.items-center.content-layer:last-child {
+            margin-left: auto;
+        }
+
+        nav, section, footer {
+            position: relative;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        nav *, section *, footer * {
+            pointer-events: auto;
+        }
+
+        .content-layer {
+            position: relative;
+            z-index: 2;
+        }
+
+        h1, h2, h3, p, a, input, textarea, button, img, svg {
+            position: relative;
+            z-index: 30;
+        }
+
+        /* -------------------------------------
+           Remaining Styles from Original about.html
+        ------------------------------------- */
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
         @keyframes slideIn {
             from { opacity: 0; transform: translateX(-50px); }
             to { opacity: 1; transform: translateX(0); }
         }
+
         @keyframes slideOut {
             from { opacity: 1; transform: translateX(0); }
             to { opacity: 0; transform: translateX(50px); }
         }
+
         @keyframes pulse {
             0% { transform: scale(1); }
             50% { transform: scale(1.02); }
             100% { transform: scale(1); }
         }
+
         @keyframes stretch {
             0% { transform: scaleY(1); }
             50% { transform: scaleY(1.1); }
             100% { transform: scaleY(1); }
         }
+
         @keyframes pulseGlow {
             0% { transform: scale(1); box-shadow: 0 0 0 rgba(99, 102, 241, 0); }
             50% { transform: scale(1.1); box-shadow: 0 0 15px rgba(99, 102, 241, 0.7); }
             100% { transform: scale(1); box-shadow: 0 0 0 rgba(99, 102, 241, 0); }
         }
+
         @keyframes fadeOut {
             from { opacity: 1; }
             to { opacity: 0; }
         }
+
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
         }
+
         @keyframes shimmer {
             0% { background-position: 0% 50%; }
             100% { background-position: 200% 50%; }
         }
+
         #hero-title.fade-in, #hero-description.fade-in, #hero-button.fade-in {
             animation: fadeIn 1s ease-in-out forwards;
         }
+
         #hero-title.fade-out, #hero-description.fade-out, #hero-button.fade-out {
             animation: fadeOut 1s ease-in-out forwards;
         }
+
         .section-animate {
             opacity: 1 !important;
         }
+
         .section-animate.visible {
             animation: slideIn 0.8s ease-out forwards;
         }
+
         .section-animate:not(.visible) {
             animation: slideOut 0.8s ease-out forwards;
         }
+
         .team-item, .value-item, .milestone-item {
             animation: pulse 3s infinite ease-in-out;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -103,23 +190,22 @@
             opacity: 1 !important;
             border-radius: 1rem;
         }
+
         .team-item:hover, .value-item:hover, .milestone-item:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 20px rgba(168, 85, 247, 0.5);
             background: linear-gradient(135deg, #374151, #4b5563);
             animation: stretch 0.6s ease-in-out, pulse 3s infinite ease-in-out;
         }
+
         .gradient-bg {
             background: transparent;
         }
+
         .section-bg {
             background: rgba(31, 41, 55, 0.8);
         }
-        .gradient-text {
-            background: linear-gradient(135deg, #a5b4fc, #e879f9);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+
         .animated-gradient-text {
             background: linear-gradient(135deg, #a5b4fc, #e879f9, #a5b4fc);
             background-size: 200% 100%;
@@ -127,6 +213,7 @@
             -webkit-text-fill-color: transparent;
             animation: shimmer 3s linear infinite;
         }
+
         #particles-js {
             position: fixed;
             top: 0;
@@ -136,30 +223,17 @@
             z-index: 0;
             background: #1e293b;
         }
-        nav, section, footer {
-            position: relative;
-            z-index: 1;
-            pointer-events: none;
-        }
-        nav *, section *, footer * {
-            pointer-events: auto;
-        }
-        .content-layer {
-            position: relative;
-            z-index: 2;
-        }
-        h1, h2, h3, p, a, input, textarea, button, img, svg {
-            position: relative;
-            z-index: 30;
-        }
+
         .team-img {
             border: 3px solid #a5b4fc;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
+
         .team-img:hover {
             transform: scale(1.05);
             box-shadow: 0 5px 15px rgba(232, 121, 249, 0.5);
         }
+
         .hero-bg {
             position: absolute;
             top: 0;
@@ -170,6 +244,7 @@
             z-index: 0;
             opacity: 0.5;
         }
+
         .hero-overlay {
             position: absolute;
             top: 0;
@@ -179,13 +254,16 @@
             background: linear-gradient(135deg, rgba(31, 41, 55, 0.7), rgba(31, 41, 55, 0.4));
             z-index: 1;
         }
+
         .social-icon {
             transition: transform 0.3s ease, color 0.3s ease;
         }
+
         .social-icon:hover {
             transform: scale(1.2);
             color: #e879f9;
         }
+
         .milestone-item::before {
             content: '';
             position: absolute;
@@ -197,6 +275,7 @@
             border-radius: 50%;
             transform: translateY(-50%);
         }
+
         .milestone-item::after {
             content: '';
             position: absolute;
@@ -207,20 +286,24 @@
             background: #a5b4fc;
             z-index: -1;
         }
+
         .value-icon {
             fill: url(#gradient);
             width: 48px;
             height: 48px;
             margin-bottom: 1rem;
         }
+
         #hero-title, #hero-description, #hero-button {
             transition: opacity 1s ease-in-out;
             will-change: opacity;
         }
+
         #hero-button {
             position: relative;
             color: transparent; /* Hide original text */
         }
+
         #hero-button::before {
             content: 'Saiba Mais';
             position: absolute;
@@ -235,6 +318,7 @@
             -webkit-text-fill-color: transparent;
             animation: shimmer 3s linear infinite;
         }
+
         .saiba-mais:hover {
             animation: pulseGlow 1.2s ease-in-out infinite;
         }
@@ -254,20 +338,18 @@
         </defs>
     </svg>
 
-    <!-- Navbar -->
-    <nav class="gradient-bg shadow-lg fixed w-full z-10">
-        <div class="w-full px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <div class="content-layer">
-                    <h1 class="text-4xl brand-name gradient-text">Good Vibes</h1>
-                </div>
-                <div class="flex items-center space-x-6 content-layer">
-                    <a href="#home" class="nav-link text-gray-200 text-lg transition">Início</a>
-                    <a href="#services" class="nav-link text-gray-200 text-lg transition">Serviços</a>
-                    <a href="#about" class="nav-link text-gray-200 text-lg transition">Sobre</a>
-                    <a href="#portfolio" class="nav-link text-gray-200 text-lg transition">Portfólio</a>
-                    <a href="#contact" class="nav-link text-gray-200 text-lg transition">Contato</a>
-                </div>
+    <!-- Navbar (Updated to match contact.html) -->
+    <nav class="shadow-lg fixed w-full z-10">
+        <div class="flex justify-between h-16">
+            <div class="flex items-center content-layer">
+                <h1 class="text-4xl brand-name gradient-text">Good Vibes</h1>
+            </div>
+            <div class="flex items-center space-x-6 content-layer">
+                <a href="index.html#home" class="nav-link text-lg transition">Início</a>
+                <a href="index.html#services" class="nav-link text-lg transition">Serviços</a>
+                <a href="#about" class="nav-link text-lg transition">Sobre</a>
+                <a href="portfolio.html" class="nav-link text-lg transition">Portfólio</a>
+                <a href="contact.html" class="nav-link text-lg transition">Contato</a>
             </div>
         </div>
     </nav>
@@ -321,6 +403,7 @@
             </p>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
                 <div class="team-item p-6 rounded-xl transition fade-in text-center" style="animation-delay: 0.4s;">
+                    трех
                     <img src="https://via.placeholder.com/150?text=Ana" alt="Ana" class="team-img w-32 h-32 rounded-full mx-auto mb-4 object-cover">
                     <h4 class="text-xl font-semibold gradient-text mb-2">Ana Silva</h4>
                     <p class="text-gray-300 mb-2">Diretora Criativa</p>
@@ -411,7 +494,7 @@
     </footer>
 
     <script>
-        // Smooth scroll for nav links
+        // Smooth scroll for nav links (Updated to match contact.html)
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -421,8 +504,8 @@
             });
         });
 
-        // Fade-in animation on scroll
-        const observer = new IntersectionObserver(entries => {
+        // Fade-in animation on scroll (Original from about.html)
+        const observer = new TrickObserver(entries => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('fade-in');
@@ -432,7 +515,7 @@
         }, { threshold: 0.1 });
         document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
-        // Section slide-in/slide-out animation
+        // Section slide-in/slide-out animation (Original from about.html)
         const sectionObserver = new IntersectionObserver(entries => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -444,7 +527,7 @@
         }, { threshold: 0.2 });
         document.querySelectorAll('.section-animate').forEach(section => sectionObserver.observe(section));
 
-        // Particles.js configuration for firefly effect
+        // Particles.js configuration for firefly effect (Original from about.html)
         particlesJS('particles-js', {
             particles: {
                 number: { value: 100, density: { enable: true, value_area: 1000 } },
@@ -482,7 +565,7 @@
             retina_detect: true
         });
 
-        // Hero text and button rotation
+        // Hero text and button rotation (Original from about.html)
         const heroTexts = [
             { title: 'Conheça a Good Vibes', description: 'Somos uma equipe apaixonada por transformar ideias em realidade.' },
             { title: 'Criamos com propósito', description: 'Cada projeto é uma chance de contar uma nova história.' },
