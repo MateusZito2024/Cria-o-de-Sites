@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Good Vibes - Portfólio</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;600&family=Montserrat:wght@700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -13,13 +13,30 @@
             overflow-x: hidden;
             background: #1e293b;
         }
+
+        /* -------------------------------------
+           Header Styles (Copied from contact.html)
+        ------------------------------------- */
         .brand-name {
-            font-family: 'Dancing Script', cursive;
+            font-family: 'Great Vibes', cursive;
+            line-height: 2;
+            padding: 1rem;
+            display: block;
+            overflow: visible;
         }
+
+        .flex.items-center.content-layer {
+            overflow: visible;
+        }
+
         .nav-link {
             font-family: 'Montserrat', sans-serif;
             position: relative;
+            text-decoration: none;
+            color: #f8f8f8;
+            transition: color 0.3s ease;
         }
+
         .nav-link::after {
             content: '';
             position: absolute;
@@ -27,98 +44,143 @@
             height: 2px;
             bottom: -4px;
             left: 0;
-            background: linear-gradient(135deg, #a5b4fc, #6a0dad);
+            background: linear-gradient(135deg, #a5b4fc, #e879f9);
             transition: width 0.3s ease;
         }
+
         .nav-link:hover::after {
             width: 100%;
         }
+
         .nav-link:hover {
-            transform: translateY(-2px);
-            color: #a5b4fc;
+            color: #e879f9;
         }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #a5b4fc, #e879f9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 10;
+            background: transparent;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 0 1rem;
+        }
+
+        nav > div {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        nav .flex.items-center.content-layer:first-child {
+            margin-right: auto;
+        }
+
+        nav .flex.items-center.content-layer:last-child {
+            margin-left: auto;
+        }
+
+        nav, section, footer {
+            position: relative;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        nav *, section *, footer * {
+            pointer-events: auto;
+        }
+
+        .content-layer {
+            position: relative;
+            z-index: 2;
+            text-align: center; /* Ensure parent container enforces centering */
+        }
+
+        h1, h2, h3, p, a, button, img {
+            position: relative;
+            z-index: 30;
+            opacity: 1 !important;
+        }
+
+        .content-layer h2, .content-layer h3 {
+            text-align: center; /* Default centering for headings in content-layer */
+        }
+
+        .content-layer h3.text-left {
+            text-align: left; /* Override for specific h3 elements */
+        }
+
+        /* -------------------------------------
+           Remaining Styles from Original portfolio.html
+        ------------------------------------- */
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
         @keyframes slideInLeft {
             from { opacity: 0; transform: translateX(-50px); }
             to { opacity: 1; transform: translateX(0); }
         }
+
         @keyframes slideInRight {
             from { opacity: 0; transform: translateX(50px); }
             to { opacity: 1; transform: translateX(0); }
         }
+
         @keyframes glow {
             0% { text-shadow: 0 0 5px rgba(106, 13, 173, 0.3); }
             50% { text-shadow: 0 0 20px rgba(106, 13, 173, 0.7); }
             100% { text-shadow: 0 0 5px rgba(106, 13, 173, 0.3); }
         }
+
         @keyframes bounce {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
         }
+
         @keyframes slideCarousel {
             0% { transform: translateX(0); }
             20% { transform: translateX(0); }
             25% { transform: translateX(-100%); }
             45% { transform: translateX(-100%); }
             50% { transform: translateX(-200%); }
-            70% { transform: translateX(-200); }
+            70% { transform: translateX(-200%); }
             75% { transform: translateX(-300%); }
             95% { transform: translateX(-300%); }
             100% { transform: translateX(0); }
         }
+
         .fade-in {
             opacity: 1 !important;
             animation: fadeInUp 1s ease-out forwards;
         }
+
         .slide-in-left {
             opacity: 1 !important;
             animation: slideInLeft 1s ease-out forwards;
         }
+
         .slide-in-right {
             opacity: 1 !important;
             animation: slideInRight 1s ease-out forwards;
         }
+
         .glow-effect {
             animation: glow 2s infinite;
         }
+
         .bounce-effect {
             animation: bounce 2s infinite;
         }
-        .gradient-text {
-            background: linear-gradient(135deg, #a5b4fc, #6a0dad);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            display: inline-block;
-            line-height: 1.2;
-            padding-bottom: 2px;
-        }
-        nav, section, footer {
-            position: relative;
-            z-index: 1;
-            pointer-events: none;
-        }
-        nav *, section *, footer * {
-            pointer-events: auto;
-        }
-        .content-layer {
-            position: relative;
-            z-index: 2;
-            text-align: center; /* Ensure parent container enforces centering */
-        }
-        h1, h2, h3, p, a, button, img {
-            position: relative;
-            z-index: 30;
-            opacity: 1 !important;
-        }
-        .content-layer h2, .content-layer h3 {
-            text-align: center; /* Default centering for headings in content-layer */
-        }
-        .content-layer h3.text-left {
-            text-align: left; /* Override for specific h3 elements */
-        }
+
         .project-card {
             position: relative;
             overflow: hidden;
@@ -128,16 +190,20 @@
             border: 3px solid #a5b4fc;
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
         }
+
         .project-card:hover {
             transform: translateY(-10px);
             box-shadow: 0 15px 30px rgba(106, 13, 173, 0.7);
         }
+
         .project-card img {
             transition: transform 0.4s ease;
         }
+
         .project-card:hover img {
             transform: scale(1.05);
         }
+
         .project-overlay {
             position: absolute;
             inset: 0;
@@ -151,9 +217,11 @@
             text-align: center;
             padding: 1rem;
         }
+
         .project-card:hover .project-overlay {
             opacity: 1;
         }
+
         .project-overlay h3 {
             font-family: 'Montserrat', sans-serif;
             font-size: 1.5rem;
@@ -161,10 +229,12 @@
             color: #fff;
             margin-bottom: 0.5rem;
         }
+
         .project-overlay p {
             color: #e2e8f0;
             font-size: 1rem;
         }
+
         .project-overlay a {
             margin-top: 1rem;
             background: #6a0dad;
@@ -174,10 +244,12 @@
             font-weight: bold;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
+
         .project-overlay a:hover {
             transform: translateY(-3px);
             box-shadow: 0 5px 15px rgba(106, 13, 173, 0.5);
         }
+
         .testimonial-card {
             background: #374151;
             border-radius: 1rem;
@@ -185,10 +257,12 @@
             border: 2px solid #a5b4fc;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
+
         .testimonial-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 20px rgba(106, 13, 173, 0.5);
         }
+
         .cta-button {
             background: linear-gradient(135deg, #a5b4fc, #6a0dad);
             color: white;
@@ -197,10 +271,12 @@
             font-weight: bold;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
+
         .cta-button:hover {
             transform: scale(1.05);
             box-shadow: 0 5px 15px rgba(106, 13, 173, 0.5);
         }
+
         .carousel-container {
             position: relative;
             width: 100%;
@@ -211,30 +287,35 @@
             border-radius: 1rem;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
         }
+
         .carousel-wrapper {
             display: flex;
             width: 400%;
             height: 100%;
             animation: slideCarousel 16s infinite;
         }
+
         .carousel-slide {
             width: 25%;
             height: 100%;
         }
+
         .carousel-slide img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             border-radius: 1rem;
         }
+
         .cursive-heading {
-            font-family: 'Dancing Script', cursive;
+            font-family: 'Great Vibes', cursive;
             font-size: 3.5rem;
             line-height: 1.2;
-            text-align: center; /* Ensure centering for cursive heading */
+            text-align: center;
         }
+
         .cursive-text {
-            font-family: 'Dancing Script', cursive;
+            font-family: 'Great Vibes', cursive;
             font-size: 2rem;
             line-height: 1.4;
             color: #e2e8f0;
@@ -242,20 +323,18 @@
     </style>
 </head>
 <body class="text-gray-100">
-    <!-- Navbar (Identical to Original) -->
+    <!-- Navbar (Updated to match contact.html) -->
     <nav class="shadow-lg fixed w-full z-10">
-        <div class="w-full px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <div class="content-layer">
-                    <h1 class="text-4xl brand-name gradient-text">Good Vibes</h1>
-                </div>
-                <div class="flex items-center space-x-6 content-layer">
-                    <a href="index.html#home" class="nav-link text-gray-200 text-lg transition">Início</a>
-                    <a href="index.html#services" class="nav-link text-gray-200 text-lg transition">Serviços</a>
-                    <a href="index.html#about" class="nav-link text-gray-200 text-lg transition">Sobre</a>
-                    <a href="portfolio.html" class="nav-link text-gray-200 text-lg transition">Portfólio</a>
-                    <a href="index.html#contact" class="nav-link text-gray-200 text-lg transition">Contato</a>
-                </div>
+        <div class="flex justify-between h-16">
+            <div class="flex items-center content-layer">
+                <h1 class="text-4xl brand-name gradient-text">Good Vibes</h1>
+            </div>
+            <div class="flex items-center space-x-6 content-layer">
+                <a href="index.html#home" class="nav-link text-lg transition">Início</a>
+                <a href="index.html#services" class="nav-link text-lg transition">Serviços</a>
+                <a href="index.html#about" class="nav-link text-lg transition">Sobre</a>
+                <a href="portfolio.html" class="nav-link text-lg transition">Portfólio</a>
+                <a href="contact.html" class="nav-link text-lg transition">Contato</a>
             </div>
         </div>
     </nav>
@@ -423,7 +502,7 @@
         </div>
     </section>
 
-    <!-- Footer (Identical to Original) -->
+    <!-- Footer -->
     <footer class="text-gray-200 py-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 content-layer">
             <p>© 2025 Good Vibes. Todos os direitos reservados.</p>
@@ -431,7 +510,7 @@
     </footer>
 
     <script>
-        // Smooth scroll for nav links
+        // Smooth scroll for nav links (Updated to match contact.html)
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -441,7 +520,7 @@
             });
         });
 
-        // Fade-in and slide-in animations on scroll
+        // Fade-in and slide-in animations on scroll (Original from portfolio.html)
         const observer = new IntersectionObserver(entries => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
