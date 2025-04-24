@@ -6,7 +6,7 @@
     <title>Good Vibes</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;600&family=Montserrat:wght@700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -14,13 +14,30 @@
             overflow-x: hidden;
             background: transparent;
         }
+
+        /* -------------------------------------
+           Header Styles (Copied from contact.html)
+        ------------------------------------- */
         .brand-name {
-            font-family: 'Dancing Script', cursive;
+            font-family: 'Great Vibes', cursive;
+            line-height: 2;
+            padding: 1rem;
+            display: block;
+            overflow: visible;
         }
+
+        .flex.items-center.content-layer {
+            overflow: visible;
+        }
+
         .nav-link {
             font-family: 'Montserrat', sans-serif;
             position: relative;
+            text-decoration: none;
+            color: #f8f8f8;
+            transition: color 0.3s ease;
         }
+
         .nav-link::after {
             content: '';
             position: absolute;
@@ -31,48 +48,114 @@
             background: linear-gradient(135deg, #a5b4fc, #e879f9);
             transition: width 0.3s ease;
         }
+
         .nav-link:hover::after {
             width: 100%;
         }
+
         .nav-link:hover {
-            transform: translateY(-2px);
             color: #e879f9;
         }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #a5b4fc, #e879f9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 10;
+            background: transparent;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 0 1rem;
+        }
+
+        nav > div {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        nav .flex.items-center.content-layer:first-child {
+            margin-right: auto;
+        }
+
+        nav .flex.items-center.content-layer:last-child {
+            margin-left: auto;
+        }
+
+        nav, section, footer {
+            position: relative;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        nav *, section *, footer * {
+            pointer-events: auto;
+        }
+
+        .content-layer {
+            position: relative;
+            z-index: 2;
+        }
+
+        h1, h2, h3, p, a, input, textarea, button, img, svg {
+            position: relative;
+            z-index: 30;
+            opacity: 1 !important;
+        }
+
+        /* -------------------------------------
+           Remaining Styles from Original index.html
+        ------------------------------------- */
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
         @keyframes slideIn {
             from { opacity: 0; transform: translateX(-50px); }
             to { opacity: 1; transform: translateX(0); }
         }
+
         @keyframes slideOut {
             from { opacity: 1; transform: translateX(0); }
             to { opacity: 0; transform: translateX(50px); }
         }
+
         @keyframes pulse {
             0% { transform: scale(1); }
             50% { transform: scale(1.02); }
             100% { transform: scale(1); }
         }
+
         @keyframes stretch {
             0% { transform: scaleY(1); }
             50% { transform: scaleY(1.1); }
             100% { transform: scaleY(1); }
         }
+
         .fade-in {
             opacity: 1 !important;
             animation: fadeInUp 1s ease-out forwards;
         }
+
         .section-animate {
             opacity: 1 !important;
         }
+
         .section-animate.visible {
             animation: slideIn 0.8s ease-out forwards;
         }
+
         .section-animate:not(.visible) {
             animation: slideOut 0.8s ease-out forwards;
         }
+
         .service-item, .portfolio-item {
             animation: pulse 3s infinite ease-in-out;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -83,32 +166,33 @@
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
             opacity: 1 !important;
         }
+
         .service-item:hover, .portfolio-item:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 20px rgba(168, 85, 247, 0.5);
             background: linear-gradient(135deg, #374151, #4b5563);
             animation: stretch 0.6s ease-in-out, pulse 3s infinite ease-in-out;
         }
+
         .portfolio-item .overlay {
             transition: opacity 0.3s ease, background 0.3s ease;
             z-index: 30;
             opacity: 0;
         }
+
         .portfolio-item:hover .overlay {
             opacity: 1;
             background: linear-gradient(135deg, rgba(165, 180, 252, 0.3), rgba(232, 121, 249, 0.3));
         }
+
         .gradient-bg {
             background: transparent;
         }
+
         .section-bg {
             background: rgba(31, 41, 55, 0.8);
         }
-        .gradient-text {
-            background: linear-gradient(135deg, #a5b4fc, #e879f9);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+
         #particles-js {
             position: fixed;
             top: 0;
@@ -118,29 +202,14 @@
             z-index: 0;
             background: #1e293b;
         }
-        nav, section, footer {
-            position: relative;
-            z-index: 1;
-            pointer-events: none;
-        }
-        nav *, section *, footer * {
-            pointer-events: auto;
-        }
-        .content-layer {
-            position: relative;
-            z-index: 2;
-        }
-        h1, h2, h3, p, a, input, textarea, button, img, svg {
-            position: relative;
-            z-index: 30;
-            opacity: 1 !important;
-        }
+
         .service-icon {
             fill: url(#gradient);
             width: 48px;
             height: 48px;
             margin-bottom: 1rem;
         }
+
         /* Estilos para o card de inatividade */
         .inactivity-card {
             position: fixed;
@@ -161,12 +230,14 @@
             max-width: 500px;
             width: 90%;
         }
+
         .inactivity-card h3 {
             font-size: 1.5rem;
             font-weight: bold;
             color: #e879f9;
             margin-bottom: 1rem;
         }
+
         .inactivity-card p {
             color: #a5b4fc;
             margin-bottom: 1.5rem;
@@ -174,6 +245,7 @@
             padding: 0.5rem;
             border-radius: 0.5rem;
         }
+
         .inactivity-card button {
             background: #e879f9;
             color: white;
@@ -183,10 +255,12 @@
             cursor: pointer;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
+
         .inactivity-card button:hover {
             transform: translateY(-3px);
             box-shadow: 0 5px 15px rgba(232, 121, 249, 0.5);
         }
+
         .inactivity-card .close-btn {
             position: absolute;
             top: 1rem;
@@ -208,6 +282,7 @@
             align-items: center;
             justify-content: center;
         }
+
         .inactivity-card .close-btn:hover {
             color: #e879f9;
             background: rgba(255, 255, 255, 0.1);
@@ -228,20 +303,18 @@
         </defs>
     </svg>
 
-    <!-- Navbar -->
-    <nav class="gradient-bg shadow-lg fixed w-full z-10">
-        <div class="w-full px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <div class="content-layer">
-                    <h1 class="text-4xl brand-name gradient-text">Good Vibes</h1>
-                </div>
-                <div class="flex items-center space-x-6 content-layer">
-                    <a href="#home" class="nav-link text-gray-200 text-lg transition">Início</a>
-                    <a href="#services" class="nav-link text-gray-200 text-lg transition">Serviços</a>
-                    <a href="#about" class="nav-link text-gray-200 text-lg transition">Sobre</a>
-                    <a href="#portfolio" class="nav-link text-gray-200 text-lg transition">Portfólio</a>
-                    <a href="#contact" class="nav-link text-gray-200 text-lg transition">Contato</a>
-                </div>
+    <!-- Navbar (Updated to match contact.html) -->
+    <nav class="shadow-lg fixed w-full z-10">
+        <div class="flex justify-between h-16">
+            <div class="flex items-center content-layer">
+                <h1 class="text-4xl brand-name gradient-text">Good Vibes</h1>
+            </div>
+            <div class="flex items-center space-x-6 content-layer">
+                <a href="#home" class="nav-link text-lg transition">Início</a>
+                <a href="#services" class="nav-link text-lg transition">Serviços</a>
+                <a href="about.html" class="nav-link text-lg transition">Sobre</a>
+                <a href="portfolio.html" class="nav-link text-lg transition">Portfólio</a>
+                <a href="contact.html" class="nav-link text-lg transition">Contato</a>
             </div>
         </div>
     </nav>
@@ -350,7 +423,7 @@
     </div>
 
     <script>
-        // Smooth scroll for nav links
+        // Smooth scroll for nav links (Updated to match contact.html)
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -360,7 +433,7 @@
             });
         });
 
-        // Fade-in animation on scroll
+        // Fade-in animation on scroll (Original from index.html)
         const observer = new IntersectionObserver(entries => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -371,7 +444,7 @@
         }, { threshold: 0.1 });
         document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
-        // Section slide-in/slide-out animation
+        // Section slide-in/slide-out animation (Original from index.html)
         const sectionObserver = new IntersectionObserver(entries => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -383,7 +456,7 @@
         }, { threshold: 0.2 });
         document.querySelectorAll('.section-animate').forEach(section => sectionObserver.observe(section));
 
-        // Particles.js configuration with adjusted repulse effect
+        // Particles.js configuration with adjusted repulse effect (Original from index.html)
         particlesJS('particles-js', {
             particles: {
                 number: { value: 200, density: { enable: true, value_area: 800 } },
@@ -423,7 +496,7 @@
             retina_detect: true
         });
 
-        // Inactivity Card Logic
+        // Inactivity Card Logic (Original from index.html)
         const inactivityCard = document.getElementById('inactivityCard');
         let inactivityTimeout;
         let hasShown = false; // Flag to track if card has been shown
