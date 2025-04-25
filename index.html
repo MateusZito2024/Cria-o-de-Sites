@@ -8,19 +8,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;600&family=Montserrat:wght@700&display=swap" rel="stylesheet">
     <style>
-        <!--Start of Tawk.to Script-->
-<script type="text/javascript">
-var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-(function(){
-var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-s1.async=true;
-s1.src='https://embed.tawk.to/680aed5229a5a619141791f5/1iplau2nk';
-s1.charset='UTF-8';
-s1.setAttribute('crossorigin','*');
-s0.parentNode.insertBefore(s1,s0);
-})();
-</script>
-<!--End of Tawk.to Script-->
         body {
             font-family: 'Poppins', sans-serif;
             position: relative;
@@ -300,6 +287,28 @@ s0.parentNode.insertBefore(s1,s0);
             color: #e879f9;
             background: rgba(255, 255, 255, 0.1);
         }
+
+        /* Custom Styles for Tawk.to Widget */
+        #tawkchat-container .tawk-button {
+            background: linear-gradient(135deg, #a5b4fc, #e879f9) !important;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3) !important;
+            width: 60px !important;
+            height: 60px !important;
+        }
+
+        #tawkchat-container .tawk-button:hover {
+            transform: scale(1.1);
+        }
+
+        #tawkchat-container .tawk-header {
+            background: linear-gradient(135deg, #a5b4fc, #e879f9) !important;
+        }
+
+        #tawkchat-container .tawk-header h3 {
+            color: white !important;
+            font-size: 1.2rem !important;
+            font-weight: bold !important;
+        }
     </style>
 </head>
 <body class="text-gray-100">
@@ -434,6 +443,51 @@ s0.parentNode.insertBefore(s1,s0);
         <p>Quer saber quanto vai custar? Conta pra gente sua ideia — juntos, descobrimos o melhor caminho pro seu projeto. Mande mensagem agora!</p>
         <a href="#contact" onclick="hideInactivityCard();"><button>Fale Conosco</button></a>
     </div>
+
+    <!-- Tawk.to Chat Widget Script -->
+    <script type="text/javascript">
+        var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+        (function(){
+            var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+            s1.async = true;
+            s1.src = 'https://embed.tawk.to/680aed5229a5a619141791f5/1iplau2nk'; // Seu ID do Tawk.to
+            s1.charset = 'UTF-8';
+            s1.setAttribute('crossorigin', '*');
+            s0.parentNode.insertBefore(s1, s0);
+        })();
+
+        // Configuração de Respostas Automáticas
+        Tawk_API.onLoad = function() {
+            Tawk_API.setAttributes({
+                name: 'Visitante do Good Vibes',
+                email: 'visitante@goodvibes.com'
+            }, function(error) {});
+
+            // Respostas automáticas baseadas no conteúdo do site
+            Tawk_API.addEvent('chat-message-from-visitor', function(data) {
+                var message = data.message.toLowerCase();
+
+                if (message.includes('serviços') || message.includes('o que vocês fazem')) {
+                    Tawk_API.sendMessage('Nós oferecemos Marketing Digital, Desenvolvimento Web e Design Gráfico. Veja mais na seção Serviços do nosso site!');
+                } else if (message.includes('contato') || message.includes('falar com vocês')) {
+                    Tawk_API.sendMessage('Você pode nos contatar pela seção Fale Conosco no site ou continuar conversando comigo aqui! 😊');
+                } else if (message.includes('portfólio') || message.includes('projetos')) {
+                    Tawk_API.sendMessage('Temos alguns projetos incríveis na seção Portfólio do site. Dê uma olhada para ver o que já fizemos!');
+                } else if (message.includes('quem são') || message.includes('sobre vocês')) {
+                    Tawk_API.sendMessage('Somos a Good Vibes, uma equipe apaixonada por transformar visões em realidade com criatividade e inovação. Veja mais na seção Quem Somos!');
+                } else if (message.includes('oi') || message.includes('olá')) {
+                    Tawk_API.sendMessage('Olá! Bem-vindo(a) ao Good Vibes! Como posso te ajudar hoje?');
+                } else {
+                    Tawk_API.sendMessage('Desculpe, não entendi sua pergunta. Você pode me perguntar sobre nossos serviços, portfólio, ou como entrar em contato!');
+                }
+            });
+
+            // Mensagem inicial ao abrir o chat
+            Tawk_API.onChatMaximized = function() {
+                Tawk_API.sendMessage('Olá! Bem-vindo(a) ao Good Vibes! Como posso te ajudar hoje?');
+            };
+        };
+    </script>
 
     <script>
         // Smooth scroll for nav links (Updated to match contact.html)
