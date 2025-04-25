@@ -19,7 +19,7 @@
            Header Styles (Copied from contact.html)
         ------------------------------------- */
         .brand-name {
-            font-family: 'Great Vibes', cursive;
+            font-family: 'Great_Vibes', cursive;
             line-height: 2;
             padding: 1rem;
             display: block;
@@ -288,26 +288,209 @@
             background: rgba(255, 255, 255, 0.1);
         }
 
-        /* Custom Styles for Tawk.to Widget */
-        #tawkchat-container .tawk-button {
-            background: linear-gradient(135deg, #a5b4fc, #e879f9) !important;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3) !important;
-            width: 60px !important;
-            height: 60px !important;
+        /* Estilos para o Widget de Chat */
+        #chat-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
         }
 
-        #tawkchat-container .tawk-button:hover {
+        #chat-button {
+            background: linear-gradient(135deg, #a5b4fc, #e879f9);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        #chat-button:hover {
             transform: scale(1.1);
         }
 
-        #tawkchat-container .tawk-header {
-            background: linear-gradient(135deg, #a5b4fc, #e879f9) !important;
+        #chat-button svg {
+            width: 30px;
+            height: 30px;
+            fill: white;
         }
 
-        #tawkchat-container .tawk-header h3 {
-            color: white !important;
-            font-size: 1.2rem !important;
-            font-weight: bold !important;
+        #chat-window {
+            display: none;
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            width: 350px;
+            height: 500px;
+            background: #1e293b;
+            border-radius: 1rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+
+        #chat-header {
+            background: linear-gradient(135deg, #a5b4fc, #e879f9);
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #chat-header h3 {
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        #chat-header .close-chat {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        #chat-messages {
+            height: 380px;
+            overflow-y: auto;
+            padding: 1rem;
+            background: #374151;
+        }
+
+        .message {
+            margin-bottom: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            max-width: 80%;
+        }
+
+        .user-message {
+            background: #a5b4fc;
+            color: white;
+            margin-left: auto;
+        }
+
+        .bot-message {
+            background: #e879f9;
+            color: white;
+            margin-right: auto;
+        }
+
+        #chat-input-container {
+            display: flex;
+            padding: 0.5rem;
+            background: #1e293b;
+            border-top: 1px solid #4b5563;
+        }
+
+        #chat-input {
+            flex: 1;
+            padding: 0.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            background: #4b5563;
+            color: white;
+            outline: none;
+        }
+
+        #chat-send {
+            background: linear-gradient(135deg, #a5b4fc, #e879f9);
+            border: none;
+            border-radius: 0.5rem;
+            padding: 0.5rem 1rem;
+            margin-left: 0.5rem;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        #chat-send:hover {
+            transform: scale(1.05);
+        }
+
+        .whatsapp-button {
+            background: #25D366;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            display: inline-block;
+            margin-top: 0.5rem;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+        }
+
+        .whatsapp-button:hover {
+            transform: scale(1.05);
+        }
+
+        /* Estilos para o Pop-up de Saudação */
+        #greeting-popup {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            background: #1e293b;
+            padding: 1rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: none;
+            max-width: 300px;
+            width: 90%;
+        }
+
+        #greeting-popup p {
+            color: white;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        #greeting-popup button {
+            background: linear-gradient(135deg, #a5b4fc, #e879f9);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            border: none;
+        }
+
+        #greeting-popup button:hover {
+            transform: scale(1.05);
+        }
+
+        #greeting-popup .close-popup {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: none;
+            border: none;
+            color: #a5b4fc;
+            font-size: 1.2rem;
+            cursor: pointer;
+            width: 24px;
+            height: 24px;
+            line-height: 24px;
+            text-align: center;
+            border-radius: 50%;
+            transition: color 0.3s ease, background 0.3s ease;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #greeting-popup .close-popup:hover {
+            color: #e879f9;
+            background: rgba(255, 255, 255, 0.1);
         }
     </style>
 </head>
@@ -401,7 +584,7 @@
                 </div>
                 <div class="portfolio-item relative overflow-hidden rounded-xl transition fade-in" style="animation-delay: 0.2s;">
                     <img src="https://via.placeholder.com/400x300?text=Projeto+2" alt="Projeto 2" class="w-full h-64 object-cover">
-                    <div class="overlay absolute inset-0 flex items-center justify-center">
+                    <div class="overlay absolute inset-0 flex items-center justify-content-center">
                         <p class="text-white font-bold text-xl">Projeto 2</p>
                     </div>
                 </div>
@@ -444,50 +627,32 @@
         <a href="#contact" onclick="hideInactivityCard();"><button>Fale Conosco</button></a>
     </div>
 
-    <!-- Tawk.to Chat Widget Script -->
-    <script type="text/javascript">
-        var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
-        (function(){
-            var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
-            s1.async = true;
-            s1.src = 'https://embed.tawk.to/680aed5229a5a619141791f5/1iplau2nk'; // Seu ID do Tawk.to
-            s1.charset = 'UTF-8';
-            s1.setAttribute('crossorigin', '*');
-            s0.parentNode.insertBefore(s1, s0);
-        })();
+    <!-- Chat Widget -->
+    <div id="chat-container">
+        <div id="chat-button">
+            <svg viewBox="0 0 24 24">
+                <path d="M20 2H4c-1.1 0-2 .9-2 2v16l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 12H6l-2 2V4h16v10z"/>
+            </svg>
+        </div>
+        <div id="chat-window">
+            <div id="chat-header">
+                <h3>Suporte</h3>
+                <button class="close-chat" onclick="toggleChat()">×</button>
+            </div>
+            <div id="chat-messages"></div>
+            <div id="chat-input-container">
+                <input type="text" id="chat-input" placeholder="Digite sua mensagem..." onkeypress="if(event.keyCode===13) sendMessage()">
+                <button id="chat-send" onclick="sendMessage()">Enviar</button>
+            </div>
+        </div>
+    </div>
 
-        // Configuração de Respostas Automáticas
-        Tawk_API.onLoad = function() {
-            Tawk_API.setAttributes({
-                name: 'Visitante do Good Vibes',
-                email: 'visitante@goodvibes.com'
-            }, function(error) {});
-
-            // Respostas automáticas baseadas no conteúdo do site
-            Tawk_API.addEvent('chat-message-from-visitor', function(data) {
-                var message = data.message.toLowerCase();
-
-                if (message.includes('serviços') || message.includes('o que vocês fazem')) {
-                    Tawk_API.sendMessage('Nós oferecemos Marketing Digital, Desenvolvimento Web e Design Gráfico. Veja mais na seção Serviços do nosso site!');
-                } else if (message.includes('contato') || message.includes('falar com vocês')) {
-                    Tawk_API.sendMessage('Você pode nos contatar pela seção Fale Conosco no site ou continuar conversando comigo aqui! 😊');
-                } else if (message.includes('portfólio') || message.includes('projetos')) {
-                    Tawk_API.sendMessage('Temos alguns projetos incríveis na seção Portfólio do site. Dê uma olhada para ver o que já fizemos!');
-                } else if (message.includes('quem são') || message.includes('sobre vocês')) {
-                    Tawk_API.sendMessage('Somos a Good Vibes, uma equipe apaixonada por transformar visões em realidade com criatividade e inovação. Veja mais na seção Quem Somos!');
-                } else if (message.includes('oi') || message.includes('olá')) {
-                    Tawk_API.sendMessage('Olá! Bem-vindo(a) ao Good Vibes! Como posso te ajudar hoje?');
-                } else {
-                    Tawk_API.sendMessage('Desculpe, não entendi sua pergunta. Você pode me perguntar sobre nossos serviços, portfólio, ou como entrar em contato!');
-                }
-            });
-
-            // Mensagem inicial ao abrir o chat
-            Tawk_API.onChatMaximized = function() {
-                Tawk_API.sendMessage('Olá! Bem-vindo(a) ao Good Vibes! Como posso te ajudar hoje?');
-            };
-        };
-    </script>
+    <!-- Greeting Pop-up -->
+    <div id="greeting-popup">
+        <button class="close-popup" onclick="hideGreetingPopup()">×</button>
+        <p>Oi, precisa de ajuda?</p>
+        <button onclick="openChatFromPopup()">Fale Comigo</button>
+    </div>
 
     <script>
         // Smooth scroll for nav links (Updated to match contact.html)
@@ -566,34 +731,211 @@
         // Inactivity Card Logic (Original from index.html)
         const inactivityCard = document.getElementById('inactivityCard');
         let inactivityTimeout;
-        let hasShown = false; // Flag to track if card has been shown
+        let hasShownInactivity = false; // Flag to track if inactivity card has been shown
 
         function showInactivityCard() {
-            if (!hasShown) {
+            if (!hasShownInactivity) {
+                console.log("Mostrando cartão de inatividade");
                 inactivityCard.style.display = 'block';
-                hasShown = true; // Prevent card from showing again
+                hasShownInactivity = true; // Prevent card from showing again
             }
         }
 
         function hideInactivityCard() {
+            console.log("Fechando cartão de inatividade");
             inactivityCard.style.display = 'none';
             clearTimeout(inactivityTimeout); // Stop any pending timer
         }
 
         function resetInactivityTimer() {
             // Only reset if card hasn't been shown yet
-            if (!hasShown) {
+            if (!hasShownInactivity) {
+                console.log("Resetando timer de inatividade");
                 clearTimeout(inactivityTimeout);
                 inactivityTimeout = setTimeout(showInactivityCard, 5000); // 5 seconds
             }
         }
 
-        // Initialize the timer
+        // Initialize the timer for inactivity card
         resetInactivityTimer();
 
         // Reset timer on user activity
         ['mousemove', 'keydown', 'scroll', 'click'].forEach(event => {
             document.addEventListener(event, resetInactivityTimer);
+        });
+
+        // Chatbot Logic
+        const chatButton = document.getElementById('chat-button');
+        const chatWindow = document.getElementById('chat-window');
+        const chatMessages = document.getElementById('chat-messages');
+        const chatInput = document.getElementById('chat-input');
+
+        function toggleChat() {
+            if (chatWindow.style.display === 'block') {
+                chatWindow.style.display = 'none';
+            } else {
+                console.log("Abrindo chat");
+                chatWindow.style.display = 'block';
+                hideGreetingPopup(); // Fecha o pop-up ao abrir o chat
+            }
+        }
+
+        chatButton.addEventListener('click', toggleChat);
+
+        function addMessage(sender, message, includeWhatsAppButton = false) {
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message', `${sender}-message`);
+            messageElement.textContent = message;
+            chatMessages.appendChild(messageElement);
+
+            if (includeWhatsAppButton) {
+                const whatsappButton = document.createElement('a');
+                whatsappButton.classList.add('whatsapp-button');
+                whatsappButton.href = 'https://wa.me/5511987637786?text=Oi,%20vim%20pelo%20site%20Good%20Vibes%20e%20quero%20falar%20sobre%20um%20projeto!';
+                whatsappButton.target = '_blank';
+                whatsappButton.textContent = 'Falar com um Representante no WhatsApp';
+                chatMessages.appendChild(whatsappButton);
+            }
+
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function sendMessage() {
+            const message = chatInput.value.trim();
+            if (!message) return;
+
+            // Adicionar mensagem do usuário
+            addMessage('user', message);
+            chatInput.value = '';
+            hideGreetingPopup(); // Fecha o pop-up ao enviar uma mensagem
+
+            // Responder automaticamente com base em palavras-chave
+            setTimeout(() => {
+                const msgLower = message.toLowerCase();
+                let botResponse = '';
+                let showWhatsAppButton = false;
+
+                // Saudação
+                if (msgLower.includes('oi') || msgLower.includes('olá') || msgLower.includes('e aí') || 
+                    msgLower.includes('bom dia') || msgLower.includes('boa tarde') || msgLower.includes('boa noite') || 
+                    msgLower.includes('como você tá')) {
+                    botResponse = 'Olá! Bem-vindo(a) ao Good Vibes! Como posso te ajudar hoje? 😊';
+                }
+                // Sobre os Serviços
+                else if (msgLower.includes('serviços') || msgLower.includes('o que vocês fazem') || 
+                         msgLower.includes('quais são os serviços') || msgLower.includes('vocês fazem sites') || 
+                         msgLower.includes('vocês têm marketing') || msgLower.includes('vocês fazem design') || 
+                         msgLower.includes('quais são as opções de serviços') || msgLower.includes('tem algum serviço específico')) {
+                    botResponse = 'Nós oferecemos Marketing Digital, Desenvolvimento Web e Design Gráfico. Veja mais detalhes na seção Serviços do nosso site!';
+                }
+                // Sobre o Portfólio
+                else if (msgLower.includes('portfólio') || msgLower.includes('projetos pra mostrar') || 
+                         msgLower.includes('onde vejo os trabalhos') || msgLower.includes('exemplo de projeto') || 
+                         msgLower.includes('quais projetos') || msgLower.includes('mostra algum trabalho') || 
+                         msgLower.includes('portifolio') || msgLower.includes('projetos anteriores')) {
+                    botResponse = 'Temos alguns projetos incríveis na seção Portfólio do site. Dê uma olhada para ver o que já fizemos!';
+                }
+                // Sobre a Empresa (Quem Somos)
+                else if (msgLower.includes('quem são') || msgLower.includes('sobre vocês') || 
+                         msgLower.includes('quem é a good vibes') || msgLower.includes('o que é a good vibes') || 
+                         msgLower.includes('vocês são uma empresa') || msgLower.includes('quem tá por trás') || 
+                         msgLower.includes('quem faz os projetos') || msgLower.includes('vocês são confiáveis')) {
+                    botResponse = 'Somos a Good Vibes, uma equipe apaixonada por transformar visões em realidade com criatividade e inovação. Veja mais na seção Quem Somos!';
+                }
+                // Sobre Contato
+                else if (msgLower.includes('como entro em contato') || msgLower.includes('quero falar com vocês') || 
+                         msgLower.includes('como posso falar com alguém') || msgLower.includes('onde mando mensagem') || 
+                         msgLower.includes('quero conversar com vocês') || msgLower.includes('falar com alguém agora') || 
+                         msgLower.includes('vocês têm whatsapp') || msgLower.includes('qual o telefone')) {
+                    botResponse = 'Você pode nos contatar pela seção Fale Conosco no site ou continuar conversando comigo aqui! 😊 Se preferir falar diretamente com um representante, posso te encaminhar para o nosso WhatsApp.';
+                    showWhatsAppButton = true;
+                }
+                // Sobre Preços
+                else if (msgLower.includes('quanto custa') || msgLower.includes('qual o preço') || 
+                         msgLower.includes('quanto é um site') || msgLower.includes('vocês cobram quanto') || 
+                         msgLower.includes('valor dos serviços') || msgLower.includes('quanto custa o marketing') || 
+                         msgLower.includes('tem preço fixo') || msgLower.includes('quanto vou gastar')) {
+                    botResponse = 'Os preços variam de acordo com o projeto. Para um orçamento personalizado, preencha o formulário na seção Fale Conosco, e entraremos em contato com você! 😊';
+                }
+                // Sobre Prazo
+                else if (msgLower.includes('quanto tempo leva') || msgLower.includes('qual o prazo') || 
+                         msgLower.includes('em quanto tempo fica pronto') || msgLower.includes('demora muito') || 
+                         msgLower.includes('tempo pra fazer um site') || msgLower.includes('em quantos dias entrega') || 
+                         msgLower.includes('é rápido') || msgLower.includes('vocês fazem rápido')) {
+                    botResponse = 'O prazo depende do tipo de projeto e das suas necessidades. Para uma estimativa mais precisa, preencha o formulário na seção Fale Conosco, e entraremos em contato com você!';
+                }
+                // Sobre o Processo
+                else if (msgLower.includes('como funciona') || msgLower.includes('qual o processo') || 
+                         msgLower.includes('como vocês trabalham') || msgLower.includes('o que preciso fazer') || 
+                         msgLower.includes('passo a passo') || msgLower.includes('vocês começam como') || 
+                         msgLower.includes('como é pra contratar') || msgLower.includes('o que acontece depois que eu contrato')) {
+                    botResponse = 'Primeiro, entendemos suas necessidades e objetivos. Depois, criamos um plano personalizado e começamos o trabalho! Para mais detalhes, preencha o formulário na seção Fale Conosco, e te explicaremos tudo direitinho.';
+                }
+                // Sobre Pagamento
+                else if (msgLower.includes('como é o pagamento') || msgLower.includes('vocês parcelam') || 
+                         msgLower.includes('aceita cartão') || msgLower.includes('posso pagar depois') || 
+                         msgLower.includes('formas de pagamento') || msgLower.includes('pagar tudo de uma vez') || 
+                         msgLower.includes('aceita boleto') || msgLower.includes('vocês aceitam pix')) {
+                    botResponse = 'Oferecemos várias formas de pagamento, incluindo parcelamento, mas os detalhes dependem do projeto. Para mais informações, preencha o formulário na seção Fale Conosco, e entraremos em contato!';
+                }
+                // Sobre Localização
+                else if (msgLower.includes('onde vocês estão') || msgLower.includes('vocês são de onde') || 
+                         msgLower.includes('qual o endereço') || msgLower.includes('vocês têm loja física') || 
+                         msgLower.includes('dá pra visitar vocês') || msgLower.includes('atendem presencialmente') || 
+                         msgLower.includes('vocês são de são paulo') || msgLower.includes('onde fica a empresa')) {
+                    botResponse = 'Atendemos principalmente de forma online, então você pode entrar em contato de qualquer lugar! Para mais detalhes, preencha o formulário na seção Fale Conosco, e te explicaremos como funciona.';
+                }
+                // Sobre Portfólio Específico
+                else if (msgLower.includes('site pra restaurante') || msgLower.includes('design pra loja') || 
+                         msgLower.includes('marketing pra clínica') || msgLower.includes('site que vocês fizeram') || 
+                         msgLower.includes('projeto de e-commerce') || msgLower.includes('algo pra escola') || 
+                         msgLower.includes('cases de sucesso') || msgLower.includes('projeto parecido com o meu')) {
+                    botResponse = 'Temos diversos projetos no nosso Portfólio que podem te inspirar! Dê uma olhada na seção Portfólio do site. Se precisar de algo mais específico, preencha o formulário na seção Fale Conosco, e podemos te enviar exemplos mais próximos do que você precisa.';
+                }
+                // Sobre Contratação
+                else if (msgLower.includes('como contrato') || msgLower.includes('quero contratar') || 
+                         msgLower.includes('como faço pra começar') || msgLower.includes('quero um site, o que faço') || 
+                         msgLower.includes('funciona a contratação') || msgLower.includes('preciso assinar contrato') || 
+                         msgLower.includes('fazer um projeto') || msgLower.includes('inicio um trabalho com vocês')) {
+                    botResponse = 'É bem simples! Preencha o formulário na seção Fale Conosco com os detalhes do seu projeto, e entraremos em contato para dar o próximo passo. Vamos criar algo incrível juntos! 😊';
+                }
+                // Resposta Padrão para Perguntas Não Relacionadas
+                else {
+                    botResponse = 'Desculpe, não posso ajudar com isso, pois sou o chatbot do Good Vibes e só respondo sobre nossos serviços, portfólio e contato. 😊 Quer falar com um representante pelo WhatsApp?';
+                    showWhatsAppButton = true;
+                }
+
+                addMessage('bot', botResponse, showWhatsAppButton);
+            }, 500); // Pequeno atraso para simular uma resposta natural
+        }
+
+        // Greeting Pop-up Logic
+        const greetingPopup = document.getElementById('greeting-popup');
+        let hasShownGreeting = false; // Flag para evitar que o pop-up reapareça na mesma sessão
+
+        function showGreetingPopup() {
+            if (!hasShownGreeting) {
+                console.log("Mostrando pop-up de saudação");
+                greetingPopup.style.display = 'block';
+                hasShownGreeting = true;
+            }
+        }
+
+        function hideGreetingPopup() {
+            console.log("Fechando pop-up de saudação");
+            greetingPopup.style.display = 'none';
+            hasShownGreeting = true; // Garante que o pop-up não reapareça
+        }
+
+        function openChatFromPopup() {
+            toggleChat();
+            hideGreetingPopup();
+        }
+
+        // Mostrar o pop-up 2 segundos após o carregamento da página
+        window.addEventListener('load', () => {
+            console.log("Página carregada, iniciando timer do pop-up de saudação");
+            setTimeout(showGreetingPopup, 2000); // 2 segundos após o carregamento
         });
     </script>
 </body>
