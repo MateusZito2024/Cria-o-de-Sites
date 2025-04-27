@@ -287,6 +287,147 @@
             color: #e879f9;
             background: rgba(255, 255, 255, 0.1);
         }
+
+        /* Estilos para o chat */
+        .chat-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #374151;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            height: 500px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .message {
+            max-width: 70%;
+            padding: 0.75rem;
+            border-radius: 0.75rem;
+            line-height: 1.5;
+        }
+
+        .bot-message {
+            background: #4b5563;
+            color: #e2e8f0;
+            align-self: flex-start;
+            border-bottom-left-radius: 0;
+        }
+
+        .user-message {
+            background: #a5b4fc;
+            color: #1f2937;
+            align-self: flex-end;
+            border-bottom-right-radius: 0;
+        }
+
+        .typing-indicator {
+            display: flex;
+            gap: 0.3rem;
+            align-self: flex-start;
+            padding: 0.75rem;
+        }
+
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            background: #a5b4fc;
+            border-radius: 50%;
+            animation: bounce 0.6s infinite alternate;
+        }
+
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-5px); }
+        }
+
+        .chat-input {
+            display: flex;
+            gap: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #4b5563;
+        }
+
+        .chat-input input, .chat-input textarea {
+            flex: 1;
+            padding: 0.75rem;
+            background: #4b5563;
+            color: #e2e8f0;
+            border: 1px solid #a5b4fc;
+            border-radius: 0.5rem;
+            outline: none;
+            resize: none;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .chat-input button {
+            background: #e879f9;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .chat-input button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(232, 121, 249, 0.5);
+        }
+
+        .success-message {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #374151;
+            border-radius: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            color: #e2e8f0;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .success-message h3 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #e879f9;
+            margin-bottom: 1rem;
+        }
+
+        .success-message p {
+            font-size: 1rem;
+            color: #a5b4fc;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
     </style>
 </head>
 <body class="text-gray-100">
@@ -334,23 +475,17 @@
             <h2 class="text-4xl font-bold text-center gradient-text mb-12">Nossos Serviços</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="service-item p-6 rounded-xl transition fade-in text-center">
-                    <svg class="service-icon mx-auto" viewBox="0 0 24 24">
-                        <path d="M12 2a10 10 0 00-7.35 16.83l1.41-1.41A8 8 0 1112 4v2zM2 12a10 10 0 0010 10c2.07 0 3.98-.62 5.59-1.68l-1.41-1.41A8 8 0 014 12H2zm10 8a8 8 0 01-8-8h2a6 6 0 006 6v2z"/>
-                    </svg>
+                    <img src="https://i.postimg.cc/wjGtqTVm/pngegg-1.png" alt="Ícone Marketing Digital" class="service-icon mx-auto">
                     <h3 class="text-2xl font-semibold gradient-text mb-4">Marketing Digital</h3>
                     <p class="text-gray-300">Campanhas estratégicas para engajar e converter seu público-alvo.</p>
                 </div>
                 <div class="service-item p-6 rounded-xl transition fade-in text-center" style="animation-delay: 0.2s;">
-                    <svg class="service-icon mx-auto" viewBox="0 0 24 24">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
-                    </svg>
+                    <img src="https://i.postimg.cc/YqgkG2MF/pngegg-2.png" alt="Ícone Desenvolvimento Web" class="service-icon mx-auto">
                     <h3 class="text-2xl font-semibold gradient-text mb-4">Desenvolvimento Web</h3>
                     <p class="text-gray-300">Sites dinâmicos e responsivos que refletem sua marca.</p>
                 </div>
                 <div class="service-item p-6 rounded-xl transition fade-in text-center" style="animation-delay: 0.4s;">
-                    <svg class="service-icon mx-auto" viewBox="0 0 24 24">
-                        <path d="M3 3h18v18H3V3zm16 16V5H5v14h14zM7 7h10v10H7V7zm2 2v6h6V9H9z"/>
-                    </svg>
+                    <img src="https://i.postimg.cc/63Gbj3HL/pngegg-3.png" alt="Ícone Design Gráfico" class="service-icon mx-auto">
                     <h3 class="text-2xl font-semibold gradient-text mb-4">Design Gráfico</h3>
                     <p class="text-gray-300">Visuais únicos que contam a história da sua marca.</p>
                 </div>
@@ -372,19 +507,19 @@
             <h2 class="text-4xl font-bold text-center gradient-text mb-12">Portfólio</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="portfolio-item relative overflow-hidden rounded-xl transition fade-in">
-                    <img src="https://via.placeholder.com/400x300?text=Projeto+1" alt="Projeto 1" class="w-full h-64 object-cover">
+                    <img src="https://i.postimg.cc/kGd1LsST/Prancheta-18.png" alt="Projeto 1 - Flow Digital" class="w-full h-64 object-cover">
                     <div class="overlay absolute inset-0 flex items-center justify-center">
                         <p class="text-white font-bold text-xl">Projeto 1</p>
                     </div>
                 </div>
                 <div class="portfolio-item relative overflow-hidden rounded-xl transition fade-in" style="animation-delay: 0.2s;">
-                    <img src="https://via.placeholder.com/400x300?text=Projeto+2" alt="Projeto 2" class="w-full h-64 object-cover">
+                    <img src="https://i.postimg.cc/D0ZJfk10/Prancheta-7.png" alt="Projeto 2 - Dra Mari Alves" class="w-full h-64 object-cover">
                     <div class="overlay absolute inset-0 flex items-center justify-center">
                         <p class="text-white font-bold text-xl">Projeto 2</p>
                     </div>
                 </div>
                 <div class="portfolio-item relative overflow-hidden rounded-xl transition fade-in" style="animation-delay: 0.4s;">
-                    <img src="https://via.placeholder.com/400x300?text=Projeto+3" alt="Projeto 3" class="w-full h-64 object-cover">
+                    <img src="https://i.postimg.cc/fLHyr21N/Prancheta-1.png" alt="Projeto 3 - Viraliza Tráfego" class="w-full h-64 object-cover">
                     <div class="overlay absolute inset-0 flex items-center justify-center">
                         <p class="text-white font-bold text-xl">Projeto 3</p>
                     </div>
@@ -393,16 +528,17 @@
         </div>
     </section>
 
-    <!-- Contact Section -->
+    <!-- Contact Section (Transformed into Chat) -->
     <section id="contact" class="py-20 gradient-bg section-animate">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center content-layer">
             <h2 class="text-4xl font-bold gradient-text mb-8">Fale Conosco</h2>
-            <p class="text-xl text-gray-200 max-w-3xl mx-auto mb-8 fade-in">Vamos criar algo incrível juntos! Entre em contato agora.</p>
-            <div class="max-w-md mx-auto">
-                <input type="text" placeholder="Nome" class="w-full p-4 mb-4 rounded-lg bg-gray-700 text-gray-200 border border-gray-600 focus:outline-none focus:border-indigo-400 transition service-item">
-                <input type="email" placeholder="E-mail" class="w-full p-4 mb-4 rounded-lg bg-gray-700 text-gray-200 border border-gray-600 focus:outline-none focus:border-indigo-400 transition service-item">
-                <textarea placeholder="Mensagem" class="w-full p-4 mb-4 rounded-lg bg-gray-700 text-gray-200 border border-gray-600 focus:outline-none focus:border-indigo-400 transition service-item h-32"></textarea>
-                <button class="bg-indigo-500 text-white font-semibold py-3 px-8 rounded-full service-item transition">Enviar</button>
+            <p class="text-xl text-gray-200 max-w-3xl mx-auto mb-8 fade-in">Vamos criar algo incrível juntos! Envie sua mensagem pelo chat abaixo.</p>
+            <div class="chat-container">
+                <div class="chat-messages" id="chatMessages"></div>
+                <div class="chat-input" id="chatInput">
+                    <input type="text" id="userInput" placeholder="Digite sua resposta..." onkeypress="handleKeyPress(event)">
+                    <button onclick="sendMessage()">Enviar</button>
+                </div>
             </div>
         </div>
     </section>
@@ -527,6 +663,280 @@
         // Reset timer on user activity
         ['mousemove', 'keydown', 'scroll', 'click'].forEach(event => {
             document.addEventListener(event, resetInactivityTimer);
+        });
+
+        // Chat Logic
+        const chatMessages = document.getElementById('chatMessages');
+        const userInput = document.getElementById('userInput');
+        let chatState = {
+            step: 1,
+            name: '',
+            email: '',
+            whatsapp: '',
+            message: ''
+        };
+        let isBotTyping = false;
+        let hasGreeted = false; // Flag to control greeting
+
+        // Clear localStorage on page load to reset the chat
+        window.onload = function() {
+            localStorage.removeItem('chatState');
+            chatState = {
+                step: 1,
+                name: '',
+                email: '',
+                whatsapp: '',
+                message: ''
+            };
+            hasGreeted = false; // Reset greeting flag on page load
+        };
+
+        // Load chat state from localStorage if available
+        function loadChatState() {
+            const savedState = localStorage.getItem('chatState');
+            if (savedState) {
+                chatState = JSON.parse(savedState);
+                restoreChat();
+            }
+        }
+
+        // Save chat state to localStorage
+        function saveChatState() {
+            localStorage.setItem('chatState', JSON.stringify(chatState));
+        }
+
+        // Restore chat conversation based on saved state
+        function restoreChat() {
+            chatMessages.innerHTML = '';
+            if (chatState.step >= 1) {
+                addBotMessage("Olá! Sou o assistente da Good Vibes. 😊 Qual é o seu nome ou como você gostaria de ser chamado?");
+                if (chatState.name) {
+                    addUserMessage(chatState.name);
+                }
+            }
+            if (chatState.step >= 2) {
+                addBotMessage(`Prazer em conhecê-lo, ${chatState.name}! Qual é o seu e-mail de contato?`);
+                if (chatState.email) {
+                    addUserMessage(chatState.email);
+                }
+            }
+            if (chatState.step >= 3) {
+                addBotMessage("Ótimo! Qual é o seu número de WhatsApp?");
+                if (chatState.whatsapp) {
+                    addUserMessage(chatState.whatsapp);
+                }
+            }
+            if (chatState.step >= 4) {
+                addBotMessage("Perfeito! Agora, qual é a mensagem que você gostaria de enviar?");
+                if (chatState.message) {
+                    addUserMessage(chatState.message);
+                }
+            }
+            if (chatState.step === 5) {
+                showSuccessMessage();
+            }
+            scrollToBottom();
+        }
+
+        // Add bot message to chat
+        function addBotMessage(message) {
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message', 'bot-message');
+            messageElement.textContent = message;
+            chatMessages.appendChild(messageElement);
+            scrollToBottom();
+        }
+
+        // Add user message to chat
+        function addUserMessage(message) {
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message', 'user-message');
+            messageElement.textContent = message;
+            chatMessages.appendChild(messageElement);
+            scrollToBottom();
+        }
+
+        // Show typing indicator
+        function showTypingIndicator() {
+            const typingElement = document.createElement('div');
+            typingElement.classList.add('typing-indicator');
+            typingElement.innerHTML = '<span></span><span></span><span></span>';
+            typingElement.id = 'typingIndicator';
+            chatMessages.appendChild(typingElement);
+            scrollToBottom();
+            isBotTyping = true;
+        }
+
+        // Remove typing indicator
+        function removeTypingIndicator() {
+            const typingElement = document.getElementById('typingIndicator');
+            if (typingElement) {
+                typingElement.remove();
+            }
+            isBotTyping = false;
+        }
+
+        // Scroll to the bottom of the chat
+        function scrollToBottom() {
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Validate email
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        // Validate phone number
+        function isValidPhoneNumber(phone) {
+            const phoneRegex = /^\+?[\d\s()-]{7,}$/;
+            return phoneRegex.test(phone);
+        }
+
+        // Trigger typing and greeting when contact section is in view
+        const contactSectionObserver = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !hasGreeted && chatState.step === 1 && !chatState.name) {
+                    showTypingIndicator();
+                    setTimeout(() => {
+                        removeTypingIndicator();
+                        addBotMessage("Olá! Sou o assistente da Good Vibes. 😊 Qual é o seu nome ou como você gostaria de ser chamado?");
+                        hasGreeted = true; // Prevent greeting from happening again in this session
+                        saveChatState();
+                    }, 3000);
+                }
+            });
+        }, { threshold: 0.3 });
+
+        // Handle user input and chat flow
+        function sendMessage() {
+            if (isBotTyping) return;
+
+            const userText = userInput.value.trim();
+            if (!userText) return;
+
+            if (chatState.step === 1) {
+                chatState.name = userText;
+                addUserMessage(userText);
+                chatState.step = 2;
+                showTypingIndicator();
+                setTimeout(() => {
+                    removeTypingIndicator();
+                    addBotMessage(`Prazer em conhecê-lo, ${chatState.name}! Qual é o seu e-mail de contato?`);
+                    saveChatState();
+                }, 3000);
+            } else if (chatState.step === 2) {
+                if (isValidEmail(userText)) {
+                    chatState.email = userText;
+                    addUserMessage(userText);
+                    chatState.step = 3;
+                    showTypingIndicator();
+                    setTimeout(() => {
+                        removeTypingIndicator();
+                        addBotMessage("Ótimo! Qual é o seu número de WhatsApp?");
+                        saveChatState();
+                    }, 3000);
+                } else {
+                    showTypingIndicator();
+                    setTimeout(() => {
+                        removeTypingIndicator();
+                        addBotMessage("Desculpe, isso não parece ser um e-mail válido. Por favor, insira um e-mail válido (exemplo: seuemail@dominio.com).");
+                    }, 3000);
+                }
+            } else if (chatState.step === 3) {
+                if (isValidPhoneNumber(userText)) {
+                    chatState.whatsapp = userText;
+                    addUserMessage(userText);
+                    chatState.step = 4;
+                    showTypingIndicator();
+                    setTimeout(() => {
+                        removeTypingIndicator();
+                        addBotMessage("Perfeito! Agora, qual é a mensagem que você gostaria de enviar?");
+                        userInput.placeholder = "Digite sua mensagem...";
+                        userInput.style.height = "80px";
+                        userInput.outerHTML = `<textarea id="userInput" placeholder="Digite sua mensagem..." onkeypress="handleKeyPress(event)"></textarea>`;
+                        saveChatState();
+                    }, 3000);
+                } else {
+                    showTypingIndicator();
+                    setTimeout(() => {
+                        removeTypingIndicator();
+                        addBotMessage("Desculpe, isso não parece ser um número de telefone válido. Por favor, insira um número de WhatsApp válido (exemplo: +5511999999999).");
+                    }, 3000);
+                }
+            } else if (chatState.step === 4) {
+                chatState.message = userText;
+                addUserMessage(userText);
+                chatState.step = 5;
+                sendToFormspree();
+            }
+
+            userInput.value = '';
+            saveChatState();
+        }
+
+        // Handle Enter key press
+        function handleKeyPress(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
+            }
+        }
+
+        // Send data to Formspree
+        function sendToFormspree() {
+            const formData = new FormData();
+            formData.append('name', chatState.name);
+            formData.append('email', chatState.email);
+            formData.append('whatsapp', chatState.whatsapp);
+            formData.append('message', chatState.message);
+
+            fetch('https://formspree.io/f/mgvolbyv', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    showSuccessMessage();
+                } else {
+                    addBotMessage("Desculpe, houve um erro ao enviar sua mensagem. Tente novamente mais tarde.");
+                }
+            })
+            .catch(error => {
+                addBotMessage("Desculpe, houve um erro ao enviar sua mensagem. Tente novamente mais tarde.");
+            });
+        }
+
+        // Show success message and reset chat
+        function showSuccessMessage() {
+            const chatContainer = document.querySelector('.chat-container');
+            chatContainer.innerHTML = `
+                <div class="success-message">
+                    <h3>Mensagem enviada com sucesso!</h3>
+                    <p>Em breve você receberá um retorno. Agradecemos pelo contato! 😊</p>
+                </div>
+            `;
+            // Reset chat state and localStorage
+            localStorage.removeItem('chatState');
+            chatState = {
+                step: 1,
+                name: '',
+                email: '',
+                whatsapp: '',
+                message: ''
+            };
+            hasGreeted = false; // Allow greeting again for the next interaction
+        }
+
+        // Load chat state on page load
+        loadChatState();
+
+        // Start observing the contact section after DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            contactSectionObserver.observe(document.querySelector('#contact'));
         });
     </script>
 </body>
