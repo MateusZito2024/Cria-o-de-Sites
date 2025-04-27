@@ -146,18 +146,6 @@
             50% { transform: translateY(-10px); }
         }
 
-        @keyframes slideCarousel {
-            0% { transform: translateX(0); }
-            20% { transform: translateX(0); }
-            25% { transform: translateX(-100%); }
-            45% { transform: translateX(-100%); }
-            50% { transform: translateX(-200%); }
-            70% { transform: translateX(-200%); }
-            75% { transform: translateX(-300%); }
-            95% { transform: translateX(-300%); }
-            100% { transform: translateX(0); }
-        }
-
         .fade-in {
             opacity: 1 !important;
             animation: fadeInUp 1s ease-out forwards;
@@ -204,52 +192,6 @@
             transform: scale(1.05);
         }
 
-        .project-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(165, 180, 252, 0.4), rgba(106, 13, 173, 0.4));
-            opacity: 0;
-            transition: opacity 0.4s ease;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 1rem;
-        }
-
-        .project-card:hover .project-overlay {
-            opacity: 1;
-        }
-
-        .project-overlay h3 {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #fff;
-            margin-bottom: 0.5rem;
-        }
-
-        .project-overlay p {
-            color: #e2e8f0;
-            font-size: 1rem;
-        }
-
-        .project-overlay a {
-            margin-top: 1rem;
-            background: #6a0dad;
-            color: white;
-            padding: 0.5rem 1.5rem;
-            border-radius: 0.5rem;
-            font-weight: bold;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .project-overlay a:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(106, 13, 173, 0.5);
-        }
-
         .testimonial-card {
             background: #374151;
             border-radius: 1rem;
@@ -290,13 +232,13 @@
 
         .carousel-wrapper {
             display: flex;
-            width: 400%;
+            width: 300%; /* 3 slides, cada um ocupando 100% */
             height: 100%;
-            animation: slideCarousel 16s infinite;
+            transition: transform 0.5s ease-in-out; /* Transição suave */
         }
 
         .carousel-slide {
-            width: 25%;
+            width: 33.33%; /* 100% / 3 slides */
             height: 100%;
         }
 
@@ -352,18 +294,15 @@
                 Na Good Vibes, cada trabalho é feito com propósito, estratégia e criatividade. Aqui você encontra uma seleção de sites e peças gráficas desenvolvidas com foco em impacto visual, performance e identidade de marca.
             </p>
             <div class="carousel-container">
-                <div class="carousel-wrapper">
+                <div class="carousel-wrapper" id="carouselWrapper">
                     <div class="carousel-slide">
-                        <img src="https://via.placeholder.com/800x400?text=Projeto+1" alt="Projeto 1">
+                        <img src="https://i.postimg.cc/Wz6YJV4r/Captura-de-tela-2025-04-12-152850.png" alt="Projeto 1 - Interface de site com design moderno">
                     </div>
                     <div class="carousel-slide">
-                        <img src="https://via.placeholder.com/800x400?text=Projeto+2" alt="Projeto 2">
+                        <img src="https://i.postimg.cc/BbgNnChB/Captura-de-tela-2025-04-12-152929.png" alt="Projeto 2 - Layout de site com foco em usabilidade">
                     </div>
                     <div class="carousel-slide">
-                        <img src="https://via.placeholder.com/800x400?text=Projeto+3" alt="Projeto 3">
-                    </div>
-                    <div class="carousel-slide">
-                        <img src="https://via.placeholder.com/800x400?text=Projeto+4" alt="Projeto 4">
+                        <img src="https://i.postimg.cc/y8PJpbDP/Captura-de-tela-2025-04-26-021445.png" alt="Projeto 3 - Design de site com paleta de cores vibrantes">
                     </div>
                 </div>
             </div>
@@ -385,28 +324,13 @@
             <h3 class="text-2xl font-semibold text-left gradient-text mb-8 fade-in" style="animation-delay: 0.6s;">Exemplos:</h3>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="project-card slide-in-left">
-                    <img src="https://via.placeholder.com/400x300?text=Ark+Tech" alt="Ark Tech" class="w-full h-80 object-cover">
-                    <div class="project-overlay">
-                        <h3>Ark Tech</h3>
-                        <p>Site institucional bilíngue com foco em tecnologia e inovação.</p>
-                        <a href="#" target="_blank">Ver Projeto</a>
-                    </div>
+                    <img src="https://i.postimg.cc/90tNK7ss/Captura-de-tela-2025-04-27-202213.png" alt="Projeto 1 - Interface de site com design moderno" class="w-full h-80 object-cover">
                 </div>
                 <div class="project-card slide-in-left" style="animation-delay: 0.2s;">
-                    <img src="https://via.placeholder.com/400x300?text=Clínica+Essencial" alt="Clínica Essencial" class="w-full h-80 object-cover">
-                    <div class="project-overlay">
-                        <h3>Clínica Essencial</h3>
-                        <p>Landing page com identidade acolhedora para saúde integrativa.</p>
-                        <a href="#" target="_blank">Ver Projeto</a>
-                    </div>
+                    <img src="https://i.postimg.cc/vZpL7mNn/Captura-de-tela-2025-04-27-201822.png" alt="Projeto 2 - Layout de site com foco em usabilidade" class="w-full h-80 object-cover">
                 </div>
                 <div class="project-card slide-in-right" style="animation-delay: 0.4s;">
-                    <img src="https://via.placeholder.com/800x400?text=Viagem+Sob+Medida" alt="Viagem Sob Medida" class="w-full h-80 object-cover">
-                    <div class="project-overlay">
-                        <h3>Viagem Sob Medida</h3>
-                        <p>Plataforma com calendário, produtos e área de cursos.</p>
-                        <a href="#" target="_blank">Ver Projeto</a>
-                    </div>
+                    <img src="https://i.postimg.cc/MTzBtfbn/Captura-de-tela-2025-04-27-201744.png" alt="Projeto 3 - Design de site com paleta de cores vibrantes" class="w-full h-80 object-cover">
                 </div>
             </div>
         </div>
@@ -426,28 +350,13 @@
             <h3 class="text-2xl font-semibold text-left gradient-text mb-8 fade-in" style="animation-delay: 1s;">Exemplos:</h3>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="project-card slide-in-left">
-                    <img src="https://via.placeholder.com/400x300?text=Loja+Materiais" alt="Loja de Materiais" class="w-full h-80 object-cover">
-                    <div class="project-overlay">
-                        <h3>Loja de Materiais de Construção</h3>
-                        <p>20 artes mensais com visual profissional.</p>
-                        <a href="#" target="_blank">Ver Projeto</a>
-                    </div>
+                    <img src="https://i.postimg.cc/vHV3qB1G/Carrossel-1-1.png" alt="Projeto 1 - Carrossel para redes sociais" class="w-full h-80 object-cover">
                 </div>
                 <div class="project-card slide-in-left" style="animation-delay: 0.2s;">
-                    <img src="https://via.placeholder.com/400x300?text=Clínica+Integrada" alt="Clínica Integrada" class="w-full h-80 object-cover">
-                    <div class="project-overlay">
-                        <h3>Clínica Integrada</h3>
-                        <p>Templates em Canva para conteúdo de saúde e bem-estar.</p>
-                        <a href="#" target="_blank">Ver Projeto</a>
-                    </div>
+                    <img src="https://i.postimg.cc/YS51mN3g/Prancheta-1-1.png" alt="Projeto 2 - Design gráfico com layout criativo" class="w-full h-80 object-cover">
                 </div>
                 <div class="project-card slide-in-right" style="animation-delay: 0.4s;">
-                    <img src="https://via.placeholder.com/400x300?text=Canal+Financeiro" alt="Canal Financeiro" class="w-full h-80 object-cover">
-                    <div class="project-overlay">
-                        <h3>Canal Financeiro Portugal</h3>
-                        <p>Thumbnails modernas e alinhadas ao segmento.</p>
-                        <a href="#" target="_blank">Ver Projeto</a>
-                    </div>
+                    <img src="https://i.postimg.cc/C1wxtzMX/Tr-fego-Pago-Arte-Est-tica.png" alt="Projeto 3 - Arte estética para tráfego pago" class="w-full h-80 object-cover">
                 </div>
             </div>
         </div>
@@ -532,6 +441,27 @@
             });
         }, { threshold: 0.1 });
         document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right').forEach(el => observer.observe(el));
+
+        // Carousel logic using JavaScript
+        const carouselWrapper = document.getElementById('carouselWrapper');
+        const totalSlides = document.querySelectorAll('.carousel-slide').length; // 3 slides
+        let currentSlide = 0;
+
+        function showSlide(index) {
+            // Ajusta a posição do carousel-wrapper para mostrar o slide atual
+            carouselWrapper.style.transform = `translateX(-${index * (100 / totalSlides)}%)`;
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides; // Vai para o próximo slide, volta ao 0 se chegar ao fim
+            showSlide(currentSlide);
+        }
+
+        // Inicia o carrossel automaticamente
+        setInterval(nextSlide, 4000); // Muda de slide a cada 4 segundos
+
+        // Mostra o primeiro slide ao carregar a página
+        showSlide(currentSlide);
     </script>
 </body>
 </html>
