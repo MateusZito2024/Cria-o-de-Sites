@@ -367,7 +367,7 @@
             border-top: 1px solid #4b5563;
         }
 
-        .chat-input input, .chat-input textarea {
+        .chat-input textarea {
             flex: 1;
             padding: 0.75rem;
             background: #4b5563;
@@ -394,34 +394,28 @@
             box-shadow: 0 5px 15px rgba(232, 121, 249, 0.5);
         }
 
-        .success-message {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: #374151;
-            border-radius: 1rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 2rem;
-            color: #e2e8f0;
-            animation: fadeIn 0.5s ease-in-out;
-        }
-
-        .success-message h3 {
+        /* Estilo para o texto cintilante */
+        .sparkle-text {
             font-size: 1.5rem;
             font-weight: bold;
-            color: #e879f9;
-            margin-bottom: 1rem;
+            text-align: center;
+            color: #e2e8f0;
+            background: linear-gradient(90deg, #a5b4fc, #e879f9, #a5b4fc);
+            background-size: 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: sparkle 2s infinite, fadeIn 0.5s ease-in-out;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
         }
 
-        .success-message p {
-            font-size: 1rem;
-            color: #a5b4fc;
+        @keyframes sparkle {
+            0% { background-position: 0%; }
+            50% { background-position: 200%; }
+            100% { background-position: 0%; }
         }
 
         @keyframes fadeIn {
@@ -536,7 +530,7 @@
             <div class="chat-container">
                 <div class="chat-messages" id="chatMessages"></div>
                 <div class="chat-input" id="chatInput">
-                    <input type="text" id="userInput" placeholder="Digite sua resposta..." onkeypress="handleKeyPress(event)">
+                    <textarea id="userInput" placeholder="Digite sua resposta..." rows="1" onkeypress="handleKeyPress(event)"></textarea>
                     <button onclick="sendMessage()">Enviar</button>
                 </div>
             </div>
@@ -666,8 +660,8 @@
         });
 
         // Chat Logic
-        const chatMessages = document.getElementById('chatMessages');
-        const userInput = document.getElementById('userInput');
+        let chatMessages = document.getElementById('chatMessages');
+        let userInput = document.getElementById('userInput');
         let chatState = {
             step: 1,
             name: '',
@@ -677,6 +671,73 @@
         };
         let isBotTyping = false;
         let hasGreeted = false; // Flag to control greeting
+
+        // List of common greetings
+        const commonGreetings = [
+            'oi', 'olá', 'ola', 'bom dia', 'boa tarde', 'boa noite',
+            'tudo bem', 'tudo bom', 'como vai', 'e aí', 'e ai', 'eai',
+            'oiê', 'oie', 'oiee', 'oláá', 'olaa', 'oláa', 'tô de boa',
+            'tô bem', 'tô de boa?', 'tô bem?', 'como você está',
+            'como você ta', 'como você tá', 'e você', 'e tu', 'e voce',
+            'opa' // Added "opa" as a common greeting
+        ];
+
+        // List of alternative greetings for the bot to use
+        const botGreetings = [
+            'Que bom te ver! 😊',
+            'Seja bem-vindo! 😊',
+            'É um prazer te conhecer! 😊',
+            'Fico feliz em te ajudar hoje! 😊'
+        ];
+
+        // Function to check if the user's message is a greeting
+        function isGreeting(message) {
+            const normalizedMessage = message.toLowerCase().trim();
+            return commonGreetings.some(greeting => 
+                normalizedMessage === greeting || 
+                normalizedMessage.startsWith(greeting + ' ') || 
+                normalizedMessage.endsWith(' ' + greeting) ||
+                normalizedMessage.includes(' ' + greeting + ' ')
+            );
+        }
+
+        // Function to check if the user's message looks like a valid name
+        function isValidName(name) {
+            const normalizedName = name.trim();
+            // A name should generally contain letters and optionally spaces (for compound names)
+            // It should not contain punctuation like commas, question marks, or exclamation points
+            // It should not be too long (e.g., more than 50 characters is suspicious)
+            // It should not contain numbers or special characters (except spaces and hyphens)
+            const nameRegex = /^[a-zA-ZÀ-ÿ\s-]+$/; // Allows letters, spaces, and hyphens (supports accented characters like in Portuguese)
+            return (
+                nameRegex.test(normalizedName) && // Contains only allowed characters
+                normalizedName.length <= 50 && // Not too long
+                !normalizedName.includes(',') && // No commas
+                !normalizedName.includes('?') && // No question marks
+                !normalizedName.includes('!') // No exclamation points
+            );
+        }
+
+        // Function to select a bot greeting that doesn't match the user's greeting
+        function selectBotGreeting(userGreeting) {
+            const normalizedUserGreeting = userGreeting.toLowerCase().trim();
+            let availableGreetings = botGreetings;
+            
+            // If the user's greeting contains a common greeting, avoid using a bot greeting that starts with it
+            const userGreetingWords = normalizedUserGreeting.split(' ');
+            availableGreetings = botGreetings.filter(greeting => {
+                const greetingWords = greeting.toLowerCase().split(' ');
+                return !userGreetingWords.some(word => greetingWords.includes(word));
+            });
+
+            // If all greetings are filtered out (unlikely), fall back to the full list
+            if (availableGreetings.length === 0) {
+                availableGreetings = botGreetings;
+            }
+
+            // Select a random greeting from the available ones
+            return availableGreetings[Math.floor(Math.random() * availableGreetings.length)];
+        }
 
         // Clear localStorage and reset chat on page load
         window.onload = function() {
@@ -690,6 +751,17 @@
             };
             hasGreeted = false; // Reset greeting flag on page load
             chatMessages.innerHTML = ''; // Clear all messages from the DOM
+            // Ensure chat container is in its initial state
+            const chatContainer = document.querySelector('.chat-container');
+            chatContainer.innerHTML = `
+                <div class="chat-messages" id="chatMessages"></div>
+                <div class="chat-input" id="chatInput">
+                    <textarea id="userInput" placeholder="Digite sua resposta..." rows="1" onkeypress="handleKeyPress(event)"></textarea>
+                    <button onclick="sendMessage()">Enviar</button>
+                </div>
+            `;
+            chatMessages = document.getElementById('chatMessages'); // Reassign chatMessages after DOM update
+            userInput = document.getElementById('userInput'); // Reassign userInput after DOM update
         };
 
         // Load chat state from localStorage if available
@@ -798,6 +870,7 @@
         const contactSectionObserver = new IntersectionObserver(entries => {
             entries.forEach(entry => {
                 if (entry.isIntersecting && !hasGreeted && chatState.step === 1 && !chatState.name) {
+                    console.log("Contact section is visible, triggering greeting...");
                     showTypingIndicator();
                     setTimeout(() => {
                         removeTypingIndicator();
@@ -817,15 +890,33 @@
             if (!userText) return;
 
             if (chatState.step === 1) {
-                chatState.name = userText;
                 addUserMessage(userText);
-                chatState.step = 2;
-                showTypingIndicator();
-                setTimeout(() => {
-                    removeTypingIndicator();
-                    addBotMessage(`Prazer em conhecê-lo, ${chatState.name}! Qual é o seu e-mail de contato?`);
-                    saveChatState();
-                }, 3000);
+                if (isGreeting(userText)) {
+                    // If the user responds with a greeting, respond with a different greeting and ask for the name again
+                    const botGreeting = selectBotGreeting(userText);
+                    showTypingIndicator();
+                    setTimeout(() => {
+                        removeTypingIndicator();
+                        addBotMessage(`${botGreeting} Qual é o seu nome ou como você gostaria de ser chamado?`);
+                    }, 3000);
+                } else if (isValidName(userText)) {
+                    // If the user provides a valid name, proceed to the next step
+                    chatState.name = userText;
+                    chatState.step = 2;
+                    showTypingIndicator();
+                    setTimeout(() => {
+                        removeTypingIndicator();
+                        addBotMessage(`Prazer em conhecê-lo, ${chatState.name}! Qual é o seu e-mail de contato?`);
+                        saveChatState();
+                    }, 3000);
+                } else {
+                    // If the input doesn't seem like a name, ask for the name again
+                    showTypingIndicator();
+                    setTimeout(() => {
+                        removeTypingIndicator();
+                        addBotMessage("Desculpe, não sei se esse é o seu nome. 😅 Pode me dizer seu nome ou como você gostaria de ser chamado?");
+                    }, 3000);
+                }
             } else if (chatState.step === 2) {
                 if (isValidEmail(userText)) {
                     chatState.email = userText;
@@ -854,8 +945,7 @@
                         removeTypingIndicator();
                         addBotMessage("Perfeito! Agora, qual é a mensagem que você gostaria de enviar?");
                         userInput.placeholder = "Digite sua mensagem...";
-                        userInput.style.height = "80px";
-                        userInput.outerHTML = `<textarea id="userInput" placeholder="Digite sua mensagem..." onkeypress="handleKeyPress(event)"></textarea>`;
+                        userInput.rows = 3; // Adjust textarea height for message input
                         saveChatState();
                     }, 3000);
                 } else {
@@ -901,12 +991,15 @@
             })
             .then(response => {
                 if (response.ok) {
+                    console.log("Formspree request successful:", response);
                     showSuccessMessage();
                 } else {
+                    console.error("Formspree request failed:", response.status, response.statusText);
                     addBotMessage("Desculpe, houve um erro ao enviar sua mensagem. Tente novamente mais tarde.");
                 }
             })
             .catch(error => {
+                console.error("Formspree request error:", error);
                 addBotMessage("Desculpe, houve um erro ao enviar sua mensagem. Tente novamente mais tarde.");
             });
         }
@@ -917,15 +1010,11 @@
             chatMessages.innerHTML = '';
             const chatContainer = document.querySelector('.chat-container');
             chatContainer.innerHTML = `
-                <div class="success-message">
-                    <h3>Mensagem enviada com sucesso!</h3>
-                    <p>Em breve você receberá um retorno. Agradecemos pelo contato! 😊</p>
-                </div>
-                <div class="chat-input" id="chatInput">
-                    <input type="text" id="userInput" placeholder="Digite sua resposta..." onkeypress="handleKeyPress(event)">
-                    <button onclick="sendMessage()">Enviar</button>
+                <div class="chat-messages" id="chatMessages">
+                    <div class="sparkle-text">Mensagem Enviada! ✨</div>
                 </div>
             `;
+            chatMessages = document.getElementById('chatMessages'); // Reassign chatMessages after DOM update
             // Reset chat state and localStorage
             localStorage.removeItem('chatState');
             chatState = {
@@ -935,7 +1024,7 @@
                 whatsapp: '',
                 message: ''
             };
-            hasGreeted = false; // Allow greeting again for the next interaction
+            // Note: Do NOT reset hasGreeted here to prevent greeting again in the same session
         }
 
         // Load chat state on page load
@@ -943,7 +1032,13 @@
 
         // Start observing the contact section after DOM is loaded
         document.addEventListener('DOMContentLoaded', () => {
-            contactSectionObserver.observe(document.querySelector('#contact'));
+            const contactSection = document.querySelector('#contact');
+            if (contactSection) {
+                contactSectionObserver.observe(contactSection);
+                console.log("IntersectionObserver started for contact section.");
+            } else {
+                console.error("Contact section not found!");
+            }
         });
     </script>
 </body>
