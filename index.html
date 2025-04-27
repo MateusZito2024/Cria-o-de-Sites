@@ -671,6 +671,8 @@
         };
         let isBotTyping = false;
         let hasGreeted = false; // Flag to control greeting
+        let isCorrecting = false; // Flag to track if the user is correcting a field
+        let fieldToCorrect = null; // Stores which field (name, email, whatsapp) is being corrected
 
         // List of common greetings
         const commonGreetings = [
@@ -679,7 +681,7 @@
             'oiê', 'oie', 'oiee', 'oláá', 'olaa', 'oláa', 'tô de boa',
             'tô bem', 'tô de boa?', 'tô bem?', 'como você está',
             'como você ta', 'como você tá', 'e você', 'e tu', 'e voce',
-            'opa' // Added "opa" as a common greeting
+            'opa'
         ];
 
         // List of alternative greetings for the bot to use
@@ -689,6 +691,18 @@
             'É um prazer te conhecer! 😊',
             'Fico feliz em te ajudar hoje! 😊'
         ];
+
+        // Keywords and patterns to detect correction requests
+        const correctionKeywords = [
+            'errei', 'ops', 'opa', 'eita', 'está errado', 'esta errado',
+            'está errada', 'esta errada', 'corrigir', 'alterar', 'trocar'
+        ];
+
+        const fieldKeywords = {
+            name: ['nome', 'meu nome'],
+            email: ['email', 'e-mail', 'mail'],
+            whatsapp: ['whatsapp', 'whats', 'telefone', 'número', 'numero']
+        };
 
         // Function to check if the user's message is a greeting
         function isGreeting(message) {
@@ -704,17 +718,13 @@
         // Function to check if the user's message looks like a valid name
         function isValidName(name) {
             const normalizedName = name.trim();
-            // A name should generally contain letters and optionally spaces (for compound names)
-            // It should not contain punctuation like commas, question marks, or exclamation points
-            // It should not be too long (e.g., more than 50 characters is suspicious)
-            // It should not contain numbers or special characters (except spaces and hyphens)
-            const nameRegex = /^[a-zA-ZÀ-ÿ\s-]+$/; // Allows letters, spaces, and hyphens (supports accented characters like in Portuguese)
+            const nameRegex = /^[a-zA-ZÀ-ÿ\s-]+$/;
             return (
-                nameRegex.test(normalizedName) && // Contains only allowed characters
-                normalizedName.length <= 50 && // Not too long
-                !normalizedName.includes(',') && // No commas
-                !normalizedName.includes('?') && // No question marks
-                !normalizedName.includes('!') // No exclamation points
+                nameRegex.test(normalizedName) &&
+                normalizedName.length <= 50 &&
+                !normalizedName.includes(',') &&
+                !normalizedName.includes('?') &&
+                !normalizedName.includes('!')
             );
         }
 
@@ -722,21 +732,77 @@
         function selectBotGreeting(userGreeting) {
             const normalizedUserGreeting = userGreeting.toLowerCase().trim();
             let availableGreetings = botGreetings;
-            
-            // If the user's greeting contains a common greeting, avoid using a bot greeting that starts with it
             const userGreetingWords = normalizedUserGreeting.split(' ');
             availableGreetings = botGreetings.filter(greeting => {
                 const greetingWords = greeting.toLowerCase().split(' ');
                 return !userGreetingWords.some(word => greetingWords.includes(word));
             });
-
-            // If all greetings are filtered out (unlikely), fall back to the full list
             if (availableGreetings.length === 0) {
                 availableGreetings = botGreetings;
             }
-
-            // Select a random greeting from the available ones
             return availableGreetings[Math.floor(Math.random() * availableGreetings.length)];
+        }
+
+        // Function to detect if the user wants to correct a field
+        function detectCorrectionRequest(message) {
+            const normalizedMessage = message.toLowerCase().trim();
+            const isCorrection = correctionKeywords.some(keyword => 
+                normalizedMessage.includes(keyword)
+            );
+
+            if (!isCorrection) return null;
+
+            // Check which field the user wants to correct
+            for (const [field, keywords] of Object.entries(fieldKeywords)) {
+                if (keywords.some(keyword => normalizedMessage.includes(keyword))) {
+                    return field;
+                }
+            }
+
+            return null; // No specific field identified
+        }
+
+        // Function to ask for the corrected data
+        function askForCorrectedData(field) {
+            let question;
+            switch (field) {
+                case 'name':
+                    question = "Qual seria o nome correto?";
+                    break;
+                case 'email':
+                    question = "Qual seria o e-mail correto?";
+                    break;
+                case 'whatsapp':
+                    question = "Qual seria o número de WhatsApp correto?";
+                    break;
+                default:
+                    question = "Desculpe, não entendi qual dado você quer corrigir. Pode especificar?";
+            }
+            showTypingIndicator();
+            setTimeout(() => {
+                removeTypingIndicator();
+                addBotMessage(question);
+            }, 2000);
+        }
+
+        // Function to continue the flow from the current step
+        function continueFlow() {
+            showTypingIndicator();
+            setTimeout(() => {
+                removeTypingIndicator();
+                if (chatState.step === 1) {
+                    addBotMessage("Olá! Sou o assistente da Good Vibes. 😊 Qual é o seu nome ou como você gostaria de ser chamado?");
+                } else if (chatState.step === 2) {
+                    addBotMessage(`Prazer em conhecê-lo, ${chatState.name}! Qual é o seu e-mail de contato?`);
+                } else if (chatState.step === 3) {
+                    addBotMessage("Ótimo! Qual é o seu número de WhatsApp?");
+                } else if (chatState.step === 4) {
+                    addBotMessage("Perfeito! Agora, qual é a mensagem que você gostaria de enviar?");
+                    userInput.placeholder = "Digite sua mensagem...";
+                    userInput.rows = 3;
+                }
+                saveChatState();
+            }, 2000);
         }
 
         // Clear localStorage and reset chat on page load
@@ -749,9 +815,8 @@
                 whatsapp: '',
                 message: ''
             };
-            hasGreeted = false; // Reset greeting flag on page load
-            chatMessages.innerHTML = ''; // Clear all messages from the DOM
-            // Ensure chat container is in its initial state
+            hasGreeted = false;
+            chatMessages.innerHTML = '';
             const chatContainer = document.querySelector('.chat-container');
             chatContainer.innerHTML = `
                 <div class="chat-messages" id="chatMessages"></div>
@@ -760,8 +825,8 @@
                     <button onclick="sendMessage()">Enviar</button>
                 </div>
             `;
-            chatMessages = document.getElementById('chatMessages'); // Reassign chatMessages after DOM update
-            userInput = document.getElementById('userInput'); // Reassign userInput after DOM update
+            chatMessages = document.getElementById('chatMessages');
+            userInput = document.getElementById('userInput');
         };
 
         // Load chat state from localStorage if available
@@ -875,7 +940,7 @@
                     setTimeout(() => {
                         removeTypingIndicator();
                         addBotMessage("Olá! Sou o assistente da Good Vibes. 😊 Qual é o seu nome ou como você gostaria de ser chamado?");
-                        hasGreeted = true; // Prevent greeting from happening again in this session
+                        hasGreeted = true;
                         saveChatState();
                     }, 3000);
                 }
@@ -889,10 +954,72 @@
             const userText = userInput.value.trim();
             if (!userText) return;
 
+            // Check if the user wants to correct a previous input
+            const correctionField = detectCorrectionRequest(userText);
+            if (correctionField && chatState.step < 5) {
+                addUserMessage(userText);
+                fieldToCorrect = correctionField;
+                isCorrecting = true;
+                askForCorrectedData(correctionField);
+                userInput.value = '';
+                return;
+            }
+
+            // If the user is correcting a field, handle the correction
+            if (isCorrecting) {
+                addUserMessage(userText);
+                let isValid = true;
+                let errorMessage = '';
+
+                // Validate the corrected input
+                if (fieldToCorrect === 'name') {
+                    if (isValidName(userText)) {
+                        chatState.name = userText;
+                    } else {
+                        isValid = false;
+                        errorMessage = "Desculpe, não sei se esse é o seu nome. 😅 Pode me dizer um nome válido?";
+                    }
+                } else if (fieldToCorrect === 'email') {
+                    if (isValidEmail(userText)) {
+                        chatState.email = userText;
+                    } else {
+                        isValid = false;
+                        errorMessage = "Desculpe, isso não parece ser um e-mail válido. Por favor, insira um e-mail válido (exemplo: seuemail@dominio.com).";
+                    }
+                } else if (fieldToCorrect === 'whatsapp') {
+                    if (isValidPhoneNumber(userText)) {
+                        chatState.whatsapp = userText;
+                    } else {
+                        isValid = false;
+                        errorMessage = "Desculpe, isso não parece ser um número de telefone válido. Por favor, insira um número de WhatsApp válido (exemplo: +5511999999999).";
+                    }
+                }
+
+                if (isValid) {
+                    showTypingIndicator();
+                    setTimeout(() => {
+                        removeTypingIndicator();
+                        addBotMessage("Dado corrigido com sucesso! 😊");
+                        isCorrecting = false;
+                        fieldToCorrect = null;
+                        continueFlow();
+                    }, 2000);
+                } else {
+                    showTypingIndicator();
+                    setTimeout(() => {
+                        removeTypingIndicator();
+                        addBotMessage(errorMessage);
+                    }, 2000);
+                }
+                userInput.value = '';
+                saveChatState();
+                return;
+            }
+
+            // Normal chat flow
             if (chatState.step === 1) {
                 addUserMessage(userText);
                 if (isGreeting(userText)) {
-                    // If the user responds with a greeting, respond with a different greeting and ask for the name again
                     const botGreeting = selectBotGreeting(userText);
                     showTypingIndicator();
                     setTimeout(() => {
@@ -900,7 +1027,6 @@
                         addBotMessage(`${botGreeting} Qual é o seu nome ou como você gostaria de ser chamado?`);
                     }, 3000);
                 } else if (isValidName(userText)) {
-                    // If the user provides a valid name, proceed to the next step
                     chatState.name = userText;
                     chatState.step = 2;
                     showTypingIndicator();
@@ -910,7 +1036,6 @@
                         saveChatState();
                     }, 3000);
                 } else {
-                    // If the input doesn't seem like a name, ask for the name again
                     showTypingIndicator();
                     setTimeout(() => {
                         removeTypingIndicator();
@@ -945,7 +1070,7 @@
                         removeTypingIndicator();
                         addBotMessage("Perfeito! Agora, qual é a mensagem que você gostaria de enviar?");
                         userInput.placeholder = "Digite sua mensagem...";
-                        userInput.rows = 3; // Adjust textarea height for message input
+                        userInput.rows = 3;
                         saveChatState();
                     }, 3000);
                 } else {
@@ -1006,7 +1131,6 @@
 
         // Show success message and reset chat
         function showSuccessMessage() {
-            // Clear all messages from the DOM
             chatMessages.innerHTML = '';
             const chatContainer = document.querySelector('.chat-container');
             chatContainer.innerHTML = `
@@ -1014,8 +1138,7 @@
                     <div class="sparkle-text">Mensagem Enviada! ✨</div>
                 </div>
             `;
-            chatMessages = document.getElementById('chatMessages'); // Reassign chatMessages after DOM update
-            // Reset chat state and localStorage
+            chatMessages = document.getElementById('chatMessages');
             localStorage.removeItem('chatState');
             chatState = {
                 step: 1,
@@ -1024,7 +1147,6 @@
                 whatsapp: '',
                 message: ''
             };
-            // Note: Do NOT reset hasGreeted here to prevent greeting again in the same session
         }
 
         // Load chat state on page load
