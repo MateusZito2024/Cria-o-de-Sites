@@ -678,7 +678,7 @@
         let isBotTyping = false;
         let hasGreeted = false; // Flag to control greeting
 
-        // Clear localStorage on page load to reset the chat
+        // Clear localStorage and reset chat on page load
         window.onload = function() {
             localStorage.removeItem('chatState');
             chatState = {
@@ -689,6 +689,7 @@
                 message: ''
             };
             hasGreeted = false; // Reset greeting flag on page load
+            chatMessages.innerHTML = ''; // Clear all messages from the DOM
         };
 
         // Load chat state from localStorage if available
@@ -912,11 +913,17 @@
 
         // Show success message and reset chat
         function showSuccessMessage() {
+            // Clear all messages from the DOM
+            chatMessages.innerHTML = '';
             const chatContainer = document.querySelector('.chat-container');
             chatContainer.innerHTML = `
                 <div class="success-message">
                     <h3>Mensagem enviada com sucesso!</h3>
                     <p>Em breve você receberá um retorno. Agradecemos pelo contato! 😊</p>
+                </div>
+                <div class="chat-input" id="chatInput">
+                    <input type="text" id="userInput" placeholder="Digite sua resposta..." onkeypress="handleKeyPress(event)">
+                    <button onclick="sendMessage()">Enviar</button>
                 </div>
             `;
             // Reset chat state and localStorage
