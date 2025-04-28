@@ -365,7 +365,6 @@
 
         .chat-input {
             display: flex;
-            flex-direction: column;
             gap: 1rem;
             padding-top: 1rem;
             border-top: 1px solid #4b5563;
@@ -381,38 +380,6 @@
             outline: none;
             resize: none;
             font-family: 'Poppins', sans-serif;
-        }
-
-        .chat-input .input-actions {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .chat-input .file-upload {
-            display: none; /* Oculta por padrão */
-            align-items: center;
-        }
-
-        .chat-input .file-upload.visible {
-            display: flex; /* Exibe quando necessário */
-        }
-
-        .chat-input label {
-            display: flex;
-            align-items: center;
-            background: #4b5563;
-            color: #e2e8f0;
-            font-weight: 600;
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.5rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .chat-input label:hover {
-            background: #6b7280;
-            transform: translateY(-2px);
         }
 
         .chat-input button {
@@ -567,16 +534,7 @@
                 <div class="chat-messages" id="chatMessages"></div>
                 <div class="chat-input" id="chatInput">
                     <textarea id="userInput" placeholder="Digite sua resposta..." rows="1" onkeypress="handleKeyPress(event)"></textarea>
-                    <div class="input-actions">
-                        <div class="file-upload">
-                            <label for="fileInput" class="cursor-pointer">
-                                <svg class="inline-block w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 002.828 2.828l6.586-6.586a4 4 0 00-5.656-5.656L5.757 10.757a6 6 0 008.486 8.486L21 12"></path></svg>
-                                Anexar Arquivo
-                            </label>
-                            <input type="file" id="fileInput" accept=".pdf,.jpg,.jpeg,.png" class="hidden" onchange="handleFileSelect(event)">
-                        </div>
-                        <button onclick="sendMessage()">Enviar</button>
-                    </div>
+                    <button onclick="sendMessage()">Enviar</button>
                 </div>
             </div>
         </div>
@@ -704,17 +662,12 @@
         // Chat Logic
         let chatMessages = document.getElementById('chatMessages');
         let userInput = document.getElementById('userInput');
-        let fileInput = document.getElementById('fileInput');
-        let fileUpload = document.querySelector('.file-upload');
         let chatState = {
             step: 1,
             name: '',
             email: '',
             whatsapp: '',
-            message: '',
-            file: null,
-            wantsFile: null,
-            confirmingFile: false
+            message: ''
         };
         let isBotTyping = false;
         let hasGreeted = false;
@@ -748,9 +701,6 @@
             whatsapp: ['whatsapp', 'whats', 'telefone', 'número', 'numero']
         };
 
-        const affirmativeResponses = ['sim', 's', 'ok', 'certo', 'claro', 'pode ser', 'tá bom', 'ta bom', 'tá', 'ta'];
-        const negativeResponses = ['não', 'nao', 'n', 'de jeito nenhum', 'nada disso', 'nem', 'nunca'];
-
         function isGreeting(message) {
             const normalizedMessage = message.toLowerCase().trim();
             return commonGreetings.some(greeting => 
@@ -771,16 +721,6 @@
                 !normalizedName.includes('?') &&
                 !normalizedName.includes('!')
             );
-        }
-
-        function isAffirmative(message) {
-            const normalizedMessage = message.toLowerCase().trim();
-            return affirmativeResponses.some(response => normalizedMessage.includes(response));
-        }
-
-        function isNegative(message) {
-            const normalizedMessage = message.toLowerCase().trim();
-            return negativeResponses.some(response => normalizedMessage.includes(response));
         }
 
         function selectBotGreeting(userGreeting) {
@@ -836,14 +776,6 @@
             }, 2000);
         }
 
-        function toggleFileUpload(show) {
-            if (show) {
-                fileUpload.classList.add('visible');
-            } else {
-                fileUpload.classList.remove('visible');
-            }
-        }
-
         function continueFlow() {
             showTypingIndicator();
             setTimeout(() => {
@@ -858,15 +790,6 @@
                     addBotMessage("Perfeito! Agora, qual é a mensagem que você gostaria de enviar?");
                     userInput.placeholder = "Digite sua mensagem...";
                     userInput.rows = 3;
-                } else if (chatState.step === 5) {
-                    addBotMessage("Você gostaria de anexar um arquivo como referência do seu projeto? (Aceitamos PDF, JPG, JPEG, PNG, com até 5MB). Digite 'sim' ou 'não'.");
-                    userInput.placeholder = "Digite 'sim' ou 'não'...";
-                    userInput.rows = 1;
-                } else if (chatState.step === 6 && chatState.wantsFile) {
-                    addBotMessage("Por favor, anexe o arquivo clicando no botão 'Anexar Arquivo'.");
-                    userInput.placeholder = "Aguardando arquivo...";
-                    userInput.disabled = true;
-                    toggleFileUpload(true); // Exibe o botão de upload
                 }
                 saveChatState();
             }, 2000);
@@ -879,10 +802,7 @@
                 name: '',
                 email: '',
                 whatsapp: '',
-                message: '',
-                file: null,
-                wantsFile: null,
-                confirmingFile: false
+                message: ''
             };
             hasGreeted = false;
             chatMessages.innerHTML = '';
@@ -891,23 +811,11 @@
                 <div class="chat-messages" id="chatMessages"></div>
                 <div class="chat-input" id="chatInput">
                     <textarea id="userInput" placeholder="Digite sua resposta..." rows="1" onkeypress="handleKeyPress(event)"></textarea>
-                    <div class="input-actions">
-                        <div class="file-upload">
-                            <label for="fileInput" class="cursor-pointer">
-                                <svg class="inline-block w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 002.828 2.828l6.586-6.586a4 4 0 00-5.656-5.656L5.757 10.757a6 6 0 008.486 8.486L21 12"></path></svg>
-                                Anexar Arquivo
-                            </label>
-                            <input type="file" id="fileInput" accept=".pdf,.jpg,.jpeg,.png" class="hidden" onchange="handleFileSelect(event)">
-                        </div>
-                        <button onclick="sendMessage()">Enviar</button>
-                    </div>
+                    <button onclick="sendMessage()">Enviar</button>
                 </div>
             `;
             chatMessages = document.getElementById('chatMessages');
             userInput = document.getElementById('userInput');
-            fileInput = document.getElementById('fileInput');
-            fileUpload = document.querySelector('.file-upload');
-            toggleFileUpload(false); // Oculta o botão de upload inicialmente
         };
 
         function loadChatState() {
@@ -919,13 +827,11 @@
         }
 
         function saveChatState() {
-            const stateToSave = { ...chatState, file: null }; // Não salva o arquivo no localStorage
-            localStorage.setItem('chatState', JSON.stringify(stateToSave));
+            localStorage.setItem('chatState', JSON.stringify(chatState));
         }
 
         function restoreChat() {
             chatMessages.innerHTML = '';
-            toggleFileUpload(false); // Garante que o botão esteja oculto inicialmente
             if (chatState.step >= 1) {
                 addBotMessage("Olá! Sou o assistente da Good Vibes. 😊 Qual é o seu nome ou como você gostaria de ser chamado?");
                 if (chatState.name) {
@@ -950,15 +856,8 @@
                     addUserMessage(chatState.message);
                 }
             }
-            if (chatState.step >= 5) {
-                addBotMessage("Você gostaria de anexar um arquivo como referência do seu projeto? (Aceitamos PDF, JPG, JPEG, PNG, com até 5MB). Digite 'sim' ou 'não'.");
-                if (chatState.wantsFile !== null) {
-                    addUserMessage(chatState.wantsFile ? 'sim' : 'não');
-                }
-            }
-            if (chatState.step >= 6 && chatState.wantsFile) {
-                addBotMessage("Por favor, anexe o arquivo clicando no botão 'Anexar Arquivo'.");
-                toggleFileUpload(true); // Exibe o botão de upload se o usuário quis anexar
+            if (chatState.step === 5) {
+                showSuccessMessage();
             }
             scrollToBottom();
         }
@@ -1009,35 +908,6 @@
         function isValidPhoneNumber(phone) {
             const phoneRegex = /^\+?[\d\s()-]{7,}$/;
             return phoneRegex.test(phone);
-        }
-
-        function handleFileSelect(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            // Validar tamanho do arquivo (máx 5MB)
-            if (file.size > 5 * 1024 * 1024) {
-                showTypingIndicator();
-                setTimeout(() => {
-                    removeTypingIndicator();
-                    addBotMessage("O arquivo é muito grande. Por favor, selecione um arquivo com até 5MB.");
-                    fileInput.value = '';
-                }, 2000);
-                return;
-            }
-
-            chatState.file = file;
-            const fileType = file.name.toLowerCase().endsWith('.pdf') ? 'PDF' : 'imagem';
-            showTypingIndicator();
-            setTimeout(() => {
-                removeTypingIndicator();
-                addBotMessage(`Você anexou um ${fileType}: "${file.name}". É esse o arquivo correto? Digite 'sim' ou 'não'.`);
-                chatState.confirmingFile = true;
-                userInput.placeholder = "Digite 'sim' ou 'não'...";
-                userInput.rows = 1;
-                userInput.disabled = false;
-                saveChatState();
-            }, 2000);
         }
 
         const contactSectionObserver = new IntersectionObserver(entries => {
@@ -1128,7 +998,7 @@
                     setTimeout(() => {
                         removeTypingIndicator();
                         addBotMessage(`${botGreeting} Qual é o seu nome ou como você gostaria de ser chamado?`);
-                    }, 2000);
+                    }, 3000);
                 } else if (isValidName(userText)) {
                     chatState.name = userText;
                     chatState.step = 2;
@@ -1137,13 +1007,13 @@
                         removeTypingIndicator();
                         addBotMessage(`Prazer em conhecê-lo, ${chatState.name}! Qual é o seu e-mail de contato?`);
                         saveChatState();
-                    }, 2000);
+                    }, 3000);
                 } else {
                     showTypingIndicator();
                     setTimeout(() => {
                         removeTypingIndicator();
                         addBotMessage("Desculpe, não sei se esse é o seu nome. 😅 Pode me dizer seu nome ou como você gostaria de ser chamado?");
-                    }, 2000);
+                    }, 3000);
                 }
             } else if (chatState.step === 2) {
                 if (isValidEmail(userText)) {
@@ -1155,13 +1025,13 @@
                         removeTypingIndicator();
                         addBotMessage("Ótimo! Qual é o seu número de WhatsApp?");
                         saveChatState();
-                    }, 2000);
+                    }, 3000);
                 } else {
                     showTypingIndicator();
                     setTimeout(() => {
                         removeTypingIndicator();
                         addBotMessage("Desculpe, isso não parece ser um e-mail válido. Por favor, insira um e-mail válido (exemplo: seuemail@dominio.com).");
-                    }, 2000);
+                    }, 3000);
                 }
             } else if (chatState.step === 3) {
                 if (isValidPhoneNumber(userText)) {
@@ -1175,79 +1045,19 @@
                         userInput.placeholder = "Digite sua mensagem...";
                         userInput.rows = 3;
                         saveChatState();
-                    }, 2000);
+                    }, 3000);
                 } else {
                     showTypingIndicator();
                     setTimeout(() => {
                         removeTypingIndicator();
                         addBotMessage("Desculpe, isso não parece ser um número de telefone válido. Por favor, insira um número de WhatsApp válido (exemplo: +5511999999999).");
-                    }, 2000);
+                    }, 3000);
                 }
             } else if (chatState.step === 4) {
                 chatState.message = userText;
                 addUserMessage(userText);
                 chatState.step = 5;
-                showTypingIndicator();
-                setTimeout(() => {
-                    removeTypingIndicator();
-                    continueFlow();
-                }, 2000);
-            } else if (chatState.step === 5) {
-                addUserMessage(userText);
-                if (isAffirmative(userText)) {
-                    chatState.wantsFile = true;
-                    chatState.step = 6;
-                    showTypingIndicator();
-                    setTimeout(() => {
-                        removeTypingIndicator();
-                        continueFlow();
-                    }, 2000);
-                } else if (isNegative(userText)) {
-                    chatState.wantsFile = false;
-                    chatState.step = 7;
-                    showTypingIndicator();
-                    setTimeout(() => {
-                        removeTypingIndicator();
-                        addBotMessage("Entendido! Enviando sua mensagem...");
-                        sendToGoogleForms();
-                    }, 2000);
-                } else {
-                    showTypingIndicator();
-                    setTimeout(() => {
-                        removeTypingIndicator();
-                        addBotMessage("Por favor, responda com 'sim' ou 'não'.");
-                    }, 2000);
-                }
-            } else if (chatState.step === 6 && chatState.confirmingFile) {
-                addUserMessage(userText);
-                if (isAffirmative(userText)) {
-                    chatState.confirmingFile = false;
-                    chatState.step = 7;
-                    toggleFileUpload(false); // Oculta o botão após confirmação
-                    showTypingIndicator();
-                    setTimeout(() => {
-                        removeTypingIndicator();
-                        addBotMessage("Entendido! Enviando sua mensagem...");
-                        sendToGoogleForms();
-                    }, 2000);
-                } else if (isNegative(userText)) {
-                    chatState.file = null;
-                    chatState.confirmingFile = false;
-                    fileInput.value = '';
-                    showTypingIndicator();
-                    setTimeout(() => {
-                        removeTypingIndicator();
-                        addBotMessage("Por favor, anexe outro arquivo clicando no botão 'Anexar Arquivo'.");
-                        userInput.placeholder = "Aguardando arquivo...";
-                        userInput.disabled = true;
-                    }, 2000);
-                } else {
-                    showTypingIndicator();
-                    setTimeout(() => {
-                        removeTypingIndicator();
-                        addBotMessage("Por favor, responda com 'sim' ou 'não'.");
-                    }, 2000);
-                }
+                sendToFormspree();
             }
 
             userInput.value = '';
@@ -1261,33 +1071,31 @@
             }
         }
 
-        function sendToGoogleForms() {
-            const formData = new URLSearchParams();
-            formData.append('entry.2005620554', chatState.name);
-            formData.append('entry.1045781291', chatState.email);
-            formData.append('entry.1166974658', chatState.whatsapp);
-            formData.append('entry.839337160', chatState.message);
+        function sendToFormspree() {
+            const formData = new FormData();
+            formData.append('name', chatState.name);
+            formData.append('email', chatState.email);
+            formData.append('whatsapp', chatState.whatsapp);
+            formData.append('message', chatState.message);
 
-            fetch('https://docs.google.com/forms/d/e/1FAIpQLScKWel3h02lk-LOA1QmwDuch_StBA7aQ6VSeHZALjk76H2PEA/formResponse', {
+            fetch('https://formspree.io/f/mgvolbyv', {
                 method: 'POST',
                 body: formData,
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                mode: 'no-cors'
+                    'Accept': 'application/json'
+                }
             })
-            .then(() => {
-                console.log("Google Forms request sent:", {
-                    name: chatState.name,
-                    email: chatState.email,
-                    whatsapp: chatState.whatsapp,
-                    message: chatState.message,
-                    file: chatState.file ? chatState.file.name : 'Nenhum arquivo'
-                });
-                showSuccessMessage();
+            .then(response => {
+                if (response.ok) {
+                    console.log("Formspree request successful:", response);
+                    showSuccessMessage();
+                } else {
+                    console.error("Formspree request failed:", response.status, response.statusText);
+                    addBotMessage("Desculpe, houve um erro ao enviar sua mensagem. Tente novamente mais tarde.");
+                }
             })
             .catch(error => {
-                console.error("Google Forms request error:", error);
+                console.error("Formspree request error:", error);
                 addBotMessage("Desculpe, houve um erro ao enviar sua mensagem. Tente novamente mais tarde.");
             });
         }
@@ -1296,10 +1104,9 @@
             chatMessages.innerHTML = '';
             const chatContainer = document.querySelector('.chat-container');
             chatContainer.classList.add('success');
-            const successMessage = `Mensagem Enviada! ✨`;
             chatContainer.innerHTML = `
                 <div class="chat-messages" id="chatMessages">
-                    <div class="sparkle-text">${successMessage}</div>
+                    <div class="sparkle-text">Mensagem Enviada! ✨</div>
                 </div>
             `;
             chatMessages = document.getElementById('chatMessages');
@@ -1309,12 +1116,8 @@
                 name: '',
                 email: '',
                 whatsapp: '',
-                message: '',
-                file: null,
-                wantsFile: null,
-                confirmingFile: false
+                message: ''
             };
-            toggleFileUpload(false); // Garante que o botão esteja oculto após o sucesso
         }
 
         loadChatState();
