@@ -15,9 +15,7 @@
             background: transparent;
         }
 
-        /* -------------------------------------
-           Header Styles (Copied from contact.html)
-        ------------------------------------- */
+        /* Header Styles */
         .brand-name {
             font-family: 'Great Vibes', cursive;
             line-height: 2;
@@ -109,9 +107,7 @@
             opacity: 1 !important;
         }
 
-        /* -------------------------------------
-           Remaining Styles from Original index.html
-        ------------------------------------- */
+        /* Remaining Styles */
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -241,7 +237,7 @@
         .inactivity-card p {
             color: #a5b4fc;
             margin-bottom: 1.5rem;
-            background: rgba(55, 65, 81, 0.7); /* Semi-transparent background for readability */
+            background: rgba(55, 65, 81, 0.7);
             padding: 0.5rem;
             border-radius: 0.5rem;
         }
@@ -300,6 +296,13 @@
             display: flex;
             flex-direction: column;
             position: relative;
+        }
+
+        .chat-container.success {
+            background: transparent;
+            padding: 0;
+            border-radius: 0;
+            box-shadow: none;
         }
 
         .chat-messages {
@@ -438,7 +441,7 @@
         </defs>
     </svg>
 
-    <!-- Navbar (Updated to match contact.html) -->
+    <!-- Navbar -->
     <nav class="shadow-lg fixed w-full z-10">
         <div class="flex justify-between h-16">
             <div class="flex items-center content-layer">
@@ -553,7 +556,7 @@
     </div>
 
     <script>
-        // Smooth scroll for nav links (Updated to match contact.html)
+        // Smooth scroll for nav links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -563,7 +566,7 @@
             });
         });
 
-        // Fade-in animation on scroll (Original from index.html)
+        // Fade-in animation on scroll
         const observer = new IntersectionObserver(entries => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -574,7 +577,7 @@
         }, { threshold: 0.1 });
         document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
-        // Section slide-in/slide-out animation (Original from index.html)
+        // Section slide-in/slide-out animation
         const sectionObserver = new IntersectionObserver(entries => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -586,7 +589,7 @@
         }, { threshold: 0.2 });
         document.querySelectorAll('.section-animate').forEach(section => sectionObserver.observe(section));
 
-        // Particles.js configuration with adjusted repulse effect (Original from index.html)
+        // Particles.js configuration
         particlesJS('particles-js', {
             particles: {
                 number: { value: 200, density: { enable: true, value_area: 800 } },
@@ -626,35 +629,32 @@
             retina_detect: true
         });
 
-        // Inactivity Card Logic (Original from index.html)
+        // Inactivity Card Logic
         const inactivityCard = document.getElementById('inactivityCard');
         let inactivityTimeout;
-        let hasShown = false; // Flag to track if card has been shown
+        let hasShown = false;
 
         function showInactivityCard() {
             if (!hasShown) {
                 inactivityCard.style.display = 'block';
-                hasShown = true; // Prevent card from showing again
+                hasShown = true;
             }
         }
 
         function hideInactivityCard() {
             inactivityCard.style.display = 'none';
-            clearTimeout(inactivityTimeout); // Stop any pending timer
+            clearTimeout(inactivityTimeout);
         }
 
         function resetInactivityTimer() {
-            // Only reset if card hasn't been shown yet
             if (!hasShown) {
                 clearTimeout(inactivityTimeout);
-                inactivityTimeout = setTimeout(showInactivityCard, 5000); // 5 seconds
+                inactivityTimeout = setTimeout(showInactivityCard, 5000);
             }
         }
 
-        // Initialize the timer
         resetInactivityTimer();
 
-        // Reset timer on user activity
         ['mousemove', 'keydown', 'scroll', 'click'].forEach(event => {
             document.addEventListener(event, resetInactivityTimer);
         });
@@ -670,11 +670,10 @@
             message: ''
         };
         let isBotTyping = false;
-        let hasGreeted = false; // Flag to control greeting
-        let isCorrecting = false; // Flag to track if the user is correcting a field
-        let fieldToCorrect = null; // Stores which field (name, email, whatsapp) is being corrected
+        let hasGreeted = false;
+        let isCorrecting = false;
+        let fieldToCorrect = null;
 
-        // List of common greetings
         const commonGreetings = [
             'oi', 'olá', 'ola', 'bom dia', 'boa tarde', 'boa noite',
             'tudo bem', 'tudo bom', 'como vai', 'e aí', 'e ai', 'eai',
@@ -684,7 +683,6 @@
             'opa'
         ];
 
-        // List of alternative greetings for the bot to use
         const botGreetings = [
             'Que bom te ver! 😊',
             'Seja bem-vindo! 😊',
@@ -692,7 +690,6 @@
             'Fico feliz em te ajudar hoje! 😊'
         ];
 
-        // Keywords and patterns to detect correction requests
         const correctionKeywords = [
             'errei', 'ops', 'opa', 'eita', 'está errado', 'esta errado',
             'está errada', 'esta errada', 'corrigir', 'alterar', 'trocar'
@@ -704,7 +701,6 @@
             whatsapp: ['whatsapp', 'whats', 'telefone', 'número', 'numero']
         };
 
-        // Function to check if the user's message is a greeting
         function isGreeting(message) {
             const normalizedMessage = message.toLowerCase().trim();
             return commonGreetings.some(greeting => 
@@ -715,7 +711,6 @@
             );
         }
 
-        // Function to check if the user's message looks like a valid name
         function isValidName(name) {
             const normalizedName = name.trim();
             const nameRegex = /^[a-zA-ZÀ-ÿ\s-]+$/;
@@ -728,7 +723,6 @@
             );
         }
 
-        // Function to select a bot greeting that doesn't match the user's greeting
         function selectBotGreeting(userGreeting) {
             const normalizedUserGreeting = userGreeting.toLowerCase().trim();
             let availableGreetings = botGreetings;
@@ -743,7 +737,6 @@
             return availableGreetings[Math.floor(Math.random() * availableGreetings.length)];
         }
 
-        // Function to detect if the user wants to correct a field
         function detectCorrectionRequest(message) {
             const normalizedMessage = message.toLowerCase().trim();
             const isCorrection = correctionKeywords.some(keyword => 
@@ -752,17 +745,15 @@
 
             if (!isCorrection) return null;
 
-            // Check which field the user wants to correct
             for (const [field, keywords] of Object.entries(fieldKeywords)) {
                 if (keywords.some(keyword => normalizedMessage.includes(keyword))) {
                     return field;
                 }
             }
 
-            return null; // No specific field identified
+            return null;
         }
 
-        // Function to ask for the corrected data
         function askForCorrectedData(field) {
             let question;
             switch (field) {
@@ -785,7 +776,6 @@
             }, 2000);
         }
 
-        // Function to continue the flow from the current step
         function continueFlow() {
             showTypingIndicator();
             setTimeout(() => {
@@ -805,7 +795,6 @@
             }, 2000);
         }
 
-        // Clear localStorage and reset chat on page load
         window.onload = function() {
             localStorage.removeItem('chatState');
             chatState = {
@@ -829,7 +818,6 @@
             userInput = document.getElementById('userInput');
         };
 
-        // Load chat state from localStorage if available
         function loadChatState() {
             const savedState = localStorage.getItem('chatState');
             if (savedState) {
@@ -838,12 +826,10 @@
             }
         }
 
-        // Save chat state to localStorage
         function saveChatState() {
             localStorage.setItem('chatState', JSON.stringify(chatState));
         }
 
-        // Restore chat conversation based on saved state
         function restoreChat() {
             chatMessages.innerHTML = '';
             if (chatState.step >= 1) {
@@ -876,7 +862,6 @@
             scrollToBottom();
         }
 
-        // Add bot message to chat
         function addBotMessage(message) {
             const messageElement = document.createElement('div');
             messageElement.classList.add('message', 'bot-message');
@@ -885,7 +870,6 @@
             scrollToBottom();
         }
 
-        // Add user message to chat
         function addUserMessage(message) {
             const messageElement = document.createElement('div');
             messageElement.classList.add('message', 'user-message');
@@ -894,7 +878,6 @@
             scrollToBottom();
         }
 
-        // Show typing indicator
         function showTypingIndicator() {
             const typingElement = document.createElement('div');
             typingElement.classList.add('typing-indicator');
@@ -905,7 +888,6 @@
             isBotTyping = true;
         }
 
-        // Remove typing indicator
         function removeTypingIndicator() {
             const typingElement = document.getElementById('typingIndicator');
             if (typingElement) {
@@ -914,24 +896,20 @@
             isBotTyping = false;
         }
 
-        // Scroll to the bottom of the chat
         function scrollToBottom() {
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
-        // Validate email
         function isValidEmail(email) {
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             return emailRegex.test(email);
         }
 
-        // Validate phone number
         function isValidPhoneNumber(phone) {
             const phoneRegex = /^\+?[\d\s()-]{7,}$/;
             return phoneRegex.test(phone);
         }
 
-        // Trigger typing and greeting when contact section is in view
         const contactSectionObserver = new IntersectionObserver(entries => {
             entries.forEach(entry => {
                 if (entry.isIntersecting && !hasGreeted && chatState.step === 1 && !chatState.name) {
@@ -947,14 +925,12 @@
             });
         }, { threshold: 0.3 });
 
-        // Handle user input and chat flow
         function sendMessage() {
             if (isBotTyping) return;
 
             const userText = userInput.value.trim();
             if (!userText) return;
 
-            // Check if the user wants to correct a previous input
             const correctionField = detectCorrectionRequest(userText);
             if (correctionField && chatState.step < 5) {
                 addUserMessage(userText);
@@ -965,13 +941,11 @@
                 return;
             }
 
-            // If the user is correcting a field, handle the correction
             if (isCorrecting) {
                 addUserMessage(userText);
                 let isValid = true;
                 let errorMessage = '';
 
-                // Validate the corrected input
                 if (fieldToCorrect === 'name') {
                     if (isValidName(userText)) {
                         chatState.name = userText;
@@ -1016,7 +990,6 @@
                 return;
             }
 
-            // Normal chat flow
             if (chatState.step === 1) {
                 addUserMessage(userText);
                 if (isGreeting(userText)) {
@@ -1091,7 +1064,6 @@
             saveChatState();
         }
 
-        // Handle Enter key press
         function handleKeyPress(event) {
             if (event.key === 'Enter' && !event.shiftKey) {
                 event.preventDefault();
@@ -1099,7 +1071,6 @@
             }
         }
 
-        // Send data to Formspree
         function sendToFormspree() {
             const formData = new FormData();
             formData.append('name', chatState.name);
@@ -1129,10 +1100,10 @@
             });
         }
 
-        // Show success message and reset chat
         function showSuccessMessage() {
             chatMessages.innerHTML = '';
             const chatContainer = document.querySelector('.chat-container');
+            chatContainer.classList.add('success');
             chatContainer.innerHTML = `
                 <div class="chat-messages" id="chatMessages">
                     <div class="sparkle-text">Mensagem Enviada! ✨</div>
@@ -1149,10 +1120,8 @@
             };
         }
 
-        // Load chat state on page load
         loadChatState();
 
-        // Start observing the contact section after DOM is loaded
         document.addEventListener('DOMContentLoaded', () => {
             const contactSection = document.querySelector('#contact');
             if (contactSection) {
