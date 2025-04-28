@@ -15,9 +15,7 @@
             background: transparent;
         }
 
-        /* -------------------------------------
-           Header Styles (Copied from contact.html)
-        ------------------------------------- */
+        /* Header Styles */
         .brand-name {
             font-family: 'Great Vibes', cursive;
             line-height: 2;
@@ -71,6 +69,7 @@
             background: transparent;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             padding: 0 1rem;
+            pointer-events: auto;
         }
 
         nav > div {
@@ -88,29 +87,19 @@
             margin-left: auto;
         }
 
-        nav, section, footer {
-            position: relative;
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        nav *, section *, footer * {
-            pointer-events: auto;
-        }
-
         .content-layer {
             position: relative;
             z-index: 2;
+            pointer-events: auto;
         }
 
-        h1, h2, h3, p, a, button, img {
+        h1, h2, h3, p, a, button, img, input, form {
             position: relative;
             z-index: 30;
+            pointer-events: auto;
         }
 
-        /* -------------------------------------
-           Remaining Styles from Original services.html
-        ------------------------------------- */
+        /* Remaining Styles */
         @keyframes float {
             0% { transform: translateY(0px); }
             50% { transform: translateY(-10px); }
@@ -135,9 +124,10 @@
             100% { box-shadow: 0 0 5px rgba(165, 180, 252, 0.5); }
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        @keyframes sparkle {
+            0% { background-position: 0%; }
+            50% { background-position: 200%; }
+            100% { background-position: 0%; }
         }
 
         .float {
@@ -156,6 +146,18 @@
             animation: glow 2s infinite;
         }
 
+        .sparkle-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+            color: #e2e8f0;
+            background: linear-gradient(90deg, #a5b4fc, #e879f9, #a5b4fc);
+            background-size: 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: sparkle 2s infinite;
+        }
+
         .content-card {
             background: #ffffff;
             border-radius: 1rem;
@@ -163,6 +165,11 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             position: relative;
             overflow: hidden;
+            pointer-events: auto;
+        }
+
+        .gradient-card {
+            background: linear-gradient(135deg, #ffffff, #a5b4fc, #e879f9);
         }
 
         .carousel-item.active.content-card:hover {
@@ -203,12 +210,12 @@
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 0;
+            z-index: -1;
             background: #1e293b;
+            pointer-events: none;
         }
 
         .service-icon {
-            fill: url(#gradient);
             width: 40px;
             height: 40px;
             background: #f8f9fa;
@@ -231,25 +238,19 @@
         .carousel {
             position: relative;
             width: 100%;
-            overflow: visible;
+            overflow: hidden;
+            pointer-events: auto;
         }
 
         .carousel-items {
             display: flex;
             width: 100%;
+            transition: transform 0.5s ease-in-out;
         }
 
         .carousel-item {
             flex: 0 0 100%;
-            display: none;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-        }
-
-        .carousel-item.active {
-            display: block;
             opacity: 1;
-            animation: fadeIn 0.5s ease;
         }
 
         .pagination {
@@ -274,6 +275,7 @@
             font-size: 14px;
             font-weight: bold;
             box-shadow: 0 0 5px rgba(165, 180, 252, 0.5);
+            pointer-events: auto;
         }
 
         .pagination-number.active {
@@ -293,15 +295,44 @@
             background: #2d3748;
             color: #e2e8f0;
             border: 1px solid #a5b4fc;
+            pointer-events: auto;
+            position: relative;
+            z-index: 40;
         }
 
         .newsletter-button {
             background: linear-gradient(135deg, #a5b4fc, #e879f9);
             color: white;
+            pointer-events: auto;
+            position: relative;
+            z-index: 40;
+            cursor: pointer;
         }
 
         .newsletter-button:hover {
             background: linear-gradient(135deg, #e879f9, #a5b4fc);
+        }
+
+        .confirmation-message {
+            background: transparent;
+            color: white;
+            text-align: center;
+            animation: float 3s ease-in-out infinite;
+            pointer-events: auto;
+            position: relative;
+            z-index: 40;
+        }
+
+        #newsletter-form {
+            pointer-events: auto;
+            position: relative;
+            z-index: 40;
+        }
+
+        #newsletter-container {
+            pointer-events: auto;
+            position: relative;
+            z-index: 40;
         }
     </style>
 </head>
@@ -367,14 +398,14 @@
                         <h2 class="text-2xl font-semibold gradient-text mb-8 float">Posts em Destaque</h2>
                         <div class="carousel" id="highlight-carousel">
                             <div class="carousel-items">
-                                <div class="carousel-item content-card p-6 float active">
+                                <div class="carousel-item content-card p-6 float">
                                     <img src="https://i.postimg.cc/8CzyXRJx/Prancheta-1-2.png" alt="Post 1" class="w-full rounded-lg bounce">
                                 </div>
                                 <div class="carousel-item content-card p-6 float">
-                                    <img src="https://i.postimg.cc/VLPKPQ0q/CL-1.png" alt="Post 2" class="w-full rounded-lg bounce">
+                                    <img src="https://i.postimg.cc/ZKCqJ5kD/Prancheta-4.png" alt="Post 2" class="w-full rounded-lg bounce">
                                 </div>
                                 <div class="carousel-item content-card p-6 float">
-                                    <img src="https://i.postimg.cc/sfLRY28V/6.png" alt="Post 3" class="w-full rounded-lg bounce">
+                                    <img src="https://i.postimg.cc/GprrTcNR/Prancheta-1-3.png" alt="Post 3" class="w-full rounded-lg bounce">
                                 </div>
                             </div>
                         </div>
@@ -395,14 +426,14 @@
                 <h2 class="text-3xl md:text-4xl font-bold gradient-text mb-12 float">Projetos Recentes</h2>
                 <div class="carousel" id="recent-projects">
                     <div class="carousel-items">
-                        <div class="carousel-item content-card p-6 float active">
+                        <div class="carousel-item content-card p-6 float">
                             <img src="https://i.postimg.cc/vBMmdmMR/carrossel-5-dicas.png" alt="Project 1" class="w-full rounded-lg bounce">
                         </div>
                         <div class="carousel-item content-card p-6 float">
-                            <img src="https://i.postimg.cc/6qqt92mP/carrossel.png" alt="Project 2" class="w-full rounded-lg bounce">
+                            <img src="https://i.postimg.cc/C19fgBPY/Carrossel-Ag-ncia-Nut.png" alt="Project 2" class="w-full rounded-lg bounce">
                         </div>
                         <div class="carousel-item content-card p-6 float">
-                            <img src="https://i.postimg.cc/J0LZv8Yt/Benef-cios-da-Laranja-Carrossel.png" alt="Project 3" class="w-full rounded-lg bounce">
+                            <img src="https://i.postimg.cc/26LV2jzt/carrossel-transforme-curioso-em-cliente.png" alt="Project 3" class="w-full rounded-lg bounce">
                         </div>
                     </div>
                     <div class="pagination" id="projects-pagination">
@@ -422,11 +453,9 @@
                     <div class="md:col-span-2">
                         <h2 class="text-3xl md:text-4xl font-bold gradient-text mb-8 float">Nossos Serviços</h2>
                         <!-- Graphic Design Service -->
-                        <div class="content-card p-6 mb-6 float">
+                        <div class="content-card gradient-card p-6 mb-6 float">
                             <div class="flex items-center justify-center mb-4">
-                                <svg class="service-icon" viewBox="0 0 24 24">
-                                    <path d="M3 3h18v18H3V3zm16 16V5H5v14h14zM7 7h10v10H7V7zm2 2v6h6V9H9z"/>
-                                </svg>
+                                <img src="https://i.postimg.cc/RhkCP2SL/pngegg-3.png" alt="Design Icon" class="service-icon">
                             </div>
                             <h3 class="text-xl font-semibold text-gray-900 mb-2 text-center">Design Gráfico</h3>
                             <p class="text-gray-600 mb-4 text-center">
@@ -437,11 +466,9 @@
                             </div>
                         </div>
                         <!-- Website Creation Service -->
-                        <div class="content-card p-6 float">
+                        <div class="content-card gradient-card p-6 float">
                             <div class="flex items-center justify-center mb-4">
-                                <svg class="service-icon" viewBox="0 0 24 24">
-                                    <path d="M12 2C6.48 2 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
-                                </svg>
+                                <img src="https://i.postimg.cc/HLYYPwgR/pngegg-2.png" alt="Website Icon" class="service-icon">
                             </div>
                             <h3 class="text-xl font-semibold text-gray-900 mb-2 text-center">Criação de Sites</h3>
                             <p class="text-gray-600 mb-4 text-center">
@@ -455,13 +482,13 @@
                     <!-- Testimonials Column -->
                     <div>
                         <h2 class="text-2xl font-semibold gradient-text mb-8 float">Depoimentos em Destaque</h2>
-                        <div class="content-card p-6 mb-6 float">
+                        <div class="content-card gradient-card p-6 mb-6 float">
                             <p class="text-gray-600 mb-4">
                                 "A Good Vibes transformou nossa identidade visual com um design incrível!"
                             </p>
                             <p class="text-gray-900 font-semibold">Clara Oliveira, Empresária</p>
                         </div>
-                        <div class="content-card p-6 float">
+                        <div class="content-card gradient-card p-6 float">
                             <p class="text-gray-600 mb-4">
                                 "Nosso site ficou rápido e funcional. A equipe foi excepcional!"
                             </p>
@@ -479,11 +506,16 @@
                 <p class="text-lg text-gray-400 mb-8 float">
                     Receba dicas de design, atualizações e promoções exclusivas no seu e-mail.
                 </p>
-                <form class="flex flex-col md:flex-row justify-center gap-4">
-                    <input type="text" placeholder="Digite seu nome" class="newsletter-input py-3 px-4 rounded-full w-full md:w-1/4 glow">
-                    <input type="email" placeholder="Digite seu e-mail" class="newsletter-input py-3 px-4 rounded-full w-full md:w-1/4 glow">
-                    <button type="submit" class="newsletter-button py-3 px-6 rounded-full pulse">Assinar</button>
-                </form>
+                <div id="newsletter-container">
+                    <div id="newsletter-form" class="flex flex-col md:flex-row justify-center gap-4">
+                        <input type="text" id="newsletter-name" placeholder="Digite seu nome" class="newsletter-input py-3 px-4 rounded-full w-full md:w-1/4 glow">
+                        <input type="email" id="newsletter-email" placeholder="Digite seu e-mail" class="newsletter-input py-3 px-4 rounded-full w-full md:w-1/4 glow">
+                        <button id="newsletter-submit" class="newsletter-button py-3 px-6 rounded-full pulse">Assinar</button>
+                    </div>
+                    <div id="confirmation-message" class="confirmation-message hidden">
+                        <div class="sparkle-text">Inscrição Concluída! ✨</div>
+                    </div>
+                </div>
             </div>
         </section>
     </main>
@@ -496,75 +528,173 @@
     </footer>
 
     <script>
-        // Smooth scroll for nav links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scroll for nav links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
                 });
             });
-        });
 
-        // Particles.js configuration
-        particlesJS('particles-js', {
-            particles: {
-                number: { value: 200, density: { enable: true, value_area: 800 } },
-                color: { value: ['#a5b4fc', '#e879f9', '#f472b6'] },
-                shape: { type: 'circle' },
-                opacity: { value: 0.8, random: false },
-                size: { value: 4, random: true },
-                line_linked: {
-                    enable: true,
-                    distance: 120,
-                    color: '#e879f9',
-                    opacity: 0.6,
-                    width: 1
+            // Particles.js configuration
+            particlesJS('particles-js', {
+                particles: {
+                    number: { value: 200, density: { enable: true, value_area: 800 } },
+                    color: { value: ['#a5b4fc', '#e879f9', '#f472b6'] },
+                    shape: { type: 'circle' },
+                    opacity: { value: 0.8, random: false },
+                    size: { value: 4, random: true },
+                    line_linked: {
+                        enable: true,
+                        distance: 120,
+                        color: '#e879f9',
+                        opacity: 0.6,
+                        width: 1
+                    },
+                    move: {
+                        enable: true,
+                        speed: 1,
+                        direction: 'none',
+                        random: true,
+                        straight: false,
+                        out_mode: 'out',
+                        bounce: false
+                    }
                 },
-                move: {
-                    enable: true,
-                    speed: 1,
-                    direction: 'none',
-                    random: true,
-                    straight: false,
-                    out_mode: 'out',
-                    bounce: false
-                }
-            },
-            interactivity: {
-                detect_on: 'canvas',
-                events: {
-                    onhover: { enable: true, mode: 'repulse' },
-                    onclick: { enable: true, mode: 'push' },
-                    resize: true
+                interactivity: {
+                    detect_on: 'canvas',
+                    events: {
+                        onhover: { enable: true, mode: 'repulse' },
+                        onclick: { enable: true, mode: 'push' },
+                        resize: true
+                    },
+                    modes: {
+                        repulse: { distance: 50, duration: 0.1 },
+                        push: { particles_nb: 6 }
+                    }
                 },
-                modes: {
-                    repulse: { distance: 50, duration: 0.1 },
-                    push: { particles_nb: 6 }
-                }
-            },
-            retina_detect: true
-        });
+                retina_detect: true
+            });
 
-        // Carousel functionality for single item display
-        function setupCarousel(carouselId, paginationId) {
-            const carouselItems = document.querySelectorAll(`#${carouselId} .carousel-item`);
-            const numbers = document.querySelectorAll(`#${paginationId} .pagination-number`);
+            // Carousel functionality
+            function setupCarousel(carouselId, paginationId, autoAdvanceInterval) {
+                const carousel = document.querySelector(`#${carouselId}`);
+                const carouselItemsContainer = carousel.querySelector('.carousel-items');
+                const carouselItems = carousel.querySelectorAll(`#${carouselId} .carousel-item`);
+                const numbers = document.querySelectorAll(`#${paginationId} .pagination-number`);
+                let currentIndex = 0;
+                let intervalId = null;
 
-            numbers.forEach((number, index) => {
-                number.addEventListener('click', () => {
-                    carouselItems.forEach(item => item.classList.remove('active'));
+                carouselItemsContainer.style.transform = `translateX(0%)`;
+
+                function showItem(index) {
+                    carouselItemsContainer.style.transform = `translateX(-${index * 100}%)`;
                     numbers.forEach(n => n.classList.remove('active'));
+                    numbers[index].classList.add('active');
+                    currentIndex = index;
+                }
 
-                    carouselItems[index].classList.add('active');
-                    number.classList.add('active');
+                numbers.forEach((number, index) => {
+                    number.addEventListener('click', () => {
+                        showItem(index);
+                        clearInterval(intervalId);
+                        intervalId = setInterval(autoAdvance, autoAdvanceInterval);
+                    });
                 });
-            });
-        }
 
-        // Initialize carousels
-        setupCarousel('highlight-carousel', 'highlight-pagination');
-        setupCarousel('recent-projects', 'projects-pagination');
+                function autoAdvance() {
+                    currentIndex = (currentIndex + 1) % carouselItems.length;
+                    showItem(currentIndex);
+                }
+
+                intervalId = setInterval(autoAdvance, autoAdvanceInterval);
+
+                carousel.addEventListener('mouseenter', () => clearInterval(intervalId));
+                carousel.addEventListener('mouseleave', () => {
+                    intervalId = setInterval(autoAdvance, autoAdvanceInterval);
+                });
+            }
+
+            setupCarousel('highlight-carousel', 'highlight-pagination', 5000);
+            setupCarousel('recent-projects', 'projects-pagination', 5000);
+
+            // Newsletter form submission
+            const submitButton = document.getElementById('newsletter-submit');
+            const formContainer = document.getElementById('newsletter-form');
+            const confirmationMessage = document.getElementById('confirmation-message');
+            const nameInput = document.getElementById('newsletter-name');
+            const emailInput = document.getElementById('newsletter-email');
+
+            if (submitButton) {
+                submitButton.addEventListener('click', function() {
+                    console.log('Botão Assinar clicado!');
+                    alert('Botão Assinar clicado!');
+
+                    const name = nameInput.value.trim();
+                    const email = emailInput.value.trim();
+
+                    if (!name || !email) {
+                        alert('Por favor, preencha todos os campos.');
+                        return;
+                    }
+
+                    if (!isValidEmail(email)) {
+                        alert('Por favor, insira um e-mail válido (exemplo: seuemail@dominio.com).');
+                        return;
+                    }
+
+                    sendToFormspree(name, email);
+                });
+            } else {
+                console.error('Botão #newsletter-submit não encontrado!');
+            }
+
+            function isValidEmail(email) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            }
+
+            function sendToFormspree(name, email) {
+                const formData = new FormData();
+                formData.append('name', name);
+                formData.append('email', email);
+                formData.append('_subject', 'Nova Assinatura de Newsletter');
+                formData.append('_next', 'https://yourwebsite.com/services.html');
+
+                fetch('https://formspree.io/f/mgvolbyv', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(response => {
+                    console.log('Resposta do Formspree:', response);
+                    if (response.ok) {
+                        console.log('Inscrição enviada com sucesso!');
+                        showSuccessMessage();
+                    } else {
+                        console.error('Erro no Formspree:', response.status, response.statusText);
+                        alert('Houve um erro ao enviar sua inscrição. Tente novamente mais tarde.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro na requisição ao Formspree:', error);
+                    alert('Houve um erro ao enviar sua inscrição. Tente novamente mais tarde.');
+                });
+            }
+
+            function showSuccessMessage() {
+                formContainer.style.display = 'none';
+                confirmationMessage.classList.remove('hidden');
+                confirmationMessage.classList.add('block');
+                nameInput.value = '';
+                emailInput.value = '';
+            }
+        });
     </script>
 </body>
 </html>
