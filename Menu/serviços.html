@@ -462,7 +462,7 @@
                                 Criamos logotipos, banners e posts para redes sociais que capturam a essência da sua marca.
                             </p>
                             <div class="text-center">
-                                <a href="index.html#contact" class="cta-button py-2 px-6 rounded-full text-white pulse">Solicite Agora</a>
+                                <a href="https://api.whatsapp.com/send/?phone=5511987637786" target="_blank" class="cta-button py-2 px-6 rounded-full text-white pulse">Solicite Agora</a>
                             </div>
                         </div>
                         <!-- Website Creation Service -->
@@ -475,7 +475,7 @@
                                 Desenvolvemos sites responsivos e otimizados para converter visitantes em clientes.
                             </p>
                             <div class="text-center">
-                                <a href="index.html#contact" class="cta-button py-2 px-6 rounded-full text-white pulse">Solicite Agora</a>
+                                <a href="https://api.whatsapp.com/send/?phone=5511987637786" target="_blank" class="cta-button py-2 px-6 rounded-full text-white pulse">Solicite Agora</a>
                             </div>
                         </div>
                     </div>
@@ -588,36 +588,57 @@
                 let currentIndex = 0;
                 let intervalId = null;
 
+                // Initialize first item
                 carouselItemsContainer.style.transform = `translateX(0%)`;
+                numbers[0].classList.add('active');
 
                 function showItem(index) {
                     carouselItemsContainer.style.transform = `translateX(-${index * 100}%)`;
                     numbers.forEach(n => n.classList.remove('active'));
                     numbers[index].classList.add('active');
                     currentIndex = index;
+                    console.log(`Carousel ${carouselId}: Showing item ${index + 1}`);
                 }
-
-                numbers.forEach((number, index) => {
-                    number.addEventListener('click', () => {
-                        showItem(index);
-                        clearInterval(intervalId);
-                        intervalId = setInterval(autoAdvance, autoAdvanceInterval);
-                    });
-                });
 
                 function autoAdvance() {
                     currentIndex = (currentIndex + 1) % carouselItems.length;
                     showItem(currentIndex);
+                    console.log(`Carousel ${carouselId}: Auto-advance to item ${currentIndex + 1}`);
                 }
 
-                intervalId = setInterval(autoAdvance, autoAdvanceInterval);
-
-                carousel.addEventListener('mouseenter', () => clearInterval(intervalId));
-                carousel.addEventListener('mouseleave', () => {
-                    intervalId = setInterval(autoAdvance, autoAdvanceInterval);
+                // Set up pagination click events
+                numbers.forEach((number, index) => {
+                    number.addEventListener('click', () => {
+                        showItem(index);
+                        // Reset interval to prevent immediate slide after click
+                        clearInterval(intervalId);
+                        intervalId = setInterval(autoAdvance, autoAdvanceInterval);
+                        console.log(`Carousel ${carouselId}: Clicked pagination ${index + 1}`);
+                    });
                 });
+
+                // Start auto-advance
+                function startAutoAdvance() {
+                    if (intervalId) clearInterval(intervalId); // Prevent multiple intervals
+                    intervalId = setInterval(autoAdvance, autoAdvanceInterval);
+                    console.log(`Carousel ${carouselId}: Auto-advance started`);
+                }
+
+                // Stop auto-advance
+                function stopAutoAdvance() {
+                    clearInterval(intervalId);
+                    console.log(`Carousel ${carouselId}: Auto-advance stopped`);
+                }
+
+                // Initialize auto-advance
+                startAutoAdvance();
+
+                // Pause on hover, resume on leave
+                carousel.addEventListener('mouseenter', stopAutoAdvance);
+                carousel.addEventListener('mouseleave', startAutoAdvance);
             }
 
+            // Initialize carousels
             setupCarousel('highlight-carousel', 'highlight-pagination', 5000);
             setupCarousel('recent-projects', 'projects-pagination', 5000);
 
