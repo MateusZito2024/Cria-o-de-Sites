@@ -234,17 +234,6 @@
             box-shadow: 0 5px 15px rgba(232, 121, 249, 0.5);
         }
 
-        .hero-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: 0;
-            opacity: 0.5;
-        }
-
         .hero-overlay {
             position: absolute;
             top: 0;
@@ -312,11 +301,8 @@
             transform: translate(-50%, -50%);
             width: 100%;
             text-align: center;
-            background: linear-gradient(135deg, #a5b4fc, #e879f9, #a5b4fc);
-            background-size: 200% 100%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: shimmer 3s linear infinite;
+            color: white; /* Changed to white */
+            -webkit-text-fill-color: white; /* Ensure text is white */
         }
 
         .saiba-mais:hover {
@@ -338,7 +324,7 @@
         </defs>
     </svg>
 
-    <!-- Navbar (Updated to match contact.html) -->
+    <!-- Navbar -->
     <nav class="shadow-lg fixed w-full z-10">
         <div class="flex justify-between h-16">
             <div class="flex items-center content-layer">
@@ -356,7 +342,6 @@
 
     <!-- Hero Section -->
     <section id="hero" class="relative min-h-screen flex items-center gradient-bg section-animate">
-        <img class="hero-bg" src="https://images.unsplash.com/photo-1516321310764-8a2388150d56?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" alt="Abstract Background">
         <div class="hero-overlay"></div>
         <div class="content-layer absolute left-0 top-1/2 transform -translate-y-1/2 max-w-2xl pl-4 sm:pl-6 lg:pl-8 overflow-visible">
             <div class="relative min-h-[400px] md:min-h-[450px]">
@@ -401,10 +386,9 @@
             <p class="text-xl text-gray-300 max-w-3xl mx-auto mb-12 text-center fade-in" style="animation-delay: 0.2s;">
                 Conheça os talentos por trás da Good Vibes, uma equipe pequena, mas apaixonada por criar experiências únicas.
             </p>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
                 <div class="team-item p-6 rounded-xl transition fade-in text-center" style="animation-delay: 0.4s;">
-                    трех
-                    <img src="https://via.placeholder.com/150?text=Ana" alt="Ana" class="team-img w-32 h-32 rounded-full mx-auto mb-4 object-cover">
+                    <img src="https://i.postimg.cc/YSRPZnTY/DSCN0047.jpg" alt="Ana" class="team-img w-32 h-32 rounded-full mx-auto mb-4 object-cover">
                     <h4 class="text-xl font-semibold gradient-text mb-2">Ana Silva</h4>
                     <p class="text-gray-300 mb-2">Diretora Criativa</p>
                     <p class="text-gray-400 text-sm">Especialista em design e branding, com 10 anos de experiência.</p>
@@ -414,10 +398,20 @@
                     </div>
                 </div>
                 <div class="team-item p-6 rounded-xl transition fade-in text-center" style="animation-delay: 0.6s;">
-                    <img src="https://via.placeholder.com/150?text=Lucas" alt="Lucas" class="team-img w-32 h-32 rounded-full mx-auto mb-4 object-cover">
+                    <img src="https://i.postimg.cc/Z59ShSJZ/1745866071288.jpg" alt="Lucas" class="team-img w-32 h-32 rounded-full mx-auto mb-4 object-cover">
                     <h4 class="text-xl font-semibold gradient-text mb-2">Lucas Mendes</h4>
                     <p class="text-gray-300 mb-2">Desenvolvedor Web</p>
                     <p class="text-gray-400 text-sm">Apaixonado por criar sites rápidos e responsivos.</p>
+                    <div class="flex justify-center space-x-4 mt-4">
+                        <a href="#" class="social-icon text-gray-200"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.761 0 5-2.239 5-5v-14c0-2.761-2.239-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.784-1.75-1.75s.784-1.75 1.75-1.75 1.75.784 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-1.337-.026-3.063-1.867-3.063-1.867 0-2.153 1.459-2.153 2.966v5.701h-3v-11h2.879v1.509h.041c.401-.757 1.379-1.509 2.837-1.509 3.037 0 3.6 2 3.6 4.604v6.396z"/></svg></a>
+                        <a href="#" class="social-icon text-gray-200"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.849.07 1.366.062 2.633.326 3.608 1.301.975.975 1.24 2.242 1.301 3.608.058 1.265.07 1.645.07 4.849s-.012 3.584-.07 4.849c-.062 1.366-.326 2.633-1.301 3.608-.975.975-2.242 1.24-3.608 1.301-1.265.058-1.645.07-4.849.07s-3.584-.012-4.849-.07c-1.366-.062-2.633-.326-3.608-1.301-.975-.975-1.24-2.242-1.301-3.608-.058-1.265-.07-1.645-.07-4.849s.012-3.584.07-4.849c.062-1.366.326-2.633 1.301-3.608.975.975 2.242-1.24 3.608-1.301 1.265-.058 1.645-.07 4.849-.07zm0-2.163c-3.259 0-3.667.014-4.947.072-1.426.065-2.854.364-3.894 1.404-1.04 1.04-1.339 2.468-1.404 3.894-.058 1.28-.072 1.688-.072 4.947s.014 3.667.072 4.947c.065 1.426.364 2.854 1.404 3.894 1.04 1.04 2.468 1.339 3.894 1.404 1.28.058 1.688.072 4.947.072s3.667-.014 4.947-.072c1.426-.065 2.854-.364 3.894-1.404 1.04-1.04 1.339-2.468 1.404-3.894.058-1.28.072-1.688.072-4.947s-.014-3.667-.072-4.947c-.065-1.426-.364-2.854-1.404-3.894-1.04-1.04-2.468-1.339-3.894-1.404-1.28-.058-1.688-.072-4.947-.072zm0 5.838c-3.314 0-6 2.686-6 6s2.686 6 6 6 6-2.686 6-6-2.686-6-6-6zm0 10c-2.209 0-4-1.791-4-4s1.791-4 4-4 4 1.791 4 4-1.791 4-4 4zm6.406-11.845c-.774 0-1.406-.632-1.406-1.406s.632-1.406 1.406-1.406 1.406.632 1.406 1.406-.632 1.406-1.406 1.406z"/></svg></a>
+                    </div>
+                </div>
+                <div class="team-item p-6 rounded-xl transition fade-in text-center" style="animation-delay: 0.8s;">
+                    <img src="https://i.postimg.cc/y6QpCpny/Chat-GPT-Image-28-de-abr-de-2025-16-09-59.png" alt="Kayra" class="team-img w-32 h-32 rounded-full mx-auto mb-4 object-cover">
+                    <h4 class="text-xl font-semibold gradient-text mb-2">Kayra Santos</h4>
+                    <p class="text-gray-300 mb-2">Gestora de Tráfego</p>
+                    <p class="text-gray-400 text-sm">Especialista em estratégias digitais que impulsionam resultados, com paixão por conectar marcas ao público certo.</p>
                     <div class="flex justify-center space-x-4 mt-4">
                         <a href="#" class="social-icon text-gray-200"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.761 0 5-2.239 5-5v-14c0-2.761-2.239-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.784-1.75-1.75s.784-1.75 1.75-1.75 1.75.784 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-1.337-.026-3.063-1.867-3.063-1.867 0-2.153 1.459-2.153 2.966v5.701h-3v-11h2.879v1.509h.041c.401-.757 1.379-1.509 2.837-1.509 3.037 0 3.6 2 3.6 4.604v6.396z"/></svg></a>
                         <a href="#" class="social-icon text-gray-200"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.849.07 1.366.062 2.633.326 3.608 1.301.975.975 1.24 2.242 1.301 3.608.058 1.265.07 1.645.07 4.849s-.012 3.584-.07 4.849c-.062 1.366-.326 2.633-1.301 3.608-.975.975-2.242 1.24-3.608 1.301-1.265.058-1.645.07-4.849.07s-3.584-.012-4.849-.07c-1.366-.062-2.633-.326-3.608-1.301-.975-.975-1.24-2.242-1.301-3.608-.058-1.265-.07-1.645-.07-4.849s.012-3.584.07-4.849c.062-1.366.326-2.633 1.301-3.608.975.975 2.242-1.24 3.608-1.301 1.265-.058 1.645-.07 4.849-.07zm0-2.163c-3.259 0-3.667.014-4.947.072-1.426.065-2.854.364-3.894 1.404-1.04 1.04-1.339 2.468-1.404 3.894-.058 1.28-.072 1.688-.072 4.947s.014 3.667.072 4.947c.065 1.426.364 2.854 1.404 3.894 1.04 1.04 2.468 1.339 3.894 1.404 1.28.058 1.688.072 4.947.072s3.667-.014 4.947-.072c1.426-.065 2.854-.364 3.894-1.404 1.04-1.04 1.339-2.468 1.404-3.894.058-1.28.072-1.688.072-4.947s-.014-3.667-.072-4.947c-.065-1.426-.364-2.854-1.404-3.894-1.04-1.04-2.468-1.339-3.894-1.404-1.28-.058-1.688-.072-4.947-.072zm0 5.838c-3.314 0-6 2.686-6 6s2.686 6 6 6 6-2.686 6-6-2.686-6-6-6zm0 10c-2.209 0-4-1.791-4-4s1.791-4 4-4 4 1.791 4 4-1.791 4-4 4zm6.406-11.845c-.774 0-1.406-.632-1.406-1.406s.632-1.406 1.406-1.406 1.406.632 1.406 1.406-.632 1.406-1.406 1.406z"/></svg></a>
@@ -494,7 +488,7 @@
     </footer>
 
     <script>
-        // Smooth scroll for nav links (Updated to match contact.html)
+        // Smooth scroll for nav links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -504,8 +498,8 @@
             });
         });
 
-        // Fade-in animation on scroll (Original from about.html)
-        const observer = new TrickObserver(entries => {
+        // Fade-in animation on scroll
+        const observer = new IntersectionObserver(entries => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('fade-in');
@@ -515,7 +509,7 @@
         }, { threshold: 0.1 });
         document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
-        // Section slide-in/slide-out animation (Original from about.html)
+        // Section slide-in/slide-out animation
         const sectionObserver = new IntersectionObserver(entries => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -527,7 +521,7 @@
         }, { threshold: 0.2 });
         document.querySelectorAll('.section-animate').forEach(section => sectionObserver.observe(section));
 
-        // Particles.js configuration for firefly effect (Original from about.html)
+        // Particles.js configuration for firefly effect
         particlesJS('particles-js', {
             particles: {
                 number: { value: 100, density: { enable: true, value_area: 1000 } },
@@ -565,7 +559,7 @@
             retina_detect: true
         });
 
-        // Hero text and button rotation (Original from about.html)
+        // Hero text and button rotation
         const heroTexts = [
             { title: 'Conheça a Good Vibes', description: 'Somos uma equipe apaixonada por transformar ideias em realidade.' },
             { title: 'Criamos com propósito', description: 'Cada projeto é uma chance de contar uma nova história.' },
