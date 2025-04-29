@@ -5,14 +5,68 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Good Vibes - Quem Somos</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;600&family=Montserrat:wght@700&display=swap" rel="stylesheet">
     <style>
-        body {
+        html, body {
             font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1e293b, #2d3748, #000000, #0f172a, #1e293b, #2d3748, #000000, #0f172a);
+            background-size: 400% 400%;
+            animation: gradientTransition 20s ease-in-out infinite;
+            color: #f8f8f8;
+            margin: 0;
+            padding: 0;
             position: relative;
             overflow-x: hidden;
-            background: transparent;
+            min-height: 100%;
+        }
+
+        @keyframes gradientTransition {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .stars-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #ffffff;
+            border-radius: 50%;
+            box-shadow: 0 0 5px 1px rgba(255, 255, 255, 0.5);
+            opacity: 0.3;
+            animation: floatStar 15s infinite ease-in-out;
+        }
+
+        .star.purple {
+            background: #6a0dad;
+            box-shadow: 0 0 5px 1px rgba(106, 13, 173, 0.5);
+        }
+
+        .star.pink {
+            background: #e879f9;
+            box-shadow: 0 0 5px 1px rgba(232, 121, 249, 0.5);
+        }
+
+        .star.white {
+            background: #ffffff;
+            box-shadow: 0 0 5px 1px rgba(255, 255, 255, 0.5);
+        }
+
+        @keyframes floatStar {
+            0% { opacity: 0.3; transform: translate(0, 0); }
+            50% { opacity: 0.6; transform: translate(var(--move-x), var(--move-y)); }
+            100% { opacity: 0.3; transform: translate(0, 0); }
         }
 
         /* -------------------------------------
@@ -203,7 +257,7 @@
         }
 
         .section-bg {
-            background: rgba(31, 41, 55, 0.8);
+            background: transparent;
         }
 
         .animated-gradient-text {
@@ -214,16 +268,6 @@
             animation: shimmer 3s linear infinite;
         }
 
-        #particles-js {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            background: #0d1117;
-        }
-
         .team-img {
             border: 3px solid #a5b4fc;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -232,16 +276,6 @@
         .team-img:hover {
             transform: scale(1.05);
             box-shadow: 0 5px 15px rgba(232, 121, 249, 0.5);
-        }
-
-        .hero-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(31, 41, 55, 0.7), rgba(31, 41, 55, 0.4));
-            z-index: 1;
         }
 
         .social-icon {
@@ -315,8 +349,8 @@
     </style>
 </head>
 <body class="text-gray-100">
-    <!-- Interactive Background -->
-    <div id="particles-js"></div>
+    <!-- Stars Background -->
+    <div class="stars-container" id="stars-container"></div>
 
     <!-- SVG Gradient for Icons -->
     <svg width="0" height="0">
@@ -346,7 +380,6 @@
 
     <!-- Hero Section -->
     <section id="hero" class="relative min-h-screen flex items-center gradient-bg section-animate">
-        <div class="hero-overlay"></div>
         <div class="content-layer absolute left-0 top-1/2 transform -translate-y-1/2 max-w-2xl pl-4 sm:pl-6 lg:pl-8 overflow-visible">
             <div class="relative min-h-[400px] md:min-h-[450px]">
                 <h2 id="hero-title" class="text-5xl md:text-6xl font-bold animated-gradient-text leading-tight md:leading-snug pb-2" style="opacity: 1">Conheça a Good Vibes</h2>
@@ -503,43 +536,25 @@
         }, { threshold: 0.2 });
         document.querySelectorAll('.section-animate').forEach(section => sectionObserver.observe(section));
 
-        // Particles.js configuration for firefly effect
-        particlesJS('particles-js', {
-            particles: {
-                number: { value: 100, density: { enable: true, value_area: 1000 } },
-                color: { value: ['#fefcbf', '#fed7aa', '#f0f9ff'] },
-                shape: { type: 'circle' },
-                opacity: {
-                    value: 0.6,
-                    random: true,
-                    anim: { enable: true, speed: 0.5, opacity_min: 0.2, sync: false }
-                },
-                size: { value: 3, random: true, anim: { enable: true, speed: 2, size_min: 1, sync: false } },
-                line_linked: { enable: false },
-                move: {
-                    enable: true,
-                    speed: 0.5,
-                    direction: 'none',
-                    random: true,
-                    straight: false,
-                    out_mode: 'out',
-                    bounce: false
-                }
-            },
-            interactivity: {
-                detect_on: 'canvas',
-                events: {
-                    onhover: { enable: true, mode: 'repulse' },
-                    onclick: { enable: true, mode: 'push' },
-                    resize: true
-                },
-                modes: {
-                    repulse: { distance: 50, duration: 0.2 },
-                    push: { particles_nb: 3 }
-                }
-            },
-            retina_detect: true
-        });
+        // Stars background initialization
+        const starsContainer = document.getElementById('stars-container');
+        const colors = ['purple', 'pink', 'white'];
+        const numStars = 150;
+        const documentHeight = document.body.scrollHeight;
+
+        for (let i = 0; i < numStars; i++) {
+            const star = document.createElement('span');
+            star.classList.add('star');
+            star.classList.add(colors[Math.floor(Math.random() * colors.length)]);
+            star.style.left = `${Math.random() * 100}vw`;
+            star.style.top = `${Math.random() * documentHeight}px`;
+            const moveX = (Math.random() - 0.5) * 300;
+            const moveY = (Math.random() - 0.5) * 300;
+            star.style.setProperty('--move-x', `${moveX}px`);
+            star.style.setProperty('--move-y', `${moveY}px`);
+            star.style.animationDelay = `${Math.random() * 15}s`;
+            starsContainer.appendChild(star);
+        }
 
         // Hero text and button rotation
         const heroTexts = [
