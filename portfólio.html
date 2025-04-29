@@ -7,16 +7,68 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;600&family=Montserrat:wght@700&display=swap" rel="stylesheet">
     <style>
-        body {
+        html, body {
             font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1e293b, #2d3748, #000000, #0f172a, #1e293b, #2d3748, #000000, #0f172a);
+            background-size: 400% 400%;
+            animation: gradientTransition 20s ease-in-out infinite;
+            color: #f8f8f8;
+            margin: 0;
+            padding: 0;
             position: relative;
             overflow-x: hidden;
-            background: #1e293b;
+            min-height: 100%;
         }
 
-        /* -------------------------------------
-           Header Styles (Copied from contact.html)
-        ------------------------------------- */
+        @keyframes gradientTransition {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .stars-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #ffffff;
+            border-radius: 50%;
+            box-shadow: 0 0 5px 1px rgba(255, 255, 255, 0.5);
+            opacity: 0.3;
+            animation: floatStar 15s infinite ease-in-out;
+        }
+
+        .star.purple {
+            background: #6a0dad;
+            box-shadow: 0 0 5px 1px rgba(106, 13, 173, 0.5);
+        }
+
+        .star.pink {
+            background: #e879f9;
+            box-shadow: 0 0 5px 1px rgba(232, 121, 249, 0.5);
+        }
+
+        .star.white {
+            background: #ffffff;
+            box-shadow: 0 0 5px 1px rgba(255, 255, 255, 0.5);
+        }
+
+        @keyframes floatStar {
+            0% { opacity: 0.3; transform: translate(0, 0); }
+            50% { opacity: 0.6; transform: translate(var(--move-x), var(--move-y)); }
+            100% { opacity: 0.3; transform: translate(0, 0); }
+        }
+
         .brand-name {
             font-family: 'Great Vibes', cursive;
             line-height: 2;
@@ -100,7 +152,7 @@
         .content-layer {
             position: relative;
             z-index: 2;
-            text-align: center; /* Ensure parent container enforces centering */
+            text-align: center;
         }
 
         h1, h2, h3, p, a, button, img {
@@ -110,16 +162,13 @@
         }
 
         .content-layer h2, .content-layer h3 {
-            text-align: center; /* Default centering for headings in content-layer */
+            text-align: center;
         }
 
         .content-layer h3.text-left {
-            text-align: left; /* Override for specific h3 elements */
+            text-align: left;
         }
 
-        /* -------------------------------------
-           Remaining Styles from Original portfolio.html
-        ------------------------------------- */
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -232,13 +281,13 @@
 
         .carousel-wrapper {
             display: flex;
-            width: 300%; /* 3 slides, cada um ocupando 100% */
+            width: 300%;
             height: 100%;
-            transition: transform 0.5s ease-in-out; /* Transição suave */
+            transition: transform 0.5s ease-in-out;
         }
 
         .carousel-slide {
-            width: 33.33%; /* 100% / 3 slides */
+            width: 33.33%;
             height: 100%;
         }
 
@@ -265,6 +314,9 @@
     </style>
 </head>
 <body class="text-gray-100">
+    <!-- Stars Container -->
+    <div class="stars-container" id="stars-container"></div>
+
     <!-- Navbar -->
     <nav class="shadow-lg fixed w-full z-10">
         <div class="flex justify-between h-16">
@@ -419,7 +471,7 @@
     </footer>
 
     <script>
-        // Smooth scroll for nav links (Updated to match contact.html)
+        // Smooth scroll for nav links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -429,7 +481,7 @@
             });
         });
 
-        // Fade-in and slide-in animations on scroll (Original from portfolio.html)
+        // Fade-in and slide-in animations on scroll
         const observer = new IntersectionObserver(entries => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -442,25 +494,41 @@
         }, { threshold: 0.1 });
         document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right').forEach(el => observer.observe(el));
 
-        // Carousel logic using JavaScript
+        // Stars animation
+        const starsContainer = document.getElementById('stars-container');
+        const colors = ['purple', 'pink', 'white'];
+        const numStars = 150;
+        const documentHeight = document.body.scrollHeight;
+
+        for (let i = 0; i < numStars; i++) {
+            const star = document.createElement('span');
+            star.classList.add('star');
+            star.classList.add(colors[Math.floor(Math.random() * colors.length)]);
+            star.style.left = `${Math.random() * 100}vw`;
+            star.style.top = `${Math.random() * documentHeight}px`;
+            const moveX = (Math.random() - 0.5) * 300;
+            const moveY = (Math.random() - 0.5) * 300;
+            star.style.setProperty('--move-x', `${moveX}px`);
+            star.style.setProperty('--move-y', `${moveY}px`);
+            star.style.animationDelay = `${Math.random() * 15}s`;
+            starsContainer.appendChild(star);
+        }
+
+        // Carousel logic
         const carouselWrapper = document.getElementById('carouselWrapper');
-        const totalSlides = document.querySelectorAll('.carousel-slide').length; // 3 slides
+        const totalSlides = document.querySelectorAll('.carousel-slide').length;
         let currentSlide = 0;
 
         function showSlide(index) {
-            // Ajusta a posição do carousel-wrapper para mostrar o slide atual
             carouselWrapper.style.transform = `translateX(-${index * (100 / totalSlides)}%)`;
         }
 
         function nextSlide() {
-            currentSlide = (currentSlide + 1) % totalSlides; // Vai para o próximo slide, volta ao 0 se chegar ao fim
+            currentSlide = (currentSlide + 1) % totalSlides;
             showSlide(currentSlide);
         }
 
-        // Inicia o carrossel automaticamente
-        setInterval(nextSlide, 4000); // Muda de slide a cada 4 segundos
-
-        // Mostra o primeiro slide ao carregar a página
+        setInterval(nextSlide, 4000);
         showSlide(currentSlide);
     </script>
 </body>
