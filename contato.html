@@ -1,0 +1,1633 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Good Vibes - Contato</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;600&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1e293b, #2d3748, #000000, #0f172a, #1e293b, #2d3748, #000000, #0f172a);
+            background-size: 400% 400%;
+            animation: gradientTransition 20s ease-in-out infinite;
+            color: #f8f8f8;
+            margin: 0;
+            padding: 0;
+            position: relative;
+            overflow-x: hidden;
+            min-height: 100%;
+        }
+
+        @keyframes gradientTransition {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .stars-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #ffffff;
+            border-radius: 50%;
+            box-shadow: 0 0 5px 1px rgba(255, 255, 255, 0.5);
+            opacity: 0.3;
+            animation: floatStar 15s infinite ease-in-out;
+        }
+
+        .star.purple {
+            background: #6a0dad;
+            box-shadow: 0 0 5px 1px rgba(106, 13, 173, 0.5);
+        }
+
+        .star.pink {
+            background: #e879f9;
+            box-shadow: 0 0 5px 1px rgba(232, 121, 249, 0.5);
+        }
+
+        .star.white {
+            background: #ffffff;
+            box-shadow: 0 0 5px 1px rgba(255, 255, 255, 0.5);
+        }
+
+        @keyframes floatStar {
+            0% { opacity: 0.3; transform: translate(0, 0); }
+            50% { opacity: 0.6; transform: translate(var(--move-x), var(--move-y)); }
+            100% { opacity: 0.3; transform: translate(0, 0); }
+        }
+
+        .brand-name {
+            font-family: 'Great Vibes', cursive;
+            line-height: 2;
+            padding: 1rem;
+            display: block;
+            overflow: visible;
+        }
+
+        .flex.items-center.content-layer {
+            overflow: visible;
+        }
+
+        .nav-link {
+            font-family: 'Montserrat', sans-serif;
+            position: relative;
+            text-decoration: none;
+            color: #f8f8f8;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background: linear-gradient(135deg, #a5b4fc, #e879f9);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-link:hover {
+            color: #e879f9;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #a5b4fc, #e879f9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 10;
+            background: transparent;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 0 1rem;
+        }
+
+        nav > div {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        nav .flex.items-center.content-layer:first-child {
+            margin-right: auto;
+        }
+
+        nav .flex.items-center.content-layer:last-child {
+            margin-left: auto;
+        }
+
+        nav, section, footer {
+            position: relative;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        nav *, section *, footer * {
+            pointer-events: auto;
+        }
+
+        .content-layer {
+            position: relative;
+            z-index: 2;
+        }
+
+        h1, h2, h3, p, a, input, textarea, button, img, svg {
+            position: relative;
+            z-index: 30;
+            opacity: 1 !important;
+        }
+
+        h2, h3 {
+            color: #f8f8f8;
+            text-align: center;
+            opacity: 0;
+        }
+
+        .cursive-text {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2rem;
+            line-height: 1.4;
+            color: #e2e8f0;
+        }
+
+        .animated-gradient-text {
+            background: linear-gradient(90deg, #6a0dad, #ffffff, #e879f9, #6a0dad);
+            background-size: 400% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 8s ease-in-out infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes slideInLeftPiece {
+            from { opacity: 0; transform: translateX(-50px) rotate(-5deg); }
+            to { opacity: 1; transform: translateX(0) rotate(0); }
+        }
+
+        @keyframes slideOutLeftPiece {
+            from { opacity: 1; transform: translateX(0) rotate(0); }
+            to { opacity: 0; transform: translateX(-50px) rotate(-5deg); }
+        }
+
+        @keyframes slideInRightPiece {
+            from { opacity: 0; transform: translateX(50px) rotate(5deg); }
+            to { opacity: 1; transform: translateX(0) rotate(0); }
+        }
+
+        @keyframes slideOutRightPiece {
+            from { opacity: 1; transform: translateX(0) rotate(0); }
+            to { opacity: 0; transform: translateX(50px) rotate(5deg); }
+        }
+
+        @keyframes slideInTopPiece {
+            from { opacity: 0; transform: translateY(-30px) rotate(-3deg); }
+            to { opacity: 1; transform: translateY(0) rotate(0); }
+        }
+
+        @keyframes slideInBottomPiece {
+            from { opacity: 0; transform: translateY(30px) rotate(3deg); }
+            to { opacity: 1; transform: translateY(0) rotate(0); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .puzzle-piece {
+            opacity: 0;
+            display: inline-block;
+        }
+
+        .puzzle-piece-left {
+            animation: slideInLeftPiece 0.8s ease-out forwards;
+        }
+
+        .puzzle-piece-left-exit {
+            animation: slideOutLeftPiece 0.8s ease-out forwards;
+        }
+
+        .puzzle-piece-right {
+            animation: slideInRightPiece 0.8s ease-out forwards;
+        }
+
+        .puzzle-piece-right-exit {
+            animation: slideOutRightPiece 0.8s ease-out forwards;
+        }
+
+        .puzzle-piece-top {
+            animation: slideInTopPiece 0.8s ease-out forwards;
+        }
+
+        .puzzle-piece-bottom {
+            animation: slideInBottomPiece 0.8s ease-out forwards;
+        }
+
+        .float-effect {
+            animation: float 3s infinite ease-in-out;
+        }
+
+        .puzzle-section {
+            position: relative;
+            background: #2d3748;
+            border-radius: 1rem;
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 800px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            border: 2px solid #a5b4fc;
+            animation: squish 30s infinite ease-in-out;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .puzzle-section:hover {
+            background: #374151;
+            box-shadow: 0 10px 20px rgba(106, 13, 173, 0.3);
+        }
+
+        .puzzle-section::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            width: 40px;
+            height: 20px;
+            background: #2d3748;
+            border: 2px solid #a5b4fc;
+            border-bottom: none;
+            border-radius: 50% 50% 0 0;
+            transform: translateX(-50%);
+        }
+
+        .puzzle-section::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            width: 40px;
+            height: 20px;
+            background: #2d3748;
+            border: 2px solid #a5b4fc;
+            border-top: none;
+            border-radius: 0 0 50% 50%;
+            transform: translateX(-50%);
+        }
+
+        .puzzle-section:hover::before,
+        .puzzle-section:hover::after {
+            background: #374151;
+        }
+
+        @keyframes squish {
+            0% { transform: scale(1, 1); }
+            20% { transform: scale(1.05, 0.95); }
+            40% { transform: scale(0.95, 1.05); }
+            60% { transform: scale(1.03, 0.97); }
+            80% { transform: scale(0.97, 1.03); }
+            100% { transform: scale(1, 1); }
+        }
+
+        .whatsapp-button {
+            display: inline-block;
+            background: #25D366;
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 2rem;
+            font-size: 0.9rem;
+            font-weight: bold;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .whatsapp-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.5);
+        }
+
+        .form-button {
+            display: inline-block;
+            background: #a78bfa;
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 2rem;
+            font-size: 0.9rem;
+            font-weight: bold;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: none;
+        }
+
+        .form-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(167, 139, 250, 0.5);
+        }
+
+        .schedule-button {
+            display: inline-block;
+            background: #1e3a8a;
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 2rem;
+            font-size: 0.9rem;
+            font-weight: bold;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .schedule-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(30, 58, 138, 0.5);
+        }
+
+        .feedback-button {
+            display: inline-block;
+            background: #be185d;
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 2rem;
+            font-size: 0.9rem;
+            font-weight: bold;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feedback-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(190, 24, 93, 0.5);
+        }
+
+        .testimonial-button {
+            display: inline-block;
+            background: #166534;
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 2rem;
+            font-size: 0.9rem;
+            font-weight: bold;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .testimonial-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(22, 101, 52, 0.5);
+        }
+
+        .puzzle-section .whatsapp-button,
+        .puzzle-section .form-button,
+        .puzzle-section .schedule-button,
+        .puzzle-section .feedback-button,
+        .puzzle-section .testimonial-button {
+            margin-right: auto;
+            margin-left: 0;
+            display: inline-block;
+        }
+
+        .testimonial-carousel {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            height: 150px;
+            margin: 0 auto;
+        }
+
+        .testimonial-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .testimonial-slide.active {
+            opacity: 1;
+        }
+
+        .testimonial-card {
+            background: #374151;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            border: 2px solid #a5b4fc;
+            text-align: center;
+            color: #e2e8f0;
+            width: 100%;
+        }
+
+        .testimonial-card p {
+            font-size: 1.1rem;
+            color: #e2e8f0;
+            margin-bottom: 10px;
+        }
+
+        .testimonial-card .client-name {
+            color: #e2e8f0;
+            font-style: italic;
+            font-weight: 600;
+        }
+
+        section p {
+            text-align: center;
+        }
+
+        footer p {
+            text-align: center;
+        }
+
+        .chat-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #374151;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            height: 500px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .chat-container.success {
+            background: transparent;
+            padding: 0;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .message {
+            max-width: 70%;
+            padding: 0.75rem;
+            border-radius: 0.75rem;
+            line-height: 1.5;
+        }
+
+        .bot-message {
+            background: #4b5563;
+            color: #e2e8f0;
+            align-self: flex-start;
+            border-bottom-left-radius: 0;
+        }
+
+        .user-message {
+            background: #a5b4fc;
+            color: #1f2937;
+            align-self: flex-end;
+            border-bottom-right-radius: 0;
+        }
+
+        .typing-indicator {
+            display: flex;
+            gap: 0.3rem;
+            align-self: flex-start;
+            padding: 0.75rem;
+        }
+
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            background: #a5b4fc;
+            border-radius: 50%;
+            animation: bounce 0.6s infinite alternate;
+        }
+
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-5px); }
+        }
+
+        .chat-input {
+            display: flex;
+            gap: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #4b5563;
+        }
+
+        .chat-input textarea {
+            flex: 1;
+            padding: 0.75rem;
+            background: #4b5563;
+            color: #e2e8f0;
+            border: 1px solid #a5b4fc;
+            border-radius: 0.5rem;
+            outline: none;
+            resize: none;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .chat-input button {
+            background: #e879f9;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .chat-input button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(232, 121, 249, 0.5);
+        }
+
+        .sparkle-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+            color: #e2e8f0;
+            background: linear-gradient(90deg, #a5b4fc, #e879f9, #a5b4fc);
+            background-size: 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: sparkle 2s infinite, fadeIn 0.5s ease-in-out;
+        }
+
+        .success-message-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            min-height: 300px;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 100;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .modal-content {
+            background: #2d3748;
+            border-radius: 1rem;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            border: 2px solid #a5b4fc;
+            position: relative;
+            animation: slideInTopPiece 0.5s ease-out;
+        }
+
+        .modal-content input,
+        .modal-content textarea {
+            width: 100%;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            background: #4b5563;
+            color: #e2e8f0;
+            border: 1px solid #a5b4fc;
+            border-radius: 0.5rem;
+            outline: none;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .modal-content textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .modal-content button {
+            background: #e879f9;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: none;
+        }
+
+        .modal-content button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(232, 121, 249, 0.5);
+        }
+
+        .close-button {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: #e2e8f0;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .error-message,
+        .success-message {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .error-message {
+            color: #f87171;
+        }
+
+        .success-message {
+            color: #a5b4fc;
+        }
+
+        @keyframes sparkle {
+            0% { background-position: 0%; }
+            50% { background-position: 200%; }
+            100% { background-position: 0%; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body class="text-gray-100">
+    <div class="stars-container" id="stars-container"></div>
+    <nav class="shadow-lg fixed w-full z-10">
+        <div class="flex justify-between h-16">
+            <div class="flex items-center content-layer">
+                <h1 class="text-4xl brand-name gradient-text">Good Vibes</h1>
+            </div>
+            <div class="flex items-center space-x-6 content-layer">
+                <a href="index.html#home" class="nav-link text-lg transition">Início</a>
+                <a href="index.html#services" class="nav-link text-lg transition">Serviços</a>
+                <a href="index.html#about" class="nav-link text-lg transition">Sobre</a>
+                <a href="portfolio.html" class="nav-link text-lg transition">Portfólio</a>
+                <a href="contact.html" class="nav-link text-lg transition">Contato</a>
+            </div>
+        </div>
+    </nav>
+    <section class="py-32 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 content-layer">
+            <h2 class="text-5xl font-bold animated-gradient-text">
+                Fale com a Good Vibes
+            </h2>
+            <p class="text-xl text-gray-200 mt-6 max-w-2xl mx-auto">
+                <span class="puzzle-piece puzzle-piece-left">Tem uma ideia incrível?</span>
+                <span class="puzzle-piece puzzle-piece-right">Quer tirar uma dúvida ou só bater um papo sobre o seu projeto?</span>
+                <span class="puzzle-piece puzzle-piece-top">A gente adora conversar!</span>
+                <span class="puzzle-piece puzzle-piece-bottom">Escolha o melhor canal e fale com a gente.</span>
+            </p>
+        </div>
+    </section>
+    <section class="py-20 relative">
+        <div class="puzzle-section">
+            <h3 class="text-3xl font-bold mb-6 animated-gradient-text">
+                Formulário de Contato
+            </h3>
+            <div class="chat-container">
+                <div class="chat-messages" id="chatMessages"></div>
+                <div class="chat-input" id="chatInput">
+                    <textarea id="userInput" placeholder="Digite sua resposta..." rows="1" onkeypress="handleKeyPress(event)"></textarea>
+                    <button onclick="sendMessage()">Enviar</button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="py-20 relative">
+        <div class="puzzle-section">
+            <h3 class="text-3xl font-bold mb-6 animated-gradient-text">
+                Atendimento via WhatsApp
+            </h3>
+            <p class="text-lg text-gray-200 mb-6">
+                <span class="puzzle-piece puzzle-piece-top">Quer uma resposta rápida?</span>
+                <span class="puzzle-piece puzzle-piece-bottom">Chama a gente no WhatsApp!</span>
+            </p>
+            <a href="https://api.whatsapp.com/send/?phone=5511987637786" target="_blank" class="whatsapp-button float-effect puzzle-piece puzzle-piece-top">
+                Conversar Agora
+            </a>
+        </div>
+    </section>
+    <section class="py-20 relative">
+        <div class="puzzle-section">
+            <h3 class="text-3xl font-bold mb-6 animated-gradient-text">
+                Onde estamos?
+            </h3>
+            <p class="text-lg text-gray-200 max-w-xl mx-auto">
+                <span class="puzzle-piece puzzle-piece-top">A Good Vibes é 100% digital, mas nosso</span>
+                <span class="puzzle-piece puzzle-piece-bottom">coração está no Brasil — espalhando criatividade pra todos os cantos.</span>
+            </p>
+        </div>
+    </section>
+    <section class="py-20 relative">
+        <div class="puzzle-section">
+            <h3 class="text-3xl font-bold mb-6 animated-gradient-text">
+                Agende uma reunião
+            </h3>
+            <p class="text-lg text-gray-200 mb-6 max-w-xl mx-auto">
+                <span class="puzzle-piece puzzle-piece-top">Prefere uma conversa mais detalhada?</span>
+                <span class="puzzle-piece puzzle-piece-bottom">Agende um horário com a gente e vamos trocar uma ideia sobre seu projeto.</span>
+            </p>
+            <button class="schedule-button float-effect puzzle-piece puzzle-piece-top" onclick="showScheduleModal()">
+                Agendar Reunião
+            </button>
+            <div class="modal-overlay" id="scheduleModal">
+                <div class="modal-content">
+                    <button class="close-button" onclick="hideScheduleModal()">×</button>
+                    <h4 class="text-2xl font-bold mb-4 animated-gradient-text">Agende sua Reunião</h4>
+                    <div id="scheduleFormContainer">
+                        <input type="text" id="scheduleName" placeholder="Seu nome" maxlength="50">
+                        <input type="email" id="scheduleEmail" placeholder="Seu e-mail">
+                        <input type="date" id="scheduleDate" placeholder="Data preferida">
+                        <input type="time" id="scheduleTime" placeholder="Horário preferido">
+                        <textarea id="scheduleMessage" placeholder="Mensagem (opcional)" maxlength="500"></textarea>
+                        <button onclick="submitSchedule()">Enviar</button>
+                        <div id="scheduleMessage"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="py-20 relative">
+        <div class="puzzle-section">
+            <h3 class="text-3xl font-bold mb-6 animated-gradient-text">
+                Feedback ou sugestão?
+            </h3>
+            <p class="text-lg text-gray-200 mb-6 max-w-xl mx-auto">
+                <span class="puzzle-piece puzzle-piece-top">Tem um feedback pra compartilhar ou</span>
+                <span class="puzzle-piece puzzle-piece-bottom">compartilhar uma sugestão, estamos ouvindo! Feedbacks ajudam a gente a melhorar cada vez mais.</span>
+            </p>
+            <button class="feedback-button float-effect puzzle-piece puzzle-piece-top" onclick="showFeedbackModal()">
+                Enviar Feedback
+            </button>
+            <div class="modal-overlay" id="feedbackModal">
+                <div class="modal-content">
+                    <button class="close-button" onclick="hideFeedbackModal()">×</button>
+                    <h4 class="text-2xl font-bold mb-4 animated-gradient-text">Deixe seu Feedback</h4>
+                    <div id="feedbackFormContainer">
+                        <input type="text" id="feedbackName" placeholder="Seu nome" maxlength="50">
+                        <input type="email" id="feedbackEmail" placeholder="Seu e-mail">
+                        <textarea id="feedbackText" placeholder="Seu feedback ou sugestão" maxlength="500"></textarea>
+                        <button onclick="submitFeedback()">Enviar</button>
+                        <div id="feedbackMessage"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="py-20 relative">
+        <div class="puzzle-section">
+            <h3 class="text-3xl font-bold mb-6 animated-gradient-text">
+                Depoimentos Rápidos
+            </h3>
+            <div class="testimonial-carousel">
+                <div class="testimonial-slide active">
+                    <div class="testimonial-card puzzle-piece puzzle-piece-top">
+                        <p>"Eles captaram minha ideia logo de cara e transformaram em um site que é a cara da minha marca."</p>
+                        <p class="client-name mt-2">— Cliente X, Empreendedor</p>
+                    </div>
+                </div>
+                <div class="testimonial-slide">
+                    <div class="testimonial-card puzzle-piece puzzle-piece-bottom">
+                        <p>"A comunicação foi perfeita, e o projeto ficou incrível. Estou muito satisfeito!"</p>
+                        <p class="client-name mt-2">— Cliente Y, Designer</p>
+                    </div>
+                </div>
+            </div>
+            <button class="testimonial-button float-effect puzzle-piece puzzle-piece-top mt-6" onclick="showTestimonialModal()">
+                Enviar Depoimento
+            </button>
+            <div class="modal-overlay" id="testimonialModal">
+                <div class="modal-content">
+                    <button class="close-button" onclick="hideTestimonialModal()">×</button>
+                    <h4 class="text-2xl font-bold mb-4 animated-gradient-text">Envie seu Depoimento</h4>
+                    <div id="testimonialFormContainer">
+                        <input type="text" id="testimonialName" placeholder="Seu nome" maxlength="50">
+                        <input type="text" id="testimonialProfession" placeholder="Sua profissão" maxlength="100">
+                        <input type="email" id="testimonialEmail" placeholder="Seu e-mail">
+                        <textarea id="testimonialComment" placeholder="Seu depoimento" maxlength="500"></textarea>
+                        <button onclick="submitTestimonial()">Enviar</button>
+                        <div id="testimonialMessage"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer class="text-gray-200 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 content-layer">
+            <p>© 2025 Good Vibes. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.querySelectorAll('.puzzle-piece').forEach((el, index) => {
+                        el.style.animationDelay = `${index * 0.2}s`;
+                    });
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.3 });
+
+        document.querySelectorAll('.puzzle-section, .content-layer').forEach(el => observer.observe(el));
+
+        const titleObserver = new IntersectionObserver(entries => {
+            entries.forEach((entry, index) => {
+                const title = entry.target;
+                const direction = index % 2 === 0 ? 'left' : 'right';
+                if (entry.isIntersecting) {
+                    title.classList.remove('puzzle-piece-left-exit', 'puzzle-piece-right-exit');
+                    title.classList.add(`puzzle-piece-${direction}`);
+                } else {
+                    title.classList.remove('puzzle-piece-left', 'puzzle-piece-right');
+                    title.classList.add(`puzzle-piece-${direction}-exit`);
+                }
+            });
+        }, { threshold: 0.3 });
+
+        document.querySelectorAll('h2, h3').forEach((title, index) => {
+            titleObserver.observe(title);
+        });
+
+        const starsContainer = document.getElementById('stars-container');
+        const colors = ['purple', 'pink', 'white'];
+        const numStars = 150;
+        const documentHeight = document.body.scrollHeight;
+
+        for (let i = 0; i < numStars; i++) {
+            const star = document.createElement('span');
+            star.classList.add('star');
+            star.classList.add(colors[Math.floor(Math.random() * colors.length)]);
+            star.style.left = `${Math.random() * 100}vw`;
+            star.style.top = `${Math.random() * documentHeight}px`;
+            const moveX = (Math.random() - 0.5) * 300;
+            const moveY = (Math.random() - 0.5) * 300;
+            star.style.setProperty('--move-x', `${moveX}px`);
+            star.style.setProperty('--move-y', `${moveY}px`);
+            star.style.animationDelay = `${Math.random() * 15}s`;
+            starsContainer.appendChild(star);
+        }
+
+        document.querySelectorAll('.puzzle-section').forEach(section => {
+            const delay = Math.random() * 30;
+            section.style.animationDelay = `${delay}s`;
+        });
+
+        const slides = document.querySelectorAll('.testimonial-slide');
+        let currentSlide = 0;
+
+        function showNextSlide() {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+
+        setInterval(showNextSlide, 5000);
+        slides[currentSlide].classList.add('active');
+
+        let chatMessages = document.getElementById('chatMessages');
+        let userInput = document.getElementById('userInput');
+        let chatState = {
+            step: 1,
+            name: '',
+            email: '',
+            whatsapp: '',
+            message: ''
+        };
+        let isBotTyping = false;
+        let hasGreeted = false;
+        let isCorrecting = false;
+        let fieldToCorrect = null;
+
+        const commonGreetings = [
+            'oi', 'olá', 'ola', 'bom dia', 'boa tarde', 'boa noite',
+            'tudo bem', 'tudo bom', 'como vai', 'e aí', 'e ai', 'eai',
+            'oiê', 'oie', 'oiee', 'oláá', 'olaa', 'oláa', 'tô de boa',
+            'tô bem', 'tô de boa?', 'tô bem?', 'como você está',
+            'como você ta', 'como você tá', 'e você', 'e tu', 'e voce',
+            'opa'
+        ];
+
+        const botGreetings = [
+            'Que bom te ver! 😊',
+            'Seja bem-vindo! 😊',
+            'É um prazer te conhecer! 😊',
+            'Fico feliz em te ajudar hoje! 😊'
+        ];
+
+        const correctionKeywords = [
+            'errei', 'ops', 'opa', 'eita', 'está errado', 'esta errado',
+            'está errada', 'esta errada', 'corrigir', 'alterar', 'trocar'
+        ];
+
+        const fieldKeywords = {
+            name: ['nome', 'meu nome'],
+            email: ['email', 'e-mail', 'mail'],
+            whatsapp: ['whatsapp', 'whats', 'telefone', 'número', 'numero']
+        };
+
+        function isGreeting(message) {
+            const normalizedMessage = message.toLowerCase().trim();
+            return commonGreetings.some(greeting => 
+                normalizedMessage === greeting || 
+                normalizedMessage.startsWith(greeting + ' ') || 
+                normalizedMessage.endsWith(' ' + greeting) ||
+                normalizedMessage.includes(' ' + greeting + ' ')
+            );
+        }
+
+        function isValidName(name) {
+            const normalizedName = name.trim();
+            const nameRegex = /^[a-zA-ZÀ-ÿ\s-]+$/;
+            return (
+                nameRegex.test(normalizedName) &&
+                normalizedName.length <= 50 &&
+                !normalizedName.includes(',') &&
+                !normalizedName.includes('?') &&
+                !normalizedName.includes('!')
+            );
+        }
+
+        function selectBotGreeting(userGreeting) {
+            const normalizedUserGreeting = userGreeting.toLowerCase().trim();
+            let availableGreetings = botGreetings;
+            const userGreetingWords = normalizedUserGreeting.split(' ');
+            availableGreetings = botGreetings.filter(greeting => {
+                const greetingWords = greeting.toLowerCase().split(' ');
+                return !userGreetingWords.some(word => greetingWords.includes(word));
+            });
+            if (availableGreetings.length === 0) {
+                availableGreetings = botGreetings;
+            }
+            return availableGreetings[Math.floor(Math.random() * availableGreetings.length)];
+        }
+
+        function detectCorrectionRequest(message) {
+            const normalizedMessage = message.toLowerCase().trim();
+            const isCorrection = correctionKeywords.some(keyword => 
+                normalizedMessage.includes(keyword)
+            );
+            if (!isCorrection) return null;
+            for (const [field, keywords] of Object.entries(fieldKeywords)) {
+                if (keywords.some(keyword => normalizedMessage.includes(keyword))) {
+                    return field;
+                }
+            }
+            return null;
+        }
+
+        function askForCorrectedData(field) {
+            let question;
+            switch (field) {
+                case 'name':
+                    question = "Qual seria o nome correto?";
+                    break;
+                case 'email':
+                    question = "Qual seria o e-mail correto?";
+                    break;
+                case 'whatsapp':
+                    question = "Qual seria o número de WhatsApp correto?";
+                    break;
+                default:
+                    question = "Desculpe, não entendi qual dado você quer corrigir. Pode especificar?";
+            }
+            showTypingIndicator();
+            setTimeout(() => {
+                removeTypingIndicator();
+                addBotMessage(question);
+            }, 2000);
+        }
+
+        function continueFlow() {
+            showTypingIndicator();
+            setTimeout(() => {
+                removeTypingIndicator();
+                if (chatState.step === 1) {
+                    addBotMessage("Olá! Sou o assistente da Good Vibes. 😊 Qual é o seu nome ou como você gostaria de ser chamado?");
+                } else if (chatState.step === 2) {
+                    addBotMessage(`Prazer em conhecê-lo, ${chatState.name}! Qual é o seu e-mail de contato?`);
+                } else if (chatState.step === 3) {
+                    addBotMessage("Ótimo! Qual é o seu número de WhatsApp?");
+                } else if (chatState.step === 4) {
+                    addBotMessage("Perfeito! Agora, qual é a mensagem que você gostaria de enviar?");
+                    userInput.placeholder = "Digite sua mensagem...";
+                    userInput.rows = 3;
+                }
+                saveChatState();
+            }, 2000);
+        }
+
+        window.onload = function() {
+            localStorage.removeItem('chatState');
+            chatState = {
+                step: 1,
+                name: '',
+                email: '',
+                whatsapp: '',
+                message: ''
+            };
+            hasGreeted = false;
+            chatMessages.innerHTML = '';
+            const chatContainer = document.querySelector('.chat-container');
+            chatContainer.innerHTML = `
+                <div class="chat-messages" id="chatMessages"></div>
+                <div class="chat-input" id="chatInput">
+                    <textarea id="userInput" placeholder="Digite sua resposta..." rows="1" onkeypress="handleKeyPress(event)"></textarea>
+                    <button onclick="sendMessage()">Enviar</button>
+                </div>
+            `;
+            chatMessages = document.getElementById('chatMessages');
+            userInput = document.getElementById('userInput');
+        };
+
+        function loadChatState() {
+            const savedState = localStorage.getItem('chatState');
+            if (savedState) {
+                chatState = JSON.parse(savedState);
+                restoreChat();
+            }
+        }
+
+        function saveChatState() {
+            localStorage.setItem('chatState', JSON.stringify(chatState));
+        }
+
+        function restoreChat() {
+            chatMessages.innerHTML = '';
+            if (chatState.step >= 1) {
+                addBotMessage("Olá! Sou o assistente da Good Vibes. 😊 Qual é o seu nome ou como você gostaria de ser chamado?");
+                if (chatState.name) {
+                    addUserMessage(chatState.name);
+                }
+            }
+            if (chatState.step >= 2) {
+                addBotMessage(`Prazer em conhecê-lo, ${chatState.name}! Qual é o seu e-mail de contato?`);
+                if (chatState.email) {
+                    addUserMessage(chatState.email);
+                }
+            }
+            if (chatState.step >= 3) {
+                addBotMessage("Ótimo! Qual é o seu número de WhatsApp?");
+                if (chatState.whatsapp) {
+                    addUserMessage(chatState.whatsapp);
+                }
+            }
+            if (chatState.step >= 4) {
+                addBotMessage("Perfeito! Agora, qual é a mensagem que você gostaria de enviar?");
+                if (chatState.message) {
+                    addUserMessage(chatState.message);
+                }
+            }
+            if (chatState.step === 5) {
+                showSuccessMessage();
+            }
+            scrollToBottom();
+        }
+
+        function addBotMessage(message) {
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message', 'bot-message');
+            messageElement.textContent = message;
+            chatMessages.appendChild(messageElement);
+            scrollToBottom();
+        }
+
+        function addUserMessage(message) {
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message', 'user-message');
+            messageElement.textContent = message;
+            chatMessages.appendChild(messageElement);
+            scrollToBottom();
+        }
+
+        function showTypingIndicator() {
+            const typingElement = document.createElement('div');
+            typingElement.classList.add('typing-indicator');
+            typingElement.innerHTML = '<span></span><span></span><span></span>';
+            typingElement.id = 'typingIndicator';
+            chatMessages.appendChild(typingElement);
+            scrollToBottom();
+            isBotTyping = true;
+        }
+
+        function removeTypingIndicator() {
+            const typingElement = document.getElementById('typingIndicator');
+            if (typingElement) {
+                typingElement.remove();
+            }
+            isBotTyping = false;
+        }
+
+        function scrollToBottom() {
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        function isValidPhoneNumber(phone) {
+            const phoneRegex = /^\+?[\d\s()-]{7,}$/;
+            return phoneRegex.test(phone);
+        }
+
+        function isValidDate(dateStr) {
+            const inputDate = new Date(dateStr);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            return inputDate >= today && !isNaN(inputDate);
+        }
+
+        const contactSectionObserver = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !hasGreeted && chatState.step === 1 && !chatState.name) {
+                    showTypingIndicator();
+                    setTimeout(() => {
+                        removeTypingIndicator();
+                        addBotMessage("Olá! Sou o assistente da Good Vibes. 😊 Qual é o seu nome ou como você gostaria de ser chamado?");
+                        hasGreeted = true;
+                        saveChatState();
+                    }, 3000);
+                }
+            });
+        }, { threshold: 0.3 });
+
+        function sendMessage() {
+            if (isBotTyping) return;
+            const userText = userInput.value.trim();
+            if (!userText) return;
+            const correctionField = detectCorrectionRequest(userText);
+            if (correctionField && chatState.step < 5) {
+                addUserMessage(userText);
+                fieldToCorrect = correctionField;
+                isCorrecting = true;
+                askForCorrectedData(correctionField);
+                userInput.value = '';
+                return;
+            }
+            if (isCorrecting) {
+                addUserMessage(userText);
+                let isValid = true;
+                let errorMessage = '';
+                if (fieldToCorrect === 'name') {
+                    if (isValidName(userText)) {
+                        chatState.name = userText;
+                    } else {
+                        isValid = false;
+                        errorMessage = "Desculpe, não sei se esse é o seu nome. 😅 Pode me dizer um nome válido?";
+                    }
+                } else if (fieldToCorrect === 'email') {
+                    if (isValidEmail(userText)) {
+                        chatState.email = userText;
+                    } else {
+                        isValid = false;
+                        errorMessage = "Desculpe, isso não parece ser um e-mail válido. Por favor, insira um e-mail válido (exemplo: seuemail@dominio.com).";
+                    }
+                } else if (fieldToCorrect === 'whatsapp') {
+                    if (isValidPhoneNumber(userText)) {
+                        chatState.whatsapp = userText;
+                    } else {
+                        isValid = false;
+                        errorMessage = "Desculpe, isso não parece ser um número de telefone válido. Por favor, insira um número de WhatsApp válido (exemplo: +5511999999999).";
+                    }
+                }
+                if (isValid) {
+                    showTypingIndicator();
+                    setTimeout(() => {
+                        removeTypingIndicator();
+                        addBotMessage("Dado corrigido com sucesso! 😊");
+                        isCorrecting = false;
+                        fieldToCorrect = null;
+                        continueFlow();
+                    }, 2000);
+                } else {
+                    showTypingIndicator();
+                    setTimeout(() => {
+                        removeTypingIndicator();
+                        addBotMessage(errorMessage);
+                    }, 2000);
+                }
+                userInput.value = '';
+                saveChatState();
+                return;
+            }
+            if (chatState.step === 1) {
+                addUserMessage(userText);
+                if (isGreeting(userText)) {
+                    const botGreeting = selectBotGreeting(userText);
+                    showTypingIndicator();
+                    setTimeout(() => {
+                        removeTypingIndicator();
+                        addBotMessage(`${botGreeting} Qual é o seu nome ou como você gostaria de ser chamado?`);
+                    }, 3000);
+                } else if (isValidName(userText)) {
+                    chatState.name = userText;
+                    chatState.step = 2;
+                    showTypingIndicator();
+                    setTimeout(() => {
+                        removeTypingIndicator();
+                        addBotMessage(`Prazer em conhecê-lo, ${chatState.name}! Qual é o seu e-mail de contato?`);
+                        saveChatState();
+                    }, 3000);
+                } else {
+                    showTypingIndicator();
+                    setTimeout(() => {
+                        removeTypingIndicator();
+                        addBotMessage("Desculpe, não sei se esse é o seu nome. 😅 Pode me dizer seu nome ou como você gostaria de ser chamado?");
+                    }, 3000);
+                }
+            } else if (chatState.step === 2) {
+                if (isValidEmail(userText)) {
+                    chatState.email = userText;
+                    addUserMessage(userText);
+                    chatState.step = 3;
+                    showTypingIndicator();
+                    setTimeout(() => {
+                        removeTypingIndicator();
+                        addBotMessage("Ótimo! Qual é o seu número de WhatsApp?");
+                        saveChatState();
+                    }, 3000);
+                } else {
+                    showTypingIndicator();
+                    setTimeout(() => {
+                        removeTypingIndicator();
+                        addBotMessage("Desculpe, isso não parece ser um e-mail válido. Por favor, insira um e-mail válido (exemplo: seuemail@dominio.com).");
+                    }, 3000);
+                }
+            } else if (chatState.step === 3) {
+                if (isValidPhoneNumber(userText)) {
+                    chatState.whatsapp = userText;
+                    addUserMessage(userText);
+                    chatState.step = 4;
+                    showTypingIndicator();
+                    setTimeout(() => {
+                        removeTypingIndicator();
+                        addBotMessage("Perfeito! Agora, qual é a mensagem que você gostaria de enviar?");
+                        userInput.placeholder = "Digite sua mensagem...";
+                        userInput.rows = 3;
+                        saveChatState();
+                    }, 3000);
+                } else {
+                    showTypingIndicator();
+                    setTimeout(() => {
+                        removeTypingIndicator();
+                        addBotMessage("Desculpe, isso não parece ser um número de telefone válido. Por favor, insira um número de WhatsApp válido (exemplo: +5511999999999).");
+                    }, 3000);
+                }
+            } else if (chatState.step === 4) {
+                chatState.message = userText;
+                addUserMessage(userText);
+                chatState.step = 5;
+                sendToFormspree();
+            }
+            userInput.value = '';
+            saveChatState();
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
+            }
+        }
+
+        function sendToFormspree() {
+            const formData = new FormData();
+            formData.append('name', chatState.name);
+            formData.append('email', chatState.email);
+            formData.append('whatsapp', chatState.whatsapp);
+            formData.append('message', chatState.message);
+            fetch('https://formspree.io/f/mgvolbyv', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    showSuccessMessage();
+                } else {
+                    addBotMessage("Desculpe, houve um erro ao enviar sua mensagem. Tente novamente mais tarde.");
+                }
+            })
+            .catch(error => {
+                addBotMessage("Desculpe, houve um erro ao enviar sua mensagem. Tente novamente mais tarde.");
+            });
+        }
+
+        function showSuccessMessage() {
+            const section = document.querySelector('section:nth-of-type(2)');
+            const puzzleSection = section.querySelector('.puzzle-section');
+            puzzleSection.remove();
+            const successContainer = document.createElement('div');
+            successContainer.classList.add('success-message-container');
+            const successMessage = document.createElement('div');
+            successMessage.classList.add('sparkle-text');
+            successMessage.textContent = 'Mensagem Enviada! ✨';
+            successContainer.appendChild(successMessage);
+            section.appendChild(successContainer);
+            localStorage.removeItem('chatState');
+            chatState = {
+                step: 1,
+                name: '',
+                email: '',
+                whatsapp: '',
+                message: ''
+            };
+        }
+
+        function showFeedbackModal() {
+            const modal = document.getElementById('feedbackModal');
+            modal.classList.add('show');
+            document.getElementById('feedbackName').value = '';
+            document.getElementById('feedbackEmail').value = '';
+            document.getElementById('feedbackText').value = '';
+            document.getElementById('feedbackMessage').innerHTML = '';
+        }
+
+        function hideFeedbackModal() {
+            const modal = document.getElementById('feedbackModal');
+            modal.classList.remove('show');
+        }
+
+        function submitFeedback() {
+            const name = document.getElementById('feedbackName').value.trim();
+            const email = document.getElementById('feedbackEmail').value.trim();
+            const feedback = document.getElementById('feedbackText').value.trim();
+            const messageContainer = document.getElementById('feedbackMessage');
+
+            if (!name || !isValidName(name)) {
+                messageContainer.innerHTML = '<div class="error-message">Por favor, insira um nome válido (apenas letras e espaços, até 50 caracteres).</div>';
+                return;
+            }
+
+            if (!email || !isValidEmail(email)) {
+                messageContainer.innerHTML = '<div class="error-message">Por favor, insira um e-mail válido.</div>';
+                return;
+            }
+
+            if (!feedback || feedback.length > 500) {
+                messageContainer.innerHTML = '<div class="error-message">Por favor, insira um feedback válido (até 500 caracteres).</div>';
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('name', name);
+            formData.append('email', email);
+            formData.append('feedback', feedback);
+
+            fetch('https://formspree.io/f/mgvolbyv', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    messageContainer.innerHTML = '<div class="success-message">Feedback enviado com sucesso! ✨</div>';
+                    document.getElementById('feedbackName').value = '';
+                    document.getElementById('feedbackEmail').value = '';
+                    document.getElementById('feedbackText').value = '';
+                    setTimeout(hideFeedbackModal, 2000);
+                } else {
+                    messageContainer.innerHTML = '<div class="error-message">Erro ao enviar o feedback. Tente novamente.</div>';
+                }
+            })
+            .catch(error => {
+                messageContainer.innerHTML = '<div class="error-message">Erro ao enviar o feedback. Tente novamente.</div>';
+            });
+        }
+
+        function showTestimonialModal() {
+            const modal = document.getElementById('testimonialModal');
+            modal.classList.add('show');
+            document.getElementById('testimonialName').value = '';
+            document.getElementById('testimonialProfession').value = '';
+            document.getElementById('testimonialEmail').value = '';
+            document.getElementById('testimonialComment').value = '';
+            document.getElementById('testimonialMessage').innerHTML = '';
+        }
+
+        function hideTestimonialModal() {
+            const modal = document.getElementById('testimonialModal');
+            modal.classList.remove('show');
+        }
+
+        function submitTestimonial() {
+            const name = document.getElementById('testimonialName').value.trim();
+            const profession = document.getElementById('testimonialProfession').value.trim();
+            const email = document.getElementById('testimonialEmail').value.trim();
+            const comment = document.getElementById('testimonialComment').value.trim();
+            const messageContainer = document.getElementById('testimonialMessage');
+
+            if (!name || !isValidName(name)) {
+                messageContainer.innerHTML = '<div class="error-message">Por favor, insira um nome válido (apenas letras e espaços, até 50 caracteres).</div>';
+                return;
+            }
+
+            if (!profession || profession.length > 100) {
+                messageContainer.innerHTML = '<div class="error-message">Por favor, insira uma profissão válida (até 100 caracteres).</div>';
+                return;
+            }
+
+            if (!email || !isValidEmail(email)) {
+                messageContainer.innerHTML = '<div class="error-message">Por favor, insira um e-mail válido.</div>';
+                return;
+            }
+
+            if (!comment || comment.length > 500) {
+                messageContainer.innerHTML = '<div class="error-message">Por favor, insira um depoimento válido (até 500 caracteres).</div>';
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('name', name);
+            formData.append('profession', profession);
+            formData.append('email', email);
+            formData.append('comment', comment);
+
+            fetch('https://formspree.io/f/mgvolbyv', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    messageContainer.innerHTML = '<div class="success-message">Depoimento enviado com sucesso! ✨</div>';
+                    document.getElementById('testimonialName').value = '';
+                    document.getElementById('testimonialProfession').value = '';
+                    document.getElementById('testimonialEmail').value = '';
+                    document.getElementById('testimonialComment').value = '';
+                    setTimeout(hideTestimonialModal, 2000);
+                } else {
+                    messageContainer.innerHTML = '<div class="error-message">Erro ao enviar o depoimento. Tente novamente.</div>';
+                }
+            })
+            .catch(error => {
+                messageContainer.innerHTML = '<div class="error-message">Erro ao enviar o depoimento. Tente novamente.</div>';
+            });
+        }
+
+        function showScheduleModal() {
+            const modal = document.getElementById('scheduleModal');
+            modal.classList.add('show');
+            document.getElementById('scheduleName').value = '';
+            document.getElementById('scheduleEmail').value = '';
+            document.getElementById('scheduleDate').value = '';
+            document.getElementById('scheduleTime').value = '';
+            document.getElementById('scheduleMessage').value = '';
+            document.getElementById('scheduleMessage').innerHTML = '';
+
+            const dateInput = document.getElementById('scheduleDate');
+            const today = new Date().toISOString().split('T')[0];
+            dateInput.setAttribute('min', today);
+        }
+
+        function hideScheduleModal() {
+            const modal = document.getElementById('scheduleModal');
+            modal.classList.remove('show');
+        }
+
+        function submitSchedule() {
+            const name = document.getElementById('scheduleName').value.trim();
+            const email = document.getElementById('scheduleEmail').value.trim();
+            const date = document.getElementById('scheduleDate').value;
+            const time = document.getElementById('scheduleTime').value;
+            const message = document.getElementById('scheduleMessage').value.trim();
+            const messageContainer = document.getElementById('scheduleMessage');
+
+            if (!name || !isValidName(name)) {
+                messageContainer.innerHTML = '<div class="error-message">Por favor, insira um nome válido (apenas letras e espaços, até 50 caracteres).</div>';
+                return;
+            }
+
+            if (!email || !isValidEmail(email)) {
+                messageContainer.innerHTML = '<div class="error-message">Por favor, insira um e-mail válido.</div>';
+                return;
+            }
+
+            if (!date || !isValidDate(date)) {
+                messageContainer.innerHTML = '<div class="error-message">Por favor, selecione uma data válida (a partir de hoje).</div>';
+                return;
+            }
+
+            if (!time) {
+                messageContainer.innerHTML = '<div class="error-message">Por favor, selecione um horário.</div>';
+                return;
+            }
+
+            if (message && message.length > 500) {
+                messageContainer.innerHTML = '<div class="error-message">A mensagem não pode exceder 500 caracteres.</div>';
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('name', name);
+            formData.append('email', email);
+            formData.append('date', date);
+            formData.append('time', time);
+            if (message) {
+                formData.append('message', message);
+            }
+
+            messageContainer.innerHTML = '';
+
+            fetch('https://formspree.io/f/mgvolbyv', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    messageContainer.innerHTML = '<div class="success-message">Reunião agendada com sucesso! ✨</div>';
+                    document.getElementById('scheduleName').value = '';
+                    document.getElementById('scheduleEmail').value = '';
+                    document.getElementById('scheduleDate').value = '';
+                    document.getElementById('scheduleTime').value = '';
+                    document.getElementById('scheduleMessage').value = '';
+                    setTimeout(() => {
+                        hideScheduleModal();
+                        messageContainer.innerHTML = '';
+                    }, 2000);
+                } else {
+                    messageContainer.innerHTML = '<div class="error-message">Erro ao agendar a reunião. Tente novamente.</div>';
+                }
+            })
+            .catch(error => {
+                messageContainer.innerHTML = '<div class="error-message">Erro ao agendar a reunião. Tente novamente.</div>';
+            });
+        }
+
+        loadChatState();
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const contactSection = document.querySelector('section:nth-of-type(2)');
+            if (contactSection) {
+                contactSectionObserver.observe(contactSection);
+            }
+        });
+    </script>
+</body>
+</html>
