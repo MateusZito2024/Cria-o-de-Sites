@@ -485,7 +485,7 @@
                     <img src="https://i.postimg.cc/63Gbj3HL/pngegg-3.png" alt="Ícone Design Gráfico" class="service-icon mx-auto">
                     <h3 class="text-2xl font-semibold gradient-text mb-4">Design Gráfico</h3>
                     <p class="text-gray-300">Visuais únicos que contam a história da sua marca.</p>
-                </div_UNIT>
+                </div>
             </div>
         </div>
     </section>
@@ -667,7 +667,8 @@
             name: '',
             email: '',
             whatsapp: '',
-            message: ''
+            message: '',
+            gender: null // 'masculine', 'feminine', or null (not set)
         };
         let isBotTyping = false;
         let hasGreeted = false;
@@ -692,8 +693,27 @@
 
         const correctionKeywords = [
             'errei', 'ops', 'opa', 'eita', 'está errado', 'esta errado',
-            'está errada', 'esta errada', 'corrigir', 'alterar', 'trocar'
+            'está errada', 'esta errada', 'corrigir', 'alterar', 'trocar',
+            'tá errado', 'errado', 'não', 'não sou eu', 'meu nome não é esse',
+            'isso está errado', 'o meu nome está errado', 'você escreveu errado',
+            'meu nome está digitado errado', 'o nome está errado', 'digitei errado',
+            'opa o nome tá errado'
         ];
+
+        const genderCorrectionKeywords = {
+            feminine: [
+                'sou mulher', 'meu pronome é feminino', 'pode falar no feminino',
+                'quero ser tratada como mulher', 'tratada como mulher',
+                'sou uma mulher', 'no feminino', 'pronome feminino',
+                'prazer em conhecê-la', 'tratada no feminino'
+            ],
+            masculine: [
+                'sou homem', 'meu pronome é masculino', 'pode falar no masculino',
+                'quero ser tratado como homem', 'tratado como homem',
+                'sou um homem', 'no masculino', 'pronome masculino',
+                'prazer em conhecê-lo', 'tratado no masculino'
+            ]
+        };
 
         const fieldKeywords = {
             name: ['nome', 'meu nome'],
@@ -721,6 +741,23 @@
                 !normalizedName.includes('?') &&
                 !normalizedName.includes('!')
             );
+        }
+
+        function inferGender(name) {
+            const normalizedName = name.toLowerCase().trim();
+            // Common feminine endings in Portuguese
+            const feminineEndings = ['a', 'e', 'i', 'y'];
+            // Common masculine endings
+            const masculineEndings = ['o', 'u', 'n', 'r', 's', 'l', 't', 'd'];
+            
+            const lastChar = normalizedName.slice(-1);
+            if (feminineEndings.includes(lastChar)) {
+                return 'feminine';
+            } else if (masculineEndings.includes(lastChar)) {
+                return 'masculine';
+            }
+            // Default to masculine if unclear (common in Portuguese)
+            return 'masculine';
         }
 
         function extractName(message) {
@@ -782,12 +819,31 @@
 
             if (!isCorrection) return null;
 
+            // Prioritize name correction if the message explicitly mentions "nome" or is in step 2
+            if (fieldKeywords.name.some(keyword => normalizedMessage.includes(keyword)) || chatState.step === 2) {
+                return 'name';
+            }
             for (const [field, keywords] of Object.entries(fieldKeywords)) {
                 if (keywords.some(keyword => normalizedMessage.includes(keyword))) {
                     return field;
                 }
             }
 
+            // If no specific field is mentioned but correction keywords are present, assume name in step 2
+            if (chatState.step === 2) {
+                return 'name';
+            }
+
+            return null;
+        }
+
+        function detectGenderCorrection(message) {
+            const normalizedMessage = message.toLowerCase().trim();
+            for (const [gender, keywords] of Object.entries(genderCorrectionKeywords)) {
+                if (keywords.some(keyword => normalizedMessage.includes(keyword))) {
+                    return gender;
+                }
+            }
             return null;
         }
 
@@ -820,7 +876,10 @@
                 if (chatState.step === 1) {
                     addBotMessage("Olá! Sou o assistente da Good Vibes. 😊 Qual é o seu nome ou como você gostaria de ser chamado?");
                 } else if (chatState.step === 2) {
-                    addBotMessage(`Prazer em conhecê-lo, ${chatState.name}! Qual é o seu e-mail de contato?`);
+                    const greeting = chatState.gender === 'feminine' ? 
+                        `Prazer em conhecê-la, ${chatState.name}!` : 
+                        `Prazer em conhecê-lo, ${chatState.name}!`;
+                    addBotMessage(`${greeting} Qual é o seu e-mail de contato?`);
                 } else if (chatState.step === 3) {
                     addBotMessage("Ótimo! Qual é o seu número de WhatsApp?");
                 } else if (chatState.step === 4) {
@@ -839,7 +898,8 @@
                 name: '',
                 email: '',
                 whatsapp: '',
-                message: ''
+                message: '',
+                gender: null
             };
             hasGreeted = false;
             chatMessages.innerHTML = '';
@@ -876,7 +936,10 @@
                 }
             }
             if (chatState.step >= 2) {
-                addBotMessage(`Prazer em conhecê-lo, ${chatState.name}! Qual é o seu e-mail de contato?`);
+                const greeting = chatState.gender === 'feminine' ? 
+                    `Prazer em conhecê-la, ${chatState.name}!` : 
+                    `Prazer em conhecê-lo, ${chatState.name}!`;
+                addBotMessage(`${greeting} Qual é o seu e-mail de contato?`);
                 if (chatState.email) {
                     addUserMessage(chatState.email);
                 }
@@ -968,6 +1031,24 @@
             const userText = userInput.value.trim();
             if (!userText) return;
 
+            // Check for gender correction
+            const requestedGender = detectGenderCorrection(userText);
+            if (requestedGender && chatState.step <= 2) {
+                addUserMessage(userText);
+                chatState.gender = requestedGender;
+                showTypingIndicator();
+                setTimeout(() => {
+                    removeTypingIndicator();
+                    const greeting = requestedGender === 'feminine' ? 
+                        `Entendido! Prazer em conhecê-la, ${chatState.name || 'você'}!` : 
+                        `Entendido! Prazer em conhecê-lo, ${chatState.name || 'você'}!`;
+                    addBotMessage(`${greeting} ${chatState.step === 1 ? 'Qual é o seu nome ou como você gostaria de ser chamado?' : 'Qual é o seu e-mail de contato?'}`);
+                    saveChatState();
+                }, 2000);
+                userInput.value = '';
+                return;
+            }
+
             const correctionField = detectCorrectionRequest(userText);
             if (correctionField && chatState.step < 5) {
                 addUserMessage(userText);
@@ -986,6 +1067,10 @@
                 if (fieldToCorrect === 'name') {
                     if (isValidName(userText)) {
                         chatState.name = userText;
+                        // Re-infer gender unless user has specified one
+                        if (!chatState.gender) {
+                            chatState.gender = inferGender(userText);
+                        }
                     } else {
                         isValid = false;
                         errorMessage = "Desculpe, não sei se esse é o seu nome. 😅 Pode me dizer um nome válido?";
@@ -1032,11 +1117,15 @@
                 const extractedName = extractName(userText);
                 if (isValidName(extractedName)) {
                     chatState.name = extractedName;
+                    chatState.gender = inferGender(extractedName);
                     chatState.step = 2;
                     showTypingIndicator();
                     setTimeout(() => {
                         removeTypingIndicator();
-                        addBotMessage(`Prazer em conhecê-lo, ${chatState.name}! Qual é o seu e-mail de contato?`);
+                        const greeting = chatState.gender === 'feminine' ? 
+                            `Prazer em conhecê-la, ${chatState.name}!` : 
+                            `Prazer em conhecê-lo, ${chatState.name}!`;
+                        addBotMessage(`${greeting} Qual é o seu e-mail de contato?`);
                         saveChatState();
                     }, 3000);
                 } else if (isGreeting(userText)) {
@@ -1054,9 +1143,9 @@
                     }, 3000);
                 }
             } else if (chatState.step === 2) {
+                addUserMessage(userText);
                 if (isValidEmail(userText)) {
                     chatState.email = userText;
-                    addUserMessage(userText);
                     chatState.step = 3;
                     showTypingIndicator();
                     setTimeout(() => {
@@ -1072,9 +1161,9 @@
                     }, 3000);
                 }
             } else if (chatState.step === 3) {
+                addUserMessage(userText);
                 if (isValidPhoneNumber(userText)) {
                     chatState.whatsapp = userText;
-                    addUserMessage(userText);
                     chatState.step = 4;
                     showTypingIndicator();
                     setTimeout(() => {
@@ -1154,7 +1243,8 @@
                 name: '',
                 email: '',
                 whatsapp: '',
-                message: ''
+                message: '',
+                gender: null
             };
         }
 
