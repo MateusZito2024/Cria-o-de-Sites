@@ -485,7 +485,7 @@
                     <img src="https://i.postimg.cc/63Gbj3HL/pngegg-3.png" alt="Ícone Design Gráfico" class="service-icon mx-auto">
                     <h3 class="text-2xl font-semibold gradient-text mb-4">Design Gráfico</h3>
                     <p class="text-gray-300">Visuais únicos que contam a história da sua marca.</p>
-                </div>
+                </div_UNIT>
             </div>
         </div>
     </section>
@@ -721,6 +721,43 @@
                 !normalizedName.includes('?') &&
                 !normalizedName.includes('!')
             );
+        }
+
+        function extractName(message) {
+            const normalizedMessage = message.trim();
+            let name = normalizedMessage;
+
+            // Common phrases to remove
+            const phrasesToRemove = [
+                'meu nome é', 'meu nome e', 'sou', 'sou a', 'sou o',
+                'chamo-me', 'me chamo', 'é', 'e', 'oi', 'olá', 'ola',
+                'bom dia', 'boa tarde', 'boa noite', 'tudo bem', 'tudo bom',
+                'como vai', 'e aí', 'e ai', 'eai', 'oiê', 'oie', 'oiee',
+                'oláá', 'olaa', 'oláa', 'tô de boa', 'tô bem', 'opa',
+                'tudo bem?', 'tô de boa?', 'tô bem?', 'como você está',
+                'como você ta', 'como você tá', 'e você', 'e tu', 'e voce'
+            ];
+
+            // Remove common greetings and phrases
+            phrasesToRemove.forEach(phrase => {
+                const regex = new RegExp(`\\b${phrase}\\b`, 'gi');
+                name = name.replace(regex, '').trim();
+            });
+
+            // Remove punctuation and extra spaces
+            name = name.replace(/[.,!?]/g, '').trim();
+
+            // Capitalize the first letter of each word
+            name = name.replace(/\b\w/g, char => char.toUpperCase());
+
+            // If the name contains multiple words, take the first one or the most likely name
+            const words = name.split(/\s+/);
+            if (words.length > 1) {
+                // Assume the name is the last word or the first word after common phrases
+                name = words[words.length - 1];
+            }
+
+            return name;
         }
 
         function selectBotGreeting(userGreeting) {
@@ -992,21 +1029,22 @@
 
             if (chatState.step === 1) {
                 addUserMessage(userText);
-                if (isGreeting(userText)) {
-                    const botGreeting = selectBotGreeting(userText);
-                    showTypingIndicator();
-                    setTimeout(() => {
-                        removeTypingIndicator();
-                        addBotMessage(`${botGreeting} Qual é o seu nome ou como você gostaria de ser chamado?`);
-                    }, 3000);
-                } else if (isValidName(userText)) {
-                    chatState.name = userText;
+                const extractedName = extractName(userText);
+                if (isValidName(extractedName)) {
+                    chatState.name = extractedName;
                     chatState.step = 2;
                     showTypingIndicator();
                     setTimeout(() => {
                         removeTypingIndicator();
                         addBotMessage(`Prazer em conhecê-lo, ${chatState.name}! Qual é o seu e-mail de contato?`);
                         saveChatState();
+                    }, 3000);
+                } else if (isGreeting(userText)) {
+                    const botGreeting = selectBotGreeting(userText);
+                    showTypingIndicator();
+                    setTimeout(() => {
+                        removeTypingIndicator();
+                        addBotMessage(`${botGreeting} Qual é o seu nome ou como você gostaria de ser chamado?`);
                     }, 3000);
                 } else {
                     showTypingIndicator();
