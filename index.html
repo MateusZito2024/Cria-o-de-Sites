@@ -135,6 +135,16 @@
             100% { transform: scaleY(1); }
         }
 
+        @keyframes fadeInTooltip {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeOutTooltip {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(5px); }
+        }
+
         .fade-in {
             opacity: 1 !important;
             animation: fadeInUp 1s ease-out forwards;
@@ -369,6 +379,7 @@
             padding-top: 1rem;
             border-top: 1px solid #4b5563;
             align-items: center;
+            position: relative;
         }
 
         .chat-input textarea {
@@ -408,6 +419,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            position: relative;
         }
 
         .mic-button.recording {
@@ -430,6 +442,30 @@
         .mic-button svg {
             width: 24px;
             height: 24px;
+        }
+
+        .mic-tooltip {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #374151;
+            color: #e2e8f0;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            white-space: nowrap;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            z-index: 40;
+            animation: fadeInTooltip 0.3s ease-in-out forwards;
+        }
+
+        .mic-tooltip.fade-out {
+            animation: fadeOutTooltip 0.3s ease-in-out forwards;
+        }
+
+        .mic-tooltip .gradient-text {
+            font-weight: bold;
         }
 
         /* Estilo para o texto cintilante */
@@ -719,6 +755,7 @@
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         let recognition = null;
         let isRecording = false;
+        let pressStartTime = null;
 
         if (SpeechRecognition) {
             recognition = new SpeechRecognition();
@@ -752,6 +789,7 @@
                 const micButton = document.getElementById('micButton');
                 micButton.classList.remove('recording');
                 isRecording = false;
+                userInput.placeholder = chatState.step === 4 ? "Digite sua mensagem..." : "Digite sua resposta...";
             };
         } else {
             const micButton = document.getElementById('micButton');
@@ -759,8 +797,27 @@
             micButton.title = "Reconhecimento de voz não suportado neste navegador";
         }
 
+        function showMicTooltip() {
+            const micButton = document.getElementById('micButton');
+            const existingTooltip = micButton.querySelector('.mic-tooltip');
+            if (existingTooltip) return; // Prevent multiple tooltips
+
+            const tooltip = document.createElement('div');
+            tooltip.classList.add('mic-tooltip');
+            tooltip.innerHTML = '<span class="gradient-text">Segure para gravar</span>';
+            micButton.appendChild(tooltip);
+
+            setTimeout(() => {
+                tooltip.classList.add('fade-out');
+                setTimeout(() => {
+                    tooltip.remove();
+                }, 300); // Match fadeOutTooltip animation duration
+            }, 2000);
+        }
+
         function startRecording() {
             if (!recognition || isRecording || isBotTyping) return;
+            pressStartTime = Date.now();
             try {
                 recognition.start();
                 isRecording = true;
@@ -775,9 +832,19 @@
 
         function stopRecording() {
             if (!recognition || !isRecording) return;
-            recognition.stop();
+            const pressDuration = Date.now() - pressStartTime;
+            const micButton = document.getElementById('micButton');
             isRecording = false;
-            userInput.placeholder = "Digite sua resposta...";
+            micButton.classList.remove('recording');
+            userInput.placeholder = chatState.step === 4 ? "Digite sua mensagem..." : "Digite sua resposta...";
+
+            if (pressDuration < 300) {
+                // Quick click detected
+                recognition.abort();
+                showMicTooltip();
+            } else {
+                recognition.stop();
+            }
         }
 
         const commonGreetings = [
