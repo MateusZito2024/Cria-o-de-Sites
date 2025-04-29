@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Good Vibes - Serviços</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;600&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            position: relative;
+            overflow-x: hidden;
+            background: transparent;
+        }
+
+        /* Header Styles */
+        .brand-name {
+            font-family: 'Great Vibes', cursive;
+            line-height: 2;
+            padding: 1rem;
+            display: block;
+            overflow: visible;
+        }
+
+        .flex.items-center.content-layer {
+            overflow: visible;
+        }
+
+        .nav-link {
+            font-family: 'Montserrat', sans-serif;
+            position: relative;
+            text-decoration: none;
+            color: #f8f8f8;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background: linear-gradient(135deg, #a5b4fc, #e879f9);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-link:hover {
+            color: #e879f9;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #a5b4fc, #e879f9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 10;
+            background: transparent;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 0 1rem;
+            pointer-events: auto;
+        }
+
+        nav > div {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        nav .flex.items-center.content-layer:first-child {
+            margin-right: auto;
+        }
+
+        nav .flex.items-center.content-layer:last-child {
+            margin-left: auto;
+        }
+
+        .content-layer {
+            position: relative;
+            z-index: 2;
+            pointer-events: auto;
+        }
+
+        h1, h2, h3, p, a, button, img, input, form {
+            position: relative;
+            z-index: 30;
+            pointer-events: auto;
+        }
+
+        /* Remaining Styles */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 5px rgba(232, 121, 249, 0.3); }
+            50% { transform: scale(1.05); box-shadow: 0 0 15px rgba(232, 121, 249, 0.6); }
+            100% { transform: scale(1); box-shadow: 0 0 5px rgba(232, 121, 249, 0.3); }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-15px); }
+            60% { transform: translateY(-7px); }
+        }
+
+        @keyframes glow {
+            0% { box-shadow: 0 0 5px rgba(165, 180, 252, 0.5); }
+            50% { box-shadow: 0 0 15px rgba(165, 180, 252, 0.8); }
+            100% { box-shadow: 0 0 5px rgba(165, 180, 252, 0.5); }
+        }
+
+        @keyframes sparkle {
+            0% { background-position: 0%; }
+            50% { background-position: 200%; }
+            100% { background-position: 0%; }
+        }
+
+        .float {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .pulse {
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .bounce {
+            animation: bounce 2s infinite;
+        }
+
+        .glow {
+            animation: glow 2s infinite;
+        }
+
+        .sparkle-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+            color: #e2e8f0;
+            background: linear-gradient(90deg, #a5b4fc, #e879f9, #a5b4fc);
+            background-size: 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: sparkle 2s infinite;
+        }
+
+        .content-card {
+            background: #ffffff;
+            border-radius: 1rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            pointer-events: auto;
+        }
+
+        .gradient-card {
+            background: linear-gradient(135deg, #ffffff, #a5b4fc, #e879f9);
+        }
+
+        .carousel-item.active.content-card:hover {
+            animation: pulse 2s ease-in-out infinite !important;
+        }
+
+        .content-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(165, 180, 252, 0.1), rgba(232, 121, 249, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .content-card:hover::before {
+            opacity: 1;
+        }
+
+        .carousel-item.float, .carousel-item.active.float {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .gradient-bg {
+            background: transparent;
+        }
+
+        .section-bg {
+            background: #1e293b;
+        }
+
+        #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: #1e293b;
+            pointer-events: none;
+        }
+
+        .service-icon {
+            width: 40px;
+            height: 40px;
+            background: #f8f9fa;
+            border-radius: 50%;
+            padding: 0.5rem;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #a5b4fc, #e879f9);
+            color: white;
+            font-weight: bold;
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.1);
+            background: linear-gradient(135deg, #e879f9, #a5b4fc);
+        }
+
+        .carousel {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            pointer-events: auto;
+        }
+
+        .carousel-items {
+            display: flex;
+            width: 100%;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .carousel-item {
+            flex: 0 0 100%;
+            opacity: 1;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+            padding-bottom: 1rem;
+        }
+
+        .pagination-number {
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(135deg, #4a5568, #2d3748);
+            color: #e2e8f0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            font-weight: bold;
+            box-shadow: 0 0 5px rgba(165, 180, 252, 0.5);
+            pointer-events: auto;
+        }
+
+        .pagination-number.active {
+            background: linear-gradient(135deg, #a5b4fc, #e879f9);
+            color: white;
+            transform: scale(1.2);
+            box-shadow: 0 0 15px rgba(232, 121, 249, 0.8);
+        }
+
+        .pagination-number:hover {
+            background: linear-gradient(135deg, #e879f9, #a5b4fc);
+            transform: scale(1.1);
+            box-shadow: 0 0 10px rgba(165, 180, 252, 0.8);
+        }
+
+        .newsletter-input {
+            background: #2d3748;
+            color: #e2e8f0;
+            border: 1px solid #a5b4fc;
+            pointer-events: auto;
+            position: relative;
+            z-index: 40;
+        }
+
+        .newsletter-button {
+            background: linear-gradient(135deg, #a5b4fc, #e879f9);
+            color: white;
+            pointer-events: auto;
+            position: relative;
+            z-index: 40;
+            cursor: pointer;
+        }
+
+        .newsletter-button:hover {
+            background: linear-gradient(135deg, #e879f9, #a5b4fc);
+        }
+
+        .confirmation-message {
+            background: transparent;
+            color: white;
+            text-align: center;
+            animation: float 3s ease-in-out infinite;
+            pointer-events: auto;
+            position: relative;
+            z-index: 40;
+        }
+
+        #newsletter-form {
+            pointer-events: auto;
+            position: relative;
+            z-index: 40;
+        }
+
+        #newsletter-container {
+            pointer-events: auto;
+            position: relative;
+            z-index: 40;
+        }
+    </style>
+</head>
+<body class="text-gray-200">
+    <!-- Interactive Background -->
+    <div id="particles-js"></div>
+
+    <!-- SVG Gradient for Icons -->
+    <svg width="0" height="0">
+        <defs>
+            <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#a5b4fc;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#e879f9;stop-opacity:1" />
+            </linearGradient>
+        </defs>
+    </svg>
+
+    <!-- Navbar -->
+    <nav class="shadow-lg fixed w-full z-10">
+        <div class="flex justify-between h-16">
+            <div class="flex items-center content-layer">
+                <h1 class="text-4xl brand-name gradient-text">Good Vibes</h1>
+            </div>
+            <div class="flex items-center space-x-6 content-layer">
+                <a href="./index.html" class="nav-link text-lg transition">Início</a>
+                <a href="./Menu/serviços.html" class="nav-link text-lg transition">Serviços</a>
+                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/sobre.html" class="nav-link text-lg transition">Sobre</a>
+                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/portf%C3%B3lio.html" class="nav-link text-lg transition">Portfólio</a>
+                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/contato.html" class="nav-link text-lg transition">Contato</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Services Body -->
+    <main>
+        <!-- Hero Section -->
+        <section id="services-hero" class="h-[60vh] flex items-center section-bg">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center content-layer">
+                <h2 class="text-4xl md:text-5xl font-bold gradient-text mb-6 float">Soluções Criativas para Sua Marca</h2>
+                <p class="text-lg text-gray-400 mb-8 float" style="animation-delay: 0.2s;">
+                    Design gráfico e criação de sites que engajam e convertem. Vamos transformar sua visão em realidade!
+                </p>
+                <a href="https://api.whatsapp.com/send/?phone=5511987637786" target="_blank" class="cta-button py-3 px-8 rounded-full text-lg pulse">Fale Conosco</a>
+            </div>
+        </section>
+
+        <!-- Últimos Posts and Sidebar Section -->
+        <section id="recent-posts" class="py-16 section-bg">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 content-layer">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Últimos Posts Column -->
+                    <div class="md:col-span-2">
+                        <h2 class="text-3xl md:text-4xl font-bold gradient-text mb-8 float">Últimos Posts</h2>
+                        <div class="content-card p-6 mb-6 float">
+                            <img src="https://i.postimg.cc/fbCKxJ85/2.png" alt="Post 1" class="w-full rounded-lg mb-4 bounce">
+                        </div>
+                        <div class="content-card p-6 mb-6 float" style="animation-delay: 0.2s;">
+                            <img src="https://i.postimg.cc/mrLqfxqX/5.png" alt="Post 2" class="w-full rounded-lg mb-4 bounce" style="animation-delay: 0.2s;">
+                        </div>
+                    </div>
+                    <!-- Sidebar Column (Single Post with Numbered Pagination) -->
+                    <div>
+                        <h2 class="text-2xl font-semibold gradient-text mb-8 float">Posts em Destaque</h2>
+                        <div class="carousel" id="highlight-carousel">
+                            <div class="carousel-items">
+                                <div class="carousel-item content-card p-6 float">
+                                    <img src="https://i.postimg.cc/8CzyXRJx/Prancheta-1-2.png" alt="Post 1" class="w-full rounded-lg bounce">
+                                </div>
+                                <div class="carousel-item content-card p-6 float">
+                                    <img src="https://i.postimg.cc/ZKCqJ5kD/Prancheta-4.png" alt="Post 2" class="w-full rounded-lg bounce">
+                                </div>
+                                <div class="carousel-item content-card p-6 float">
+                                    <img src="https://i.postimg.cc/GprrTcNR/Prancheta-1-3.png" alt="Post 3" class="w-full rounded-lg bounce">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Numbered Pagination -->
+                        <div class="pagination" id="highlight-pagination">
+                            <div class="pagination-number active" data-page="0">1</div>
+                            <div class="pagination-number" data-page="1">2</div>
+                            <div class="pagination-number" data-page="2">3</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recent Projects Carousel -->
+        <section id="recent-projects" class="py-16 section-bg">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 content-layer">
+                <h2 class="text-3xl md:text-4xl font-bold gradient-text mb-12 float">Projetos Recentes</h2>
+                <div class="carousel" id="recent-projects">
+                    <div class="carousel-items">
+                        <div class="carousel-item content-card p-6 float">
+                            <img src="https://i.postimg.cc/vBMmdmMR/carrossel-5-dicas.png" alt="Project 1" class="w-full rounded-lg bounce">
+                        </div>
+                        <div class="carousel-item content-card p-6 float">
+                            <img src="https://i.postimg.cc/C19fgBPY/Carrossel-Ag-ncia-Nut.png" alt="Project 2" class="w-full rounded-lg bounce">
+                        </div>
+                        <div class="carousel-item content-card p-6 float">
+                            <img src="https://i.postimg.cc/26LV2jzt/carrossel-transforme-curioso-em-cliente.png" alt="Project 3" class="w-full rounded-lg bounce">
+                        </div>
+                    </div>
+                    <div class="pagination" id="projects-pagination">
+                        <div class="pagination-number active" data-page="0">1</div>
+                        <div class="pagination-number" data-page="1">2</div>
+                        <div class="pagination-number" data-page="2">3</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services and Testimonials Section -->
+        <section id="services-testimonials" class="py-16 section-bg">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 content-layer">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Services Column -->
+                    <div class="md:col-span-2">
+                        <h2 class="text-3xl md:text-4xl font-bold gradient-text mb-8 float">Nossos Serviços</h2>
+                        <!-- Graphic Design Service -->
+                        <div class="content-card gradient-card p-6 mb-6 float">
+                            <div class="flex items-center justify-center mb-4">
+                                <img src="https://i.postimg.cc/RhkCP2SL/pngegg-3.png" alt="Design Icon" class="service-icon">
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-900 mb-2 text-center">Design Gráfico</h3>
+                            <p class="text-gray-600 mb-4 text-center">
+                                Criamos logotipos, banners e posts para redes sociais que capturam a essência da sua marca.
+                            </p>
+                            <div class="text-center">
+                                <a href="https://api.whatsapp.com/send/?phone=5511987637786" target="_blank" class="cta-button py-2 px-6 rounded-full text-white pulse">Solicite Agora</a>
+                            </div>
+                        </div>
+                        <!-- Website Creation Service -->
+                        <div class="content-card gradient-card p-6 float">
+                            <div class="flex items-center justify-center mb-4">
+                                <img src="https://i.postimg.cc/HLYYPwgR/pngegg-2.png" alt="Website Icon" class="service-icon">
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-900 mb-2 text-center">Criação de Sites</h3>
+                            <p class="text-gray-600 mb-4 text-center">
+                                Desenvolvemos sites responsivos e otimizados para converter visitantes em clientes.
+                            </p>
+                            <div class="text-center">
+                                <a href="https://api.whatsapp.com/send/?phone=5511987637786" target="_blank" class="cta-button py-2 px-6 rounded-full text-white pulse">Solicite Agora</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Testimonials Column -->
+                    <div>
+                        <h2 class="text-2xl font-semibold gradient-text mb-8 float">Depoimentos em Destaque</h2>
+                        <div class="content-card gradient-card p-6 mb-6 float">
+                            <p class="text-gray-600 mb-4">
+                                "A Good Vibes transformou nossa identidade visual com um design incrível!"
+                            </p>
+                            <p class="text-gray-900 font-semibold">Clara Oliveira, Empresária</p>
+                        </div>
+                        <div class="content-card gradient-card p-6 float">
+                            <p class="text-gray-600 mb-4">
+                                "Nosso site ficou rápido e funcional. A equipe foi excepcional!"
+                            </p>
+                            <p class="text-gray-900 font-semibold">Lucas Ferreira, Empreendedor</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Newsletter Signup Section -->
+        <section id="newsletter" class="py-16 section-bg">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center content-layer">
+                <h2 class="text-3xl md:text-4xl font-bold gradient-text mb-6 float">Assine Nossa Newsletter</h2>
+                <p class="text-lg text-gray-400 mb-8 float">
+                    Receba dicas de design, atualizações e promoções exclusivas no seu e-mail.
+                </p>
+                <div id="newsletter-container">
+                    <div id="newsletter-form" class="flex flex-col md:flex-row justify-center gap-4">
+                        <input type="text" id="newsletter-name" placeholder="Digite seu nome" class="newsletter-input py-3 px-4 rounded-full w-full md:w-1/4 glow">
+                        <input type="email" id="newsletter-email" placeholder="Digite seu e-mail" class="newsletter-input py-3 px-4 rounded-full w-full md:w-1/4 glow">
+                        <button id="newsletter-submit" class="newsletter-button py-3 px-6 rounded-full pulse">Assinar</button>
+                    </div>
+                    <div id="confirmation-message" class="confirmation-message hidden">
+                        <div class="sparkle-text">Inscrição Concluída! ✨</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="section-bg text-gray-200 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center content-layer">
+            <p>© 2025 Good Vibes. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scroll for nav links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+
+            // Particles.js configuration
+            particlesJS('particles-js', {
+                particles: {
+                    number: { value: 200, density: { enable: true, value_area: 800 } },
+                    color: { value: ['#a5b4fc', '#e879f9', '#f472b6'] },
+                    shape: { type: 'circle' },
+                    opacity: { value: 0.8, random: false },
+                    size: { value: 4, random: true },
+                    line_linked: {
+                        enable: true,
+                        distance: 120,
+                        color: '#e879f9',
+                        opacity: 0.6,
+                        width: 1
+                    },
+                    move: {
+                        enable: true,
+                        speed: 1,
+                        direction: 'none',
+                        random: true,
+                        straight: false,
+                        out_mode: 'out',
+                        bounce: false
+                    }
+                },
+                interactivity: {
+                    detect_on: 'canvas',
+                    events: {
+                        onhover: { enable: true, mode: 'repulse' },
+                        onclick: { enable: true, mode: 'push' },
+                        resize: true
+                    },
+                    modes: {
+                        repulse: { distance: 50, duration: 0.1 },
+                        push: { particles_nb: 6 }
+                    }
+                },
+                retina_detect: true
+            });
+
+            // Carousel functionality
+            function setupCarousel(carouselId, paginationId, autoAdvanceInterval) {
+                const carousel = document.querySelector(`#${carouselId}`);
+                const carouselItemsContainer = carousel.querySelector('.carousel-items');
+                const carouselItems = carousel.querySelectorAll(`#${carouselId} .carousel-item`);
+                const numbers = document.querySelectorAll(`#${paginationId} .pagination-number`);
+                let currentIndex = 0;
+                let intervalId = null;
+
+                // Initialize first item
+                carouselItemsContainer.style.transform = `translateX(0%)`;
+                numbers[0].classList.add('active');
+
+                function showItem(index) {
+                    carouselItemsContainer.style.transform = `translateX(-${index * 100}%)`;
+                    numbers.forEach(n => n.classList.remove('active'));
+                    numbers[index].classList.add('active');
+                    currentIndex = index;
+                    console.log(`Carousel ${carouselId}: Showing item ${index + 1}`);
+                }
+
+                function autoAdvance() {
+                    currentIndex = (currentIndex + 1) % carouselItems.length;
+                    showItem(currentIndex);
+                    console.log(`Carousel ${carouselId}: Auto-advance to item ${currentIndex + 1}`);
+                }
+
+                // Set up pagination click events
+                numbers.forEach((number, index) => {
+                    number.addEventListener('click', () => {
+                        showItem(index);
+                        // Reset interval to prevent immediate slide after click
+                        clearInterval(intervalId);
+                        intervalId = setInterval(autoAdvance, autoAdvanceInterval);
+                        console.log(`Carousel ${carouselId}: Clicked pagination ${index + 1}`);
+                    });
+                });
+
+                // Start auto-advance
+                function startAutoAdvance() {
+                    if (intervalId) clearInterval(intervalId); // Prevent multiple intervals
+                    intervalId = setInterval(autoAdvance, autoAdvanceInterval);
+                    console.log(`Carousel ${carouselId}: Auto-advance started`);
+                }
+
+                // Stop auto-advance
+                function stopAutoAdvance() {
+                    clearInterval(intervalId);
+                    console.log(`Carousel ${carouselId}: Auto-advance stopped`);
+                }
+
+                // Initialize auto-advance
+                startAutoAdvance();
+
+                // Pause on hover, resume on leave
+                carousel.addEventListener('mouseenter', stopAutoAdvance);
+                carousel.addEventListener('mouseleave', startAutoAdvance);
+            }
+
+            // Initialize carousels
+            setupCarousel('highlight-carousel', 'highlight-pagination', 5000);
+            setupCarousel('recent-projects', 'projects-pagination', 5000);
+
+            // Newsletter form submission
+            const submitButton = document.getElementById('newsletter-submit');
+            const formContainer = document.getElementById('newsletter-form');
+            const confirmationMessage = document.getElementById('confirmation-message');
+            const nameInput = document.getElementById('newsletter-name');
+            const emailInput = document.getElementById('newsletter-email');
+
+            if (submitButton) {
+                submitButton.addEventListener('click', function() {
+                    console.log('Botão Assinar clicado!');
+                    alert('Botão Assinar clicado!');
+
+                    const name = nameInput.value.trim();
+                    const email = emailInput.value.trim();
+
+                    if (!name || !email) {
+                        alert('Por favor, preencha todos os campos.');
+                        return;
+                    }
+
+                    if (!isValidEmail(email)) {
+                        alert('Por favor, insira um e-mail válido (exemplo: seuemail@dominio.com).');
+                        return;
+                    }
+
+                    sendToFormspree(name, email);
+                });
+            } else {
+                console.error('Botão #newsletter-submit não encontrado!');
+            }
+
+            function isValidEmail(email) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            }
+
+            function sendToFormspree(name, email) {
+                const formData = new FormData();
+                formData.append('name', name);
+                formData.append('email', email);
+                formData.append('_subject', 'Nova Assinatura de Newsletter');
+                formData.append('_next', 'https://yourwebsite.com/services.html');
+
+                fetch('https://formspree.io/f/mgvolbyv', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(response => {
+                    console.log('Resposta do Formspree:', response);
+                    if (response.ok) {
+                        console.log('Inscrição enviada com sucesso!');
+                        showSuccessMessage();
+                    } else {
+                        console.error('Erro no Formspree:', response.status, response.statusText);
+                        alert('Houve um erro ao enviar sua inscrição. Tente novamente mais tarde.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro na requisição ao Formspree:', error);
+                    alert('Houve um erro ao enviar sua inscrição. Tente novamente mais tarde.');
+                });
+            }
+
+            function showSuccessMessage() {
+                formContainer.style.display = 'none';
+                confirmationMessage.classList.remove('hidden');
+                confirmationMessage.classList.add('block');
+                nameInput.value = '';
+                emailInput.value = '';
+            }
+        });
+    </script>
+</body>
+</html>
