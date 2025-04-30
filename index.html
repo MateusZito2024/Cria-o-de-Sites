@@ -17,7 +17,7 @@
 
         /* Header Styles */
         .brand-name {
-            font-family: 'Great Vibes', cursive;
+            font-family: 'Great+Vibes', cursive;
             line-height: 2;
             padding: 1rem;
             display: block;
@@ -643,15 +643,15 @@
         });
 
         // Fade-in animation on scroll
-        const observer = new IntersectionObserver(entries => {
+        inquiry = new IntersectionObserver(entries => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('fade-in');
-                    observer.unobserve(entry.target);
+                    inquiry.unobserve(entry.target);
                 }
             });
         }, { threshold: 0.1 });
-        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+        document.querySelectorAll('.fade-in').forEach(el => inquiry.observe(el));
 
         // Section slide-in/slide-out animation
         const sectionObserver = new IntersectionObserver(entries => {
@@ -774,14 +774,18 @@
                 const micButton = document.getElementById('micButton');
                 micButton.classList.remove('recording');
                 isRecording = false;
-                if (event.error === 'no-speech') {
-                    addBotMessage("Não ouvi nada. Tente segurar o botão e falar novamente! 😊");
-                } else if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
-                    addBotMessage("O acesso ao microfone foi negado. Por favor, permita o uso do microfone ou digite sua mensagem. 😊");
-                    micButton.disabled = true;
-                    micButton.title = "Microfone não disponível";
-                } else {
-                    addBotMessage("Desculpe, houve um erro ao processar sua voz. Tente novamente ou digite sua mensagem. 😊");
+                userInput.placeholder = chatState.step === 4 ? "Digite sua mensagem..." : "Digite sua resposta...";
+                // Only show error messages if the button was held (intentional recording)
+                if (pressStartTime && (Date.now() - pressStartTime) >= 300) {
+                    if (event.error === 'no-speech') {
+                        addBotMessage("Não ouvi nada. Fale novamente ou digite sua mensagem. 😊");
+                    } else if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
+                        addBotMessage("O acesso ao microfone foi negado. Por favor, permita o uso do microfone ou digite sua mensagem. 😊");
+                        micButton.disabled = true;
+                        micButton.title = "Microfone não disponível";
+                    } else {
+                        addBotMessage("Desculpe, houve um erro ao processar sua voz. Tente novamente ou digite sua mensagem. 😊");
+                    }
                 }
             };
 
@@ -826,7 +830,10 @@
                 userInput.placeholder = "Gravando... Fale agora!";
             } catch (e) {
                 console.error('Error starting recognition:', e);
-                addBotMessage("Desculpe, não consegui iniciar a gravação. Tente novamente ou digite sua mensagem. 😊");
+                isRecording = false;
+                const micButton = document.getElementById('micButton');
+                micButton.classList.remove('recording');
+                userInput.placeholder = chatState.step === 4 ? "Digite sua mensagem..." : "Digite sua resposta...";
             }
         }
 
@@ -839,10 +846,11 @@
             userInput.placeholder = chatState.step === 4 ? "Digite sua mensagem..." : "Digite sua resposta...";
 
             if (pressDuration < 300) {
-                // Quick click detected
+                // Quick click: abort recording and show tooltip, no error message
                 recognition.abort();
                 showMicTooltip();
             } else {
+                // Held long enough: stop recording normally
                 recognition.stop();
             }
         }
