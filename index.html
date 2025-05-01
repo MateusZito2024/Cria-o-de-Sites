@@ -523,7 +523,7 @@
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/servi%C3%A7os.html" class="nav-link text-lg transition">Serviços</a>
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/sobre.html" class="nav-link text-lg transition">Sobre</a>
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/portf%C3%B3lio.html" class="nav-link text-lg transition">Portfólio</a>
-                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/contato.html" class="nav-link text-lg transition">Contato</a>
+                <a href="https://mateuszitoobjs2024.github.io/Cria-o-de-Sites/contato.html" class="nav-link text-lg transition">Contato</a>
             </div>
         </div>
     </nav>
@@ -814,7 +814,7 @@
 
         function startRecording(event) {
             event.preventDefault(); // Prevent default touch/mouse behavior
-            if (!itsRecording || isBotTyping) return;
+            if (!recognition || isRecording || isBotTyping) return;
             pressStartTime = Date.now();
             try {
                 recognition.start();
