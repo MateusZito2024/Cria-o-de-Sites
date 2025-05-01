@@ -814,7 +814,7 @@
 
         function startRecording(event) {
             event.preventDefault(); // Prevent default touch/mouse behavior
-            if (!recognition || isRecording || isBotTyping) return;
+            if (!itsRecording || isBotTyping) return;
             pressStartTime = Date.now();
             try {
                 recognition.start();
@@ -1065,6 +1065,7 @@
         }
 
         window.onload = function() {
+            // Clear localStorage and reset chat state
             localStorage.removeItem('chatState');
             chatState = {
                 step: 1,
@@ -1099,51 +1100,8 @@
             }
         };
 
-        function loadChatState() {
-            const savedState = localStorage.getItem('chatState');
-            if (savedState) {
-                chatState = JSON.parse(savedState);
-                restoreChat();
-            }
-        }
-
         function saveChatState() {
             localStorage.setItem('chatState', JSON.stringify(chatState));
-        }
-
-        function restoreChat() {
-            chatMessages.innerHTML = '';
-            if (chatState.step >= 1) {
-                addBotMessage("Olá! Sou o assistente da Good Vibes. 😊 Qual é o seu nome ou como você gostaria de ser chamado?");
-                if (chatState.name) {
-                    addUserMessage(chatState.name);
-                }
-            }
-            if (chatState.step >= 2) {
-                const greeting = chatState.gender === 'feminine' ? 
-                    `Prazer em conhecê-la, ${chatState.name}!` : 
-                    `Prazer em conhecê-lo, ${chatState.name}!`;
-                addBotMessage(`${greeting} Qual é o seu e-mail de contato?`);
-                if (chatState.email) {
-                    addUserMessage(chatState.email);
-                }
-            }
-            if (chatState.step >= 3) {
-                addBotMessage("Ótimo! Qual é o seu número de WhatsApp?");
-                if (chatState.whatsapp) {
-                    addUserMessage(chatState.whatsapp);
-                }
-            }
-            if (chatState.step >= 4) {
-                addBotMessage("Perfeito! Agora, qual é a mensagem que você gostaria de enviar?");
-                if (chatState.message) {
-                    addUserMessage(chatState.message);
-                }
-            }
-            if (chatState.step === 5) {
-                showSuccessMessage();
-            }
-            scrollToBottom();
         }
 
         function addBotMessage(message) {
@@ -1431,8 +1389,6 @@
                 gender: null
             };
         }
-
-        loadChatState();
 
         document.addEventListener('DOMContentLoaded', () => {
             const contactSection = document.querySelector('#contact');
