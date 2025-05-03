@@ -182,6 +182,12 @@
             100% { background-position: 0%; }
         }
 
+        @keyframes neonPulse {
+            0% { border-color: rgba(165, 180, 252, 0.5); box-shadow: 0 0 5px rgba(165, 180, 252, 0.5); }
+            50% { border-color: rgba(232, 121, 249, 0.8); box-shadow: 0 0 20px rgba(232, 121, 249, 0.8); }
+            100% { border-color: rgba(165, 180, 252, 0.5); box-shadow: 0 0 5px rgba(165, 180, 252, 0.5); }
+        }
+
         .float {
             animation: float 3s ease-in-out infinite;
         }
@@ -359,6 +365,89 @@
             position: relative;
             z-index: 40;
         }
+
+        /* Updated Styles for Nossos Serviços Section */
+        #services-testimonials .gradient-card {
+            background: linear-gradient(135deg, #1e293b, #2d3748);
+            border: 2px solid transparent;
+            border-radius: 1.2rem;
+            box-shadow: 0 0 15px rgba(165, 180, 252, 0.3), 0 0 25px rgba(232, 121, 249, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            animation: neonPulse 4s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #services-testimonials .gradient-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(165, 180, 252, 0.1), rgba(232, 121, 249, 0.1));
+            opacity: 0.5;
+            z-index: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        #services-testimonials .gradient-card:hover {
+            transform: scale(1.05) translateY(-5px);
+            box-shadow: 0 0 25px rgba(165, 180, 252, 0.6), 0 0 35px rgba(232, 121, 249, 0.4);
+            border-color: #e879f9;
+        }
+
+        #services-testimonials .gradient-card:hover::before {
+            opacity: 0.8;
+        }
+
+        #services-testimonials .gradient-card h3 {
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: 0.05em;
+            background: linear-gradient(135deg, #a5b4fc, #e879f9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 5px rgba(232, 121, 249, 0.5);
+            transition: text-shadow 0.3s ease;
+        }
+
+        #services-testimonials .gradient-card:hover h3 {
+            text-shadow: 0 0 10px rgba(232, 121, 249, 0.8);
+        }
+
+        #services-testimonials .gradient-card p {
+            color: #e2e8f0;
+            letter-spacing: 0.03em;
+            z-index: 2;
+        }
+
+        #services-testimonials .gradient-card .service-icon {
+            background: linear-gradient(135deg, #a5b4fc, #e879f9);
+            padding: 0.75rem;
+            width: 48px;
+            height: 48px;
+            transition: transform 0.3s ease;
+            z-index: 2;
+        }
+
+        #services-testimonials .gradient-card:hover .service-icon {
+            transform: rotate(360deg) scale(1.2);
+        }
+
+        #services-testimonials .gradient-card .cta-button {
+            z-index: 2;
+            box-shadow: 0 0 10px rgba(232, 121, 249, 0.5);
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+        }
+
+        #services-testimonials .gradient-card:hover .cta-button {
+            box-shadow: 0 0 20px rgba(232, 121, 249, 0.8);
+            transform: scale(1.15);
+        }
+
+        #services-testimonials .content-card.float {
+            animation: float 4s ease-in-out infinite;
+        }
     </style>
 </head>
 <body class="text-gray-200">
@@ -482,8 +571,8 @@
                             <div class="flex items-center justify-center mb-4">
                                 <img src="https://i.postimg.cc/RhkCP2SL/pngegg-3.png" alt="Design Icon" class="service-icon">
                             </div>
-                            <h3 class="text-xl font-semibold text-gray-900 mb-2 text-center">Design Gráfico</h3>
-                            <p class="text-gray-600 mb-4 text-center">
+                            <h3 class="text-xl font-semibold mb-2 text-center">Design Gráfico</h3>
+                            <p class="mb-4 text-center">
                                 Criamos logotipos, banners e posts para redes sociais que capturam a essência da sua marca.
                             </p>
                             <div class="text-center">
@@ -495,8 +584,8 @@
                             <div class="flex items-center justify-center mb-4">
                                 <img src="https://i.postimg.cc/HLYYPwgR/pngegg-2.png" alt="Website Icon" class="service-icon">
                             </div>
-                            <h3 class="text-xl font-semibold text-gray-900 mb-2 text-center">Criação de Sites</h3>
-                            <p class="text-gray-600 mb-4 text-center">
+                            <h3 class="text-xl font-semibold mb-2 text-center">Criação de Sites</h3>
+                            <p class="mb-4 text-center">
                                 Desenvolvemos sites responsivos e otimizados para converter visitantes em clientes.
                             </p>
                             <div class="text-center">
