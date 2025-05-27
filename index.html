@@ -250,7 +250,6 @@
             top: 0;
             left: 0;
             width: 100%;
-            max-width: 100vw;
             height: 100%;
             z-index: 0;
             background: #0d1117;
@@ -264,6 +263,7 @@
             margin-bottom: 1rem;
         }
 
+        /* Ajustes para o pop-up de inatividade (PC) */
         .inactivity-card {
             position: fixed;
             top: 50%;
@@ -280,8 +280,9 @@
             z-index: 1000;
             display: none;
             text-align: center;
-            width: 100%;
-            max-width: 90vw;
+            /* Propriedades ajustadas para PC */
+            width: 90%; /* Pode ser uma largura inicial, mas o max-width é crucial */
+            max-width: 500px; /* Limita a largura em telas grandes (PC) */
             box-sizing: border-box;
         }
 
@@ -343,11 +344,14 @@
             background: rgba(255, 255, 255, 0.1);
         }
 
+        /* Ajustes para o chatbot (PC) */
         .chat-container {
-            max-width: 100%;
-            width: 100%;
+            /* Propriedades ajustadas para PC */
+            max-width: 600px; /* Limita a largura em telas grandes (PC) */
+            width: 90%; /* Ocupa 90% do espaço disponível até o max-width */
             margin: 0 auto;
-            background: #374151;
+            /* Novo fundo mais atrativo */
+            background: linear-gradient(160deg, #374151, #1f2937); /* Gradiente mais escuro e sutil */
             border-radius: 1rem;
             padding: 1rem;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
@@ -356,6 +360,7 @@
             flex-direction: column;
             position: relative;
             box-sizing: border-box;
+            border: 1px solid rgba(165, 180, 252, 0.2); /* Borda sutil */
         }
 
         .chat-container.success {
@@ -363,6 +368,7 @@
             padding: 0;
             border-radius: 0;
             box-shadow: none;
+            border: none; /* Remove a borda quando em modo de sucesso */
         }
 
         .chat-messages {
@@ -592,7 +598,7 @@
                 gap: 1.5rem; /* Espaçamento entre os itens */
                 transition: right 0.3s ease;
                 z-index: 30;
-                display: none;
+                display: flex; /* Mude para flex para que o JS possa controlar o display */
                 box-sizing: border-box;
                 padding: 0 1rem;
                 box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3); /* Sombra para profundidade */
@@ -600,7 +606,6 @@
 
             .nav-menu.active {
                 right: 0;
-                display: flex;
             }
 
             .hamburger {
@@ -662,12 +667,16 @@
                 object-fit: cover;
             }
 
+            /* Ajustes para chatbot e pop-up de inatividade no mobile */
             .chat-container {
                 height: 350px;
                 padding: 0.75rem;
-                width: 100%;
-                max-width: 100%;
+                width: 95%; /* Ajusta para 95% da largura da viewport */
+                max-width: 380px; /* Limite razoável para mobile */
                 box-sizing: border-box;
+                margin: 0 auto;
+                background: linear-gradient(160deg, #374151, #1f2937); /* Mantém o fundo gradiente */
+                border: 1px solid rgba(165, 180, 252, 0.2); /* Mantém a borda sutil */
             }
 
             .chat-input {
@@ -694,8 +703,9 @@
 
             .inactivity-card {
                 padding: 1rem;
-                max-width: 90vw;
-                width: 100%;
+                max-width: 90vw; /* Ajusta para 90% da largura da viewport */
+                width: 95%; /* Usar porcentagem em mobile para flexibilidade */
+                box-sizing: border-box;
             }
 
             .inactivity-card img {
@@ -742,8 +752,8 @@
             .chat-container {
                 height: 300px;
                 padding: 0.5rem;
-                width: 100%;
-                max-width: 100%;
+                width: 95%; /* Mantenha porcentagem */
+                max-width: 320px; /* Reduz o limite para telas muito pequenas */
                 box-sizing: border-box;
             }
 
@@ -940,7 +950,7 @@
 
         particlesJS('particles-js', {
             particles: {
-                number: { value: window.innerWidth <= 768 ? 100 : 200, density: { enable: true, value_area: 800 } },
+                number: { value: window.innerWidth <= 768 ? 100 : 250, density: { enable: true, value_area: 800 } }, /* Increased for PC */
                 color: { value: ['#a5b4fc', '#e879f9', '#f472b6'] },
                 shape: { type: 'circle' },
                 opacity: { value: 0.8, random: false },
@@ -1204,8 +1214,8 @@
                 'chamo-me', 'me chamo', 'é', 'e', 'oi', 'olá', 'ola',
                 'bom dia', 'boa tarde', 'boa noite', 'tudo bem', 'tudo bom',
                 'como vai', 'e aí', 'e ai', 'eai', 'oiê', 'oie', 'oiee',
-                'oláá', 'olaa', 'oláa', 'tô de boa', 'tô bem', 'opa',
-                'tudo bem?', 'tô de boa?', 'tô bem?', 'como você está',
+                'oláá', 'olaa', 'oláa', 'tô de boa',
+                'tô bem', 'tô de boa?', 'tô bem?', 'como você está',
                 'como você ta', 'como você tá', 'e você', 'e tu', 'e voce'
             ];
             phrasesToRemove.forEach(phrase => {
@@ -1323,6 +1333,7 @@
             chatMessages.innerHTML = '';
             const chatContainer = document.querySelector('.chat-container');
             chatContainer.classList.remove('success');
+            // Re-create inner HTML to reset the chat visually
             chatContainer.innerHTML = `
                 <div class="chat-messages" id="chatMessages"></div>
                 <div class="chat-input" id="chatInput">
@@ -1606,12 +1617,13 @@
             chatMessages.innerHTML = '';
             const chatContainer = document.querySelector('.chat-container');
             chatContainer.classList.add('success');
+            // Re-create inner HTML to reset the chat visually
             chatContainer.innerHTML = `
                 <div class="chat-messages" id="chatMessages">
                     <div class="sparkle-text">Mensagem Enviada! ✨</div>
                 </div>
             `;
-            chatMessages = document.getElementById('chatMessages');
+            chatMessages = document.getElementById('chatMessages'); /* Re-assign after re-creation */
             localStorage.removeItem('chatState');
             chatState = {
                 step: 1,
