@@ -11,7 +11,7 @@
         body {
             font-family: 'Poppins', sans-serif;
             position: relative;
-            overflow-x: hidden;
+            overflow-x: hidden; /* Garante que não haja rolagem horizontal */
             background: transparent;
         }
 
@@ -421,7 +421,7 @@
             border-top: 1px solid #4b5563;
             align-items: center;
             position: relative;
-            flex-wrap: wrap;
+            flex-wrap: nowrap; /* Impede a quebra de linha dos itens do input */
         }
 
         .chat-input textarea {
@@ -435,7 +435,7 @@
             resize: none;
             font-family: 'Poppins', sans-serif;
             font-size: clamp(0.875rem, 2.5vw, 1rem);
-            min-width: 0;
+            min-width: 0; /* Permite que o textarea diminua o suficiente */
         }
 
         .chat-input button {
@@ -465,6 +465,7 @@
             align-items: center;
             justify-content: center;
             position: relative;
+            flex-shrink: 0; /* Impede o botão de encolher */
         }
 
         .mic-button.recording {
@@ -563,6 +564,7 @@
                 transition: right 0.3s ease;
                 z-index: 30;
                 display: none; /* Hide by default on mobile */
+                box-sizing: border-box; /* Garante que o padding não cause overflow */
             }
 
             .nav-menu.active {
@@ -821,6 +823,7 @@
                 document.querySelector(this.getAttribute('href')).scrollIntoView({
                     behavior: 'smooth'
                 });
+                // Fecha o menu hambúrguer ao clicar em um link, apenas em telas menores
                 if (window.innerWidth <= 768) {
                     toggleMenu();
                 }
@@ -833,10 +836,13 @@
         function toggleMenu() {
             hamburger.classList.toggle('active');
             navMenu.classList.toggle('active');
+            // Impede a rolagem do body quando o menu está aberto
+            document.body.style.overflowY = navMenu.classList.contains('active') ? 'hidden' : 'auto';
         }
 
         hamburger.addEventListener('click', toggleMenu);
 
+        // Fecha o menu se clicar fora dele
         document.addEventListener('click', (e) => {
             if (!hamburger.contains(e.target) && !navMenu.contains(e.target) && navMenu.classList.contains('active')) {
                 toggleMenu();
@@ -1355,7 +1361,7 @@
                     removeTypingIndicator();
                     const greeting = requestedGender === 'feminine' ? 
                         `Entendido! Prazer em conhecê-la, ${chatState.name || 'você'}!` : 
-                        `Entendido! Prahecimento-lo, ${chatState.name || 'você'}!`;
+                        `Entendido! Prazer em conhecê-lo, ${chatState.name || 'você'}!`;
                     addBotMessage(`${greeting} ${chatState.step === 1 ? 'Qual é o seu nome ou como você gostaria de ser chamado?' : 'Qual é o seu e-mail de contato?'}`);
                     saveChatState();
                 }, 2000);
