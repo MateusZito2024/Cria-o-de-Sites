@@ -8,11 +8,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;600&family=Montserrat:wght@700&display=swap" rel="stylesheet">
     <style>
+        /* Adição crucial para evitar problemas de box model */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Poppins', sans-serif;
             position: relative;
             overflow-x: hidden; /* Garante que não haja rolagem horizontal */
             background: transparent;
+            width: 100vw; /* Garante que o body ocupe exatamente 100% da largura da viewport */
         }
 
         .brand-name {
@@ -674,6 +680,7 @@
             .chat-container {
                 height: 300px;
                 padding: 0.5rem; /* Further reduce padding for very small screens */
+                width: 98%; /* Para telas muito pequenas, use um pouco mais da largura */
             }
 
             .chat-input textarea {
