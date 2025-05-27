@@ -127,6 +127,8 @@
             cursor: pointer;
             padding: 0;
             z-index: 40;
+            /* Adicionado: Efeito visual */
+            transition: transform 0.3s ease;
         }
 
         .hamburger span {
@@ -134,6 +136,8 @@
             height: 3px;
             background: #f8f8f8;
             transition: all 0.3s ease;
+            /* Adicionado: Efeito sutil no background */
+            background: linear-gradient(135deg, #a5b4fc, #e879f9);
         }
 
         .hamburger.active span:nth-child(1) {
@@ -152,6 +156,17 @@
             display: flex;
             align-items: center;
             transition: all 0.3s ease;
+        }
+
+        /* Adicionado: Animações de entrada e saída para o menu */
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideOutRight {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
         }
 
         @keyframes fadeInUp {
@@ -189,17 +204,6 @@
         @keyframes fadeOutTooltip {
             from { opacity: 1; transform: translateY(0); }
             to { opacity: 0; transform: translateY(5px); }
-        }
-
-        @keyframes slideInMenuItem {
-            from {
-                opacity: 0;
-                transform: translateX(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
         }
 
         .fade-in {
@@ -585,106 +589,61 @@
                 box-sizing: border-box;
             }
 
-            .hamburger {
-                display: flex;
-                background: transparent;
-                padding: 0.5rem;
-                border-radius: 50%;
-                transition: background 0.3s ease;
-            }
-
-            .hamburger span {
-                background: linear-gradient(135deg, #a5b4fc, #e879f9);
-                height: 4px;
-                border-radius: 2px;
-                transition: all 0.3s ease;
-            }
-
-            .hamburger:hover {
-                background: rgba(165, 180, 252, 0.2);
-            }
-
-            .hamburger.active {
-                background: rgba(232, 121, 249, 0.2);
-            }
-
             .nav-menu {
                 position: fixed;
                 top: 0;
-                right: -100%;
+                right: -100%; /* Inicia fora da tela */
                 height: 100vh;
                 width: 100%;
                 max-width: 300px;
-                background: linear-gradient(135deg, #1f2937, #374151);
+                background: #1f2937;
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
-                gap: 2.5rem;
-                transition: right 0.5s ease, opacity 0.5s ease;
-                opacity: 0;
+                gap: 2rem;
+                transition: right 0.3s ease-in-out; /* Transição mais suave */
                 z-index: 30;
-                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
-                backdrop-filter: blur(5px);
-                padding: 1rem;
+                display: none; /* Inicia escondido */
                 box-sizing: border-box;
+                padding: 0 1rem;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5); /* Sombra para o menu */
             }
 
             .nav-menu.active {
                 right: 0;
-                opacity: 1;
+                display: flex; /* Mostra o menu quando ativo */
+                animation: slideInRight 0.4s forwards; /* Animação de entrada */
+            }
+
+            /* Novo: Animação de saída para o menu */
+            .nav-menu.closing {
+                animation: slideOutRight 0.4s forwards;
+            }
+
+            .hamburger {
                 display: flex;
-            }
-
-            .nav-link {
-                font-size: clamp(1.25rem, 5vw, 1.5rem);
-                padding: 0.75rem 1.5rem;
-                color: #e2e8f0;
-                width: 100%;
-                text-align: center;
-                border-radius: 0.5rem;
-                transition: all 0.3s ease;
-                position: relative;
-                animation: slideInMenuItem 0.5s ease-out forwards;
-                animation-delay: calc(var(--index) * 0.1s);
-            }
-
-            .nav-link:hover {
-                background: rgba(165, 180, 252, 0.2);
-                color: #e879f9;
-                transform: translateY(-3px);
-            }
-
-            .nav-link::after {
-                background: linear-gradient(135deg, #a5b4fc, #e879f9);
-            }
-
-            .close-menu {
-                position: absolute;
-                top: 1rem;
-                right: 1rem;
-                background: rgba(232, 121, 249, 0.2);
-                border: none;
-                color: #e2e8f0;
-                font-size: 1.5rem;
-                width: 40px;
-                height: 40px;
-                border-radius: 50%;
-                cursor: pointer;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                transition: all 0.3s ease;
-            }
-
-            .close-menu:hover {
-                background: #e879f9;
-                color: white;
-                transform: rotate(90deg);
             }
 
             .brand-name {
                 font-size: clamp(1.75rem, 8vw, 2rem);
                 padding: 0.5rem;
+            }
+
+            .nav-link {
+                font-size: clamp(1.125rem, 4vw, 1.25rem);
+                padding: 0.5rem 0;
+                /* Adicionado: Efeito visual nos links do menu mobile */
+                color: #e2e8f0;
+                transition: color 0.3s ease, transform 0.2s ease;
+            }
+
+            .nav-link:hover {
+                color: #e879f9;
+                transform: translateX(5px);
+            }
+
+            .nav-link::after {
+                background: linear-gradient(135deg, #a5b4fc, #e879f9);
             }
 
             #home h2 {
@@ -842,12 +801,11 @@
                 <span></span>
             </button>
             <div class="nav-menu content-layer space-y-4 md:space-y-0 md:space-x-6">
-                <button class="close-menu" aria-label="Fechar menu" onclick="toggleMenu()">×</button>
-                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/index.html" class="nav-link text-lg transition block md:inline-block" style="--index: 1;">Início</a>
-                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/servi%C3%A7os.html" class="nav-link text-lg transition block md:inline-block" style="--index: 2;">Serviços</a>
-                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/sobre.html" class="nav-link text-lg transition block md:inline-block" style="--index: 3;">Sobre</a>
-                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/portf%C3%B3lio.html" class="nav-link text-lg transition block md:inline-block" style="--index: 4;">Portfólio</a>
-                <a href="https://mateuszitoobjs2024.github.io/Cria-o-de-Sites/contato.html" class="nav-link text-lg transition block md:inline-block" style="--index: 5;">Contato</a>
+                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/index.html" class="nav-link text-lg transition block md:inline-block">Início</a>
+                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/servi%C3%A7os.html" class="nav-link text-lg transition block md:inline-block">Serviços</a>
+                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/sobre.html" class="nav-link text-lg transition block md:inline-block">Sobre</a>
+                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/portf%C3%B3lio.html" class="nav-link text-lg transition block md:inline-block">Portfólio</a>
+                <a href="https://mateuszitoobjs2024.github.io/Cria-o-de-Sites/contato.html" class="nav-link text-lg transition block md:inline-block">Contato</a>
             </div>
         </div>
     </nav>
@@ -951,10 +909,26 @@
         const navMenu = document.querySelector('.nav-menu');
 
         function toggleMenu() {
+            if (navMenu.classList.contains('active')) {
+                // Se o menu está ativo, adicione a classe 'closing' para a animação de saída
+                navMenu.classList.add('closing');
+                navMenu.addEventListener('animationend', function handler() {
+                    navMenu.classList.remove('active', 'closing');
+                    navMenu.style.display = 'none'; // Esconde após a animação de saída
+                    document.body.style.overflowY = 'auto';
+                    navMenu.removeEventListener('animationend', handler);
+                });
+            } else {
+                // Se o menu não está ativo, mostre-o e adicione a classe 'active'
+                navMenu.style.display = 'flex'; // Garante que o menu seja visível para a animação
+                requestAnimationFrame(() => {
+                    navMenu.classList.add('active');
+                    document.body.style.overflowY = 'hidden';
+                });
+            }
             hamburger.classList.toggle('active');
-            navMenu.classList.toggle('active');
-            document.body.style.overflowY = navMenu.classList.contains('active') ? 'hidden' : 'auto';
         }
+
 
         hamburger.addEventListener('click', toggleMenu);
 
