@@ -7,6 +7,11 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;600&family=Montserrat:wght@700&display=swap" rel="stylesheet">
     <style>
+        /* Reset para box-sizing global */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(135deg, #1e293b, #2d3748, #000000, #0f172a, #1e293b, #2d3748, #000000, #0f172a);
@@ -16,8 +21,9 @@
             margin: 0;
             padding: 0;
             position: relative;
-            overflow-x: hidden;
+            overflow-x: hidden; /* Evita rolagem horizontal */
             min-height: 100%;
+            width: 100vw; /* Garante que o body ocupe 100% da largura da viewport */
         }
 
         @keyframes gradientTransition {
@@ -75,6 +81,7 @@
             padding: 1rem;
             display: block;
             overflow: visible;
+            font-size: clamp(2rem, 6vw, 2.5rem); /* Ajuste com clamp para mobile */
         }
 
         .flex.items-center.content-layer {
@@ -87,6 +94,7 @@
             text-decoration: none;
             color: #f8f8f8;
             transition: color 0.3s ease;
+            font-size: clamp(1rem, 3vw, 1.125rem); /* Ajuste com clamp para mobile */
         }
 
         .nav-link::after {
@@ -136,8 +144,9 @@
             margin-right: auto;
         }
 
+        /* Removido margin-left: auto para mobile, será controlado por flexbox */
         nav .flex.items-center.content-layer:last-child {
-            margin-left: auto;
+            /* margin-left: auto; */
         }
 
         .content-layer {
@@ -205,7 +214,7 @@
         }
 
         .sparkle-text {
-            font-size: 1.5rem;
+            font-size: clamp(1.25rem, 4vw, 1.5rem); /* Ajuste com clamp para mobile */
             font-weight: bold;
             text-align: center;
             color: #e2e8f0;
@@ -448,13 +457,210 @@
         #services-testimonials .content-card.float {
             animation: float 4s ease-in-out infinite;
         }
+
+        /* --- Mobile Responsiveness --- */
+
+        /* Hamburger menu styles */
+        .hamburger {
+            display: none; /* Hidden by default, shown in media query */
+            flex-direction: column;
+            justify-content: space-around;
+            width: 2rem;
+            height: 2rem;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            z-index: 40;
+        }
+
+        .hamburger span {
+            width: 100%;
+            height: 3px;
+            background: #f8f8f8;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        /* Nav menu for mobile */
+        .nav-menu-mobile {
+            display: none; /* Hidden by default */
+        }
+
+        @media (max-width: 768px) {
+            /* Navbar adjustments */
+            nav {
+                background: rgba(31, 41, 55, 0.95);
+                padding: 0.5rem 1rem;
+            }
+
+            /* Hide desktop nav links */
+            nav .flex.items-center.space-x-6 {
+                display: none;
+            }
+
+            /* Show hamburger */
+            .hamburger {
+                display: flex;
+            }
+
+            /* Mobile nav menu */
+            .nav-menu-mobile {
+                position: fixed;
+                top: 0;
+                right: -100%; /* Initially off-screen */
+                height: 100vh;
+                width: 75%;
+                max-width: 300px; /* Limit width for larger tablets */
+                background: #1f2937;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 2rem;
+                transition: right 0.3s ease;
+                z-index: 30;
+                display: flex; /* Show flex container */
+                box-sizing: border-box;
+            }
+
+            .nav-menu-mobile.active {
+                right: 0; /* Slide in */
+            }
+
+            /* Adjust brand name font size */
+            .brand-name {
+                font-size: clamp(1.75rem, 8vw, 2rem);
+                padding: 0.5rem;
+            }
+
+            /* Hero Section adjustments */
+            #services-hero {
+                h-min: 50vh; /* Ajusta altura mínima para mobile */
+                padding-top: 8rem; /* Padding para evitar que o conteúdo fique sob a navbar fixa */
+                padding-bottom: 4rem;
+            }
+
+            #services-hero h2 {
+                font-size: clamp(2.25rem, 9vw, 3rem); /* Ajusta tamanho do título */
+            }
+
+            #services-hero p {
+                font-size: clamp(1rem, 4.5vw, 1.25rem); /* Ajusta tamanho do parágrafo */
+            }
+
+            /* Grid layout for sections */
+            #recent-posts .grid,
+            #services-testimonials .grid {
+                grid-template-columns: 1fr; /* Stack columns */
+                gap: 2rem; /* Aumenta o espaçamento entre as seções */
+            }
+
+            /* Cards and images */
+            .content-card,
+            #services-testimonials .gradient-card {
+                padding: 1.5rem;
+            }
+
+            .content-card img,
+            .carousel-item img {
+                width: 100%;
+                height: auto; /* Garante que a altura se ajuste proporcionalmente */
+                max-height: 250px; /* Limita a altura das imagens do carrossel em mobile */
+                object-fit: cover;
+            }
+
+            /* Newsletter form */
+            #newsletter-form {
+                flex-direction: column; /* Stack inputs vertically */
+                align-items: center;
+            }
+
+            .newsletter-input {
+                width: 90% !important; /* Ajusta largura dos inputs */
+                margin-bottom: 1rem; /* Adiciona espaçamento entre os inputs */
+            }
+
+            .newsletter-button {
+                width: 90%;
+            }
+
+            /* General section padding */
+            section {
+                padding: 3rem 1rem; /* Ajusta padding geral das seções */
+            }
+
+            h2 {
+                font-size: clamp(2rem, 8vw, 2.5rem); /* Ajusta tamanho dos títulos das seções */
+            }
+
+            p {
+                font-size: clamp(0.9rem, 3.8vw, 1.1rem); /* Ajusta tamanho dos parágrafos */
+            }
+
+            .cta-button {
+                font-size: clamp(1rem, 4vw, 1.125rem);
+                padding: 0.8rem 2rem;
+            }
+
+            /* Carousel pagination */
+            .pagination-number {
+                width: 25px;
+                height: 25px;
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            /* Further small adjustments for very small screens */
+            .brand-name {
+                font-size: clamp(1.5rem, 7vw, 1.75rem);
+            }
+
+            #services-hero h2 {
+                font-size: clamp(1.8rem, 8vw, 2.5rem);
+            }
+
+            #services-hero p {
+                font-size: clamp(0.85rem, 4vw, 1rem);
+            }
+
+            .newsletter-input,
+            .newsletter-button {
+                width: 95% !important;
+            }
+
+            .content-card img,
+            .carousel-item img {
+                max-height: 200px;
+            }
+
+            .service-icon {
+                width: 40px;
+                height: 40px;
+                padding: 0.5rem;
+            }
+
+            #services-testimonials .gradient-card .service-icon {
+                width: 44px;
+                height: 44px;
+            }
+        }
     </style>
 </head>
 <body class="text-gray-200">
-    <!-- Stars Background -->
     <div class="stars-container" id="stars-container"></div>
 
-    <!-- SVG Gradient for Icons -->
     <svg width="0" height="0">
         <defs>
             <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -464,25 +670,34 @@
         </defs>
     </svg>
 
-    <!-- Navbar -->
     <nav class="shadow-lg fixed w-full z-10">
-        <div class="flex justify-between h-16">
+        <div class="flex justify-between h-16 items-center">
             <div class="flex items-center content-layer">
                 <h1 class="text-4xl brand-name gradient-text">Good Vibes</h1>
             </div>
-            <div class="flex items-center space-x-6 content-layer">
+            <button class="hamburger" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="flex items-center space-x-6 content-layer desktop-nav">
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/index.html" class="nav-link text-lg transition">Início</a>
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/servi%C3%A7os.html" class="nav-link text-lg transition">Serviços</a>
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/sobre.html" class="nav-link text-lg transition">Sobre</a>
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/portf%C3%B3lio.html" class="nav-link text-lg transition">Portfólio</a>
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/contato.html" class="nav-link text-lg transition">Contato</a>
             </div>
+            <div class="nav-menu-mobile content-layer">
+                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/index.html" class="nav-link text-lg transition block">Início</a>
+                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/servi%C3%A7os.html" class="nav-link text-lg transition block">Serviços</a>
+                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/sobre.html" class="nav-link text-lg transition block">Sobre</a>
+                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/portf%C3%B3lio.html" class="nav-link text-lg transition block">Portfólio</a>
+                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/contato.html" class="nav-link text-lg transition block">Contato</a>
+            </div>
         </div>
     </nav>
 
-    <!-- Services Body -->
     <main>
-        <!-- Hero Section -->
         <section id="services-hero" class="h-[60vh] flex items-center section-bg">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center content-layer">
                 <h2 class="text-4xl md:text-5xl font-bold gradient-text mb-6 float">Soluções Criativas para Sua Marca</h2>
@@ -493,11 +708,9 @@
             </div>
         </section>
 
-        <!-- Últimos Posts and Sidebar Section -->
         <section id="recent-posts" class="py-16 section-bg">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 content-layer">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <!-- Últimos Posts Column -->
                     <div class="md:col-span-2">
                         <h2 class="text-3xl md:text-4xl font-bold gradient-text mb-8 float">Últimos Posts</h2>
                         <div class="content-card p-6 mb-6 float">
@@ -507,7 +720,6 @@
                             <img src="https://i.postimg.cc/mrLqfxqX/5.png" alt="Post 2" class="w-full rounded-lg mb-4 bounce" style="animation-delay: 0.2s;">
                         </div>
                     </div>
-                    <!-- Sidebar Column (Single Post with Numbered Pagination) -->
                     <div>
                         <h2 class="text-2xl font-semibold gradient-text mb-8 float">Posts em Destaque</h2>
                         <div class="carousel" id="highlight-carousel">
@@ -523,7 +735,6 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Numbered Pagination -->
                         <div class="pagination" id="highlight-pagination">
                             <div class="pagination-number active" data-page="0">1</div>
                             <div class="pagination-number" data-page="1">2</div>
@@ -534,12 +745,10 @@
             </div>
         </section>
 
-        <!-- Recent Projects Carousel -->
         <section id="recent-projects" class="py-16 section-bg">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 content-layer">
                 <h2 class="text-3xl md:text-4xl font-bold gradient-text mb-12 float">Projetos Recentes</h2>
-                <div class="carousel" id="recent-projects">
-                    <div class="carousel-items">
+                <div class="carousel" id="recent-projects-carousel-container"> <div class="carousel-items">
                         <div class="carousel-item content-card p-6 float">
                             <img src="https://i.postimg.cc/vBMmdmMR/carrossel-5-dicas.png" alt="Project 1" class="w-full rounded-lg bounce">
                         </div>
@@ -559,14 +768,11 @@
             </div>
         </section>
 
-        <!-- Services and Testimonials Section -->
         <section id="services-testimonials" class="py-16 section-bg">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 content-layer">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <!-- Services Column -->
                     <div class="md:col-span-2">
                         <h2 class="text-3xl md:text-4xl font-bold gradient-text mb-8 float">Nossos Serviços</h2>
-                        <!-- Graphic Design Service -->
                         <div class="content-card gradient-card p-6 mb-6 float">
                             <div class="flex items-center justify-center mb-4">
                                 <img src="https://i.postimg.cc/RhkCP2SL/pngegg-3.png" alt="Design Icon" class="service-icon">
@@ -579,7 +785,6 @@
                                 <a href="https://api.whatsapp.com/send/?phone=5511987637786" target="_blank" class="cta-button py-2 px-6 rounded-full text-white pulse">Solicite Agora</a>
                             </div>
                         </div>
-                        <!-- Website Creation Service -->
                         <div class="content-card gradient-card p-6 float">
                             <div class="flex items-center justify-center mb-4">
                                 <img src="https://i.postimg.cc/HLYYPwgR/pngegg-2.png" alt="Website Icon" class="service-icon">
@@ -593,7 +798,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Testimonials Column -->
                     <div>
                         <h2 class="text-2xl font-semibold gradient-text mb-8 float">Depoimentos em Destaque</h2>
                         <div class="content-card gradient-card p-6 mb-6 float">
@@ -613,7 +817,6 @@
             </div>
         </section>
 
-        <!-- Newsletter Signup Section -->
         <section id="newsletter" class="py-16 section-bg">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center content-layer">
                 <h2 class="text-3xl md:text-4xl font-bold gradient-text mb-6 float">Assine Nossa Newsletter</h2>
@@ -634,7 +837,6 @@
         </section>
     </main>
 
-    <!-- Footer -->
     <footer class="section-bg text-gray-200 py-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center content-layer">
             <p>© 2025 Good Vibes. Todos os direitos reservados.</p>
@@ -650,7 +852,38 @@
                     document.querySelector(this.getAttribute('href')).scrollIntoView({
                         behavior: 'smooth'
                     });
+                    // Fecha o menu hambúrguer ao clicar em um link, apenas em telas menores
+                    if (window.innerWidth <= 768) {
+                        toggleMenu();
+                    }
                 });
+            });
+
+            // Hamburger menu functionality
+            const hamburger = document.querySelector('.hamburger');
+            const mobileNavMenu = document.querySelector('.nav-menu-mobile');
+            const desktopNavMenu = document.querySelector('.desktop-nav'); // Referência ao menu desktop
+
+            function toggleMenu() {
+                hamburger.classList.toggle('active');
+                mobileNavMenu.classList.toggle('active');
+                document.body.style.overflowY = mobileNavMenu.classList.contains('active') ? 'hidden' : 'auto';
+            }
+
+            hamburger.addEventListener('click', toggleMenu);
+
+            // Hide mobile menu on resize if it becomes desktop view
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 768 && mobileNavMenu.classList.contains('active')) {
+                    toggleMenu();
+                }
+            });
+
+            // Close mobile menu if clicked outside
+            document.addEventListener('click', (e) => {
+                if (window.innerWidth <= 768 && !hamburger.contains(e.target) && !mobileNavMenu.contains(e.target) && mobileNavMenu.classList.contains('active')) {
+                    toggleMenu();
+                }
             });
 
             // Stars animation
@@ -675,9 +908,9 @@
 
             // Carousel functionality
             function setupCarousel(carouselId, paginationId, autoAdvanceInterval) {
-                const carousel = document.querySelector(`#${carouselId}`);
+                const carousel = document.getElementById(carouselId);
                 const carouselItemsContainer = carousel.querySelector('.carousel-items');
-                const carouselItems = carousel.querySelectorAll(`#${carouselId} .carousel-item`);
+                const carouselItems = carousel.querySelectorAll(`.carousel-item`); // Removed ID from selector
                 const numbers = document.querySelectorAll(`#${paginationId} .pagination-number`);
                 let currentIndex = 0;
                 let intervalId = null;
@@ -691,13 +924,11 @@
                     numbers.forEach(n => n.classList.remove('active'));
                     numbers[index].classList.add('active');
                     currentIndex = index;
-                    console.log(`Carousel ${carouselId}: Showing item ${index + 1}`);
                 }
 
                 function autoAdvance() {
                     currentIndex = (currentIndex + 1) % carouselItems.length;
                     showItem(currentIndex);
-                    console.log(`Carousel ${carouselId}: Auto-advance to item ${currentIndex + 1}`);
                 }
 
                 // Set up pagination click events
@@ -707,7 +938,6 @@
                         // Reset interval to prevent immediate slide after click
                         clearInterval(intervalId);
                         intervalId = setInterval(autoAdvance, autoAdvanceInterval);
-                        console.log(`Carousel ${carouselId}: Clicked pagination ${index + 1}`);
                     });
                 });
 
@@ -715,13 +945,11 @@
                 function startAutoAdvance() {
                     if (intervalId) clearInterval(intervalId); // Prevent multiple intervals
                     intervalId = setInterval(autoAdvance, autoAdvanceInterval);
-                    console.log(`Carousel ${carouselId}: Auto-advance started`);
                 }
 
                 // Stop auto-advance
                 function stopAutoAdvance() {
                     clearInterval(intervalId);
-                    console.log(`Carousel ${carouselId}: Auto-advance stopped`);
                 }
 
                 // Initialize auto-advance
@@ -730,11 +958,36 @@
                 // Pause on hover, resume on leave
                 carousel.addEventListener('mouseenter', stopAutoAdvance);
                 carousel.addEventListener('mouseleave', startAutoAdvance);
+
+                // Add touch support for carousels
+                let touchStartX = 0;
+                let touchEndX = 0;
+
+                carousel.addEventListener('touchstart', (e) => {
+                    touchStartX = e.touches[0].clientX;
+                    stopAutoAdvance(); // Pause auto-advance on touch
+                });
+
+                carousel.addEventListener('touchmove', (e) => {
+                    touchEndX = e.touches[0].clientX;
+                });
+
+                carousel.addEventListener('touchend', () => {
+                    if (touchEndX < touchStartX - 50) { // Swiped left
+                        currentIndex = (currentIndex + 1) % carouselItems.length;
+                        showItem(currentIndex);
+                    }
+                    if (touchEndX > touchStartX + 50) { // Swiped right
+                        currentIndex = (currentIndex - 1 + carouselItems.length) % carouselItems.length;
+                        showItem(currentIndex);
+                    }
+                    startAutoAdvance(); // Resume auto-advance after touch
+                });
             }
 
             // Initialize carousels
             setupCarousel('highlight-carousel', 'highlight-pagination', 5000);
-            setupCarousel('recent-projects', 'projects-pagination', 5000);
+            setupCarousel('recent-projects-carousel-container', 'projects-pagination', 5000); /* Usando o novo ID */
 
             // Newsletter form submission
             const submitButton = document.getElementById('newsletter-submit');
@@ -745,9 +998,6 @@
 
             if (submitButton) {
                 submitButton.addEventListener('click', function() {
-                    console.log('Botão Assinar clicado!');
-                    alert('Botão Assinar clicado!');
-
                     const name = nameInput.value.trim();
                     const email = emailInput.value.trim();
 
@@ -787,17 +1037,13 @@
                     }
                 })
                 .then(response => {
-                    console.log('Resposta do Formspree:', response);
                     if (response.ok) {
-                        console.log('Inscrição enviada com sucesso!');
                         showSuccessMessage();
                     } else {
-                        console.error('Erro no Formspree:', response.status, response.statusText);
                         alert('Houve um erro ao enviar sua inscrição. Tente novamente mais tarde.');
                     }
                 })
                 .catch(error => {
-                    console.error('Erro na requisição ao Formspree:', error);
                     alert('Houve um erro ao enviar sua inscrição. Tente novamente mais tarde.');
                 });
             }
