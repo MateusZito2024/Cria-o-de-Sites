@@ -7,6 +7,11 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;600&family=Montserrat:wght@700&display=swap" rel="stylesheet">
     <style>
+        /* Reset para box-sizing global */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
         html, body {
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(135deg, #1e293b, #2d3748, #000000, #0f172a, #1e293b, #2d3748, #000000, #0f172a);
@@ -16,8 +21,10 @@
             margin: 0;
             padding: 0;
             position: relative;
-            overflow-x: hidden;
+            overflow-x: hidden; /* Garante que não haja rolagem horizontal */
+            overflow-y: auto; /* Permite rolagem vertical */
             min-height: 100%;
+            width: 100vw; /* Garante que o body ocupe exatamente 100% da largura da viewport */
         }
 
         @keyframes gradientTransition {
@@ -34,7 +41,7 @@
             height: 100%;
             z-index: 0;
             pointer-events: none;
-            overflow: hidden;
+            /* REMOVIDO: overflow: hidden; - O overflow horizontal é controlado pelo body/html */
         }
 
         .star {
@@ -75,6 +82,7 @@
             padding: 1rem;
             display: block;
             overflow: visible;
+            font-size: clamp(2rem, 6vw, 2.5rem); /* Ajuste com clamp para mobile */
         }
 
         .flex.items-center.content-layer {
@@ -87,6 +95,7 @@
             text-decoration: none;
             color: #f8f8f8;
             transition: color 0.3s ease;
+            font-size: clamp(1rem, 3vw, 1.125rem); /* Ajuste com clamp para mobile */
         }
 
         .nav-link::after {
@@ -315,25 +324,8 @@
             100% { transform: scale(1, 1); }
         }
 
-        .whatsapp-button {
+        .whatsapp-button, .form-button, .schedule-button, .feedback-button, .testimonial-button {
             display: inline-block;
-            background: #25D366;
-            color: white;
-            padding: 0.5rem 1.5rem;
-            border-radius: 2rem;
-            font-size: 0.9rem;
-            font-weight: bold;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .whatsapp-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.5);
-        }
-
-        .form-button {
-            display: inline-block;
-            background: #a78bfa;
             color: white;
             padding: 0.5rem 1.5rem;
             border-radius: 2rem;
@@ -341,76 +333,48 @@
             font-weight: bold;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             border: none;
+            cursor: pointer;
         }
 
-        .form-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(167, 139, 250, 0.5);
-        }
+        .whatsapp-button { background: #25D366; }
+        .form-button { background: #a78bfa; }
+        .schedule-button { background: #1e3a8a; }
+        .feedback-button { background: #be185d; }
+        .testimonial-button { background: #166534; }
 
-        .schedule-button {
-            display: inline-block;
-            background: #1e3a8a;
-            color: white;
-            padding: 0.5rem 1.5rem;
-            border-radius: 2rem;
-            font-size: 0.9rem;
-            font-weight: bold;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
+        .whatsapp-button:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(37, 211, 102, 0.5); }
+        .form-button:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(167, 139, 250, 0.5); }
+        .schedule-button:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(30, 58, 138, 0.5); }
+        .feedback-button:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(190, 24, 93, 0.5); }
+        .testimonial-button:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(22, 101, 52, 0.5); }
 
-        .schedule-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(30, 58, 138, 0.5);
-        }
-
-        .feedback-button {
-            display: inline-block;
-            background: #be185d;
-            color: white;
-            padding: 0.5rem 1.5rem;
-            border-radius: 2rem;
-            font-size: 0.9rem;
-            font-weight: bold;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .feedback-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(190, 24, 93, 0.5);
-        }
-
-        .testimonial-button {
-            display: inline-block;
-            background: #166534;
-            color: white;
-            padding: 0.5rem 1.5rem;
-            border-radius: 2rem;
-            font-size: 0.9rem;
-            font-weight: bold;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .testimonial-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(22, 101, 52, 0.5);
-        }
-
+        /* Buttons inside puzzle-section: remove specific margins, use flex for spacing */
         .puzzle-section .whatsapp-button,
         .puzzle-section .form-button,
         .puzzle-section .schedule-button,
         .puzzle-section .feedback-button,
         .puzzle-section .testimonial-button {
-            margin-right: auto;
+            margin-right: 0;
             margin-left: 0;
-            display: inline-block;
         }
+        /* Add some margin-bottom for stacked buttons on mobile */
+        @media (max-width: 768px) {
+            .puzzle-section .whatsapp-button,
+            .puzzle-section .form-button,
+            .puzzle-section .schedule-button,
+            .puzzle-section .feedback-button,
+            .puzzle-section .testimonial-button {
+                margin-bottom: 1rem; /* Space between stacked buttons */
+                width: 90%; /* Make buttons wider on mobile */
+            }
+        }
+
 
         .testimonial-carousel {
             position: relative;
             width: 100%;
             max-width: 600px;
-            height: 150px;
+            height: 150px; /* Altura fixa para o carrossel de depoimentos */
             margin: 0 auto;
         }
 
@@ -545,6 +509,7 @@
             gap: 1rem;
             padding-top: 1rem;
             border-top: 1px solid #4b5563;
+            flex-wrap: nowrap; /* Impede a quebra de linha dos inputs no chat */
         }
 
         .chat-input textarea {
@@ -557,6 +522,8 @@
             outline: none;
             resize: none;
             font-family: 'Poppins', sans-serif;
+            font-size: clamp(0.875rem, 3vw, 1rem); /* Ajuste com clamp */
+            min-width: 0; /* Permite que o textarea diminua */
         }
 
         .chat-input button {
@@ -567,6 +534,7 @@
             font-weight: bold;
             cursor: pointer;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            font-size: clamp(0.875rem, 3vw, 1rem); /* Ajuste com clamp */
         }
 
         .chat-input button:hover {
@@ -575,7 +543,7 @@
         }
 
         .sparkle-text {
-            font-size: 1.5rem;
+            font-size: clamp(1.5rem, 5vw, 2rem); /* Ajuste com clamp */
             font-weight: bold;
             text-align: center;
             color: #e2e8f0;
@@ -617,11 +585,12 @@
             border-radius: 1rem;
             padding: 2rem;
             max-width: 500px;
-            width: 90%;
+            width: 90%; /* Ajuste para ocupar mais largura em mobile */
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
             border: 2px solid #a5b4fc;
             position: relative;
             animation: slideInTopPiece 0.5s ease-out;
+            box-sizing: border-box; /* Garante que padding e border não causem overflow */
         }
 
         .modal-content input,
@@ -635,6 +604,7 @@
             border-radius: 0.5rem;
             outline: none;
             font-family: 'Poppins', sans-serif;
+            font-size: clamp(0.9rem, 3.5vw, 1rem); /* Ajuste com clamp */
         }
 
         .modal-content textarea {
@@ -651,6 +621,8 @@
             cursor: pointer;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             border: none;
+            width: 100%; /* Botão ocupa 100% da largura no modal mobile */
+            font-size: clamp(0.9rem, 3.5vw, 1rem); /* Ajuste com clamp */
         }
 
         .modal-content button:hover {
@@ -673,16 +645,11 @@
         .success-message {
             text-align: center;
             margin-top: 1rem;
-            font-size: 0.9rem;
+            font-size: clamp(0.85rem, 3.5vw, 0.9rem); /* Ajuste com clamp */
         }
 
-        .error-message {
-            color: #f87171;
-        }
-
-        .success-message {
-            color: #a5b4fc;
-        }
+        .error-message { color: #f87171; }
+        .success-message { color: #a5b4fc; }
 
         @keyframes sparkle {
             0% { background-position: 0%; }
@@ -694,253 +661,637 @@
             from { opacity: 0; }
             to { opacity: 1; }
         }
+
+        /* --- Mobile Responsiveness --- */
+
+        /* Hamburger menu styles */
+        .hamburger {
+            display: none; /* Hidden by default, shown in media query */
+            flex-direction: column;
+            justify-content: space-around;
+            width: 2rem;
+            height: 2rem;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            z-index: 40;
+        }
+
+        .hamburger span {
+            width: 100%;
+            height: 3px;
+            background: #f8f8f8;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        /* Nav menu for mobile */
+        .nav-menu-mobile {
+            display: none; /* Hidden by default */
+        }
+
+        @media (max-width: 768px) {
+            /* Navbar adjustments */
+            nav {
+                background: rgba(31, 41, 55, 0.95);
+                padding: 0.5rem 1rem;
+            }
+
+            /* Hide desktop nav links */
+            nav .flex.items-center.space-x-6 {
+                display: none;
+            }
+
+            /* Show hamburger */
+            .hamburger {
+                display: flex;
+            }
+
+            /* Mobile nav menu */
+            .nav-menu-mobile {
+                position: fixed;
+                top: 0;
+                right: -100%; /* Initially off-screen */
+                height: 100vh;
+                width: 75%;
+                max-width: 300px; /* Limit width for larger tablets */
+                background: #1f2937;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 2rem;
+                transition: right 0.3s ease;
+                z-index: 30;
+                display: flex; /* Show flex container */
+                box-sizing: border-box;
+            }
+
+            .nav-menu-mobile.active {
+                right: 0; /* Slide in */
+            }
+
+            /* Adjust brand name font size */
+            .brand-name {
+                font-size: clamp(1.75rem, 8vw, 2rem);
+                padding: 0.5rem;
+            }
+
+            /* Main padding to account for fixed navbar */
+            section.py-32 { /* Main hero section */
+                padding-top: 8rem;
+                padding-bottom: 4rem;
+            }
+            section.py-20 { /* All other sections */
+                padding-top: 3rem;
+                padding-bottom: 3rem;
+            }
+
+            /* Titles and paragraphs */
+            h2 {
+                font-size: clamp(2.25rem, 9vw, 3rem); /* Adjust hero title size */
+                line-height: 1.2;
+            }
+
+            p {
+                font-size: clamp(1rem, 4.5vw, 1.25rem); /* Adjust hero paragraph size */
+            }
+
+            .cursive-text {
+                font-size: clamp(1.5rem, 6vw, 1.8rem);
+            }
+
+            /* Puzzle pieces text */
+            .puzzle-piece {
+                display: block; /* Stack puzzle pieces text vertically */
+                margin-bottom: 0.5rem; /* Add spacing between them */
+                animation-delay: 0s !important; /* Remove individual animation delays for faster load on mobile */
+            }
+
+            /* Puzzle sections (cards) */
+            .puzzle-section {
+                padding: 1.5rem;
+                margin: 1.5rem auto; /* Adjust margin */
+                width: 95%; /* Make it take more width */
+                max-width: 100%; /* Remove max-width constraint for full responsiveness */
+            }
+
+            /* Chat container */
+            .chat-container {
+                height: 400px; /* Adjust height for mobile */
+                padding: 1rem;
+                width: 100%; /* Occupy full width within puzzle-section */
+            }
+
+            .chat-messages {
+                padding: 0.5rem;
+                gap: 0.75rem;
+            }
+
+            .message {
+                max-width: 85%; /* Give more space for messages */
+                padding: 0.6rem;
+                font-size: clamp(0.85rem, 3.5vw, 0.95rem);
+            }
+
+            .typing-indicator span {
+                width: 6px;
+                height: 6px;
+            }
+
+            .chat-input {
+                gap: 0.5rem;
+                padding-top: 0.75rem;
+                flex-wrap: nowrap; /* Prevent wrapping in chat input */
+            }
+
+            .chat-input textarea {
+                font-size: clamp(0.85rem, 3.5vw, 0.95rem);
+                padding: 0.6rem;
+            }
+
+            .chat-input button {
+                font-size: clamp(0.85rem, 3.5vw, 0.95rem);
+                padding: 0.6rem 1rem;
+            }
+
+            /* Modal adjustments */
+            .modal-content {
+                padding: 1.5rem;
+                width: 95%; /* Occupy more width in mobile */
+            }
+            .modal-content input,
+            .modal-content textarea,
+            .modal-content button {
+                font-size: clamp(0.9rem, 3.8vw, 1rem); /* Adjust form input/button font size */
+                padding: 0.6rem;
+            }
+            .modal-content textarea {
+                min-height: 80px;
+            }
+
+            /* Testimonial carousel */
+            .testimonial-carousel {
+                height: 180px; /* Adjust height for mobile */
+                padding: 1rem 0; /* Add some padding */
+                box-sizing: border-box;
+            }
+            .testimonial-card p {
+                font-size: clamp(0.9rem, 3.8vw, 1rem);
+            }
+            .testimonial-card .client-name {
+                font-size: clamp(0.8rem, 3.5vw, 0.9rem);
+            }
+
+            /* General button adjustments */
+            .whatsapp-button, .form-button, .schedule-button, .feedback-button, .testimonial-button {
+                font-size: clamp(0.9rem, 3.8vw, 1rem);
+                padding: 0.7rem 1.2rem;
+                width: 100%; /* Make buttons full width */
+                margin-bottom: 1rem; /* Add spacing between stacked buttons */
+                display: block; /* Ensure it's a block for margin-bottom/width */
+            }
+            .puzzle-section .whatsapp-button:last-child,
+            .puzzle-section .form-button:last-child,
+            .puzzle-section .schedule-button:last-child,
+            .puzzle-section .feedback-button:last-child,
+            .puzzle-section .testimonial-button:last-child {
+                margin-bottom: 0; /* Remove margin from last button */
+            }
+
+            .puzzle-section .whatsapp-button + .form-button,
+            .puzzle-section .form-button + .schedule-button,
+            .puzzle-section .schedule-button + .feedback-button,
+            .puzzle-section .feedback-button + .testimonial-button {
+                margin-top: 0; /* Remove default margin-top if using margin-bottom on prev element */
+            }
+            .puzzle-section .whatsapp-button.float-effect,
+            .puzzle-section .form-button.float-effect,
+            .puzzle-section .schedule-button.float-effect,
+            .puzzle-section .feedback-button.float-effect,
+            .puzzle-section .testimonial-button.float-effect {
+                animation: none !important; /* Desabilitar animação de float para mobile */
+            }
+        }
+
+        @media (max-width: 480px) {
+            /* Further small adjustments for very small screens */
+            .brand-name {
+                font-size: clamp(1.5rem, 7vw, 1.75rem);
+            }
+
+            h2 {
+                font-size: clamp(1.8rem, 7vw, 2.25rem);
+            }
+
+            h3 {
+                font-size: clamp(1.3rem, 5.5vw, 1.6rem);
+            }
+
+            p {
+                font-size: clamp(0.85rem, 4vw, 1rem);
+            }
+
+            .chat-container {
+                height: 350px;
+                padding: 0.75rem;
+            }
+
+            .message {
+                max-width: 90%;
+                font-size: 0.8rem;
+            }
+
+            .chat-input textarea,
+            .chat-input button {
+                font-size: 0.8rem;
+                padding: 0.5rem 0.8rem;
+            }
+
+            .modal-content {
+                padding: 1rem;
+                width: 98%;
+            }
+            .modal-content input,
+            .modal-content textarea,
+            .modal-content button {
+                font-size: 0.85rem;
+                padding: 0.5rem;
+            }
+
+            .testimonial-carousel {
+                height: 150px;
+            }
+            .testimonial-card p {
+                font-size: 0.85rem;
+            }
+            .testimonial-card .client-name {
+                font-size: 0.75rem;
+            }
+            .whatsapp-button, .form-button, .schedule-button, .feedback-button, .testimonial-button {
+                font-size: 0.85rem;
+                padding: 0.6rem 1rem;
+            }
+        }
     </style>
 </head>
 <body class="text-gray-100">
     <div class="stars-container" id="stars-container"></div>
-    <!-- Navbar -->
     <nav class="shadow-lg fixed w-full z-10">
-        <div class="flex justify-between h-16">
+        <div class="flex justify-between h-16 items-center">
             <div class="flex items-center content-layer">
                 <h1 class="text-4xl brand-name gradient-text">Good Vibes</h1>
             </div>
-            <div class="flex items-center space-x-6 content-layer">
+            <button class="hamburger" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="flex items-center space-x-6 content-layer desktop-nav">
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/index.html" class="nav-link text-lg transition">Início</a>
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/servi%C3%A7os.html" class="nav-link text-lg transition">Serviços</a>
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/sobre.html" class="nav-link text-lg transition">Sobre</a>
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/portf%C3%B3lio.html" class="nav-link text-lg transition">Portfólio</a>
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/contato.html" class="nav-link text-lg transition">Contato</a>
             </div>
+            <div class="nav-menu-mobile content-layer">
+                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/index.html" class="nav-link text-lg transition block">Início</a>
+                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/servi%C3%A7os.html" class="nav-link text-lg transition block">Serviços</a>
+                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/sobre.html" class="nav-link text-lg transition block">Sobre</a>
+                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/portf%C3%B3lio.html" class="nav-link text-lg transition block">Portfólio</a>
+                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/contato.html" class="nav-link text-lg transition block">Contato</a>
+            </div>
         </div>
     </nav>
-    <section class="py-32 relative">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 content-layer">
-            <h2 class="text-5xl font-bold animated-gradient-text">
-                Fale com a Good Vibes
-            </h2>
-            <p class="text-xl text-gray-200 mt-6 max-w-2xl mx-auto">
-                <span class="puzzle-piece puzzle-piece-left">Tem uma ideia incrível?</span>
-                <span class="puzzle-piece puzzle-piece-right">Quer tirar uma dúvida ou só bater um papo sobre o seu projeto?</span>
-                <span class="puzzle-piece puzzle-piece-top">A gente adora conversar!</span>
-                <span class="puzzle-piece puzzle-piece-bottom">Escolha o melhor canal e fale com a gente.</span>
-            </p>
-        </div>
-    </section>
-    <section class="py-20 relative">
-        <div class="puzzle-section">
-            <h3 class="text-3xl font-bold mb-6 animated-gradient-text">
-                Formulário de Contato
-            </h3>
-            <div class="chat-container">
-                <div class="chat-messages" id="chatMessages"></div>
-                <div class="chat-input" id="chatInput">
-                    <textarea id="userInput" placeholder="Digite sua resposta..." rows="1" onkeypress="handleKeyPress(event)"></textarea>
-                    <button onclick="sendMessage()">Enviar</button>
-                </div>
+    <main>
+        <section class="py-32 relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 content-layer">
+                <h2 class="text-5xl font-bold animated-gradient-text">
+                    Fale com a Good Vibes
+                </h2>
+                <p class="text-xl text-gray-200 mt-6 max-w-2xl mx-auto">
+                    <span class="puzzle-piece puzzle-piece-left">Tem uma ideia incrível?</span>
+                    <span class="puzzle-piece puzzle-piece-right">Quer tirar uma dúvida ou só bater um papo sobre o seu projeto?</span>
+                    <span class="puzzle-piece puzzle-piece-top">A gente adora conversar!</span>
+                    <span class="puzzle-piece puzzle-piece-bottom">Escolha o melhor canal e fale com a gente.</span>
+                </p>
             </div>
-        </div>
-    </section>
-    <section class="py-20 relative">
-        <div class="puzzle-section">
-            <h3 class="text-3xl font-bold mb-6 animated-gradient-text">
-                Atendimento via WhatsApp
-            </h3>
-            <p class="text-lg text-gray-200 mb-6">
-                <span class="puzzle-piece puzzle-piece-top">Quer uma resposta rápida?</span>
-                <span class="puzzle-piece puzzle-piece-bottom">Chama a gente no WhatsApp!</span>
-            </p>
-            <a href="https://api.whatsapp.com/send/?phone=5511987637786" target="_blank" class="whatsapp-button float-effect puzzle-piece puzzle-piece-top">
-                Conversar Agora
-            </a>
-        </div>
-    </section>
-    <section class="py-20 relative">
-        <div class="puzzle-section">
-            <h3 class="text-3xl font-bold mb-6 animated-gradient-text">
-                Onde estamos?
-            </h3>
-            <p class="text-lg text-gray-200 max-w-xl mx-auto">
-                <span class="puzzle-piece puzzle-piece-top">A Good Vibes é 100% digital, mas nosso</span>
-                <span class="puzzle-piece puzzle-piece-bottom">coração está no Brasil — espalhando criatividade pra todos os cantos.</span>
-            </p>
-        </div>
-    </section>
-    <section class="py-20 relative">
-        <div class="puzzle-section">
-            <h3 class="text-3xl font-bold mb-6 animated-gradient-text">
-                Agende uma reunião
-            </h3>
-            <p class="text-lg text-gray-200 mb-6 max-w-xl mx-auto">
-                <span class="puzzle-piece puzzle-piece-top">Prefere uma conversa mais detalhada?</span>
-                <span class="puzzle-piece puzzle-piece-bottom">Agende um horário com a gente e vamos trocar uma ideia sobre seu projeto.</span>
-            </p>
-            <button class="schedule-button float-effect puzzle-piece puzzle-piece-top" onclick="showScheduleModal()">
-                Agendar Reunião
-            </button>
-            <div class="modal-overlay" id="scheduleModal">
-                <div class="modal-content">
-                    <button class="close-button" onclick="hideScheduleModal()">×</button>
-                    <h4 class="text-2xl font-bold mb-4 animated-gradient-text">Agende sua Reunião</h4>
-                    <div id="scheduleFormContainer">
-                        <input type="text" id="scheduleName" placeholder="Seu nome" maxlength="50">
-                        <input type="email" id="scheduleEmail" placeholder="Seu e-mail">
-                        <input type="date" id="scheduleDate" placeholder="Data preferida">
-                        <input type="time" id="scheduleTime" placeholder="Horário preferido">
-                        <textarea id="scheduleMessage" placeholder="Mensagem (opcional)" maxlength="500"></textarea>
-                        <button onclick="submitSchedule()">Enviar</button>
-                        <div id="scheduleMessage"></div>
+        </section>
+        <section class="py-20 relative">
+            <div class="puzzle-section">
+                <h3 class="text-3xl font-bold mb-6 animated-gradient-text">
+                    Formulário de Contato
+                </h3>
+                <div class="chat-container">
+                    <div class="chat-messages" id="chatMessages"></div>
+                    <div class="chat-input" id="chatInput">
+                        <textarea id="userInput" placeholder="Digite sua resposta..." rows="1" onkeypress="handleKeyPress(event)"></textarea>
+                        <button onclick="sendMessage()">Enviar</button>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-    <section class="py-20 relative">
-        <div class="puzzle-section">
-            <h3 class="text-3xl font-bold mb-6 animated-gradient-text">
-                Feedback ou sugestão?
-            </h3>
-            <p class="text-lg text-gray-200 mb-6 max-w-xl mx-auto">
-                <span class="puzzle-piece puzzle-piece-top">Tem um feedback pra compartilhar ou</span>
-                <span class="puzzle-piece puzzle-piece-bottom">compartilhar uma sugestão, estamos ouvindo! Feedbacks ajudam a gente a melhorar cada vez mais.</span>
-            </p>
-            <button class="feedback-button float-effect puzzle-piece puzzle-piece-top" onclick="showFeedbackModal()">
-                Enviar Feedback
-            </button>
-            <div class="modal-overlay" id="feedbackModal">
-                <div class="modal-content">
-                    <button class="close-button" onclick="hideFeedbackModal()">×</button>
-                    <h4 class="text-2xl font-bold mb-4 animated-gradient-text">Deixe seu Feedback</h4>
-                    <div id="feedbackFormContainer">
-                        <input type="text" id="feedbackName" placeholder="Seu nome" maxlength="50">
-                        <input type="email" id="feedbackEmail" placeholder="Seu e-mail">
-                        <textarea id="feedbackText" placeholder="Seu feedback ou sugestão" maxlength="500"></textarea>
-                        <button onclick="submitFeedback()">Enviar</button>
-                        <div id="feedbackMessage"></div>
+        </section>
+        <section class="py-20 relative">
+            <div class="puzzle-section">
+                <h3 class="text-3xl font-bold mb-6 animated-gradient-text">
+                    Atendimento via WhatsApp
+                </h3>
+                <p class="text-lg text-gray-200 mb-6 max-w-xl mx-auto">
+                    <span class="puzzle-piece puzzle-piece-top">Quer uma resposta rápida?</span>
+                    <span class="puzzle-piece puzzle-piece-bottom">Chama a gente no WhatsApp!</span>
+                </p>
+                <a href="https://api.whatsapp.com/send/?phone=5511987637786" target="_blank" class="whatsapp-button float-effect puzzle-piece puzzle-piece-top">
+                    Conversar Agora
+                </a>
+            </div>
+        </section>
+        <section class="py-20 relative">
+            <div class="puzzle-section">
+                <h3 class="text-3xl font-bold mb-6 animated-gradient-text">
+                    Onde estamos?
+                </h3>
+                <p class="text-lg text-gray-200 max-w-xl mx-auto">
+                    <span class="puzzle-piece puzzle-piece-top">A Good Vibes é 100% digital, mas nosso</span>
+                    <span class="puzzle-piece puzzle-piece-bottom">coração está no Brasil — espalhando criatividade pra todos os cantos.</span>
+                </p>
+            </div>
+        </section>
+        <section class="py-20 relative">
+            <div class="puzzle-section">
+                <h3 class="text-3xl font-bold mb-6 animated-gradient-text">
+                    Agende uma reunião
+                </h3>
+                <p class="text-lg text-gray-200 mb-6 max-w-xl mx-auto">
+                    <span class="puzzle-piece puzzle-piece-top">Prefere uma conversa mais detalhada?</span>
+                    <span class="puzzle-piece puzzle-piece-bottom">Agende um horário com a gente e vamos trocar uma ideia sobre seu projeto.</span>
+                </p>
+                <button class="schedule-button float-effect puzzle-piece puzzle-piece-top" onclick="showScheduleModal()">
+                    Agendar Reunião
+                </button>
+                <div class="modal-overlay" id="scheduleModal">
+                    <div class="modal-content">
+                        <button class="close-button" onclick="hideScheduleModal()">×</button>
+                        <h4 class="text-2xl font-bold mb-4 animated-gradient-text">Agende sua Reunião</h4>
+                        <div id="scheduleFormContainer">
+                            <input type="text" id="scheduleName" placeholder="Seu nome" maxlength="50">
+                            <input type="email" id="scheduleEmail" placeholder="Seu e-mail">
+                            <input type="date" id="scheduleDate" placeholder="Data preferida">
+                            <input type="time" id="scheduleTime" placeholder="Horário preferido">
+                            <textarea id="scheduleMessage" placeholder="Mensagem (opcional)" maxlength="500"></textarea>
+                            <button onclick="submitSchedule()">Enviar</button>
+                            <div id="scheduleMessage"></div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-    <section class="py-20 relative">
-        <div class="puzzle-section">
-            <h3 class="text-3xl font-bold mb-6 animated-gradient-text">
-                Depoimentos Rápidos
-            </h3>
-            <div class="testimonial-carousel">
-                <div class="testimonial-slide active">
-                    <div class="testimonial-card puzzle-piece puzzle-piece-top">
-                        <p>"Eles captaram minha ideia logo de cara e transformaram em um site que é a cara da minha marca."</p>
-                        <p class="client-name mt-2">— Zenor Mariano, Empreendedor</p>
-                    </div>
-                </div>
-                <div class="testimonial-slide">
-                    <div class="testimonial-card puzzle-piece puzzle-piece-bottom">
-                        <p>"A comunicação foi perfeita, e o projeto ficou incrível. Estou muito satisfeito!"</p>
-                        <p class="client-name mt-2">— Caio Fellipe, Designer</p>
-                    </div>
-                </div>
-            </div>
-            <button class="testimonial-button float-effect puzzle-piece puzzle-piece-top mt-6" onclick="showTestimonialModal()">
-                Enviar Depoimento
-            </button>
-            <div class="modal-overlay" id="testimonialModal">
-                <div class="modal-content">
-                    <button class="close-button" onclick="hideTestimonialModal()">×</button>
-                    <h4 class="text-2xl font-bold mb-4 animated-gradient-text">Envie seu Depoimento</h4>
-                    <div id="testimonialFormContainer">
-                        <input type="text" id="testimonialName" placeholder="Seu nome" maxlength="50">
-                        <input type="text" id="testimonialProfession" placeholder="Sua profissão" maxlength="100">
-                        <input type="email" id="testimonialEmail" placeholder="Seu e-mail">
-                        <textarea id="testimonialComment" placeholder="Seu depoimento" maxlength="500"></textarea>
-                        <button onclick="submitTestimonial()">Enviar</button>
-                        <div id="testimonialMessage"></div>
+        </section>
+        <section class="py-20 relative">
+            <div class="puzzle-section">
+                <h3 class="text-3xl font-bold mb-6 animated-gradient-text">
+                    Feedback ou sugestão?
+                </h3>
+                <p class="text-lg text-gray-200 mb-6 max-w-xl mx-auto">
+                    <span class="puzzle-piece puzzle-piece-top">Tem um feedback pra compartilhar ou</span>
+                    <span class="puzzle-piece puzzle-piece-bottom">compartilhar uma sugestão, estamos ouvindo! Feedbacks ajudam a gente a melhorar cada vez mais.</span>
+                </p>
+                <button class="feedback-button float-effect puzzle-piece puzzle-piece-top" onclick="showFeedbackModal()">
+                    Enviar Feedback
+                </button>
+                <div class="modal-overlay" id="feedbackModal">
+                    <div class="modal-content">
+                        <button class="close-button" onclick="hideFeedbackModal()">×</button>
+                        <h4 class="text-2xl font-bold mb-4 animated-gradient-text">Deixe seu Feedback</h4>
+                        <div id="feedbackFormContainer">
+                            <input type="text" id="feedbackName" placeholder="Seu nome" maxlength="50">
+                            <input type="email" id="feedbackEmail" placeholder="Seu e-mail">
+                            <textarea id="feedbackText" placeholder="Seu feedback ou sugestão" maxlength="500"></textarea>
+                            <button onclick="submitFeedback()">Enviar</button>
+                            <div id="feedbackMessage"></div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+        <section class="py-20 relative">
+            <div class="puzzle-section">
+                <h3 class="text-3xl font-bold mb-6 animated-gradient-text">
+                    Depoimentos Rápidos
+                </h3>
+                <div class="testimonial-carousel">
+                    <div class="testimonial-slide active">
+                        <div class="testimonial-card puzzle-piece puzzle-piece-top">
+                            <p>"Eles captaram minha ideia logo de cara e transformaram em um site que é a cara da minha marca."</p>
+                            <p class="client-name mt-2">— Zenor Mariano, Empreendedor</p>
+                        </div>
+                    </div>
+                    <div class="testimonial-slide">
+                        <div class="testimonial-card puzzle-piece puzzle-piece-bottom">
+                            <p>"A comunicação foi perfeita, e o projeto ficou incrível. Estou muito satisfeito!"</p>
+                            <p class="client-name mt-2">— Caio Fellipe, Designer</p>
+                        </div>
+                    </div>
+                </div>
+                <button class="testimonial-button float-effect puzzle-piece puzzle-piece-top mt-6" onclick="showTestimonialModal()">
+                    Enviar Depoimento
+                </button>
+                <div class="modal-overlay" id="testimonialModal">
+                    <div class="modal-content">
+                        <button class="close-button" onclick="hideTestimonialModal()">×</button>
+                        <h4 class="text-2xl font-bold mb-4 animated-gradient-text">Envie seu Depoimento</h4>
+                        <div id="testimonialFormContainer">
+                            <input type="text" id="testimonialName" placeholder="Seu nome" maxlength="50">
+                            <input type="text" id="testimonialProfession" placeholder="Sua profissão" maxlength="100">
+                            <input type="email" id="testimonialEmail" placeholder="Seu e-mail">
+                            <textarea id="testimonialComment" placeholder="Seu depoimento" maxlength="500"></textarea>
+                            <button onclick="submitTestimonial()">Enviar</button>
+                            <div id="testimonialMessage"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
     <footer class="text-gray-200 py-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 content-layer">
             <p>© 2025 Good Vibes. Todos os direitos reservados.</p>
         </div>
     </footer>
     <script>
+        // Smooth scroll for nav links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
                 document.querySelector(this.getAttribute('href')).scrollIntoView({
                     behavior: 'smooth'
                 });
+                // Fecha o menu hambúrguer ao clicar em um link, apenas em telas menores
+                if (window.innerWidth <= 768) {
+                    toggleMenu();
+                }
             });
         });
 
+        // Hamburger menu functionality
+        const hamburger = document.querySelector('.hamburger');
+        const mobileNavMenu = document.querySelector('.nav-menu-mobile');
+
+        function toggleMenu() {
+            hamburger.classList.toggle('active');
+            mobileNavMenu.classList.toggle('active');
+            document.body.style.overflowY = mobileNavMenu.classList.contains('active') ? 'hidden' : 'auto';
+        }
+
+        hamburger.addEventListener('click', toggleMenu);
+
+        // Hide mobile menu on resize if it becomes desktop view
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768 && mobileNavMenu.classList.contains('active')) {
+                toggleMenu();
+            }
+        });
+
+        // Close mobile menu if clicked outside
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth <= 768 && !hamburger.contains(e.target) && !mobileNavMenu.contains(e.target) && mobileNavMenu.classList.contains('active')) {
+                toggleMenu();
+            }
+        });
+
+        // Puzzle piece animations on scroll
         const observer = new IntersectionObserver(entries => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.querySelectorAll('.puzzle-piece').forEach((el, index) => {
                         el.style.animationDelay = `${index * 0.2}s`;
+                        // Remove classes de saída para que a animação de entrada seja aplicada corretamente
+                        el.classList.remove('puzzle-piece-left-exit', 'puzzle-piece-right-exit');
+                        // Garante que a classe de animação de entrada seja adicionada se não estiver lá
+                        if (el.classList.contains('puzzle-piece-left')) {
+                            el.classList.add('puzzle-piece-left');
+                        } else if (el.classList.contains('puzzle-piece-right')) {
+                            el.classList.add('puzzle-piece-right');
+                        } else if (el.classList.contains('puzzle-piece-top')) {
+                            el.classList.add('puzzle-piece-top');
+                        } else if (el.classList.contains('puzzle-piece-bottom')) {
+                            el.classList.add('puzzle-piece-bottom');
+                        }
                     });
                     observer.unobserve(entry.target);
                 }
             });
         }, { threshold: 0.3 });
 
+        // Observa todos os elementos com classes de animação de puzzle piece
         document.querySelectorAll('.puzzle-section, .content-layer').forEach(el => observer.observe(el));
 
+        // Animation for h2, h3 titles
         const titleObserver = new IntersectionObserver(entries => {
-            entries.forEach((entry, index) => {
+            entries.forEach((entry) => {
                 const title = entry.target;
-                const direction = index % 2 === 0 ? 'left' : 'right';
+                // Determine a direção com base na classe existente ou padrão para fade-in
+                let animationClass = 'fade-in'; // Padrão
+                if (title.classList.contains('slide-in-left')) {
+                    animationClass = 'slide-in-left';
+                } else if (title.classList.contains('slide-in-right')) {
+                    animationClass = 'slide-in-right';
+                }
+
                 if (entry.isIntersecting) {
-                    title.classList.remove('puzzle-piece-left-exit', 'puzzle-piece-right-exit');
-                    title.classList.add(`puzzle-piece-${direction}`);
+                    title.style.opacity = '1';
+                    title.classList.remove('puzzle-piece-left-exit', 'puzzle-piece-right-exit'); // Remover classes de saída
+                    title.classList.add(animationClass);
                 } else {
-                    title.classList.remove('puzzle-piece-left', 'puzzle-piece-right');
-                    title.classList.add(`puzzle-piece-${direction}-exit`);
+                    title.classList.remove(animationClass);
+                    // Adicionar classes de saída se estiver animando para fora da tela
+                    if (animationClass === 'slide-in-left') {
+                        title.classList.add('puzzle-piece-left-exit');
+                    } else if (animationClass === 'slide-in-right') {
+                        title.classList.add('puzzle-piece-right-exit');
+                    }
+                    title.style.opacity = '0'; // Força a opacidade para 0 quando não visível
                 }
             });
         }, { threshold: 0.3 });
 
-        document.querySelectorAll('h2, h3').forEach((title, index) => {
+        // Observa todos os h2 e h3 com classes de animação
+        document.querySelectorAll('h2, h3').forEach((title) => {
             titleObserver.observe(title);
+            title.style.opacity = '0'; // Garante que estejam invisíveis inicialmente
         });
 
+        // Stars background initialization (Corrigido para usar window.innerWidth/Height)
         const starsContainer = document.getElementById('stars-container');
         const colors = ['purple', 'pink', 'white'];
         const numStars = 150;
-        const documentHeight = document.body.scrollHeight;
 
-        for (let i = 0; i < numStars; i++) {
-            const star = document.createElement('span');
-            star.classList.add('star');
-            star.classList.add(colors[Math.floor(Math.random() * colors.length)]);
-            star.style.left = `${Math.random() * 100}vw`;
-            star.style.top = `${Math.random() * documentHeight}px`;
-            const moveX = (Math.random() - 0.5) * 300;
-            const moveY = (Math.random() - 0.5) * 300;
-            star.style.setProperty('--move-x', `${moveX}px`);
-            star.style.setProperty('--move-y', `${moveY}px`);
-            star.style.animationDelay = `${Math.random() * 15}s`;
-            starsContainer.appendChild(star);
+        function createStars() {
+            // Limpa estrelas existentes para recriar se a janela for redimensionada
+            starsContainer.innerHTML = '';
+            // Usa window.innerWidth e window.innerHeight para a viewport atual
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+
+            for (let i = 0; i < numStars; i++) {
+                const star = document.createElement('span');
+                star.classList.add('star');
+                star.classList.add(colors[Math.floor(Math.random() * colors.length)]);
+                // Posição aleatória dentro da viewport
+                star.style.left = `${Math.random() * viewportWidth}px`;
+                star.style.top = `${Math.random() * viewportHeight}px`;
+                const moveX = (Math.random() - 0.5) * 300;
+                const moveY = (Math.random() - 0.5) * 300;
+                star.style.setProperty('--move-x', `${moveX}px`);
+                star.style.setProperty('--move-y', `${moveY}px`);
+                star.style.animationDelay = `${Math.random() * 15}s`;
+                starsContainer.appendChild(star);
+            }
         }
 
-        document.querySelectorAll('.puzzle-section').forEach(section => {
-            const delay = Math.random() * 30;
-            section.style.animationDelay = `${delay}s`;
-        });
+        // Cria estrelas no carregamento e ao redimensionar (para ajustar a distribuição)
+        createStars();
+        window.addEventListener('resize', createStars);
 
-        const slides = document.querySelectorAll('.testimonial-slide');
-        let currentSlide = 0;
+        // Carousel logic for testimonials
+        const testimonialSlides = document.querySelectorAll('.testimonial-slide');
+        let currentTestimonialSlide = 0;
+        let testimonialIntervalId;
 
-        function showNextSlide() {
-            slides[currentSlide].classList.remove('active');
-            currentSlide = (currentSlide + 1) % slides.length;
-            slides[currentSlide].classList.add('active');
+        function showNextTestimonialSlide() {
+            testimonialSlides[currentTestimonialSlide].classList.remove('active');
+            currentTestimonialSlide = (currentTestimonialSlide + 1) % testimonialSlides.length;
+            testimonialSlides[currentTestimonialSlide].classList.add('active');
         }
 
-        setInterval(showNextSlide, 5000);
-        slides[currentSlide].classList.add('active');
+        function startTestimonialCarousel() {
+            if (testimonialIntervalId) clearInterval(testimonialIntervalId);
+            testimonialIntervalId = setInterval(showNextTestimonialSlide, 5000);
+        }
 
+        function stopTestimonialCarousel() {
+            clearInterval(testimonialIntervalId);
+        }
+
+        startTestimonialCarousel(); // Inicia o carrossel de depoimentos no carregamento
+
+        // Adiciona eventos de mouse para pausar/retomar o carrossel de depoimentos
+        const testimonialCarouselContainer = document.querySelector('.testimonial-carousel');
+        if (testimonialCarouselContainer) {
+            testimonialCarouselContainer.addEventListener('mouseenter', stopTestimonialCarousel);
+            testimonialCarouselContainer.addEventListener('mouseleave', startTestimonialCarousel);
+        }
+
+        // Chatbot logic
         let chatMessages = document.getElementById('chatMessages');
         let userInput = document.getElementById('userInput');
         let chatState = {
@@ -973,7 +1324,11 @@
 
         const correctionKeywords = [
             'errei', 'ops', 'opa', 'eita', 'está errado', 'esta errado',
-            'está errada', 'esta errada', 'corrigir', 'alterar', 'trocar'
+            'está errada', 'esta errada', 'corrigir', 'alterar', 'trocar',
+            'tá errado', 'errado', 'não', 'não sou eu', 'meu nome não é esse',
+            'isso está errado', 'o meu nome está errado', 'você escreveu errado',
+            'meu nome está digitado errado', 'o nome está errado', 'digitei errado',
+            'opa o nome tá errado'
         ];
 
         const fieldKeywords = {
@@ -1003,6 +1358,30 @@
                 !normalizedName.includes('!')
             );
         }
+        
+        function extractName(message) {
+            let name = message.trim();
+            const phrasesToRemove = [
+                'meu nome é', 'meu nome e', 'sou', 'sou a', 'sou o',
+                'chamo-me', 'me chamo', 'é', 'e', 'oi', 'olá', 'ola',
+                'bom dia', 'boa tarde', 'boa noite', 'tudo bem', 'tudo bom',
+                'como vai', 'e aí', 'e ai', 'eai', 'oiê', 'oie', 'oiee',
+                'oláá', 'olaa', 'oláa', 'tô de boa', 'tô bem', 'opa',
+                'tudo bem?', 'tô de boa?', 'tô bem?', 'como você está',
+                'como você ta', 'como você tá', 'e você', 'e tu', 'e voce'
+            ];
+            phrasesToRemove.forEach(phrase => {
+                const regex = new RegExp(`\\b${phrase}\\b`, 'gi');
+                name = name.replace(regex, '').trim();
+            });
+            name = name.replace(/[.,!?]/g, '').trim();
+            name = name.replace(/\b\w/g, char => char.toUpperCase());
+            const words = name.split(/\s+/);
+            if (words.length > 1) {
+                name = words[words.length - 1];
+            }
+            return name;
+        }
 
         function selectBotGreeting(userGreeting) {
             const normalizedUserGreeting = userGreeting.toLowerCase().trim();
@@ -1024,10 +1403,16 @@
                 normalizedMessage.includes(keyword)
             );
             if (!isCorrection) return null;
+            if (fieldKeywords.name.some(keyword => normalizedMessage.includes(keyword)) || chatState.step === 2) {
+                return 'name';
+            }
             for (const [field, keywords] of Object.entries(fieldKeywords)) {
                 if (keywords.some(keyword => normalizedMessage.includes(keyword))) {
                     return field;
                 }
+            }
+            if (chatState.step === 2) {
+                return 'name';
             }
             return null;
         }
@@ -1073,6 +1458,7 @@
             }, 2000);
         }
 
+        // Initialize chat state on page load (reset chat)
         window.onload = function() {
             localStorage.removeItem('chatState');
             chatState = {
@@ -1083,17 +1469,26 @@
                 message: ''
             };
             hasGreeted = false;
-            chatMessages.innerHTML = '';
-            const chatContainer = document.querySelector('.chat-container');
-            chatContainer.innerHTML = `
-                <div class="chat-messages" id="chatMessages"></div>
-                <div class="chat-input" id="chatInput">
-                    <textarea id="userInput" placeholder="Digite sua resposta..." rows="1" onkeypress="handleKeyPress(event)"></textarea>
-                    <button onclick="sendMessage()">Enviar</button>
-                </div>
-            `;
-            chatMessages = document.getElementById('chatMessages');
-            userInput = document.getElementById('userInput');
+            if (chatMessages && userInput) { // Check if elements exist
+                chatMessages.innerHTML = '';
+                const chatContainer = document.querySelector('.chat-container');
+                chatContainer.classList.remove('success'); // Ensure success class is removed on reload
+                chatContainer.innerHTML = `
+                    <div class="chat-messages" id="chatMessages"></div>
+                    <div class="chat-input" id="chatInput">
+                        <textarea id="userInput" placeholder="Digite sua resposta..." rows="1" onkeypress="handleKeyPress(event)"></textarea>
+                        <button onclick="sendMessage()">Enviar</button>
+                    </div>
+                `;
+                // Re-assign elements after re-rendering innerHTML
+                chatMessages = document.getElementById('chatMessages');
+                userInput = document.getElementById('userInput');
+            }
+            // Re-observe contact section
+            const contactSection = document.querySelector('section:nth-of-type(2)');
+            if (contactSection) {
+                contactSectionObserver.observe(contactSection);
+            }
         };
 
         function loadChatState() {
@@ -1213,17 +1608,19 @@
             if (isBotTyping) return;
             const userText = userInput.value.trim();
             if (!userText) return;
+
+            addUserMessage(userText); // Adiciona a mensagem do usuário imediatamente
+
             const correctionField = detectCorrectionRequest(userText);
             if (correctionField && chatState.step < 5) {
-                addUserMessage(userText);
                 fieldToCorrect = correctionField;
                 isCorrecting = true;
                 askForCorrectedData(correctionField);
                 userInput.value = '';
                 return;
             }
+
             if (isCorrecting) {
-                addUserMessage(userText);
                 let isValid = true;
                 let errorMessage = '';
                 if (fieldToCorrect === 'name') {
@@ -1248,6 +1645,7 @@
                         errorMessage = "Desculpe, isso não parece ser um número de telefone válido. Por favor, insira um número de WhatsApp válido (exemplo: +5511999999999).";
                     }
                 }
+
                 if (isValid) {
                     showTypingIndicator();
                     setTimeout(() => {
@@ -1268,8 +1666,9 @@
                 saveChatState();
                 return;
             }
+
+            // Normal chat flow
             if (chatState.step === 1) {
-                addUserMessage(userText);
                 if (isGreeting(userText)) {
                     const botGreeting = selectBotGreeting(userText);
                     showTypingIndicator();
@@ -1296,7 +1695,6 @@
             } else if (chatState.step === 2) {
                 if (isValidEmail(userText)) {
                     chatState.email = userText;
-                    addUserMessage(userText);
                     chatState.step = 3;
                     showTypingIndicator();
                     setTimeout(() => {
@@ -1314,7 +1712,6 @@
             } else if (chatState.step === 3) {
                 if (isValidPhoneNumber(userText)) {
                     chatState.whatsapp = userText;
-                    addUserMessage(userText);
                     chatState.step = 4;
                     showTypingIndicator();
                     setTimeout(() => {
@@ -1333,7 +1730,6 @@
                 }
             } else if (chatState.step === 4) {
                 chatState.message = userText;
-                addUserMessage(userText);
                 chatState.step = 5;
                 sendToFormspree();
             }
@@ -1376,7 +1772,10 @@
         function showSuccessMessage() {
             const section = document.querySelector('section:nth-of-type(2)');
             const puzzleSection = section.querySelector('.puzzle-section');
-            puzzleSection.remove();
+            if (puzzleSection) {
+                puzzleSection.remove(); // Remove o chat container
+            }
+            
             const successContainer = document.createElement('div');
             successContainer.classList.add('success-message-container');
             const successMessage = document.createElement('div');
@@ -1394,38 +1793,141 @@
             };
         }
 
+        // Modal functions (Schedule, Feedback, Testimonial)
+        function showModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.add('show');
+                document.body.style.overflow = 'hidden'; // Prevents scrolling behind the modal
+            }
+        }
+
+        function hideModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.remove('show');
+                document.body.style.overflow = 'auto'; // Re-enables scrolling
+            }
+        }
+
+        function showScheduleModal() {
+            showModal('scheduleModal');
+            document.getElementById('scheduleName').value = '';
+            document.getElementById('scheduleEmail').value = '';
+            document.getElementById('scheduleDate').value = '';
+            document.getElementById('scheduleTime').value = '';
+            document.getElementById('scheduleMessage').value = '';
+            document.getElementById('scheduleMessage').innerHTML = ''; // Clear status message
+            const dateInput = document.getElementById('scheduleDate');
+            const today = new Date().toISOString().split('T')[0];
+            dateInput.setAttribute('min', today);
+        }
+
+        function hideScheduleModal() {
+            hideModal('scheduleModal');
+        }
+
+        function submitSchedule() {
+            const name = document.getElementById('scheduleName').value.trim();
+            const email = document.getElementById('scheduleEmail').value.trim();
+            const date = document.getElementById('scheduleDate').value;
+            const time = document.getElementById('scheduleTime').value;
+            const message = document.getElementById('scheduleMessage').value.trim();
+            const messageContainer = document.getElementById('scheduleMessage'); // This ID is reused in modal
+
+            // Temporarily use a new ID for the modal's feedback message to avoid conflict
+            const modalScheduleMessage = document.createElement('div');
+            modalScheduleMessage.id = 'modalScheduleFeedback'; // Unique ID for modal feedback
+            messageContainer.innerHTML = ''; // Clear previous messages
+            messageContainer.appendChild(modalScheduleMessage);
+
+            if (!name || !isValidName(name)) {
+                modalScheduleMessage.innerHTML = '<div class="error-message">Por favor, insira um nome válido (apenas letras e espaços, até 50 caracteres).</div>';
+                return;
+            }
+            if (!email || !isValidEmail(email)) {
+                modalScheduleMessage.innerHTML = '<div class="error-message">Por favor, insira um e-mail válido.</div>';
+                return;
+            }
+            if (!date || !isValidDate(date)) {
+                modalScheduleMessage.innerHTML = '<div class="error-message">Por favor, selecione uma data válida (a partir de hoje).</div>';
+                return;
+            }
+            if (!time) {
+                modalScheduleMessage.innerHTML = '<div class="error-message">Por favor, selecione um horário.</div>';
+                return;
+            }
+            if (message && message.length > 500) {
+                modalScheduleMessage.innerHTML = '<div class="error-message">A mensagem não pode exceder 500 caracteres.</div>';
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('name', name);
+            formData.append('email', email);
+            formData.append('date', date);
+            formData.append('time', time);
+            if (message) { formData.append('message', message); }
+
+            fetch('https://formspree.io/f/mgvolbyv', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    modalScheduleMessage.innerHTML = '<div class="success-message">Reunião agendada com sucesso! ✨</div>';
+                    // Clear form fields
+                    document.getElementById('scheduleName').value = '';
+                    document.getElementById('scheduleEmail').value = '';
+                    document.getElementById('scheduleDate').value = '';
+                    document.getElementById('scheduleTime').value = '';
+                    document.getElementById('scheduleMessage').value = ''; // Clear textarea in modal
+                    setTimeout(() => hideScheduleModal(), 2000);
+                } else {
+                    modalScheduleMessage.innerHTML = '<div class="error-message">Erro ao agendar a reunião. Tente novamente.</div>';
+                }
+            })
+            .catch(error => {
+                modalScheduleMessage.innerHTML = '<div class="error-message">Erro ao agendar a reunião. Tente novamente.</div>';
+            });
+        }
+
         function showFeedbackModal() {
-            const modal = document.getElementById('feedbackModal');
-            modal.classList.add('show');
+            showModal('feedbackModal');
             document.getElementById('feedbackName').value = '';
             document.getElementById('feedbackEmail').value = '';
             document.getElementById('feedbackText').value = '';
-            document.getElementById('feedbackMessage').innerHTML = '';
+            document.getElementById('feedbackMessage').innerHTML = ''; // Clear status message
         }
 
         function hideFeedbackModal() {
-            const modal = document.getElementById('feedbackModal');
-            modal.classList.remove('show');
+            hideModal('feedbackModal');
         }
 
         function submitFeedback() {
             const name = document.getElementById('feedbackName').value.trim();
             const email = document.getElementById('feedbackEmail').value.trim();
             const feedback = document.getElementById('feedbackText').value.trim();
-            const messageContainer = document.getElementById('feedbackMessage');
+            const messageContainer = document.getElementById('feedbackMessage'); // This ID is reused in modal
+
+            const modalFeedbackMessage = document.createElement('div');
+            modalFeedbackMessage.id = 'modalFeedbackStatus'; // Unique ID for modal feedback
+            messageContainer.innerHTML = '';
+            messageContainer.appendChild(modalFeedbackMessage);
 
             if (!name || !isValidName(name)) {
-                messageContainer.innerHTML = '<div class="error-message">Por favor, insira um nome válido (apenas letras e espaços, até 50 caracteres).</div>';
+                modalFeedbackMessage.innerHTML = '<div class="error-message">Por favor, insira um nome válido (apenas letras e espaços, até 50 caracteres).</div>';
                 return;
             }
-
             if (!email || !isValidEmail(email)) {
-                messageContainer.innerHTML = '<div class="error-message">Por favor, insira um e-mail válido.</div>';
+                modalFeedbackMessage.innerHTML = '<div class="error-message">Por favor, insira um e-mail válido.</div>';
                 return;
             }
-
             if (!feedback || feedback.length > 500) {
-                messageContainer.innerHTML = '<div class="error-message">Por favor, insira um feedback válido (até 500 caracteres).</div>';
+                modalFeedbackMessage.innerHTML = '<div class="error-message">Por favor, insira um feedback válido (até 500 caracteres).</div>';
                 return;
             }
 
@@ -1443,33 +1945,31 @@
             })
             .then(response => {
                 if (response.ok) {
-                    messageContainer.innerHTML = '<div class="success-message">Feedback enviado com sucesso! ✨</div>';
+                    modalFeedbackMessage.innerHTML = '<div class="success-message">Feedback enviado com sucesso! ✨</div>';
                     document.getElementById('feedbackName').value = '';
                     document.getElementById('feedbackEmail').value = '';
                     document.getElementById('feedbackText').value = '';
-                    setTimeout(hideFeedbackModal, 2000);
+                    setTimeout(() => hideFeedbackModal(), 2000);
                 } else {
-                    messageContainer.innerHTML = '<div class="error-message">Erro ao enviar o feedback. Tente novamente.</div>';
+                    modalFeedbackMessage.innerHTML = '<div class="error-message">Erro ao enviar o feedback. Tente novamente.</div>';
                 }
             })
             .catch(error => {
-                messageContainer.innerHTML = '<div class="error-message">Erro ao enviar o feedback. Tente novamente.</div>';
+                modalFeedbackMessage.innerHTML = '<div class="error-message">Erro ao enviar o feedback. Tente novamente.</div>';
             });
         }
 
         function showTestimonialModal() {
-            const modal = document.getElementById('testimonialModal');
-            modal.classList.add('show');
+            showModal('testimonialModal');
             document.getElementById('testimonialName').value = '';
             document.getElementById('testimonialProfession').value = '';
             document.getElementById('testimonialEmail').value = '';
             document.getElementById('testimonialComment').value = '';
-            document.getElementById('testimonialMessage').innerHTML = '';
+            document.getElementById('testimonialMessage').innerHTML = ''; // Clear status message
         }
 
         function hideTestimonialModal() {
-            const modal = document.getElementById('testimonialModal');
-            modal.classList.remove('show');
+            hideModal('testimonialModal');
         }
 
         function submitTestimonial() {
@@ -1477,25 +1977,27 @@
             const profession = document.getElementById('testimonialProfession').value.trim();
             const email = document.getElementById('testimonialEmail').value.trim();
             const comment = document.getElementById('testimonialComment').value.trim();
-            const messageContainer = document.getElementById('testimonialMessage');
+            const messageContainer = document.getElementById('testimonialMessage'); // This ID is reused in modal
+
+            const modalTestimonialMessage = document.createElement('div');
+            modalTestimonialMessage.id = 'modalTestimonialStatus'; // Unique ID for modal feedback
+            messageContainer.innerHTML = '';
+            messageContainer.appendChild(modalTestimonialMessage);
 
             if (!name || !isValidName(name)) {
-                messageContainer.innerHTML = '<div class="error-message">Por favor, insira um nome válido (apenas letras e espaços, até 50 caracteres).</div>';
+                modalTestimonialMessage.innerHTML = '<div class="error-message">Por favor, insira um nome válido (apenas letras e espaços, até 50 caracteres).</div>';
                 return;
             }
-
             if (!profession || profession.length > 100) {
-                messageContainer.innerHTML = '<div class="error-message">Por favor, insira uma profissão válida (até 100 caracteres).</div>';
+                modalTestimonialMessage.innerHTML = '<div class="error-message">Por favor, insira uma profissão válida (até 100 caracteres).</div>';
                 return;
             }
-
             if (!email || !isValidEmail(email)) {
-                messageContainer.innerHTML = '<div class="error-message">Por favor, insira um e-mail válido.</div>';
+                modalTestimonialMessage.innerHTML = '<div class="error-message">Por favor, insira um e-mail válido.</div>';
                 return;
             }
-
             if (!comment || comment.length > 500) {
-                messageContainer.innerHTML = '<div class="error-message">Por favor, insira um depoimento válido (até 500 caracteres).</div>';
+                modalTestimonialMessage.innerHTML = '<div class="error-message">Por favor, insira um depoimento válido (até 500 caracteres).</div>';
                 return;
             }
 
@@ -1514,116 +2016,26 @@
             })
             .then(response => {
                 if (response.ok) {
-                    messageContainer.innerHTML = '<div class="success-message">Depoimento enviado com sucesso! ✨</div>';
+                    modalTestimonialMessage.innerHTML = '<div class="success-message">Depoimento enviado com sucesso! ✨</div>';
                     document.getElementById('testimonialName').value = '';
                     document.getElementById('testimonialProfession').value = '';
                     document.getElementById('testimonialEmail').value = '';
                     document.getElementById('testimonialComment').value = '';
-                    setTimeout(hideTestimonialModal, 2000);
+                    setTimeout(() => hideTestimonialModal(), 2000);
                 } else {
-                    messageContainer.innerHTML = '<div class="error-message">Erro ao enviar o depoimento. Tente novamente.</div>';
+                    modalTestimonialMessage.innerHTML = '<div class="error-message">Erro ao enviar o depoimento. Tente novamente.</div>';
                 }
             })
             .catch(error => {
-                messageContainer.innerHTML = '<div class="error-message">Erro ao enviar o depoimento. Tente novamente.</div>';
+                modalTestimonialMessage.innerHTML = '<div class="error-message">Erro ao enviar o depoimento. Tente novamente.</div>';
             });
         }
-
-        function showScheduleModal() {
-            const modal = document.getElementById('scheduleModal');
-            modal.classList.add('show');
-            document.getElementById('scheduleName').value = '';
-            document.getElementById('scheduleEmail').value = '';
-            document.getElementById('scheduleDate').value = '';
-            document.getElementById('scheduleTime').value = '';
-            document.getElementById('scheduleMessage').value = '';
-            document.getElementById('scheduleMessage').innerHTML = '';
-
-            const dateInput = document.getElementById('scheduleDate');
-            const today = new Date().toISOString().split('T')[0];
-            dateInput.setAttribute('min', today);
-        }
-
-        function hideScheduleModal() {
-            const modal = document.getElementById('scheduleModal');
-            modal.classList.remove('show');
-        }
-
-        function submitSchedule() {
-            const name = document.getElementById('scheduleName').value.trim();
-            const email = document.getElementById('scheduleEmail').value.trim();
-            const date = document.getElementById('scheduleDate').value;
-            const time = document.getElementById('scheduleTime').value;
-            const message = document.getElementById('scheduleMessage').value.trim();
-            const messageContainer = document.getElementById('scheduleMessage');
-
-            if (!name || !isValidName(name)) {
-                messageContainer.innerHTML = '<div class="error-message">Por favor, insira um nome válido (apenas letras e espaços, até 50 caracteres).</div>';
-                return;
-            }
-
-            if (!email || !isValidEmail(email)) {
-                messageContainer.innerHTML = '<div class="error-message">Por favor, insira um e-mail válido.</div>';
-                return;
-            }
-
-            if (!date || !isValidDate(date)) {
-                messageContainer.innerHTML = '<div class="error-message">Por favor, selecione uma data válida (a partir de hoje).</div>';
-                return;
-            }
-
-            if (!time) {
-                messageContainer.innerHTML = '<div class="error-message">Por favor, selecione um horário.</div>';
-                return;
-            }
-
-            if (message && message.length > 500) {
-                messageContainer.innerHTML = '<div class="error-message">A mensagem não pode exceder 500 caracteres.</div>';
-                return;
-            }
-
-            const formData = new FormData();
-            formData.append('name', name);
-            formData.append('email', email);
-            formData.append('date', date);
-            formData.append('time', time);
-            if (message) {
-                formData.append('message', message);
-            }
-
-            messageContainer.innerHTML = '';
-
-            fetch('https://formspree.io/f/mgvolbyv', {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'Accept': 'application/json'
-                }
-            })
-            .then(response => {
-                if (response.ok) {
-                    messageContainer.innerHTML = '<div class="success-message">Reunião agendada com sucesso! ✨</div>';
-                    document.getElementById('scheduleName').value = '';
-                    document.getElementById('scheduleEmail').value = '';
-                    document.getElementById('scheduleDate').value = '';
-                    document.getElementById('scheduleTime').value = '';
-                    document.getElementById('scheduleMessage').value = '';
-                    setTimeout(() => {
-                        hideScheduleModal();
-                        messageContainer.innerHTML = '';
-                    }, 2000);
-                } else {
-                    messageContainer.innerHTML = '<div class="error-message">Erro ao agendar a reunião. Tente novamente.</div>';
-                }
-            })
-            .catch(error => {
-                messageContainer.innerHTML = '<div class="error-message">Erro ao agendar a reunião. Tente novamente.</div>';
-            });
-        }
-
-        loadChatState();
+        
+        // Load chat state and observe contact section
+        loadChatState(); // This must be called after elements exist in the DOM
 
         document.addEventListener('DOMContentLoaded', () => {
+            // This re-observes the initial contact section only once DOM is ready
             const contactSection = document.querySelector('section:nth-of-type(2)');
             if (contactSection) {
                 contactSectionObserver.observe(contactSection);
