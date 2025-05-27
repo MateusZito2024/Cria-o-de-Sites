@@ -356,24 +356,12 @@
             margin-right: 0;
             margin-left: 0;
         }
-        /* Add some margin-bottom for stacked buttons on mobile */
-        @media (max-width: 768px) {
-            .puzzle-section .whatsapp-button,
-            .puzzle-section .form-button,
-            .puzzle-section .schedule-button,
-            .puzzle-section .feedback-button,
-            .puzzle-section .testimonial-button {
-                margin-bottom: 1rem; /* Space between stacked buttons */
-                width: 90%; /* Make buttons wider on mobile */
-            }
-        }
-
 
         .testimonial-carousel {
             position: relative;
             width: 100%;
             max-width: 600px;
-            height: 150px; /* Altura fixa para o carrossel de depoimentos */
+            height: 150px;
             margin: 0 auto;
         }
 
@@ -572,7 +560,7 @@
             display: none;
             justify-content: center;
             align-items: center;
-            padding: 1rem; /* Adicionar padding ao overlay para garantir espaçamento em telas muito pequenas */
+            padding: 1rem;
         }
 
         .modal-overlay.show {
@@ -584,13 +572,13 @@
             background: #2d3748;
             border-radius: 1rem;
             padding: 2rem;
-            max-width: 500px;
-            width: 100%; /* Ocupa 100% da largura máxima permitida */
+            max-width: 500px; /* Mantém o tamanho máximo para desktop */
+            width: 100%; /* Permite que ocupe 100% do espaço disponível no mobile */
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
             border: 2px solid #a5b4fc;
             position: relative;
             animation: slideInTopPiece 0.5s ease-out;
-            box-sizing: border-box; /* Garante que padding e border não causem overflow */
+            box-sizing: border-box;
             margin: auto; /* Centraliza o modal no overlay */
         }
 
@@ -613,7 +601,7 @@
             min-height: 100px;
         }
 
-        .modal-content button {
+        .modal-content .form-button { /* Alvo apenas os botões de submit DENTRO do modal */
             background: #e879f9;
             color: white;
             padding: 0.75rem 1.5rem;
@@ -622,26 +610,38 @@
             cursor: pointer;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             border: none;
-            width: 100%; /* Botão ocupa 100% da largura no modal mobile */
+            width: 100%; /* Botão ocupa 100% da largura no modal */
             font-size: clamp(0.9rem, 3.5vw, 1rem);
         }
 
-        .modal-content button:hover {
+        .modal-content .form-button:hover {
             transform: translateY(-3px);
             box-shadow: 0 5px 15px rgba(232, 121, 249, 0.5);
         }
 
         .close-button {
             position: absolute;
-            top: 0.5rem; /* Ajustar posição para dentro do padding */
-            right: 0.5rem; /* Ajustar posição para dentro do padding */
+            top: 0.5rem;
+            right: 0.5rem;
             background: none;
             border: none;
             color: #e2e8f0;
-            font-size: 1.5rem;
+            font-size: 1.5rem; /* Tamanho do "X" */
             cursor: pointer;
-            padding: 0.2rem; /* Adicionar padding para área de clique */
-            line-height: 1; /* Centralizar o "X" verticalmente */
+            padding: 0.2rem;
+            line-height: 1;
+            width: 30px; /* Largura fixa para o botão */
+            height: 30px; /* Altura fixa para o botão */
+            display: flex; /* Para centralizar o "X" dentro do botão */
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%; /* Faz o botão ser circular, se desejar */
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+
+        .close-button:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #e879f9;
         }
 
         .error-message,
@@ -669,7 +669,7 @@
 
         /* Hamburger menu styles */
         .hamburger {
-            display: none; /* Hidden by default, shown in media query */
+            display: none;
             flex-direction: column;
             justify-content: space-around;
             width: 2rem;
@@ -702,7 +702,7 @@
 
         /* Nav menu for mobile */
         .nav-menu-mobile {
-            display: none; /* Hidden by default */
+            display: none;
         }
 
         @media (max-width: 768px) {
@@ -726,10 +726,10 @@
             .nav-menu-mobile {
                 position: fixed;
                 top: 0;
-                right: -100%; /* Initially off-screen */
+                right: -100%;
                 height: 100vh;
                 width: 75%;
-                max-width: 300px; /* Limit width for larger tablets */
+                max-width: 300px;
                 background: #1f2937;
                 flex-direction: column;
                 justify-content: center;
@@ -737,12 +737,12 @@
                 gap: 2rem;
                 transition: right 0.3s ease;
                 z-index: 30;
-                display: flex; /* Show flex container */
+                display: flex;
                 box-sizing: border-box;
             }
 
             .nav-menu-mobile.active {
-                right: 0; /* Slide in */
+                right: 0;
             }
 
             /* Adjust brand name font size */
@@ -752,23 +752,23 @@
             }
 
             /* Main padding to account for fixed navbar */
-            section.py-32 { /* Main hero section */
+            section.py-32 {
                 padding-top: 8rem;
                 padding-bottom: 4rem;
             }
-            section.py-20 { /* All other sections */
+            section.py-20 {
                 padding-top: 3rem;
                 padding-bottom: 3rem;
             }
 
             /* Titles and paragraphs */
             h2 {
-                font-size: clamp(2.25rem, 9vw, 3rem); /* Adjust hero title size */
+                font-size: clamp(2.25rem, 9vw, 3rem);
                 line-height: 1.2;
             }
 
             p {
-                font-size: clamp(1rem, 4.5vw, 1.25rem); /* Adjust hero paragraph size */
+                font-size: clamp(1rem, 4.5vw, 1.25rem);
             }
 
             .cursive-text {
@@ -777,34 +777,33 @@
 
             /* Puzzle pieces text */
             .puzzle-piece {
-                display: block; /* Stack puzzle pieces text vertically */
-                margin-bottom: 0.5rem; /* Add spacing between them */
-                animation-delay: 0s !important; /* Remove individual animation delays for faster load on mobile */
+                display: block;
+                margin-bottom: 0.5rem;
+                animation-delay: 0s !important;
             }
             .puzzle-piece:last-child {
-                margin-bottom: 0; /* Remove margin from last puzzle piece */
+                margin-bottom: 0;
             }
 
             /* Puzzle sections (cards) */
             .puzzle-section {
                 padding: 1.5rem;
-                margin: 1.5rem auto; /* Adjust margin */
-                width: 95%; /* Make it take more width */
-                max-width: 100%; /* Remove max-width constraint for full responsiveness */
+                margin: 1.5rem auto;
+                width: 95%;
+                max-width: 100%;
             }
-            /* Adjust before/after for puzzle section on smaller screens */
             .puzzle-section::before,
             .puzzle-section::after {
-                width: 30px; /* Reduce width */
-                height: 15px; /* Reduce height */
+                width: 30px;
+                height: 15px;
             }
 
             /* Chat container */
             .chat-container {
-                height: 400px; /* Adjust height for mobile */
+                height: 400px;
                 padding: 1rem;
-                width: 100%; /* Occupy full width within puzzle-section */
-                max-width: 100%; /* Ensure it doesn't try to be wider than its parent */
+                width: 100%;
+                max-width: 100%;
             }
 
             .chat-messages {
@@ -813,7 +812,7 @@
             }
 
             .message {
-                max-width: 85%; /* Give more space for messages */
+                max-width: 85%;
                 padding: 0.6rem;
                 font-size: clamp(0.85rem, 3.5vw, 0.95rem);
             }
@@ -826,7 +825,7 @@
             .chat-input {
                 gap: 0.5rem;
                 padding-top: 0.75rem;
-                flex-wrap: nowrap; /* Prevent wrapping in chat input */
+                flex-wrap: nowrap;
             }
 
             .chat-input textarea {
@@ -841,19 +840,18 @@
 
             /* Modal adjustments */
             .modal-overlay {
-                padding: 1rem; /* Padding para evitar que o modal encoste nas bordas da tela */
+                padding: 1rem;
             }
 
             .modal-content {
                 padding: 1.5rem;
-                width: 100%; /* Ocupa a largura total do padding do overlay */
-                max-width: 400px; /* Limita a largura máxima do modal */
-                margin: auto; /* Garante centralização vertical e horizontal dentro do overlay */
+                width: 100%;
+                max-width: 400px; /* Mantém um limite razoável para o tamanho do modal */
             }
             .modal-content input,
             .modal-content textarea,
-            .modal-content button {
-                font-size: clamp(0.9rem, 3.8vw, 1rem); /* Adjust form input/button font size */
+            .modal-content .form-button { /* Alvo específico para botões de formulário no modal */
+                font-size: clamp(0.9rem, 3.8vw, 1rem);
                 padding: 0.6rem;
             }
             .modal-content textarea {
@@ -861,16 +859,18 @@
             }
 
             .close-button {
-                top: 0.5rem;
-                right: 0.5rem;
-                font-size: 1.2rem; /* Tamanho menor para o "X" */
-                padding: 0.2rem;
+                top: 0.5rem; /* Posição do 'X' mais para dentro do padding */
+                right: 0.5rem; /* Posição do 'X' mais para dentro do padding */
+                font-size: 1.2rem; /* Tamanho menor do 'X' */
+                width: 25px; /* Tamanho fixo do botão */
+                height: 25px; /* Tamanho fixo do botão */
+                line-height: 25px; /* Para centralizar o X */
             }
 
             /* Testimonial carousel */
             .testimonial-carousel {
-                height: 180px; /* Adjust height for mobile */
-                padding: 1rem 0; /* Add some padding */
+                height: 180px;
+                padding: 1rem 0;
                 box-sizing: border-box;
             }
             .testimonial-card p {
@@ -884,30 +884,30 @@
             .whatsapp-button, .form-button, .schedule-button, .feedback-button, .testimonial-button {
                 font-size: clamp(0.9rem, 3.8vw, 1rem);
                 padding: 0.7rem 1.2rem;
-                width: 100%; /* Make buttons full width */
-                margin-bottom: 1rem; /* Add spacing between stacked buttons */
-                display: block; /* Ensure it's a block for margin-bottom/width */
+                width: 100%;
+                margin-bottom: 1rem;
+                display: block;
             }
             .puzzle-section .whatsapp-button:last-child,
             .puzzle-section .form-button:last-child,
             .puzzle-section .schedule-button:last-child,
             .puzzle-section .feedback-button:last-child,
             .puzzle-section .testimonial-button:last-child {
-                margin-bottom: 0; /* Remove margin from last button */
+                margin-bottom: 0;
             }
 
             .puzzle-section .whatsapp-button + .form-button,
             .puzzle-section .form-button + .schedule-button,
             .puzzle-section .schedule-button + .feedback-button,
             .puzzle-section .feedback-button + .testimonial-button {
-                margin-top: 0; /* Remove default margin-top if using margin-bottom on prev element */
+                margin-top: 0;
             }
             .puzzle-section .whatsapp-button.float-effect,
             .puzzle-section .form-button.float-effect,
             .puzzle-section .schedule-button.float-effect,
             .puzzle-section .feedback-button.float-effect,
             .puzzle-section .testimonial-button.float-effect {
-                animation: none !important; /* Desabilitar animação de float para mobile */
+                animation: none !important;
             }
         }
 
@@ -951,7 +951,7 @@
             }
             .modal-content input,
             .modal-content textarea,
-            .modal-content button {
+            .modal-content .form-button { /* Alvo específico para botões de formulário no modal */
                 font-size: 0.85rem;
                 padding: 0.5rem;
             }
@@ -1081,7 +1081,7 @@
                             <input type="date" id="scheduleDate" placeholder="Data preferida">
                             <input type="time" id="scheduleTime" placeholder="Horário preferido">
                             <textarea id="scheduleMessage" placeholder="Mensagem (opcional)" maxlength="500"></textarea>
-                            <button onclick="submitSchedule()">Enviar</button>
+                            <button class="form-button" onclick="submitSchedule()">Enviar</button>
                             <div id="scheduleMessage"></div>
                         </div>
                     </div>
@@ -1108,7 +1108,7 @@
                             <input type="text" id="feedbackName" placeholder="Seu nome" maxlength="50">
                             <input type="email" id="feedbackEmail" placeholder="Seu e-mail">
                             <textarea id="feedbackText" placeholder="Seu feedback ou sugestão" maxlength="500"></textarea>
-                            <button onclick="submitFeedback()">Enviar</button>
+                            <button class="form-button" onclick="submitFeedback()">Enviar</button>
                             <div id="feedbackMessage"></div>
                         </div>
                     </div>
@@ -1146,7 +1146,7 @@
                             <input type="text" id="testimonialProfession" placeholder="Sua profissão" maxlength="100">
                             <input type="email" id="testimonialEmail" placeholder="Seu e-mail">
                             <textarea id="testimonialComment" placeholder="Seu depoimento" maxlength="500"></textarea>
-                            <button onclick="submitTestimonial()">Enviar</button>
+                            <button class="form-button" onclick="submitTestimonial()">Enviar</button>
                             <div id="testimonialMessage"></div>
                         </div>
                     </div>
@@ -1401,8 +1401,8 @@
                 'chamo-me', 'me chamo', 'é', 'e', 'oi', 'olá', 'ola',
                 'bom dia', 'boa tarde', 'boa noite', 'tudo bem', 'tudo bom',
                 'como vai', 'e aí', 'e ai', 'eai', 'oiê', 'oie', 'oiee',
-                'oláá', 'olaa', 'oláa', 'tô de boa', 'tô bem', 'opa',
-                'tudo bem?', 'tô de boa?', 'tô bem?', 'como você está',
+                'oláá', 'olaa', 'oláa', 'tô de boa',
+                'tô bem', 'tô de boa?', 'tô bem?', 'como você está',
                 'como você ta', 'como você tá', 'e você', 'e tu', 'e voce'
             ];
             phrasesToRemove.forEach(phrase => {
@@ -1507,10 +1507,8 @@
             // Re-initialize chat elements if they exist
             if (chatMessages && userInput) { 
                 const chatContainer = document.querySelector('.chat-container');
-                if (chatContainer) { // Check if chatContainer exists
+                if (chatContainer) {
                     chatContainer.classList.remove('success'); 
-                    // To completely reset and avoid issues with innerHTML, we might need to recreate the elements
-                    // A simpler approach for persistent elements is to just clear content
                     chatMessages.innerHTML = ''; 
                     userInput.value = '';
                     userInput.placeholder = "Digite sua resposta...";
@@ -1522,7 +1520,7 @@
             if (contactSection) {
                 contactSectionObserver.observe(contactSection);
             }
-            createStars(); // Ensure stars are created on load
+            createStars();
         };
 
         function loadChatState() {
@@ -1643,7 +1641,7 @@
             const userText = userInput.value.trim();
             if (!userText) return;
 
-            addUserMessage(userText); // Adiciona a mensagem do usuário imediatamente
+            addUserMessage(userText);
 
             const correctionField = detectCorrectionRequest(userText);
             if (correctionField && chatState.step < 5) {
@@ -1701,7 +1699,6 @@
                 return;
             }
 
-            // Normal chat flow
             if (chatState.step === 1) {
                 if (isGreeting(userText)) {
                     const botGreeting = selectBotGreeting(userText);
@@ -1807,7 +1804,7 @@
             const section = document.querySelector('section:nth-of-type(2)');
             const puzzleSection = section.querySelector('.puzzle-section');
             if (puzzleSection) {
-                puzzleSection.remove(); // Remove o chat container
+                puzzleSection.remove();
             }
             
             const successContainer = document.createElement('div');
@@ -1832,7 +1829,7 @@
             const modal = document.getElementById(modalId);
             if (modal) {
                 modal.classList.add('show');
-                document.body.style.overflow = 'hidden'; // Prevents scrolling behind the modal
+                document.body.style.overflow = 'hidden';
             }
         }
 
@@ -1840,7 +1837,7 @@
             const modal = document.getElementById(modalId);
             if (modal) {
                 modal.classList.remove('show');
-                document.body.style.overflow = 'auto'; // Re-enables scrolling
+                document.body.style.overflow = 'auto';
             }
         }
 
@@ -1851,7 +1848,11 @@
             document.getElementById('scheduleDate').value = '';
             document.getElementById('scheduleTime').value = '';
             document.getElementById('scheduleMessage').value = '';
-            document.getElementById('scheduleMessage').innerHTML = ''; // Clear status message
+            // Limpa a mensagem de feedback do modal de agendamento
+            const modalScheduleFeedbackElement = document.getElementById('modalScheduleFeedback');
+            if (modalScheduleFeedbackElement) {
+                modalScheduleFeedbackElement.innerHTML = '';
+            }
             const dateInput = document.getElementById('scheduleDate');
             const today = new Date().toISOString().split('T')[0];
             dateInput.setAttribute('min', today);
@@ -1867,13 +1868,15 @@
             const date = document.getElementById('scheduleDate').value;
             const time = document.getElementById('scheduleTime').value;
             const message = document.getElementById('scheduleMessage').value.trim();
-            const messageContainer = document.getElementById('scheduleMessage'); // This ID is reused in modal
-
-            // Temporarily use a new ID for the modal's feedback message to avoid conflict
-            const modalScheduleMessage = document.createElement('div');
-            modalScheduleMessage.id = 'modalScheduleFeedback'; // Unique ID for modal feedback
-            messageContainer.innerHTML = ''; // Clear previous messages
-            messageContainer.appendChild(modalScheduleMessage);
+            
+            // Certifique-se de que o elemento de mensagem de feedback existe no modal
+            let modalScheduleMessage = document.getElementById('modalScheduleFeedback');
+            if (!modalScheduleMessage) {
+                modalScheduleMessage = document.createElement('div');
+                modalScheduleMessage.id = 'modalScheduleFeedback';
+                document.getElementById('scheduleFormContainer').appendChild(modalScheduleMessage);
+            }
+            modalScheduleMessage.innerHTML = '';
 
             if (!name || !isValidName(name)) {
                 modalScheduleMessage.innerHTML = '<div class="error-message">Por favor, insira um nome válido (apenas letras e espaços, até 50 caracteres).</div>';
@@ -1913,12 +1916,11 @@
             .then(response => {
                 if (response.ok) {
                     modalScheduleMessage.innerHTML = '<div class="success-message">Reunião agendada com sucesso! ✨</div>';
-                    // Clear form fields
                     document.getElementById('scheduleName').value = '';
                     document.getElementById('scheduleEmail').value = '';
                     document.getElementById('scheduleDate').value = '';
                     document.getElementById('scheduleTime').value = '';
-                    document.getElementById('scheduleMessage').value = ''; // Clear textarea in modal
+                    document.getElementById('scheduleMessage').value = '';
                     setTimeout(() => hideScheduleModal(), 2000);
                 } else {
                     modalScheduleMessage.innerHTML = '<div class="error-message">Erro ao agendar a reunião. Tente novamente.</div>';
@@ -1934,7 +1936,11 @@
             document.getElementById('feedbackName').value = '';
             document.getElementById('feedbackEmail').value = '';
             document.getElementById('feedbackText').value = '';
-            document.getElementById('feedbackMessage').innerHTML = ''; // Clear status message
+            // Limpa a mensagem de feedback do modal de feedback
+            const modalFeedbackStatusElement = document.getElementById('modalFeedbackStatus');
+            if (modalFeedbackStatusElement) {
+                modalFeedbackStatusElement.innerHTML = '';
+            }
         }
 
         function hideFeedbackModal() {
@@ -1945,12 +1951,15 @@
             const name = document.getElementById('feedbackName').value.trim();
             const email = document.getElementById('feedbackEmail').value.trim();
             const feedback = document.getElementById('feedbackText').value.trim();
-            const messageContainer = document.getElementById('feedbackMessage'); // This ID is reused in modal
-
-            const modalFeedbackMessage = document.createElement('div');
-            modalFeedbackMessage.id = 'modalFeedbackStatus'; // Unique ID for modal feedback
-            messageContainer.innerHTML = '';
-            messageContainer.appendChild(modalFeedbackMessage);
+            
+            // Certifique-se de que o elemento de mensagem de feedback existe no modal
+            let modalFeedbackMessage = document.getElementById('modalFeedbackStatus');
+            if (!modalFeedbackMessage) {
+                modalFeedbackMessage = document.createElement('div');
+                modalFeedbackMessage.id = 'modalFeedbackStatus';
+                document.getElementById('feedbackFormContainer').appendChild(modalFeedbackMessage);
+            }
+            modalFeedbackMessage.innerHTML = '';
 
             if (!name || !isValidName(name)) {
                 modalFeedbackMessage.innerHTML = '<div class="error-message">Por favor, insira um nome válido (apenas letras e espaços, até 50 caracteres).</div>';
@@ -1999,7 +2008,11 @@
             document.getElementById('testimonialProfession').value = '';
             document.getElementById('testimonialEmail').value = '';
             document.getElementById('testimonialComment').value = '';
-            document.getElementById('testimonialMessage').innerHTML = ''; // Clear status message
+            // Limpa a mensagem de feedback do modal de depoimento
+            let modalTestimonialStatusElement = document.getElementById('modalTestimonialStatus');
+            if (modalTestimonialStatusElement) {
+                modalTestimonialStatusElement.innerHTML = '';
+            }
         }
 
         function hideTestimonialModal() {
@@ -2011,12 +2024,15 @@
             const profession = document.getElementById('testimonialProfession').value.trim();
             const email = document.getElementById('testimonialEmail').value.trim();
             const comment = document.getElementById('testimonialComment').value.trim();
-            const messageContainer = document.getElementById('testimonialMessage'); // This ID is reused in modal
-
-            const modalTestimonialMessage = document.createElement('div');
-            modalTestimonialMessage.id = 'modalTestimonialStatus'; // Unique ID for modal feedback
-            messageContainer.innerHTML = '';
-            messageContainer.appendChild(modalTestimonialMessage);
+            
+            // Certifique-se de que o elemento de mensagem de feedback existe no modal
+            let modalTestimonialMessage = document.getElementById('modalTestimonialStatus');
+            if (!modalTestimonialMessage) {
+                modalTestimonialMessage = document.createElement('div');
+                modalTestimonialMessage.id = 'modalTestimonialStatus';
+                document.getElementById('testimonialFormContainer').appendChild(modalTestimonialMessage);
+            }
+            modalTestimonialMessage.innerHTML = '';
 
             if (!name || !isValidName(name)) {
                 modalTestimonialMessage.innerHTML = '<div class="error-message">Por favor, insira um nome válido (apenas letras e espaços, até 50 caracteres).</div>';
@@ -2066,10 +2082,10 @@
         }
         
         // Load chat state and observe contact section
-        loadChatState(); // This must be called after elements exist in the DOM
-
+        // Executar após o DOM estar completamente carregado
         document.addEventListener('DOMContentLoaded', () => {
-            // This re-observes the initial contact section only once DOM is ready
+            // Inicializa chat e observa a seção de contato
+            loadChatState(); 
             const contactSection = document.querySelector('section:nth-of-type(2)');
             if (contactSection) {
                 contactSectionObserver.observe(contactSection);
