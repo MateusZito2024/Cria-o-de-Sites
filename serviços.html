@@ -873,7 +873,7 @@
 
     <footer class="section-bg text-gray-200 py-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 content-layer">
-            <p>© 2025 Good Vibes. Todos os direitos reservados.</p>
+            <p class="text-center">&copy; 2025 Good Vibes. Todos os direitos reservados.</p>
         </div>
     </footer>
 
@@ -923,22 +923,37 @@
             // Stars animation
             const starsContainer = document.getElementById('stars-container');
             const colors = ['purple', 'pink', 'white'];
-            const numStars = 150;
-            const documentHeight = document.body.scrollHeight;
+            const numStars = 250; // Aumentado para mais estrelas
 
-            for (let i = 0; i < numStars; i++) {
-                const star = document.createElement('span');
-                star.classList.add('star');
-                star.classList.add(colors[Math.floor(Math.random() * colors.length)]);
-                star.style.left = `${Math.random() * 100}vw`;
-                star.style.top = `${Math.random() * documentHeight}px`;
-                const moveX = (Math.random() - 0.5) * 300;
-                const moveY = (Math.random() - 0.5) * 300;
-                star.style.setProperty('--move-x', `${moveX}px`);
-                star.style.setProperty('--move-y', `${moveY}px`);
-                star.style.animationDelay = `${Math.random() * 15}s`;
-                starsContainer.appendChild(star);
+            // Funcao para criar as estrelas, ajustando a altura com base no scrollHeight do body
+            function createStars() {
+                starsContainer.innerHTML = ''; // Limpa estrelas existentes antes de recriar
+                // Usa document.body.scrollHeight para cobrir toda a altura do conteúdo da página
+                const documentHeight = document.body.scrollHeight; 
+                const viewportWidth = window.innerWidth; 
+
+                for (let i = 0; i < numStars; i++) {
+                    const star = document.createElement('span');
+                    star.classList.add('star');
+                    star.classList.add(colors[Math.floor(Math.random() * colors.length)]);
+                    
+                    // Posicao aleatoria dentro da largura da viewport e da altura total do documento
+                    star.style.left = `${Math.random() * viewportWidth}px`;
+                    star.style.top = `${Math.random() * documentHeight}px`; // Usa documentHeight aqui
+                    
+                    const moveX = (Math.random() - 0.5) * 300;
+                    const moveY = (Math.random() - 0.5) * 300;
+                    star.style.setProperty('--move-x', `${moveX}px`);
+                    star.style.setProperty('--move-y', `${moveY}px`);
+                    star.style.animationDelay = `${Math.random() * 15}s`;
+                    starsContainer.appendChild(star);
+                }
             }
+
+            // Cria estrelas no carregamento e ao redimensionar
+            createStars();
+            window.addEventListener('resize', createStars);
+
 
             // Carousel functionality
             function setupCarousel(carouselId, paginationId, autoAdvanceInterval) {
