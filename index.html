@@ -109,7 +109,7 @@
         }
 
         .hamburger {
-            display: none;
+            display: none; /* Hidden by default, shown in media queries */
             flex-direction: column;
             justify-content: space-around;
             width: 2rem;
@@ -541,6 +541,7 @@
             to { opacity: 1; }
         }
 
+        /* Mobile specific styles */
         @media (max-width: 768px) {
             nav {
                 background: rgba(31, 41, 55, 0.95);
@@ -550,7 +551,7 @@
             .nav-menu {
                 position: fixed;
                 top: 0;
-                right: -100%;
+                right: -100%; /* Initially off-screen */
                 height: 100vh;
                 width: 75%;
                 max-width: 300px;
@@ -561,22 +562,26 @@
                 gap: 2rem;
                 transition: right 0.3s ease;
                 z-index: 30;
+                display: none; /* Hide by default on mobile */
             }
 
             .nav-menu.active {
-                right: 0;
+                right: 0; /* Slide in */
+                display: flex; /* Show when active */
             }
 
             .hamburger {
-                display: flex;
+                display: flex; /* Show hamburger icon on mobile */
             }
 
             .brand-name {
                 font-size: clamp(1.75rem, 8vw, 2rem);
+                padding: 0.5rem; /* Adjust padding for smaller screens */
             }
 
             .nav-link {
                 font-size: clamp(1.125rem, 4vw, 1.25rem);
+                padding: 0.5rem 0; /* Adjust padding for mobile menu items */
             }
 
             #home h2 {
@@ -588,7 +593,7 @@
             }
 
             .grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr; /* Stack items vertically */
             }
 
             .service-item, .portfolio-item {
@@ -597,25 +602,35 @@
 
             .portfolio-item img {
                 height: 200px;
+                object-fit: cover; /* Ensure images cover the area */
             }
 
             .chat-container {
                 height: 350px;
                 padding: 0.75rem;
+                width: 95%; /* Adjust width for better fit on small screens */
             }
 
             .chat-input {
-                flex-direction: row;
+                flex-direction: row; /* Keep row for input and buttons */
                 gap: 0.5rem;
+                flex-wrap: nowrap; /* Prevent wrapping input elements */
             }
 
             .chat-input textarea {
                 width: 100%;
                 flex: 1;
+                font-size: clamp(0.875rem, 3vw, 1rem); /* Adjust font size for textarea */
             }
 
             .chat-input button, .mic-button {
                 padding: 0.5rem;
+                font-size: clamp(0.875rem, 3vw, 1rem); /* Adjust font size for buttons */
+            }
+
+            .mic-button svg {
+                width: 20px;
+                height: 20px;
             }
 
             .inactivity-card {
@@ -624,7 +639,7 @@
             }
 
             section {
-                padding: 3rem 0;
+                padding: 3rem 0; /* Adjust section padding */
             }
 
             h2 {
@@ -656,6 +671,7 @@
 
             .chat-container {
                 height: 300px;
+                padding: 0.5rem; /* Further reduce padding for very small screens */
             }
 
             .chat-input textarea {
@@ -1108,8 +1124,7 @@
         }
 
         function extractName(message) {
-            const normalizedMessage = message.trim();
-            let name = normalizedMessage;
+            let name = message.trim();
             const phrasesToRemove = [
                 'meu nome é', 'meu nome e', 'sou', 'sou a', 'sou o',
                 'chamo-me', 'me chamo', 'é', 'e', 'oi', 'olá', 'ola',
@@ -1233,6 +1248,7 @@
             hasGreeted = false;
             chatMessages.innerHTML = '';
             const chatContainer = document.querySelector('.chat-container');
+            chatContainer.classList.remove('success'); // Ensure success class is removed on reload
             chatContainer.innerHTML = `
                 <div class="chat-messages" id="chatMessages"></div>
                 <div class="chat-input" id="chatInput">
@@ -1252,7 +1268,13 @@
                 micButton.disabled = true;
                 micButton.title = "Reconhecimento de voz não suportado neste navegador";
             }
+            // Re-observe the contact section after re-initializing the chat
+            const contactSection = document.querySelector('#contact');
+            if (contactSection) {
+                contactSectionObserver.observe(contactSection);
+            }
         };
+
 
         function saveChatState() {
             localStorage.setItem('chatState', JSON.stringify(chatState));
@@ -1333,7 +1355,7 @@
                     removeTypingIndicator();
                     const greeting = requestedGender === 'feminine' ? 
                         `Entendido! Prazer em conhecê-la, ${chatState.name || 'você'}!` : 
-                        `Entendido! Prazer em conhecê-lo, ${chatState.name || 'você'}!`;
+                        `Entendido! Prahecimento-lo, ${chatState.name || 'você'}!`;
                     addBotMessage(`${greeting} ${chatState.step === 1 ? 'Qual é o seu nome ou como você gostaria de ser chamado?' : 'Qual é o seu e-mail de contato?'}`);
                     saveChatState();
                 }, 2000);
