@@ -2,13 +2,12 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Good Vibes</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;600&family=Montserrat:wght@700&display=swap" rel="stylesheet">
     <style>
-        /* Adição crucial para evitar problemas de box model */
         *, *::before, *::after {
             box-sizing: border-box;
         }
@@ -16,9 +15,11 @@
         body {
             font-family: 'Poppins', sans-serif;
             position: relative;
-            overflow-x: hidden; /* Garante que não haja rolagem horizontal */
+            overflow-x: hidden;
             background: transparent;
-            width: 100vw; /* Garante que o body ocupe exatamente 100% da largura da viewport */
+            width: 100%;
+            margin: 0;
+            padding: 0;
         }
 
         .brand-name {
@@ -76,6 +77,7 @@
             background: transparent;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             padding: 0 1rem;
+            box-sizing: border-box;
         }
 
         nav > div {
@@ -115,7 +117,7 @@
         }
 
         .hamburger {
-            display: none; /* Hidden by default, shown in media queries */
+            display: none;
             flex-direction: column;
             justify-content: space-around;
             width: 2rem;
@@ -248,9 +250,11 @@
             top: 0;
             left: 0;
             width: 100%;
+            max-width: 100vw;
             height: 100%;
             z-index: 0;
             background: #0d1117;
+            overflow: hidden;
         }
 
         .service-icon {
@@ -276,8 +280,8 @@
             z-index: 1000;
             display: none;
             text-align: center;
-            max-width: 90%;
             width: 100%;
+            max-width: 90vw;
             box-sizing: border-box;
         }
 
@@ -341,7 +345,7 @@
 
         .chat-container {
             max-width: 100%;
-            width: 90%;
+            width: 100%;
             margin: 0 auto;
             background: #374151;
             border-radius: 1rem;
@@ -427,7 +431,7 @@
             border-top: 1px solid #4b5563;
             align-items: center;
             position: relative;
-            flex-wrap: nowrap; /* Impede a quebra de linha dos itens do input */
+            flex-wrap: nowrap;
         }
 
         .chat-input textarea {
@@ -441,7 +445,7 @@
             resize: none;
             font-family: 'Poppins', sans-serif;
             font-size: clamp(0.875rem, 2.5vw, 1rem);
-            min-width: 0; /* Permite que o textarea diminua o suficiente */
+            min-width: 0;
         }
 
         .chat-input button {
@@ -471,7 +475,7 @@
             align-items: center;
             justify-content: center;
             position: relative;
-            flex-shrink: 0; /* Impede o botão de encolher */
+            flex-shrink: 0;
         }
 
         .mic-button.recording {
@@ -548,19 +552,34 @@
             to { opacity: 1; }
         }
 
-        /* Mobile specific styles */
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .max-w-7xl {
+            width: 100%;
+            max-width: 100vw;
+            box-sizing: border-box;
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
         @media (max-width: 768px) {
             nav {
                 background: rgba(31, 41, 55, 0.95);
                 padding: 0.5rem 1rem;
+                width: 100%;
+                box-sizing: border-box;
             }
 
             .nav-menu {
                 position: fixed;
                 top: 0;
-                right: -100%; /* Initially off-screen */
+                right: -100%;
                 height: 100vh;
-                width: 75%;
+                width: 100%;
                 max-width: 300px;
                 background: #1f2937;
                 flex-direction: column;
@@ -569,27 +588,28 @@
                 gap: 2rem;
                 transition: right 0.3s ease;
                 z-index: 30;
-                display: none; /* Hide by default on mobile */
-                box-sizing: border-box; /* Garante que o padding não cause overflow */
+                display: none;
+                box-sizing: border-box;
+                padding: 0 1rem;
             }
 
             .nav-menu.active {
-                right: 0; /* Slide in */
-                display: flex; /* Show when active */
+                right: 0;
+                display: flex;
             }
 
             .hamburger {
-                display: flex; /* Show hamburger icon on mobile */
+                display: flex;
             }
 
             .brand-name {
                 font-size: clamp(1.75rem, 8vw, 2rem);
-                padding: 0.5rem; /* Adjust padding for smaller screens */
+                padding: 0.5rem;
             }
 
             .nav-link {
                 font-size: clamp(1.125rem, 4vw, 1.25rem);
-                padding: 0.5rem 0; /* Adjust padding for mobile menu items */
+                padding: 0.5rem 0;
             }
 
             #home h2 {
@@ -601,7 +621,7 @@
             }
 
             .grid {
-                grid-template-columns: 1fr; /* Stack items vertically */
+                grid-template-columns: 1fr;
             }
 
             .service-item, .portfolio-item {
@@ -610,30 +630,32 @@
 
             .portfolio-item img {
                 height: 200px;
-                object-fit: cover; /* Ensure images cover the area */
+                object-fit: cover;
             }
 
             .chat-container {
                 height: 350px;
                 padding: 0.75rem;
-                width: 95%; /* Adjust width for better fit on small screens */
+                width: 100%;
+                max-width: 100%;
+                box-sizing: border-box;
             }
 
             .chat-input {
-                flex-direction: row; /* Keep row for input and buttons */
+                flex-direction: row;
                 gap: 0.5rem;
-                flex-wrap: nowrap; /* Prevent wrapping input elements */
+                flex-wrap: nowrap;
             }
 
             .chat-input textarea {
                 width: 100%;
                 flex: 1;
-                font-size: clamp(0.875rem, 3vw, 1rem); /* Adjust font size for textarea */
+                font-size: clamp(0.875rem, 3vw, 1rem);
             }
 
             .chat-input button, .mic-button {
                 padding: 0.5rem;
-                font-size: clamp(0.875rem, 3vw, 1rem); /* Adjust font size for buttons */
+                font-size: clamp(0.875rem, 3vw, 1rem);
             }
 
             .mic-button svg {
@@ -643,11 +665,17 @@
 
             .inactivity-card {
                 padding: 1rem;
-                max-width: 95%;
+                max-width: 90vw;
+                width: 100%;
+            }
+
+            .inactivity-card img {
+                max-width: 100%;
+                height: auto;
             }
 
             section {
-                padding: 3rem 0; /* Adjust section padding */
+                padding: 3rem 0;
             }
 
             h2 {
@@ -656,6 +684,11 @@
 
             p {
                 font-size: clamp(0.875rem, 3.5vw, 1rem);
+            }
+
+            .max-w-7xl {
+                padding-left: 0.5rem;
+                padding-right: 0.5rem;
             }
         }
 
@@ -679,8 +712,10 @@
 
             .chat-container {
                 height: 300px;
-                padding: 0.5rem; /* Further reduce padding for very small screens */
-                width: 98%; /* Para telas muito pequenas, use um pouco mais da largura */
+                padding: 0.5rem;
+                width: 100%;
+                max-width: 100%;
+                box-sizing: border-box;
             }
 
             .chat-input textarea {
@@ -830,7 +865,6 @@
                 document.querySelector(this.getAttribute('href')).scrollIntoView({
                     behavior: 'smooth'
                 });
-                // Fecha o menu hambúrguer ao clicar em um link, apenas em telas menores
                 if (window.innerWidth <= 768) {
                     toggleMenu();
                 }
@@ -843,13 +877,11 @@
         function toggleMenu() {
             hamburger.classList.toggle('active');
             navMenu.classList.toggle('active');
-            // Impede a rolagem do body quando o menu está aberto
             document.body.style.overflowY = navMenu.classList.contains('active') ? 'hidden' : 'auto';
         }
 
         hamburger.addEventListener('click', toggleMenu);
 
-        // Fecha o menu se clicar fora dele
         document.addEventListener('click', (e) => {
             if (!hamburger.contains(e.target) && !navMenu.contains(e.target) && navMenu.classList.contains('active')) {
                 toggleMenu();
@@ -1261,7 +1293,7 @@
             hasGreeted = false;
             chatMessages.innerHTML = '';
             const chatContainer = document.querySelector('.chat-container');
-            chatContainer.classList.remove('success'); // Ensure success class is removed on reload
+            chatContainer.classList.remove('success');
             chatContainer.innerHTML = `
                 <div class="chat-messages" id="chatMessages"></div>
                 <div class="chat-input" id="chatInput">
@@ -1281,13 +1313,11 @@
                 micButton.disabled = true;
                 micButton.title = "Reconhecimento de voz não suportado neste navegador";
             }
-            // Re-observe the contact section after re-initializing the chat
             const contactSection = document.querySelector('#contact');
             if (contactSection) {
                 contactSectionObserver.observe(contactSection);
             }
         };
-
 
         function saveChatState() {
             localStorage.setItem('chatState', JSON.stringify(chatState));
