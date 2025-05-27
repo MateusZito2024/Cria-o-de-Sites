@@ -41,7 +41,6 @@
             height: 100%;
             z-index: 0;
             pointer-events: none;
-            /* REMOVIDO: overflow: hidden; - O overflow horizontal é controlado pelo body/html */
         }
 
         .star {
@@ -82,7 +81,7 @@
             padding: 1rem;
             display: block;
             overflow: visible;
-            font-size: clamp(2rem, 6vw, 2.5rem); /* Ajuste com clamp para mobile */
+            font-size: clamp(2rem, 6vw, 2.5rem);
         }
 
         .flex.items-center.content-layer {
@@ -95,7 +94,7 @@
             text-decoration: none;
             color: #f8f8f8;
             transition: color 0.3s ease;
-            font-size: clamp(1rem, 3vw, 1.125rem); /* Ajuste com clamp para mobile */
+            font-size: clamp(1rem, 3vw, 1.125rem);
         }
 
         .nav-link::after {
@@ -522,7 +521,7 @@
             outline: none;
             resize: none;
             font-family: 'Poppins', sans-serif;
-            font-size: clamp(0.875rem, 3vw, 1rem); /* Ajuste com clamp */
+            font-size: clamp(0.875rem, 3vw, 1rem);
             min-width: 0; /* Permite que o textarea diminua */
         }
 
@@ -534,7 +533,7 @@
             font-weight: bold;
             cursor: pointer;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            font-size: clamp(0.875rem, 3vw, 1rem); /* Ajuste com clamp */
+            font-size: clamp(0.875rem, 3vw, 1rem);
         }
 
         .chat-input button:hover {
@@ -543,7 +542,7 @@
         }
 
         .sparkle-text {
-            font-size: clamp(1.5rem, 5vw, 2rem); /* Ajuste com clamp */
+            font-size: clamp(1.5rem, 5vw, 2rem);
             font-weight: bold;
             text-align: center;
             color: #e2e8f0;
@@ -573,6 +572,7 @@
             display: none;
             justify-content: center;
             align-items: center;
+            padding: 1rem; /* Adicionar padding ao overlay para garantir espaçamento em telas muito pequenas */
         }
 
         .modal-overlay.show {
@@ -585,12 +585,13 @@
             border-radius: 1rem;
             padding: 2rem;
             max-width: 500px;
-            width: 90%; /* Ajuste para ocupar mais largura em mobile */
+            width: 100%; /* Ocupa 100% da largura máxima permitida */
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
             border: 2px solid #a5b4fc;
             position: relative;
             animation: slideInTopPiece 0.5s ease-out;
             box-sizing: border-box; /* Garante que padding e border não causem overflow */
+            margin: auto; /* Centraliza o modal no overlay */
         }
 
         .modal-content input,
@@ -604,7 +605,7 @@
             border-radius: 0.5rem;
             outline: none;
             font-family: 'Poppins', sans-serif;
-            font-size: clamp(0.9rem, 3.5vw, 1rem); /* Ajuste com clamp */
+            font-size: clamp(0.9rem, 3.5vw, 1rem);
         }
 
         .modal-content textarea {
@@ -622,7 +623,7 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             border: none;
             width: 100%; /* Botão ocupa 100% da largura no modal mobile */
-            font-size: clamp(0.9rem, 3.5vw, 1rem); /* Ajuste com clamp */
+            font-size: clamp(0.9rem, 3.5vw, 1rem);
         }
 
         .modal-content button:hover {
@@ -632,20 +633,22 @@
 
         .close-button {
             position: absolute;
-            top: 1rem;
-            right: 1rem;
+            top: 0.5rem; /* Ajustar posição para dentro do padding */
+            right: 0.5rem; /* Ajustar posição para dentro do padding */
             background: none;
             border: none;
             color: #e2e8f0;
             font-size: 1.5rem;
             cursor: pointer;
+            padding: 0.2rem; /* Adicionar padding para área de clique */
+            line-height: 1; /* Centralizar o "X" verticalmente */
         }
 
         .error-message,
         .success-message {
             text-align: center;
             margin-top: 1rem;
-            font-size: clamp(0.85rem, 3.5vw, 0.9rem); /* Ajuste com clamp */
+            font-size: clamp(0.85rem, 3.5vw, 0.9rem);
         }
 
         .error-message { color: #f87171; }
@@ -778,6 +781,9 @@
                 margin-bottom: 0.5rem; /* Add spacing between them */
                 animation-delay: 0s !important; /* Remove individual animation delays for faster load on mobile */
             }
+            .puzzle-piece:last-child {
+                margin-bottom: 0; /* Remove margin from last puzzle piece */
+            }
 
             /* Puzzle sections (cards) */
             .puzzle-section {
@@ -786,12 +792,19 @@
                 width: 95%; /* Make it take more width */
                 max-width: 100%; /* Remove max-width constraint for full responsiveness */
             }
+            /* Adjust before/after for puzzle section on smaller screens */
+            .puzzle-section::before,
+            .puzzle-section::after {
+                width: 30px; /* Reduce width */
+                height: 15px; /* Reduce height */
+            }
 
             /* Chat container */
             .chat-container {
                 height: 400px; /* Adjust height for mobile */
                 padding: 1rem;
                 width: 100%; /* Occupy full width within puzzle-section */
+                max-width: 100%; /* Ensure it doesn't try to be wider than its parent */
             }
 
             .chat-messages {
@@ -827,9 +840,15 @@
             }
 
             /* Modal adjustments */
+            .modal-overlay {
+                padding: 1rem; /* Padding para evitar que o modal encoste nas bordas da tela */
+            }
+
             .modal-content {
                 padding: 1.5rem;
-                width: 95%; /* Occupy more width in mobile */
+                width: 100%; /* Ocupa a largura total do padding do overlay */
+                max-width: 400px; /* Limita a largura máxima do modal */
+                margin: auto; /* Garante centralização vertical e horizontal dentro do overlay */
             }
             .modal-content input,
             .modal-content textarea,
@@ -839,6 +858,13 @@
             }
             .modal-content textarea {
                 min-height: 80px;
+            }
+
+            .close-button {
+                top: 0.5rem;
+                right: 0.5rem;
+                font-size: 1.2rem; /* Tamanho menor para o "X" */
+                padding: 0.2rem;
             }
 
             /* Testimonial carousel */
@@ -942,6 +968,12 @@
             .whatsapp-button, .form-button, .schedule-button, .feedback-button, .testimonial-button {
                 font-size: 0.85rem;
                 padding: 0.6rem 1rem;
+            }
+            /* Adjust puzzle piece sizes for very small screens */
+            .puzzle-section::before,
+            .puzzle-section::after {
+                width: 25px;
+                height: 12px;
             }
         }
     </style>
@@ -1175,7 +1207,7 @@
                     entry.target.querySelectorAll('.puzzle-piece').forEach((el, index) => {
                         el.style.animationDelay = `${index * 0.2}s`;
                         // Remove classes de saída para que a animação de entrada seja aplicada corretamente
-                        el.classList.remove('puzzle-piece-left-exit', 'puzzle-piece-right-exit');
+                        el.classList.remove('puzzle-piece-left-exit', 'puzzle-piece-right-exit', 'puzzle-piece-top-exit', 'puzzle-piece-bottom-exit');
                         // Garante que a classe de animação de entrada seja adicionada se não estiver lá
                         if (el.classList.contains('puzzle-piece-left')) {
                             el.classList.add('puzzle-piece-left');
@@ -1209,7 +1241,7 @@
 
                 if (entry.isIntersecting) {
                     title.style.opacity = '1';
-                    title.classList.remove('puzzle-piece-left-exit', 'puzzle-piece-right-exit'); // Remover classes de saída
+                    title.classList.remove('puzzle-piece-left-exit', 'puzzle-piece-right-exit', 'puzzle-piece-top-exit', 'puzzle-piece-bottom-exit'); // Remover todas as classes de saída
                     title.classList.add(animationClass);
                 } else {
                     title.classList.remove(animationClass);
@@ -1282,16 +1314,19 @@
             clearInterval(testimonialIntervalId);
         }
 
-        startTestimonialCarousel(); // Inicia o carrossel de depoimentos no carregamento
-
-        // Adiciona eventos de mouse para pausar/retomar o carrossel de depoimentos
-        const testimonialCarouselContainer = document.querySelector('.testimonial-carousel');
-        if (testimonialCarouselContainer) {
-            testimonialCarouselContainer.addEventListener('mouseenter', stopTestimonialCarousel);
-            testimonialCarouselContainer.addEventListener('mouseleave', startTestimonialCarousel);
+        // Inicia o carrossel de depoimentos no carregamento
+        if (testimonialSlides.length > 0) {
+            startTestimonialCarousel();
+            // Adiciona eventos de mouse para pausar/retomar o carrossel de depoimentos
+            const testimonialCarouselContainer = document.querySelector('.testimonial-carousel');
+            if (testimonialCarouselContainer) {
+                testimonialCarouselContainer.addEventListener('mouseenter', stopTestimonialCarousel);
+                testimonialCarouselContainer.addEventListener('mouseleave', startTestimonialCarousel);
+            }
         }
 
-        // Chatbot logic
+
+        // Chatbot logic (ajustado para melhor comportamento em mobile)
         let chatMessages = document.getElementById('chatMessages');
         let userInput = document.getElementById('userInput');
         let chatState = {
@@ -1469,26 +1504,25 @@
                 message: ''
             };
             hasGreeted = false;
-            if (chatMessages && userInput) { // Check if elements exist
-                chatMessages.innerHTML = '';
+            // Re-initialize chat elements if they exist
+            if (chatMessages && userInput) { 
                 const chatContainer = document.querySelector('.chat-container');
-                chatContainer.classList.remove('success'); // Ensure success class is removed on reload
-                chatContainer.innerHTML = `
-                    <div class="chat-messages" id="chatMessages"></div>
-                    <div class="chat-input" id="chatInput">
-                        <textarea id="userInput" placeholder="Digite sua resposta..." rows="1" onkeypress="handleKeyPress(event)"></textarea>
-                        <button onclick="sendMessage()">Enviar</button>
-                    </div>
-                `;
-                // Re-assign elements after re-rendering innerHTML
-                chatMessages = document.getElementById('chatMessages');
-                userInput = document.getElementById('userInput');
+                if (chatContainer) { // Check if chatContainer exists
+                    chatContainer.classList.remove('success'); 
+                    // To completely reset and avoid issues with innerHTML, we might need to recreate the elements
+                    // A simpler approach for persistent elements is to just clear content
+                    chatMessages.innerHTML = ''; 
+                    userInput.value = '';
+                    userInput.placeholder = "Digite sua resposta...";
+                    userInput.rows = 1;
+                }
             }
             // Re-observe contact section
             const contactSection = document.querySelector('section:nth-of-type(2)');
             if (contactSection) {
                 contactSectionObserver.observe(contactSection);
             }
+            createStars(); // Ensure stars are created on load
         };
 
         function loadChatState() {
