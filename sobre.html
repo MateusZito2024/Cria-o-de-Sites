@@ -21,8 +21,7 @@
             margin: 0;
             padding: 0;
             position: relative;
-            /* Apenas overflow-x: hidden aqui para controlar a barra horizontal geral */
-            overflow-x: hidden;
+            overflow-x: hidden; /* Apenas overflow-x: hidden aqui para controlar a barra horizontal geral */
             overflow-y: auto; /* Permite rolagem vertical */
             min-height: 100%;
             width: 100vw; /* Garante que o body ocupe exatamente 100% da largura da viewport */
@@ -35,14 +34,14 @@
         }
 
         .stars-container {
-            position: fixed;
+            position: fixed; /* Mantenha fixed para cobrir a viewport */
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
+            height: 100%; /* Cobre 100% da viewport */
             z-index: 0;
             pointer-events: none;
-            /* REMOVIDO: overflow: hidden; -> O overflow horizontal já é controlado pelo body/html */
+            overflow: hidden; /* Corta estrelas que "saem" da viewport ao flutuar */
         }
 
         .star {
@@ -412,38 +411,72 @@
                 display: flex;
             }
 
-            /* Mobile nav menu */
+            /* Mobile nav menu com Glassmorphism */
             .nav-menu-mobile {
                 position: fixed;
                 top: 0;
                 right: -100%; /* Initially off-screen */
                 height: 100vh;
-                width: 75%;
+                width: 100%;
                 max-width: 300px; /* Limit width for larger tablets */
-                background: #1f2937;
+                background: rgba(31, 41, 55, 0.8); /* Fundo semi-transparente para o glassmorphism */
+                backdrop-filter: blur(10px); /* Efeito de desfoque */
+                -webkit-backdrop-filter: blur(10px); /* Para compatibilidade com Safari */
+                border-left: 1px solid rgba(165, 180, 252, 0.3); /* Borda sutil */
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
-                gap: 2rem;
+                gap: 1.5rem; /* Espaçamento entre os itens */
                 transition: right 0.3s ease;
                 z-index: 30;
                 display: flex; /* Show flex container */
                 box-sizing: border-box;
+                padding: 0 1rem;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3); /* Sombra para profundidade */
             }
 
             .nav-menu-mobile.active {
                 right: 0; /* Slide in */
             }
 
-            /* Ajuste de padding para o conteúdo principal para não ficar sob a navbar */
-            main {
-                padding-top: 4rem; /* Ajuste para compensar a navbar fixa */
-            }
-
             /* Adjust brand name font size */
             .brand-name {
                 font-size: clamp(1.75rem, 8vw, 2rem);
                 padding: 0.5rem;
+            }
+
+            /* Estilo dos links no menu mobile - Glassmorphism */
+            .nav-menu-mobile .nav-link {
+                display: block;
+                width: 90%; /* Ajuste a largura para um visual mais elegante */
+                padding: 0.8rem 1.5rem;
+                border-radius: 0.75rem; /* Mais arredondado */
+                background: rgba(165, 180, 252, 0.1); /* Fundo semi-transparente para o link */
+                color: #f8f8f8; /* Cor do texto clara */
+                text-align: center;
+                font-size: clamp(1.125rem, 4vw, 1.3rem); /* Fonte um pouco maior */
+                font-weight: 600; /* Mais negrito */
+                border: 1px solid rgba(255, 255, 255, 0.2); /* Borda sutil para o efeito de vidro */
+                backdrop-filter: blur(5px);
+                -webkit-backdrop-filter: blur(5px);
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra suave */
+                transition: all 0.3s ease; /* Transições suaves */
+            }
+
+            .nav-menu-mobile .nav-link:hover {
+                background: linear-gradient(135deg, rgba(165, 180, 252, 0.3), rgba(232, 121, 249, 0.3)); /* Gradiente mais visível no hover */
+                transform: translateY(-4px) scale(1.02); /* Efeito de levantar e expandir levemente */
+                box-shadow: 0 8px 16px rgba(232, 121, 249, 0.4); /* Sombra mais intensa e colorida no hover */
+                border-color: #e879f9; /* Borda colorida no hover */
+            }
+
+            .nav-menu-mobile .nav-link::after {
+                display: none; /* Remove a linha inferior dos links no mobile */
+            }
+
+            /* Ajuste de padding para o conteúdo principal para não ficar sob a navbar */
+            main {
+                padding-top: 4rem; /* Ajuste para compensar a navbar fixa */
             }
 
             /* Hero Section adjustments */
@@ -480,7 +513,7 @@
             }
 
             #hero .relative.min-h-\[400px\].md\:min-h-\[450px\] {
-                 min-height: auto; /* Remove altura fixa para melhor fluidez */
+                min-height: auto; /* Remove altura fixa para melhor fluidez */
             }
 
             /* Grid layout for sections */
@@ -803,23 +836,25 @@
         }, { threshold: 0.2 });
         document.querySelectorAll('.section-animate').forEach(section => sectionObserver.observe(section));
 
-        // Stars background initialization (Corrigido para não usar document.body.scrollHeight)
+        // Stars background initialization and update
         const starsContainer = document.getElementById('stars-container');
         const colors = ['purple', 'pink', 'white'];
-        const numStars = 150;
+        const numStars = 250; // Aumentado para mais estrelas
 
         function createStars() {
-            // Limpa estrelas existentes para recriar se a janela for redimensionada
-            starsContainer.innerHTML = '';
-            const viewportWidth = window.innerWidth;
-            const viewportHeight = window.innerHeight;
+            starsContainer.innerHTML = ''; // Limpa estrelas existentes antes de recriar
+            const documentHeight = document.body.scrollHeight; // Altura total do documento (incluindo scroll)
+            const viewportWidth = window.innerWidth; // Largura da viewport
 
             for (let i = 0; i < numStars; i++) {
                 const star = document.createElement('span');
                 star.classList.add('star');
                 star.classList.add(colors[Math.floor(Math.random() * colors.length)]);
-                star.style.left = `${Math.random() * 100}vw`;
-                star.style.top = `${Math.random() * 100}vh`; /* Usar vh para ficar visível na viewport */
+                
+                // Posição aleatória dentro da largura da viewport e da altura total do documento
+                star.style.left = `${Math.random() * viewportWidth}px`;
+                star.style.top = `${Math.random() * documentHeight}px`; // Usa documentHeight aqui
+                
                 const moveX = (Math.random() - 0.5) * 300;
                 const moveY = (Math.random() - 0.5) * 300;
                 star.style.setProperty('--move-x', `${moveX}px`);
@@ -829,7 +864,7 @@
             }
         }
 
-        // Cria estrelas no carregamento e ao redimensionar (para ajustar a distribuição)
+        // Cria estrelas no carregamento e ao redimensionar
         createStars();
         window.addEventListener('resize', createStars);
 
