@@ -41,7 +41,6 @@
             height: 100%;
             z-index: 0;
             pointer-events: none;
-            /* REMOVIDO: overflow: hidden; - O overflow horizontal é controlado pelo body/html */
         }
 
         .star {
@@ -82,7 +81,7 @@
             padding: 1rem;
             display: block;
             overflow: visible;
-            font-size: clamp(2rem, 6vw, 2.5rem); /* Ajuste com clamp para mobile */
+            font-size: clamp(2rem, 6vw, 2.5rem);
         }
 
         .flex.items-center.content-layer {
@@ -95,7 +94,7 @@
             text-decoration: none;
             color: #f8f8f8;
             transition: color 0.3s ease;
-            font-size: clamp(1rem, 3vw, 1.125rem); /* Ajuste com clamp para mobile */
+            font-size: clamp(1rem, 3vw, 1.125rem);
         }
 
         .nav-link::after {
@@ -144,9 +143,8 @@
             margin-right: auto;
         }
 
-        /* Removido margin-left: auto para mobile, será controlado por flexbox */
         nav .flex.items-center.content-layer:last-child {
-            /* margin-left: auto; */
+            /* margin-left: auto; */ /* Removido para mobile, será controlado por flexbox */
         }
 
         nav, section, footer {
@@ -382,38 +380,72 @@
                 display: flex;
             }
 
-            /* Mobile nav menu */
+            /* Mobile nav menu com Glassmorphism */
             .nav-menu-mobile {
                 position: fixed;
                 top: 0;
                 right: -100%; /* Initially off-screen */
                 height: 100vh;
-                width: 75%;
+                width: 100%;
                 max-width: 300px; /* Limit width for larger tablets */
-                background: #1f2937;
+                background: rgba(31, 41, 55, 0.8); /* Fundo semi-transparente para o glassmorphism */
+                backdrop-filter: blur(10px); /* Efeito de desfoque */
+                -webkit-backdrop-filter: blur(10px); /* Para compatibilidade com Safari */
+                border-left: 1px solid rgba(165, 180, 252, 0.3); /* Borda sutil */
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
-                gap: 2rem;
+                gap: 1.5rem; /* Espaçamento entre os itens */
                 transition: right 0.3s ease;
                 z-index: 30;
                 display: flex; /* Show flex container */
                 box-sizing: border-box;
+                padding: 0 1rem;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3); /* Sombra para profundidade */
             }
 
             .nav-menu-mobile.active {
                 right: 0; /* Slide in */
             }
 
-            /* Ajuste de padding para o conteúdo principal para não ficar sob a navbar */
-            main {
-                padding-top: 4rem; /* Ajuste para compensar a navbar fixa */
-            }
-
             /* Adjust brand name font size */
             .brand-name {
                 font-size: clamp(1.75rem, 8vw, 2rem);
                 padding: 0.5rem;
+            }
+
+            /* Estilo dos links no menu mobile - Glassmorphism */
+            .nav-menu-mobile .nav-link {
+                display: block;
+                width: 90%; /* Ajuste a largura para um visual mais elegante */
+                padding: 0.8rem 1.5rem;
+                border-radius: 0.75rem; /* Mais arredondado */
+                background: rgba(165, 180, 252, 0.1); /* Fundo semi-transparente para o link */
+                color: #f8f8f8; /* Cor do texto clara */
+                text-align: center;
+                font-size: clamp(1.125rem, 4vw, 1.3rem); /* Fonte um pouco maior */
+                font-weight: 600; /* Mais negrito */
+                border: 1px solid rgba(255, 255, 255, 0.2); /* Borda sutil para o efeito de vidro */
+                backdrop-filter: blur(5px);
+                -webkit-backdrop-filter: blur(5px);
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra suave */
+                transition: all 0.3s ease; /* Transições suaves */
+            }
+
+            .nav-menu-mobile .nav-link:hover {
+                background: linear-gradient(135deg, rgba(165, 180, 252, 0.3), rgba(232, 121, 249, 0.3)); /* Gradiente mais visível no hover */
+                transform: translateY(-4px) scale(1.02); /* Efeito de levantar e expandir levemente */
+                box-shadow: 0 8px 16px rgba(232, 121, 249, 0.4); /* Sombra mais intensa e colorida no hover */
+                border-color: #e879f9; /* Borda colorida no hover */
+            }
+
+            .nav-menu-mobile .nav-link::after {
+                display: none; /* Remove a linha inferior dos links no mobile */
+            }
+
+            /* Ajuste de padding para o conteúdo principal para não ficar sob a navbar */
+            main {
+                padding-top: 4rem; /* Ajuste para compensar a navbar fixa */
             }
 
             /* Main titles and paragraphs */
@@ -752,7 +784,7 @@
         document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right').forEach(el => observer.observe(el));
 
 
-        // Stars background initialization (Corrigido para não usar document.body.scrollHeight)
+        // Stars background initialization
         const starsContainer = document.getElementById('stars-container');
         const colors = ['purple', 'pink', 'white'];
         const numStars = 150;
