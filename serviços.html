@@ -515,23 +515,28 @@
                 display: flex;
             }
 
-            /* Mobile nav menu */
+            /* Mobile nav menu com Glassmorphism */
             .nav-menu-mobile {
                 position: fixed;
                 top: 0;
                 right: -100%; /* Initially off-screen */
                 height: 100vh;
-                width: 75%;
+                width: 100%;
                 max-width: 300px; /* Limit width for larger tablets */
-                background: #1f2937;
+                background: rgba(31, 41, 55, 0.8); /* Fundo semi-transparente para o glassmorphism */
+                backdrop-filter: blur(10px); /* Efeito de desfoque */
+                -webkit-backdrop-filter: blur(10px); /* Para compatibilidade com Safari */
+                border-left: 1px solid rgba(165, 180, 252, 0.3); /* Borda sutil */
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
-                gap: 2rem;
+                gap: 1.5rem; /* Espaçamento entre os itens */
                 transition: right 0.3s ease;
                 z-index: 30;
                 display: flex; /* Show flex container */
                 box-sizing: border-box;
+                padding: 0 1rem;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3); /* Sombra para profundidade */
             }
 
             .nav-menu-mobile.active {
@@ -544,9 +549,38 @@
                 padding: 0.5rem;
             }
 
+            /* Estilo dos links no menu mobile - Glassmorphism */
+            .nav-menu-mobile .nav-link {
+                display: block;
+                width: 90%; /* Ajuste a largura para um visual mais elegante */
+                padding: 0.8rem 1.5rem;
+                border-radius: 0.75rem; /* Mais arredondado */
+                background: rgba(165, 180, 252, 0.1); /* Fundo semi-transparente para o link */
+                color: #f8f8f8; /* Cor do texto clara */
+                text-align: center;
+                font-size: clamp(1.125rem, 4vw, 1.3rem); /* Fonte um pouco maior */
+                font-weight: 600; /* Mais negrito */
+                border: 1px solid rgba(255, 255, 255, 0.2); /* Borda sutil para o efeito de vidro */
+                backdrop-filter: blur(5px);
+                -webkit-backdrop-filter: blur(5px);
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra suave */
+                transition: all 0.3s ease; /* Transições suaves */
+            }
+
+            .nav-menu-mobile .nav-link:hover {
+                background: linear-gradient(135deg, rgba(165, 180, 252, 0.3), rgba(232, 121, 249, 0.3)); /* Gradiente mais visível no hover */
+                transform: translateY(-4px) scale(1.02); /* Efeito de levantar e expandir levemente */
+                box-shadow: 0 8px 16px rgba(232, 121, 249, 0.4); /* Sombra mais intensa e colorida no hover */
+                border-color: #e879f9; /* Borda colorida no hover */
+            }
+
+            .nav-menu-mobile .nav-link::after {
+                display: none; /* Remove a linha inferior dos links no mobile */
+            }
+
             /* Hero Section adjustments */
             #services-hero {
-                h-min: 50vh; /* Ajusta altura mínima para mobile */
+                min-height: 50vh; /* Ajusta altura mínima para mobile */
                 padding-top: 8rem; /* Padding para evitar que o conteúdo fique sob a navbar fixa */
                 padding-bottom: 4rem;
             }
@@ -838,7 +872,7 @@
     </main>
 
     <footer class="section-bg text-gray-200 py-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center content-layer">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 content-layer">
             <p>© 2025 Good Vibes. Todos os direitos reservados.</p>
         </div>
     </footer>
@@ -973,11 +1007,12 @@
                 });
 
                 carousel.addEventListener('touchend', () => {
-                    if (touchEndX < touchStartX - 50) { // Swiped left
+                    const swipeThreshold = 50; // Pixels to trigger a swipe
+                    if (touchEndX < touchStartX - swipeThreshold) { // Swiped left
                         currentIndex = (currentIndex + 1) % carouselItems.length;
                         showItem(currentIndex);
                     }
-                    if (touchEndX > touchStartX + 50) { // Swiped right
+                    if (touchEndX > touchStartX + swipeThreshold) { // Swiped right
                         currentIndex = (currentIndex - 1 + carouselItems.length) % carouselItems.length;
                         showItem(currentIndex);
                     }
