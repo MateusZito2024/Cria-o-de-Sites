@@ -556,7 +556,7 @@
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.7);
-            z-index: 100;
+            z-index: 9999; /* Z-INDEX MUITO ALTO PARA GARANTIR QUE FIQUE ACIMA DE TUDO */
             display: none;
             justify-content: center;
             align-items: center;
@@ -572,15 +572,29 @@
             background: #2d3748;
             border-radius: 1rem;
             padding: 2rem;
-            max-width: 500px; /* Mantém o tamanho máximo para desktop */
-            width: 100%; /* Permite que ocupe 100% do espaço disponível no mobile */
+            max-width: 500px;
+            width: 100%;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
             border: 2px solid #a5b4fc;
             position: relative;
             animation: slideInTopPiece 0.5s ease-out;
             box-sizing: border-box;
-            margin: auto; /* Centraliza o modal no overlay */
+            margin: auto;
+            max-height: 90vh; /* Limita a altura máxima do modal */
+            overflow-y: auto; /* Adiciona rolagem se o conteúdo for maior que a altura máxima */
+            /* REMOVIDO z-index: 101 daqui, pois o z-index do overlay já é suficiente */
         }
+
+        /* **Ajuste específico para o modal de agendamento** */
+        #scheduleModal .modal-content {
+            position: relative; /* Mantém relative, a questão do z-index está no overlay */
+            top: auto; /* Garante que top não seja herdado de forma estranha */
+            left: auto; /* Garante que left não seja herdado de forma estranha */
+            transform: none; /* Garante que transform não seja herdado de forma estranha */
+            max-height: calc(100vh - 4rem); /* Ajuste mais preciso para evitar que o modal seja cortado */
+            margin: 2rem auto; /* Centraliza verticalmente e horizontalmente */
+        }
+
 
         .modal-content input,
         .modal-content textarea {
@@ -847,7 +861,13 @@
                 padding: 1.5rem;
                 width: 100%;
                 max-width: 400px; /* Mantém um limite razoável para o tamanho do modal */
+                max-height: 95vh; /* Ajuste para mobile para que o modal não fique tão alto */
             }
+            /* Ajuste específico para o modal de agendamento em mobile */
+            #scheduleModal .modal-content {
+                max-height: calc(100vh - 4rem); /* Ajuste mais preciso para evitar que o modal seja cortado, mantendo margens */
+            }
+
             .modal-content input,
             .modal-content textarea,
             .modal-content .form-button { /* Alvo específico para botões de formulário no modal */
@@ -948,6 +968,11 @@
             .modal-content {
                 padding: 1rem;
                 width: 98%;
+            }
+            /* Ajuste específico para o modal de agendamento em mobile muito pequeno */
+            #scheduleModal .modal-content {
+                max-height: calc(100vh - 2rem); /* Mais agressivo para garantir que caiba */
+                margin: 1rem auto; /* Reduz margem vertical */
             }
             .modal-content input,
             .modal-content textarea,
@@ -1082,8 +1107,7 @@
                             <input type="time" id="scheduleTime" placeholder="Horário preferido">
                             <textarea id="scheduleMessage" placeholder="Mensagem (opcional)" maxlength="500"></textarea>
                             <button class="form-button" onclick="submitSchedule()">Enviar</button>
-                            <div id="scheduleMessage"></div>
-                        </div>
+                            <div id="modalScheduleFeedback"></div> </div>
                     </div>
                 </div>
             </div>
@@ -1109,8 +1133,7 @@
                             <input type="email" id="feedbackEmail" placeholder="Seu e-mail">
                             <textarea id="feedbackText" placeholder="Seu feedback ou sugestão" maxlength="500"></textarea>
                             <button class="form-button" onclick="submitFeedback()">Enviar</button>
-                            <div id="feedbackMessage"></div>
-                        </div>
+                            <div id="modalFeedbackStatus"></div> </div>
                     </div>
                 </div>
             </div>
@@ -1147,8 +1170,7 @@
                             <input type="email" id="testimonialEmail" placeholder="Seu e-mail">
                             <textarea id="testimonialComment" placeholder="Seu depoimento" maxlength="500"></textarea>
                             <button class="form-button" onclick="submitTestimonial()">Enviar</button>
-                            <div id="testimonialMessage"></div>
-                        </div>
+                            <div id="modalTestimonialStatus"></div> </div>
                     </div>
                 </div>
             </div>
@@ -1829,7 +1851,7 @@
             const modal = document.getElementById(modalId);
             if (modal) {
                 modal.classList.add('show');
-                document.body.style.overflow = 'hidden';
+                document.body.style.overflow = 'hidden'; // Evita rolagem do body quando modal está aberto
             }
         }
 
@@ -1837,7 +1859,7 @@
             const modal = document.getElementById(modalId);
             if (modal) {
                 modal.classList.remove('show');
-                document.body.style.overflow = 'auto';
+                document.body.style.overflow = 'auto'; // Restaura rolagem do body
             }
         }
 
