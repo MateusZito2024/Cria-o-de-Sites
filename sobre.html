@@ -7,6 +7,11 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;600&family=Montserrat:wght@700&display=swap" rel="stylesheet">
     <style>
+        /* Reset para box-sizing global */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
         html, body {
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(135deg, #1e293b, #2d3748, #000000, #0f172a, #1e293b, #2d3748, #000000, #0f172a);
@@ -16,8 +21,11 @@
             margin: 0;
             padding: 0;
             position: relative;
+            /* Apenas overflow-x: hidden aqui para controlar a barra horizontal geral */
             overflow-x: hidden;
+            overflow-y: auto; /* Permite rolagem vertical */
             min-height: 100%;
+            width: 100vw; /* Garante que o body ocupe exatamente 100% da largura da viewport */
         }
 
         @keyframes gradientTransition {
@@ -34,7 +42,7 @@
             height: 100%;
             z-index: 0;
             pointer-events: none;
-            overflow: hidden;
+            /* REMOVIDO: overflow: hidden; -> O overflow horizontal já é controlado pelo body/html */
         }
 
         .star {
@@ -70,7 +78,7 @@
         }
 
         /* -------------------------------------
-           Header Styles
+            Header Styles
         ------------------------------------- */
         .brand-name {
             font-family: 'Great Vibes', cursive;
@@ -78,6 +86,7 @@
             padding: 1rem;
             display: block;
             overflow: visible;
+            font-size: clamp(2rem, 6vw, 2.5rem); /* Ajuste com clamp para mobile */
         }
 
         .flex.items-center.content-layer {
@@ -90,6 +99,7 @@
             text-decoration: none;
             color: #f8f8f8;
             transition: color 0.3s ease;
+            font-size: clamp(1rem, 3vw, 1.125rem); /* Ajuste com clamp para mobile */
         }
 
         .nav-link::after {
@@ -125,6 +135,7 @@
             background: transparent;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             padding: 0 1rem;
+            pointer-events: auto;
         }
 
         nav > div {
@@ -138,8 +149,9 @@
             margin-right: auto;
         }
 
+        /* Removido margin-left: auto para mobile, será controlado por flexbox */
         nav .flex.items-center.content-layer:last-child {
-            margin-left: auto;
+            /* margin-left: auto; */
         }
 
         nav, section, footer {
@@ -163,7 +175,7 @@
         }
 
         /* -------------------------------------
-           Remaining Styles
+            Remaining Styles
         ------------------------------------- */
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(20px); }
@@ -287,27 +299,23 @@
             color: #e879f9;
         }
 
-        .milestone-item::before {
-            content: '';
-            position: absolute;
-            left: -30px;
-            top: 50%;
-            width: 10px;
-            height: 10px;
-            background: #e879f9;
-            border-radius: 50%;
-            transform: translateY(-50%);
+        /* Linha do tempo: ajustar o layout da linha e dos pontos para mobile */
+        #timeline .milestone-item {
+            padding-left: 40px; /* Espaço para a linha e o ponto */
         }
 
-        .milestone-item::after {
-            content: '';
-            position: absolute;
-            left: -25px;
-            top: 50%;
-            width: 1px;
-            height: 100%;
-            background: #a5b4fc;
-            z-index: -1;
+        #timeline .milestone-item::before {
+            left: 15px; /* Posição do círculo */
+        }
+
+        #timeline .milestone-item::after {
+            left: 20px; /* Posição da linha vertical */
+            height: calc(100% + 2rem); /* Aumentar a altura da linha para cobrir o gap */
+            top: 0;
+        }
+
+        #timeline .milestone-item:last-child::after {
+            height: 50%; /* A última linha deve ir só até o meio */
         }
 
         .value-icon {
@@ -346,13 +354,240 @@
         .office-img {
             object-position: center bottom; /* Focus on the bottom part of the image */
         }
+
+        /* --- Mobile Responsiveness --- */
+
+        /* Hamburger menu styles */
+        .hamburger {
+            display: none; /* Hidden by default, shown in media query */
+            flex-direction: column;
+            justify-content: space-around;
+            width: 2rem;
+            height: 2rem;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            z-index: 40;
+        }
+
+        .hamburger span {
+            width: 100%;
+            height: 3px;
+            background: #f8f8f8;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        /* Nav menu for mobile */
+        .nav-menu-mobile {
+            display: none; /* Hidden by default */
+        }
+
+        @media (max-width: 768px) {
+            /* Navbar adjustments */
+            nav {
+                background: rgba(31, 41, 55, 0.95);
+                padding: 0.5rem 1rem;
+            }
+
+            /* Hide desktop nav links */
+            nav .flex.items-center.space-x-6 {
+                display: none;
+            }
+
+            /* Show hamburger */
+            .hamburger {
+                display: flex;
+            }
+
+            /* Mobile nav menu */
+            .nav-menu-mobile {
+                position: fixed;
+                top: 0;
+                right: -100%; /* Initially off-screen */
+                height: 100vh;
+                width: 75%;
+                max-width: 300px; /* Limit width for larger tablets */
+                background: #1f2937;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 2rem;
+                transition: right 0.3s ease;
+                z-index: 30;
+                display: flex; /* Show flex container */
+                box-sizing: border-box;
+            }
+
+            .nav-menu-mobile.active {
+                right: 0; /* Slide in */
+            }
+
+            /* Ajuste de padding para o conteúdo principal para não ficar sob a navbar */
+            main {
+                padding-top: 4rem; /* Ajuste para compensar a navbar fixa */
+            }
+
+            /* Adjust brand name font size */
+            .brand-name {
+                font-size: clamp(1.75rem, 8vw, 2rem);
+                padding: 0.5rem;
+            }
+
+            /* Hero Section adjustments */
+            #hero {
+                min-height: 80vh; /* Ajusta altura mínima para mobile */
+                padding-top: 4rem; /* Garante espaço para a nav */
+                align-items: flex-start; /* Alinha o conteúdo ao topo na vertical */
+                justify-content: center; /* Centraliza horizontalmente */
+            }
+
+            #hero .content-layer {
+                position: static; /* Remove posicionamento absoluto para fluxo normal */
+                transform: none; /* Remove transformações absolutas */
+                text-align: center; /* Centraliza o texto */
+                padding: 2rem 1rem; /* Ajusta padding */
+                max-width: 100%; /* Ocupa toda a largura disponível */
+                margin: 0 auto; /* Centraliza o bloco */
+            }
+
+            #hero h2 {
+                font-size: clamp(2.5rem, 10vw, 3.5rem); /* Ajusta tamanho do título */
+                line-height: 1.2;
+            }
+
+            #hero p {
+                font-size: clamp(1rem, 4.5vw, 1.25rem); /* Ajusta tamanho do parágrafo */
+            }
+
+            #hero-button {
+                padding: 1rem 2.5rem; /* Ajusta padding do botão */
+                font-size: clamp(1rem, 4vw, 1.125rem);
+                width: fit-content; /* Ajusta a largura ao conteúdo */
+                margin: 2rem auto 0 auto; /* Centraliza o botão */
+            }
+
+            #hero .relative.min-h-\[400px\].md\:min-h-\[450px\] {
+                 min-height: auto; /* Remove altura fixa para melhor fluidez */
+            }
+
+            /* Grid layout for sections */
+            #sobre .grid,
+            #equipe .grid,
+            #valores .grid {
+                grid-template-columns: 1fr; /* Stack columns */
+                gap: 2rem; /* Aumenta o espaçamento entre as seções */
+            }
+
+            /* Cards e Imagens */
+            .team-item, .value-item, .milestone-item {
+                padding: 1.5rem;
+                text-align: center; /* Centraliza o texto nos cards */
+            }
+
+            .team-img {
+                width: 100px;
+                height: 100px;
+            }
+
+            .office-img {
+                height: 250px; /* Altura fixa para a imagem do escritório em mobile */
+                width: 100%;
+                object-fit: cover;
+                object-position: center center; /* Centraliza a imagem */
+            }
+
+            /* Linha do Tempo (Timeline) */
+            #timeline .milestone-item {
+                padding-left: 30px; /* Reduz o padding para a linha */
+                margin-left: 20px; /* Move os itens mais para a direita para deixar espaço para a linha */
+            }
+
+            #timeline .milestone-item::before {
+                left: 0; /* Posição do círculo mais à esquerda */
+            }
+
+            #timeline .milestone-item::after {
+                left: 5px; /* Posição da linha vertical mais à esquerda */
+            }
+
+            /* General section padding */
+            section {
+                padding: 3rem 1rem; /* Ajusta padding geral das seções */
+            }
+
+            h2 {
+                font-size: clamp(2rem, 8vw, 2.5rem); /* Ajusta tamanho dos títulos das seções */
+            }
+
+            h3 {
+                font-size: clamp(1.5rem, 6vw, 1.75rem);
+            }
+
+            p {
+                font-size: clamp(0.9rem, 3.8vw, 1.1rem); /* Ajusta tamanho dos parágrafos */
+            }
+
+            .value-icon {
+                width: 40px;
+                height: 40px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            /* Further small adjustments for very small screens */
+            .brand-name {
+                font-size: clamp(1.5rem, 7vw, 1.75rem);
+            }
+
+            #hero h2 {
+                font-size: clamp(2rem, 9vw, 3rem);
+            }
+
+            #hero p {
+                font-size: clamp(0.85rem, 4vw, 1.1rem);
+            }
+
+            #hero-button {
+                padding: 0.8rem 2rem;
+                font-size: clamp(0.9rem, 3.5vw, 1rem);
+            }
+
+            .team-img {
+                width: 80px;
+                height: 80px;
+            }
+
+            .value-icon {
+                width: 36px;
+                height: 36px;
+            }
+
+            h2 {
+                font-size: clamp(1.8rem, 7vw, 2.25rem);
+            }
+
+            h3 {
+                font-size: clamp(1.3rem, 5.5vw, 1.6rem);
+            }
+        }
     </style>
 </head>
 <body class="text-gray-100">
-    <!-- Stars Background -->
     <div class="stars-container" id="stars-container"></div>
 
-    <!-- SVG Gradient for Icons -->
     <svg width="0" height="0">
         <defs>
             <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -362,134 +597,141 @@
         </defs>
     </svg>
 
-    <!-- Navbar -->
     <nav class="shadow-lg fixed w-full z-10">
-        <div class="flex justify-between h-16">
+        <div class="flex justify-between h-16 items-center">
             <div class="flex items-center content-layer">
                 <h1 class="text-4xl brand-name gradient-text">Good Vibes</h1>
             </div>
-            <div class="flex items-center space-x-6 content-layer">
+            <button class="hamburger" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="flex items-center space-x-6 content-layer desktop-nav">
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/index.html" class="nav-link text-lg transition">Início</a>
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/servi%C3%A7os.html" class="nav-link text-lg transition">Serviços</a>
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/sobre.html" class="nav-link text-lg transition">Sobre</a>
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/portf%C3%B3lio.html" class="nav-link text-lg transition">Portfólio</a>
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/contato.html" class="nav-link text-lg transition">Contato</a>
             </div>
+            <div class="nav-menu-mobile content-layer">
+                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/index.html" class="nav-link text-lg transition block">Início</a>
+                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/servi%C3%A7os.html" class="nav-link text-lg transition block">Serviços</a>
+                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/sobre.html" class="nav-link text-lg transition block">Sobre</a>
+                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/portf%C3%B3lio.html" class="nav-link text-lg transition block">Portfólio</a>
+                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/contato.html" class="nav-link text-lg transition block">Contato</a>
+            </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section id="hero" class="relative min-h-screen flex items-center gradient-bg section-animate">
-        <div class="content-layer absolute left-0 top-1/2 transform -translate-y-1/2 max-w-2xl pl-4 sm:pl-6 lg:pl-8 overflow-visible">
-            <div class="relative min-h-[400px] md:min-h-[450px]">
-                <h2 id="hero-title" class="text-5xl md:text-6xl font-bold animated-gradient-text leading-tight md:leading-snug pb-2" style="opacity: 1">Conheça a Good Vibes</h2>
-                <p id="hero-description" class="mt-4 text-xl md:text-2xl animated-gradient-text" style="opacity: 1">Somos uma equipe apaixonada por transformar ideias em realidade.</p>
-                <a href="#sobre" id="hero-button" class="saiba-mais mt-8 inline-block bg-indigo-500 text-white font-semibold py-4 px-10 rounded-full transition text-lg" style="opacity: 1">Saiba Mais</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Sobre a Empresa -->
-    <section id="sobre" class="py-20 section-bg section-animate">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 content-layer">
-            <h2 class="text-4xl font-bold text-center gradient-text mb-12 fade-in">Nossa História</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-                <div class="fade-in" style="animation-delay: 0.2s;">
-                    <h3 class="text-2xl font-semibold gradient-text mb-4">Nossa Jornada</h3>
-                    <p class="text-gray-300">
-                        Fundada em 2022, a Good Vibes nasceu de um sonho: transformar ideias em experiências digitais impactantes. Começamos como uma pequena agência em São Paulo, com apenas dois membros, e hoje somos uma equipe crescente, trabalhando para clientes nacionais e internacionais.
-                    </p>
-                    <p class="text-gray-300 mt-4">
-                        Nossa missão é simples: criar soluções criativas que conectem marcas aos seus públicos de forma autêntica. Com uma abordagem centrada no cliente, combinamos design, tecnologia e estratégia para entregar resultados que vão além das expectativas.
-                    </p>
-                </div>
-                <div class="fade-in" style="animation-delay: 0.4s;">
-                    <h3 class="text-2xl font-semibold gradient-text mb-4">Missão, Visão e Valores</h3>
-                    <p class="text-gray-300">
-                        <strong>Missão:</strong> Inspirar e transformar marcas por meio de soluções digitais inovadoras e criativas.<br>
-                        <strong>Visão:</strong> Ser referência global em experiências digitais até 2030.<br>
-                        <strong>Valores:</strong> Criatividade, colaboração, inovação, transparência e impacto.
-                    </p>
-                    <img src="https://i.postimg.cc/x155Pxvc/1745870579667.jpg" alt="Escritório" class="mt-6 w-full h-64 object-cover rounded-xl service-item office-img">
+    <main>
+        <section id="hero" class="relative min-h-screen flex items-center gradient-bg section-animate">
+            <div class="content-layer absolute left-0 top-1/2 transform -translate-y-1/2 max-w-2xl pl-4 sm:pl-6 lg:pl-8 overflow-visible">
+                <div class="relative min-h-[400px] md:min-h-[450px]">
+                    <h2 id="hero-title" class="text-5xl md:text-6xl font-bold animated-gradient-text leading-tight md:leading-snug pb-2" style="opacity: 1">Conheça a Good Vibes</h2>
+                    <p id="hero-description" class="mt-4 text-xl md:text-2xl animated-gradient-text" style="opacity: 1">Somos uma equipe apaixonada por transformar ideias em realidade.</p>
+                    <a href="#sobre" id="hero-button" class="saiba-mais mt-8 inline-block bg-indigo-500 text-white font-semibold py-4 px-10 rounded-full transition text-lg" style="opacity: 1">Saiba Mais</a>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Nossa Equipe -->
-    <section id="equipe" class="py-20 section-bg section-animate">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 content-layer">
-            <h2 class="text-4xl font-bold text-center gradient-text mb-12 fade-in">Líderes de Equipe</h2>
-            <p class="text-xl text-gray-300 max-w-3xl mx-auto mb-12 text-center fade-in" style="animation-delay: 0.2s;">
-                Conheça os talentos por trás da Good Vibes, uma equipe pequena, mas apaixonada por criar experiências únicas.
-            </p>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                <div class="team-item p-4 rounded-xl transition fade-in text-center" style="animation-delay: 0.4s;">
-                    <img src="https://i.postimg.cc/Cx5Szhw7/Profile.png" alt="Marjorie" class="team-img w-32 h-32 rounded-full mx-auto mb-3 object-cover">
-                    <h4 class="text-xl font-semibold gradient-text mb-1">Marjorie Rosario</h4>
-                    <p class="text-gray-300 mb-1">Diretora Criativa</p>
-                    <p class="text-gray-400 text-base">Especialista em design e branding, com 5 anos de experiência.</p>
-                </div>
-                <div class="team-item p-4 rounded-xl transition fade-in text-center" style="animation-delay: 0.6s;">
-                    <img src="https://i.postimg.cc/Z59ShSJZ/1745866071288.jpg" alt="Mateus" class="team-img w-32 h-32 rounded-full mx-auto mb-3 object-cover">
-                    <h4 class="text-xl font-semibold gradient-text mb-1">Mateus Sena</h4>
-                    <p class="text-gray-300 mb-1">Desenvolvedor Web</p>
-                    <p class="text-gray-400 text-base">Apaixonado por criar sites rápidos e responsivos.</p>
+        <section id="sobre" class="py-20 section-bg section-animate">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 content-layer">
+                <h2 class="text-4xl font-bold text-center gradient-text mb-12 fade-in">Nossa História</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                    <div class="fade-in" style="animation-delay: 0.2s;">
+                        <h3 class="text-2xl font-semibold gradient-text mb-4">Nossa Jornada</h3>
+                        <p class="text-gray-300">
+                            Fundada em 2022, a Good Vibes nasceu de um sonho: transformar ideias em experiências digitais impactantes. Começamos como uma pequena agência em São Paulo, com apenas dois membros, e hoje somos uma equipe crescente, trabalhando para clientes nacionais e internacionais.
+                        </p>
+                        <p class="text-gray-300 mt-4">
+                            Nossa missão é simples: criar soluções criativas que conectem marcas aos seus públicos de forma autêntica. Com uma abordagem centrada no cliente, combinamos design, tecnologia e estratégia para entregar resultados que vão além das expectativas.
+                        </p>
+                    </div>
+                    <div class="fade-in" style="animation-delay: 0.4s;">
+                        <h3 class="text-2xl font-semibold gradient-text mb-4">Missão, Visão e Valores</h3>
+                        <p class="text-gray-300">
+                            <strong>Missão:</strong> Inspirar e transformar marcas por meio de soluções digitais inovadoras e criativas.<br>
+                            <strong>Visão:</strong> Ser referência global em experiências digitais até 2030.<br>
+                            <strong>Valores:</strong> Criatividade, colaboração, inovação, transparência e impacto.
+                        </p>
+                        <img src="https://i.postimg.cc/x155Pxvc/1745870579667.jpg" alt="Escritório" class="mt-6 w-full h-64 object-cover rounded-xl service-item office-img">
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Linha do Tempo -->
-    <section id="timeline" class="py-20 section-bg section-animate">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 content-layer">
-            <h2 class="text-4xl font-bold text-center gradient-text mb-12 fade-in">Nossa Jornada</h2>
-            <div class="relative max-w-3xl mx-auto">
-                <div class="milestone-item p-6 rounded-xl transition fade-in relative" style="animation-delay: 0.2s;">
-                    <h4 class="text-xl font-semibold gradient-text mb-2">2022 - Início da Good Vibes</h4>
-                    <p class="text-gray-300">Fundada em São Paulo por duas mentes apaixonadas por design e tecnologia, a Good Vibes nasceu para transformar ideias em realidade.</p>
-                </div>
-                <div class="milestone-item p-6 rounded-xl transition fade-in relative mt-8" style="animation-delay: 0.4s;">
-                    <h4 class="text-xl font-semibold gradient-text mb-2">2023 - Primeiro Cliente Global</h4>
-                    <p class="text-gray-300">Conquistamos nosso primeiro cliente internacional, uma renomada marca de moda europeia, marcando nossa entrada no cenário global.</p>
-                </div>
-                <div class="milestone-item p-6 rounded-xl transition fade-in relative mt-8" style="animation-delay: 0.6s;">
-                    <h4 class="text-xl font-semibold gradient-text mb-2">2024 - Uma Nova Visão</h4>
-                    <p class="text-gray-300">Novas mentes brilhantes em estratégias digitais, juntando-se à equipe, fortalecendo nossa missão de criar experiências impactantes.</p>
-                </div>
-                <div class="milestone-item p-6 rounded-xl transition fade-in relative mt-8" style="animation-delay: 0.8s;">
-                    <h4 class="text-xl font-semibold gradient-text mb-2">2025 - Expansão Global</h4>
-                    <p class="text-gray-300">Estamos lançando novos projetos, consolidando nossa visão de conectar marcas e públicos ao redor do mundo.</p>
+        <section id="equipe" class="py-20 section-bg section-animate">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 content-layer">
+                <h2 class="text-4xl font-bold text-center gradient-text mb-12 fade-in">Líderes de Equipe</h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto mb-12 text-center fade-in" style="animation-delay: 0.2s;">
+                    Conheça os talentos por trás da Good Vibes, uma equipe pequena, mas apaixonada por criar experiências únicas.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                    <div class="team-item p-4 rounded-xl transition fade-in text-center" style="animation-delay: 0.4s;">
+                        <img src="https://i.postimg.cc/Cx5Szhw7/Profile.png" alt="Marjorie" class="team-img w-32 h-32 rounded-full mx-auto mb-3 object-cover">
+                        <h4 class="text-xl font-semibold gradient-text mb-1">Marjorie Rosario</h4>
+                        <p class="text-gray-300 mb-1">Diretora Criativa</p>
+                        <p class="text-gray-400 text-base">Especialista em design e branding, com 5 anos de experiência.</p>
+                    </div>
+                    <div class="team-item p-4 rounded-xl transition fade-in text-center" style="animation-delay: 0.6s;">
+                        <img src="https://i.postimg.cc/Z59ShSJZ/1745866071288.jpg" alt="Mateus" class="team-img w-32 h-32 rounded-full mx-auto mb-3 object-cover">
+                        <h4 class="text-xl font-semibold gradient-text mb-1">Mateus Sena</h4>
+                        <p class="text-gray-300 mb-1">Desenvolvedor Web</p>
+                        <p class="text-gray-400 text-base">Apaixonado por criar sites rápidos e responsivos.</p>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Nossos Valores -->
-    <section id="valores" class="py-20 section-bg section-animate">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 content-layer">
-            <h2 class="text-4xl font-bold text-center gradient-text mb-12 fade-in">Nossos Valores</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="value-item p-6 rounded-xl transition fade-in text-center" style="animation-delay: 0.2s;">
-                    <img src="https://i.postimg.cc/QtYtpnJg/pngwing-com.png" alt="Criatividade" class="value-icon mx-auto mb-4">
-                    <h3 class="text-2xl font-semibold gradient-text mb-4">Criatividade</h3>
-                    <p class="text-gray-300">Transformamos ideias em soluções únicas que surpreendem e engajam.</p>
-                </div>
-                <div class="value-item p-6 rounded-xl transition fade-in text-center" style="animation-delay: 0.4s;">
-                    <img src="https://i.postimg.cc/wB7T9kp7/pngwing-com-2.png" alt="Colaboração" class="value-icon mx-auto mb-4">
-                    <h3 class="text-2xl font-semibold gradient-text mb-4">Colaboração</h3>
-                    <p class="text-gray-300">Trabalhamos juntos, unindo talentos para alcançar resultados incríveis.</p>
-                </div>
-                <div class="value-item p-6 rounded-xl transition fade-in text-center" style="animation-delay: 0.6s;">
-                    <img src="https://i.postimg.cc/4x3X11nB/pngwing-com-1.png" alt="Inovação" class="value-icon mx-auto mb-4">
-                    <h3 class="text-2xl font-semibold gradient-text mb-4">Inovação</h3>
-                    <p class="text-gray-300">Buscamos sempre o novo, trazendo tecnologia e tendências ao seu projeto.</p>
+        <section id="timeline" class="py-20 section-bg section-animate">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 content-layer">
+                <h2 class="text-4xl font-bold text-center gradient-text mb-12 fade-in">Nossa Jornada</h2>
+                <div class="relative max-w-3xl mx-auto">
+                    <div class="milestone-item p-6 rounded-xl transition fade-in relative" style="animation-delay: 0.2s;">
+                        <h4 class="text-xl font-semibold gradient-text mb-2">2022 - Início da Good Vibes</h4>
+                        <p class="text-gray-300">Fundada em São Paulo por duas mentes apaixonadas por design e tecnologia, a Good Vibes nasceu para transformar ideias em realidade.</p>
+                    </div>
+                    <div class="milestone-item p-6 rounded-xl transition fade-in relative mt-8" style="animation-delay: 0.4s;">
+                        <h4 class="text-xl font-semibold gradient-text mb-2">2023 - Primeiro Cliente Global</h4>
+                        <p class="text-gray-300">Conquistamos nosso primeiro cliente internacional, uma renomada marca de moda europeia, marcando nossa entrada no cenário global.</p>
+                    </div>
+                    <div class="milestone-item p-6 rounded-xl transition fade-in relative mt-8" style="animation-delay: 0.6s;">
+                        <h4 class="text-xl font-semibold gradient-text mb-2">2024 - Uma Nova Visão</h4>
+                        <p class="text-gray-300">Novas mentes brilhantes em estratégias digitais, juntando-se à equipe, fortalecendo nossa missão de criar experiências impactantes.</p>
+                    </div>
+                    <div class="milestone-item p-6 rounded-xl transition fade-in relative mt-8" style="animation-delay: 0.8s;">
+                        <h4 class="text-xl font-semibold gradient-text mb-2">2025 - Expansão Global</h4>
+                        <p class="text-gray-300">Estamos lançando novos projetos, consolidando nossa visão de conectar marcas e públicos ao redor do mundo.</p>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Footer -->
+        <section id="valores" class="py-20 section-bg section-animate">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 content-layer">
+                <h2 class="text-4xl font-bold text-center gradient-text mb-12 fade-in">Nossos Valores</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="value-item p-6 rounded-xl transition fade-in text-center" style="animation-delay: 0.2s;">
+                        <img src="https://i.postimg.cc/QtYtpnJg/pngwing-com.png" alt="Criatividade" class="value-icon mx-auto mb-4">
+                        <h3 class="text-2xl font-semibold gradient-text mb-4">Criatividade</h3>
+                        <p class="text-gray-300">Transformamos ideias em soluções únicas que surpreendem e engajam.</p>
+                    </div>
+                    <div class="value-item p-6 rounded-xl transition fade-in text-center" style="animation-delay: 0.4s;">
+                        <img src="https://i.postimg.cc/wB7T9kp7/pngwing-com-2.png" alt="Colaboração" class="value-icon mx-auto mb-4">
+                        <h3 class="text-2xl font-semibold gradient-text mb-4">Colaboração</h3>
+                        <p class="text-gray-300">Trabalhamos juntos, unindo talentos para alcançar resultados incríveis.</p>
+                    </div>
+                    <div class="value-item p-6 rounded-xl transition fade-in text-center" style="animation-delay: 0.6s;">
+                        <img src="https://i.postimg.cc/4x3X11nB/pngwing-com-1.png" alt="Inovação" class="value-icon mx-auto mb-4">
+                        <h3 class="text-2xl font-semibold gradient-text mb-4">Inovação</h3>
+                        <p class="text-gray-300">Buscamos sempre o novo, trazendo tecnologia e tendências ao seu projeto.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
     <footer class="section-bg text-gray-200 py-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center content-layer">
             <p>© 2025 Good Vibes. Todos os direitos reservados.</p>
@@ -504,7 +746,38 @@
                 document.querySelector(this.getAttribute('href')).scrollIntoView({
                     behavior: 'smooth'
                 });
+                // Fecha o menu hambúrguer ao clicar em um link, apenas em telas menores
+                if (window.innerWidth <= 768) {
+                    toggleMenu();
+                }
             });
+        });
+
+        // Hamburger menu functionality
+        const hamburger = document.querySelector('.hamburger');
+        const mobileNavMenu = document.querySelector('.nav-menu-mobile');
+        //const desktopNavMenu = document.querySelector('.desktop-nav'); // Não é necessário aqui
+
+        function toggleMenu() {
+            hamburger.classList.toggle('active');
+            mobileNavMenu.classList.toggle('active');
+            document.body.style.overflowY = mobileNavMenu.classList.contains('active') ? 'hidden' : 'auto';
+        }
+
+        hamburger.addEventListener('click', toggleMenu);
+
+        // Hide mobile menu on resize if it becomes desktop view
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768 && mobileNavMenu.classList.contains('active')) {
+                toggleMenu();
+            }
+        });
+
+        // Close mobile menu if clicked outside
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth <= 768 && !hamburger.contains(e.target) && !mobileNavMenu.contains(e.target) && mobileNavMenu.classList.contains('active')) {
+                toggleMenu();
+            }
         });
 
         // Fade-in animation on scroll
@@ -530,25 +803,36 @@
         }, { threshold: 0.2 });
         document.querySelectorAll('.section-animate').forEach(section => sectionObserver.observe(section));
 
-        // Stars background initialization
+        // Stars background initialization (Corrigido para não usar document.body.scrollHeight)
         const starsContainer = document.getElementById('stars-container');
         const colors = ['purple', 'pink', 'white'];
         const numStars = 150;
-        const documentHeight = document.body.scrollHeight;
 
-        for (let i = 0; i < numStars; i++) {
-            const star = document.createElement('span');
-            star.classList.add('star');
-            star.classList.add(colors[Math.floor(Math.random() * colors.length)]);
-            star.style.left = `${Math.random() * 100}vw`;
-            star.style.top = `${Math.random() * documentHeight}px`;
-            const moveX = (Math.random() - 0.5) * 300;
-            const moveY = (Math.random() - 0.5) * 300;
-            star.style.setProperty('--move-x', `${moveX}px`);
-            star.style.setProperty('--move-y', `${moveY}px`);
-            star.style.animationDelay = `${Math.random() * 15}s`;
-            starsContainer.appendChild(star);
+        function createStars() {
+            // Limpa estrelas existentes para recriar se a janela for redimensionada
+            starsContainer.innerHTML = '';
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+
+            for (let i = 0; i < numStars; i++) {
+                const star = document.createElement('span');
+                star.classList.add('star');
+                star.classList.add(colors[Math.floor(Math.random() * colors.length)]);
+                star.style.left = `${Math.random() * 100}vw`;
+                star.style.top = `${Math.random() * 100}vh`; /* Usar vh para ficar visível na viewport */
+                const moveX = (Math.random() - 0.5) * 300;
+                const moveY = (Math.random() - 0.5) * 300;
+                star.style.setProperty('--move-x', `${moveX}px`);
+                star.style.setProperty('--move-y', `${moveY}px`);
+                star.style.animationDelay = `${Math.random() * 15}s`;
+                starsContainer.appendChild(star);
+            }
         }
+
+        // Cria estrelas no carregamento e ao redimensionar (para ajustar a distribuição)
+        createStars();
+        window.addEventListener('resize', createStars);
+
 
         // Hero text and button rotation
         const heroTexts = [
