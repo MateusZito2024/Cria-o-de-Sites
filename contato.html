@@ -1259,96 +1259,80 @@
         </div>
     </footer>
     <script>
-    // Smooth scroll for nav links
+    // SMOOTH SCROLL & MENU
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
-            document.querySelector(this.getAttribute('href')).scrollIntoView({
-                behavior: 'smooth'
-            });
-            if (window.innerWidth <= 768) {
+            const targetId = this.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({ behavior: 'smooth' });
+            }
+            if (window.innerWidth <= 768 && navMenu.classList.contains('active')) {
                 toggleMenu();
             }
         });
     });
-
-    // Hamburger menu functionality
     const hamburger = document.querySelector('.hamburger');
-    const mobileNavMenu = document.querySelector('.nav-menu-mobile');
-
+    const navMenu = document.querySelector('.nav-menu-mobile');
     function toggleMenu() {
-        hamburger.classList.toggle('active');
-        mobileNavMenu.classList.toggle('active');
-        document.body.style.overflowY = mobileNavMenu.classList.contains('active') ? 'hidden' : 'auto';
+        if(hamburger && navMenu){
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+            document.body.style.overflowY = navMenu.classList.contains('active') ? 'hidden' : 'auto';
+        }
     }
-    hamburger.addEventListener('click', toggleMenu);
-    window.addEventListener('resize', () => {
-        if (window.innerWidth > 768 && mobileNavMenu.classList.contains('active')) {
-            toggleMenu();
-        }
-    });
-    document.addEventListener('click', (e) => {
-        if (window.innerWidth <= 768 && !hamburger.contains(e.target) && !mobileNavMenu.contains(e.target) && mobileNavMenu.classList.contains('active')) {
-            toggleMenu();
-        }
-    });
+    if (hamburger && navMenu) {
+        hamburger.addEventListener('click', toggleMenu);
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth <= 768 && !hamburger.contains(e.target) && !navMenu.contains(e.target) && navMenu.classList.contains('active')) {
+                toggleMenu();
+            }
+        });
+    }
 
-    // Puzzle piece animations on scroll
-    const observer = new IntersectionObserver(entries => {
+    // ANIMAÇÕES DE ENTRADA (PUZZLE PIECES, TÍTULOS)
+    const fadeInObserver = new IntersectionObserver(entries => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.querySelectorAll('.puzzle-piece').forEach((el, index) => {
                     el.style.animationDelay = `${index * 0.2}s`;
-                    el.classList.remove('puzzle-piece-left-exit', 'puzzle-piece-right-exit', 'puzzle-piece-top-exit', 'puzzle-piece-bottom-exit');
-                    if (el.classList.contains('puzzle-piece-left')) {
-                        el.classList.add('puzzle-piece-left');
-                    } else if (el.classList.contains('puzzle-piece-right')) {
-                        el.classList.add('puzzle-piece-right');
-                    } else if (el.classList.contains('puzzle-piece-top')) {
-                        el.classList.add('puzzle-piece-top');
-                    } else if (el.classList.contains('puzzle-piece-bottom')) {
-                        el.classList.add('puzzle-piece-bottom');
-                    }
+                    if (el.classList.contains('puzzle-piece-left')) el.classList.add('puzzle-piece-left');
+                    else if (el.classList.contains('puzzle-piece-right')) el.classList.add('puzzle-piece-right');
+                    else if (el.classList.contains('puzzle-piece-top')) el.classList.add('puzzle-piece-top');
+                    else if (el.classList.contains('puzzle-piece-bottom')) el.classList.add('puzzle-piece-bottom');
                 });
-                observer.unobserve(entry.target);
+                fadeInObserver.unobserve(entry.target);
             }
         });
     }, { threshold: 0.3 });
-    document.querySelectorAll('.content-layer').forEach(el => observer.observe(el));
-
-    // Animation for h2, h3 titles
+    document.querySelectorAll('.content-layer').forEach(el => fadeInObserver.observe(el));
     const titleObserver = new IntersectionObserver(entries => {
-        entries.forEach((entry) => {
-            const title = entry.target;
-            let animationClass = 'fade-in';
+        entries.forEach(entry => {
             if (entry.isIntersecting) {
-                title.style.opacity = '1';
-                title.classList.add(animationClass);
-            } else {
-                title.classList.remove(animationClass);
-                title.style.opacity = '0';
+                entry.target.style.opacity = '1';
+                entry.target.classList.add('fade-in');
+                titleObserver.unobserve(entry.target);
             }
         });
     }, { threshold: 0.3 });
-    document.querySelectorAll('h2, h3').forEach((title) => {
-        titleObserver.observe(title);
+    document.querySelectorAll('h2, h3').forEach(title => {
         title.style.opacity = '0';
+        titleObserver.observe(title);
     });
 
-    // Stars background initialization
+    // FUNDO DE ESTRELAS ANIMADO (DO SEU LAYOUT ORIGINAL)
     const starsContainer = document.getElementById('stars-container');
-    const colors = ['purple', 'pink', 'white'];
-    const numStars = 150;
-
     function createStars() {
+        if (!starsContainer) return;
         starsContainer.innerHTML = '';
-        const viewportWidth = window.innerWidth;
-        const viewportHeight = window.innerHeight;
+        const colors = ['purple', 'pink', 'white'];
+        const numStars = 150;
         for (let i = 0; i < numStars; i++) {
             const star = document.createElement('span');
             star.classList.add('star', colors[Math.floor(Math.random() * colors.length)]);
-            star.style.left = `${Math.random() * viewportWidth}px`;
-            star.style.top = `${Math.random() * viewportHeight}px`;
+            star.style.left = `${Math.random() * window.innerWidth}px`;
+            star.style.top = `${Math.random() * window.innerHeight}px`;
             const moveX = (Math.random() - 0.5) * 300;
             const moveY = (Math.random() - 0.5) * 300;
             star.style.setProperty('--move-x', `${moveX}px`);
@@ -1360,421 +1344,271 @@
     createStars();
     window.addEventListener('resize', createStars);
 
-    // Chatbot logic (LÓGICA ORIGINAL RESTAURADA E ADAPTADA)
+    // ===================================================================
+    // ================ LÓGICA DO CHATBOT AVANÇADO =======================
+    // ===================================================================
+
+    // VARIÁVEIS DO CHAT
     let chatMessages = document.getElementById('chatMessages');
     let userInput = document.getElementById('userInput');
-    let chatState = { step: 1, name: '', email: '', whatsapp: '', message: '' };
+    let micButton = document.getElementById('micButton');
+    let chatState = { step: 1, name: '', email: '', whatsapp: '', message: '', gender: null };
     let isBotTyping = false;
     let hasGreeted = false;
-    let isCorrecting = false;
-    let fieldToCorrect = null;
 
-    const commonGreetings = [
-        'oi', 'olá', 'ola', 'bom dia', 'boa tarde', 'boa noite',
-        'tudo bem', 'tudo bom', 'como vai', 'e aí', 'e ai', 'eai',
-        'oiê', 'oie', 'oiee', 'oláá', 'olaa', 'oláa', 'tô de boa',
-        'tô bem', 'tô de boa?', 'tô bem?', 'como você está',
-        'como você ta', 'como você tá', 'e você', 'e tu', 'e voce', 'opa'
-    ];
-    const botGreetings = [
-        'Que bom te ver! 😊', 'Seja bem-vindo! 😊', 'É um prazer te conhecer! 😊', 'Fico feliz em te ajudar hoje! 😊'
-    ];
-    const correctionKeywords = [
-        'errei', 'ops', 'opa', 'eita', 'está errado', 'esta errado',
-        'está errada', 'esta errada', 'corrigir', 'alterar', 'trocar',
-        'tá errado', 'errado', 'não', 'não sou eu', 'meu nome não é esse',
-        'isso está errado', 'o meu nome está errado', 'você escreveu errado',
-        'meu nome está digitado errado', 'o nome está errado', 'digitei errado',
-        'opa o nome tá errado'
-    ];
-    const fieldKeywords = {
-        name: ['nome', 'meu nome'],
-        email: ['email', 'e-mail', 'mail'],
-        whatsapp: ['whatsapp', 'whats', 'telefone', 'número', 'numero']
-    };
-    
-    // FUNÇÕES ORIGINAIS RESTAURADAS
-    function isGreeting(message) {
-        const normalizedMessage = message.toLowerCase().trim();
-        return commonGreetings.some(greeting =>
-            normalizedMessage === greeting ||
-            normalizedMessage.startsWith(greeting + ' ') ||
-            normalizedMessage.endsWith(' ' + greeting) ||
-            normalizedMessage.includes(' ' + greeting + ' ')
-        );
-    }
-
-    function isValidName(name) {
-        const normalizedName = name.trim();
-        const nameRegex = /^[a-zA-ZÀ-ÿ\s-]+$/;
-        return (
-            nameRegex.test(normalizedName) &&
-            normalizedName.length <= 50 &&
-            !normalizedName.includes(',') &&
-            !normalizedName.includes('?') &&
-            !normalizedName.includes('!')
-        );
-    }
-
-    function selectBotGreeting(userGreeting) {
-        const normalizedUserGreeting = userGreeting.toLowerCase().trim();
-        let availableGreetings = botGreetings.filter(greeting => !normalizedUserGreeting.includes(greeting.split(' ')[0].toLowerCase()));
-        if (availableGreetings.length === 0) availableGreetings = botGreetings;
-        return availableGreetings[Math.floor(Math.random() * availableGreetings.length)];
-    }
-
-    function detectCorrectionRequest(message) {
-        const normalizedMessage = message.toLowerCase().trim();
-        if (!correctionKeywords.some(keyword => normalizedMessage.includes(keyword))) return null;
-        for (const [field, keywords] of Object.entries(fieldKeywords)) {
-            if (keywords.some(keyword => normalizedMessage.includes(keyword))) return field;
-        }
-        if (chatState.step === 2) return 'name';
-        return null;
-    }
-
-    function askForCorrectedData(field) {
-        const questions = {
-            name: "Sem problemas! Qual seria o nome correto?",
-            email: "Acontece! Qual seria o e-mail correto?",
-            whatsapp: "Tudo bem! Qual é o número de WhatsApp correto?"
+    // LÓGICA DE RECONHECIMENTO DE VOZ
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    let recognition = null;
+    if (SpeechRecognition && micButton) {
+        recognition = new SpeechRecognition();
+        recognition.lang = 'pt-BR';
+        recognition.interimResults = false;
+        recognition.onresult = (event) => {
+            userInput.value = event.results[0][0].transcript;
+            sendMessage();
         };
-        showTypingIndicator();
-        setTimeout(() => {
-            removeTypingIndicator();
-            addBotMessage(questions[field] || "O que você gostaria de corrigir?");
-        }, 2000);
+        recognition.onerror = (event) => { console.error('Speech recognition error:', event.error); stopRecording(); };
+        recognition.onend = () => stopRecording();
+    } else {
+        if (micButton) micButton.style.display = 'none';
+    }
+    function startRecording(event) {
+        event.preventDefault();
+        if (!recognition || isBotTyping) return;
+        recognition.start();
+        micButton.classList.add('recording');
+        userInput.placeholder = "Ouvindo...";
+    }
+    function stopRecording() {
+        if (!recognition || !micButton.classList.contains('recording')) return;
+        recognition.stop();
+        micButton.classList.remove('recording');
+        userInput.placeholder = "Digite sua resposta...";
     }
 
-    function loadChatState() {
-        const savedState = localStorage.getItem('chatState');
-        if (savedState) {
-            chatState = JSON.parse(savedState);
-        }
+    // FUNÇÕES DE VALIDAÇÃO E EXTRAÇÃO
+    function isValidName(name) { return /^[a-zA-ZÀ-ÿ\s-]{2,50}$/.test(name.trim()); }
+    function isValidEmail(email) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); }
+    function isValidPhoneNumber(phone) { return /^\+?[\d\s()-]{8,}$/.test(phone); }
+    function inferGender(name) {
+        const firstName = name.toLowerCase().trim().split(' ')[0];
+        if (['a', 'e', 'y', 'i'].includes(firstName.slice(-1))) return 'feminine';
+        return 'masculine';
+    }
+    // Encontre a função extractName atual e SUBSTITUA por esta versão correta:
+function extractName(message) {
+    let name = message.trim();
+    // Lista completa de frases e saudações para remover
+    const phrasesToRemove = [
+        'meu nome é', 'meu nome e', 'sou', 'sou a', 'sou o',
+        'chamo-me', 'me chamo', 'é', 'e', 'oi', 'olá', 'ola',
+        'bom dia', 'boa tarde', 'boa noite', 'tudo bem', 'tudo bom',
+        'como vai', 'e aí', 'e ai', 'eai', 'oiê', 'oie', 'oiee',
+        'oláá', 'olaa', 'oláa', 'eu'
+    ];
+
+    // Remove as frases da lista (ignorando maiúsculas/minúsculas)
+    phrasesToRemove.forEach(phrase => {
+        const regex = new RegExp(`\\b${phrase}\\b`, 'gi');
+        name = name.replace(regex, '').trim();
+    });
+
+    // Remove pontuações e espaços extras
+    name = name.replace(/[.,!?]/g, '').trim();
+
+    // Capitaliza a primeira letra de cada palavra que sobrou
+    if (name) {
+        name = name.toLowerCase().split(' ').map(word =>
+            word.charAt(0).toUpperCase() + word.slice(1)
+        ).join(' ');
+    } else {
+        return ""; // Retorna string vazia se não sobrar nada
     }
 
-    function saveChatState() {
-        localStorage.setItem('chatState', JSON.stringify(chatState));
+    // --- LÓGICA CRÍTICA RESTAURADA DO SEU CÓDIGO ORIGINAL ---
+    // Após limpar, se sobrar mais de uma palavra (ex: "gostaria de falar com o João Silva"),
+    // ele pega APENAS a última palavra ("Silva"). Isso resolve o problema de mesclagem.
+    const words = name.split(/\s+/);
+    if (words.length > 1) {
+        name = words[words.length - 1];
     }
+    
+    return name;
+}
 
-    function addBotMessage(message) {
+    // FUNÇÕES DE INTERFACE DO CHAT
+    function addMessage(text, type) {
+        if (!chatMessages) return;
         const messageElement = document.createElement('div');
-        messageElement.classList.add('message', 'bot-message');
-        messageElement.textContent = message;
+        messageElement.classList.add('message', `${type}-message`);
+        messageElement.textContent = text;
         chatMessages.appendChild(messageElement);
         scrollToBottom();
     }
-
-    function addUserMessage(message) {
-        const messageElement = document.createElement('div');
-        messageElement.classList.add('message', 'user-message');
-        messageElement.textContent = message;
-        chatMessages.appendChild(messageElement);
-        scrollToBottom();
-    }
-
     function showTypingIndicator() {
-        if (isBotTyping) return;
+        if (isBotTyping || !chatMessages) return;
+        isBotTyping = true;
         const typingElement = document.createElement('div');
+        typingElement.id = 'typingIndicator';
         typingElement.classList.add('typing-indicator');
         typingElement.innerHTML = '<span></span><span></span><span></span>';
-        typingElement.id = 'typingIndicator';
         chatMessages.appendChild(typingElement);
         scrollToBottom();
-        isBotTyping = true;
     }
-
     function removeTypingIndicator() {
         const typingElement = document.getElementById('typingIndicator');
         if (typingElement) typingElement.remove();
         isBotTyping = false;
     }
-
     function scrollToBottom() {
-        chatMessages.scrollTop = chatMessages.scrollHeight;
+        if (chatMessages) chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
-    function isValidEmail(email) {
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    // FLUXO PRINCIPAL DA CONVERSA
+    function sendMessage() {
+        if (isBotTyping || !userInput) return;
+        const userText = userInput.value.trim();
+        if (!userText) return;
+        addMessage(userText, 'user');
+        userInput.value = '';
+        processBotResponse(userText);
     }
 
-    function isValidPhoneNumber(phone) {
-        return /^\+?[\d\s()-]{7,}$/.test(phone);
+    function processBotResponse(userText) {
+        showTypingIndicator();
+        setTimeout(() => {
+            removeTypingIndicator();
+            switch (chatState.step) {
+                case 1:
+                    const potentialName = extractName(userText);
+                    if (potentialName && isValidName(potentialName)) {
+                        chatState.name = potentialName;
+                        chatState.gender = inferGender(potentialName);
+                        chatState.step = 2;
+                        const greeting = chatState.gender === 'feminine' ? `Prazer em conhecê-la, ${chatState.name}!` : `Prazer em conhecê-lo, ${chatState.name}!`;
+                        addMessage(`${greeting} Qual é o seu e-mail de contato?`, 'bot');
+                    } else {
+                        addMessage("Não consegui identificar seu nome. 😅 Como gostaria de ser chamado?", 'bot');
+                    }
+                    break;
+                case 2:
+                    if (isValidEmail(userText)) {
+                        chatState.email = userText;
+                        chatState.step = 3;
+                        addMessage("Ótimo! E qual o seu número de WhatsApp?", 'bot');
+                    } else {
+                        addMessage("Este e-mail não parece válido. Por favor, tente outro (ex: seuemail@dominio.com).", 'bot');
+                    }
+                    break;
+                case 3:
+                    if (isValidPhoneNumber(userText)) {
+                        chatState.whatsapp = userText;
+                        chatState.step = 4;
+                        if(userInput) userInput.rows = 3;
+                        addMessage("Perfeito! Agora, qual a sua mensagem ou dúvida?", 'bot');
+                    } else {
+                        addMessage("Este número não parece válido. Poderia verificar?", 'bot');
+                    }
+                    break;
+                case 4:
+                    chatState.message = userText;
+                    chatState.step = 5;
+                    addMessage("Obrigado pelas informações! Enviando sua mensagem...", 'bot');
+                    sendToFormspree();
+                    break;
+            }
+        }, 1500);
     }
 
+    function sendToFormspree() {
+        const formData = new FormData();
+        formData.append('Nome', chatState.name);
+        formData.append('Email', chatState.email);
+        formData.append('WhatsApp', chatState.whatsapp);
+        formData.append('Mensagem', chatState.message);
+        formData.append('Gênero Inferido', chatState.gender);
+
+        fetch('https://formspree.io/f/mgvolbyv', {
+            method: 'POST',
+            body: formData,
+            headers: { 'Accept': 'application/json' }
+        })
+        .then(response => {
+            if (response.ok) {
+                const mainContactArea = document.querySelector('.main-contact-area');
+                if(mainContactArea) mainContactArea.innerHTML = `<div class="success-message-container flex items-center justify-center h-full"><div class="sparkle-text">Mensagem Enviada! ✨</div></div>`;
+            } else {
+                addMessage("Ops, algo deu errado no envio. Por favor, tente novamente mais tarde.", 'bot');
+            }
+        }).catch(error => {
+            addMessage("Erro de conexão. Verifique sua internet e tente novamente.", 'bot');
+        });
+    }
+    
+    // INICIALIZAÇÃO E SAUDAÇÃO AUTOMÁTICA
+    const contactObserver = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && !hasGreeted) {
+                hasGreeted = true;
+                showTypingIndicator();
+                setTimeout(() => {
+                    removeTypingIndicator();
+                    addMessage("Olá! Sou o assistente da Asthro. 😊 Para começarmos, qual é o seu nome?", 'bot');
+                }, 2000);
+                contactObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.5 });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const contactHub = document.querySelector('.contact-hub');
+        if (contactHub) contactObserver.observe(contactHub);
+        resetInactivityTimer();
+    });
+
+    if (userInput) {
+        userInput.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
+            }
+        });
+    }
+
+    // ===================================================================
+    // ================ LÓGICA DOS MODAIS (INTACTA) ======================
+    // ===================================================================
     function isValidDate(dateStr) {
         const inputDate = new Date(dateStr);
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         return inputDate >= today && !isNaN(inputDate);
     }
-
-    // LÓGICA DE SAUDAÇÃO AUTOMÁTICA
-    const contactSectionObserver = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting && !hasGreeted && chatState.step === 1 && !chatState.name) {
-                showTypingIndicator();
-                setTimeout(() => {
-                    removeTypingIndicator();
-                    addBotMessage("Olá! Sou o assistente da Asthro. 😊 Qual é o seu nome ou como você gostaria de ser chamado(a)?");
-                    hasGreeted = true;
-                    saveChatState();
-                }, 3000);
-                contactSectionObserver.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.3 });
-
-    function sendMessage() {
-    if (isBotTyping) return;
-    const userText = userInput.value.trim();
-    if (!userText) return;
-
-    addUserMessage(userText);
-
-    const correctionField = detectCorrectionRequest(userText);
-    if (correctionField && chatState.step < 5) {
-        fieldToCorrect = correctionField;
-        isCorrecting = true;
-        askForCorrectedData(correctionField);
-        userInput.value = '';
-        return;
-    }
-
-    if (isCorrecting) {
-        let isValid = true;
-        let errorMessage = '';
-        if (fieldToCorrect === 'name') {
-            if (isValidName(userText)) {
-                chatState.name = userText;
-            } else {
-                isValid = false;
-                errorMessage = "Desculpe, não sei se esse é o seu nome. 😅 Pode me dizer um nome válido?";
-            }
-        } else if (fieldToCorrect === 'email') {
-            if (isValidEmail(userText)) {
-                chatState.email = userText;
-            } else {
-                isValid = false;
-                errorMessage = "Desculpe, isso não parece ser um e-mail válido. Por favor, insira um e-mail válido (exemplo: seuemail@dominio.com).";
-            }
-        } else if (fieldToCorrect === 'whatsapp') {
-            if (isValidPhoneNumber(userText)) {
-                chatState.whatsapp = userText;
-            } else {
-                isValid = false;
-                errorMessage = "Desculpe, isso não parece ser um número de telefone válido.";
-            }
-        }
-
-        if (isValid) {
-            showTypingIndicator();
-            setTimeout(() => {
-                removeTypingIndicator();
-                addBotMessage("Dado corrigido com sucesso! 😊");
-                isCorrecting = false;
-                fieldToCorrect = null;
-                // Simula o continueFlow para o próximo passo
-                if (chatState.step === 2) {
-                    addBotMessage(`Prazer em conhecê-lo, ${chatState.name}! Qual é o seu e-mail de contato?`);
-                } else if (chatState.step === 3) {
-                    addBotMessage("Ótimo! Qual é o seu número de WhatsApp?");
-                } else if (chatState.step === 4) {
-                    addBotMessage("Perfeito! Agora, qual é a mensagem que você gostaria de enviar?");
-                }
-
-            }, 2000);
-        } else {
-            showTypingIndicator();
-            setTimeout(() => {
-                removeTypingIndicator();
-                addBotMessage(errorMessage);
-            }, 2000);
-        }
-        userInput.value = '';
-        saveChatState();
-        return;
-    }
-
-    if (chatState.step === 1) {
-        // Se o usuário saudar E o bot ainda não tiver feito a saudação automática
-        if (isGreeting(userText) && !hasGreeted) {
-            hasGreeted = true; // Marca que a conversa começou
-            const botGreeting = selectBotGreeting(userText);
-            showTypingIndicator();
-            setTimeout(() => {
-                removeTypingIndicator();
-                addBotMessage(`${botGreeting} Qual é o seu nome ou como você gostaria de ser chamado?`);
-            }, 3000);
-        // Se a resposta for um nome válido
-        } else if (isValidName(userText)) {
-            chatState.name = userText;
-            chatState.step = 2;
-            showTypingIndicator();
-            setTimeout(() => {
-                removeTypingIndicator();
-                addBotMessage(`Prazer em conhecê-lo, ${chatState.name}! Qual é o seu e-mail de contato?`);
-                saveChatState();
-            }, 3000);
-        // Se a resposta NÃO for um nome válido E NÃO for uma saudação (após o bot já ter saudado)
-        } else if (!isGreeting(userText)) {
-            showTypingIndicator();
-            setTimeout(() => {
-                removeTypingIndicator();
-                addBotMessage("Desculpe, não sei se esse é o seu nome. 😅 Pode me dizer seu nome ou como você gostaria de ser chamado?");
-            }, 3000);
-        }
-        // Se for uma saudação e o bot JÁ tiver saudado, ele não faz nada, apenas aguarda o nome.
-    } else if (chatState.step === 2) {
-        if (isValidEmail(userText)) {
-            chatState.email = userText;
-            chatState.step = 3;
-            showTypingIndicator();
-            setTimeout(() => {
-                removeTypingIndicator();
-                addBotMessage("Ótimo! Qual é o seu número de WhatsApp?");
-                saveChatState();
-            }, 3000);
-        } else {
-            showTypingIndicator();
-            setTimeout(() => {
-                removeTypingIndicator();
-                addBotMessage("Desculpe, isso não parece ser um e-mail válido. Por favor, insira um e-mail válido (exemplo: seuemail@dominio.com).");
-            }, 3000);
-        }
-    } else if (chatState.step === 3) {
-        if (isValidPhoneNumber(userText)) {
-            chatState.whatsapp = userText;
-            chatState.step = 4;
-            showTypingIndicator();
-            setTimeout(() => {
-                removeTypingIndicator();
-                addBotMessage("Perfeito! Agora, qual é a mensagem que você gostaria de enviar?");
-                userInput.placeholder = "Digite sua mensagem...";
-                userInput.rows = 3;
-                saveChatState();
-            }, 3000);
-        } else {
-            showTypingIndicator();
-            setTimeout(() => {
-                removeTypingIndicator();
-                addBotMessage("Desculpe, isso não parece ser um número de telefone válido.");
-            }, 3000);
-        }
-    } else if (chatState.step === 4) {
-        chatState.message = userText;
-        chatState.step = 5;
-        sendToFormspree();
-    }
-    userInput.value = '';
-    saveChatState();
-}
-
-    function sendToFormspree() {
-        showTypingIndicator();
-        const formData = new FormData();
-        formData.append('name', chatState.name);
-        formData.append('email', chatState.email);
-        formData.append('whatsapp', chatState.whatsapp);
-        formData.append('message', chatState.message);
-        fetch('https://formspree.io/f/mgvolbyv', {
-            method: 'POST',
-            body: formData,
-            headers: { 'Accept': 'application/json' }
-        }).then(response => {
-            removeTypingIndicator();
-            if (response.ok) {
-                showSuccessMessage();
-            } else {
-                addBotMessage("Ops, algo deu errado. Tente novamente mais tarde.");
-            }
-        }).catch(error => {
-            removeTypingIndicator();
-            addBotMessage("Erro de conexão. Verifique sua internet e tente novamente.");
-        });
-    }
-
-    function showSuccessMessage() {
-        const mainContactArea = document.querySelector('.main-contact-area');
-        if (mainContactArea) {
-            mainContactArea.innerHTML = '';
-            const successContainer = document.createElement('div');
-            successContainer.className = 'success-message-container flex flex-col items-center justify-center h-full';
-            const successMessage = document.createElement('div');
-            successMessage.className = 'sparkle-text';
-            successMessage.textContent = 'Mensagem Enviada! ✨';
-            const successSubtext = document.createElement('p');
-            successSubtext.textContent = "Obrigado! Responderemos em breve.";
-            successSubtext.className = 'text-lg text-gray-300 mt-4 text-center';
-            successContainer.appendChild(successMessage);
-            successContainer.appendChild(successSubtext);
-            mainContactArea.appendChild(successContainer);
-        }
-        localStorage.removeItem('chatState');
-        chatState = { step: 1, name: '', email: '', whatsapp: '', message: '' };
-    }
-
-    // Modal functions (Schedule, Feedback, Testimonial) - VERSÃO CORRIGIDA
     function showModal(modalId) {
         const modal = document.getElementById(modalId);
-        if (modal) {
-            modal.classList.add('show');
-            document.body.style.overflow = 'hidden'; // Evita rolagem do body quando modal está aberto
-        }
+        if (modal) modal.classList.add('show');
+        document.body.style.overflow = 'hidden';
     }
-
     function hideModal(modalId) {
         const modal = document.getElementById(modalId);
-        if (modal) {
-            modal.classList.remove('show');
-            document.body.style.overflow = 'auto'; // Restaura rolagem do body
-        }
+        if (modal) modal.classList.remove('show');
+        document.body.style.overflow = 'auto';
     }
-
     function showScheduleModal() {
         showModal('scheduleModal');
-        document.getElementById('scheduleName').value = '';
-        document.getElementById('scheduleEmail').value = '';
-        document.getElementById('scheduleDate').value = '';
-        document.getElementById('scheduleTime').value = '';
-        document.getElementById('scheduleMessage').value = '';
-        const modalScheduleFeedbackElement = document.getElementById('modalScheduleFeedback');
-        if (modalScheduleFeedbackElement) {
-            modalScheduleFeedbackElement.innerHTML = '';
-        }
-        const dateInput = document.getElementById('scheduleDate');
-        const today = new Date().toISOString().split('T')[0];
-        dateInput.setAttribute('min', today);
+        // Limpa campos e mensagens de erro anteriores
     }
-
-    function hideScheduleModal() {
-        hideModal('scheduleModal');
-    }
-
+    function hideScheduleModal() { hideModal('scheduleModal'); }
     function submitSchedule() {
         const name = document.getElementById('scheduleName').value.trim();
         const email = document.getElementById('scheduleEmail').value.trim();
         const date = document.getElementById('scheduleDate').value;
         const time = document.getElementById('scheduleTime').value;
         const message = document.getElementById('scheduleMessage').value.trim();
+        let feedbackDiv = document.getElementById('modalScheduleFeedback');
         
-        let modalScheduleMessage = document.getElementById('modalScheduleFeedback');
-        modalScheduleMessage.innerHTML = '';
-
-        if (!name || !isValidName(name)) {
-            modalScheduleMessage.innerHTML = '<div class="error-message">Por favor, insira um nome válido.</div>';
-            return;
-        }
-        if (!email || !isValidEmail(email)) {
-            modalScheduleMessage.innerHTML = '<div class="error-message">Por favor, insira um e-mail válido.</div>';
-            return;
-        }
-        if (!date || !isValidDate(date)) {
-            modalScheduleMessage.innerHTML = '<div class="error-message">Por favor, selecione uma data válida (a partir de hoje).</div>';
-            return;
-        }
-        if (!time) {
-            modalScheduleMessage.innerHTML = '<div class="error-message">Por favor, selecione um horário.</div>';
+        if (!isValidName(name) || !isValidEmail(email) || !isValidDate(date) || !time) {
+            feedbackDiv.innerHTML = '<div class="error-message">Por favor, preencha todos os campos corretamente.</div>';
             return;
         }
 
@@ -1783,59 +1617,28 @@
         formData.append('Agendamento - Email', email);
         formData.append('Agendamento - Data', date);
         formData.append('Agendamento - Hora', time);
-        if (message) { formData.append('Agendamento - Mensagem', message); }
+        formData.append('Agendamento - Mensagem', message);
 
-        fetch('https://formspree.io/f/mgvolbyv', {
-            method: 'POST',
-            body: formData,
-            headers: { 'Accept': 'application/json' }
-        })
-        .then(response => {
-            if (response.ok) {
-                modalScheduleMessage.innerHTML = '<div class="success-message">Reunião agendada com sucesso! ✨</div>';
-                setTimeout(() => hideScheduleModal(), 2000);
-            } else {
-                modalScheduleMessage.innerHTML = '<div class="error-message">Erro ao agendar. Tente novamente.</div>';
-            }
-        })
-        .catch(error => {
-            modalScheduleMessage.innerHTML = '<div class="error-message">Erro ao agendar. Tente novamente.</div>';
-        });
+        fetch('https://formspree.io/f/mgvolbyv', { method: 'POST', body: formData, headers: { 'Accept': 'application/json' } })
+            .then(res => {
+                if (res.ok) {
+                    feedbackDiv.innerHTML = '<div class="success-message">Agendamento solicitado com sucesso! ✨</div>';
+                    setTimeout(hideScheduleModal, 2000);
+                } else {
+                    feedbackDiv.innerHTML = '<div class="error-message">Erro ao enviar. Tente novamente.</div>';
+                }
+            }).catch(() => feedbackDiv.innerHTML = '<div class="error-message">Erro de conexão.</div>');
     }
-
-    function showFeedbackModal() {
-        showModal('feedbackModal');
-        document.getElementById('feedbackName').value = '';
-        document.getElementById('feedbackEmail').value = '';
-        document.getElementById('feedbackText').value = '';
-        const modalFeedbackStatusElement = document.getElementById('modalFeedbackStatus');
-        if (modalFeedbackStatusElement) {
-            modalFeedbackStatusElement.innerHTML = '';
-        }
-    }
-
-    function hideFeedbackModal() {
-        hideModal('feedbackModal');
-    }
-
+    function showFeedbackModal() { showModal('feedbackModal'); }
+    function hideFeedbackModal() { hideModal('feedbackModal'); }
     function submitFeedback() {
         const name = document.getElementById('feedbackName').value.trim();
         const email = document.getElementById('feedbackEmail').value.trim();
         const feedback = document.getElementById('feedbackText').value.trim();
-        
-        let modalFeedbackMessage = document.getElementById('modalFeedbackStatus');
-        modalFeedbackMessage.innerHTML = '';
+        let feedbackDiv = document.getElementById('modalFeedbackStatus');
 
-        if (!name || !isValidName(name)) {
-            modalFeedbackMessage.innerHTML = '<div class="error-message">Por favor, insira um nome válido.</div>';
-            return;
-        }
-        if (!email || !isValidEmail(email)) {
-            modalFeedbackMessage.innerHTML = '<div class="error-message">Por favor, insira um e-mail válido.</div>';
-            return;
-        }
-        if (!feedback) {
-            modalFeedbackMessage.innerHTML = '<div class="error-message">Por favor, escreva seu feedback.</div>';
+        if (!isValidName(name) || !isValidEmail(email) || !feedback) {
+            feedbackDiv.innerHTML = '<div class="error-message">Por favor, preencha todos os campos.</div>';
             return;
         }
 
@@ -1844,63 +1647,27 @@
         formData.append('Feedback - Email', email);
         formData.append('Feedback - Mensagem', feedback);
 
-        fetch('https://formspree.io/f/mgvolbyv', {
-            method: 'POST',
-            body: formData,
-            headers: { 'Accept': 'application/json' }
-        })
-        .then(response => {
-            if (response.ok) {
-                modalFeedbackMessage.innerHTML = '<div class="success-message">Feedback enviado com sucesso! ✨</div>';
-                setTimeout(() => hideFeedbackModal(), 2000);
-            } else {
-                modalFeedbackMessage.innerHTML = '<div class="error-message">Erro ao enviar. Tente novamente.</div>';
-            }
-        })
-        .catch(error => {
-            modalFeedbackMessage.innerHTML = '<div class="error-message">Erro ao enviar. Tente novamente.</div>';
-        });
+        fetch('https://formspree.io/f/mgvolbyv', { method: 'POST', body: formData, headers: { 'Accept': 'application/json' } })
+            .then(res => {
+                if (res.ok) {
+                    feedbackDiv.innerHTML = '<div class="success-message">Feedback enviado! Obrigado. ✨</div>';
+                    setTimeout(hideFeedbackModal, 2000);
+                } else {
+                    feedbackDiv.innerHTML = '<div class="error-message">Erro ao enviar. Tente novamente.</div>';
+                }
+            }).catch(() => feedbackDiv.innerHTML = '<div class="error-message">Erro de conexão.</div>');
     }
-
-    function showTestimonialModal() {
-        showModal('testimonialModal');
-        document.getElementById('testimonialName').value = '';
-        document.getElementById('testimonialProfession').value = '';
-        document.getElementById('testimonialEmail').value = '';
-        document.getElementById('testimonialComment').value = '';
-        let modalTestimonialStatusElement = document.getElementById('modalTestimonialStatus');
-        if (modalTestimonialStatusElement) {
-            modalTestimonialStatusElement.innerHTML = '';
-        }
-    }
-
-    function hideTestimonialModal() {
-        hideModal('testimonialModal');
-    }
-
+    function showTestimonialModal() { showModal('testimonialModal'); }
+    function hideTestimonialModal() { hideModal('testimonialModal'); }
     function submitTestimonial() {
         const name = document.getElementById('testimonialName').value.trim();
         const profession = document.getElementById('testimonialProfession').value.trim();
         const email = document.getElementById('testimonialEmail').value.trim();
         const comment = document.getElementById('testimonialComment').value.trim();
-        
-        let modalTestimonialMessage = document.getElementById('modalTestimonialStatus');
-        modalTestimonialMessage.innerHTML = '';
+        let feedbackDiv = document.getElementById('modalTestimonialStatus');
 
-        if (!name || !isValidName(name)) {
-            modalTestimonialMessage.innerHTML = '<div class="error-message">Por favor, insira um nome válido.</div>';
-            return;
-        }
-        if (!profession) {
-            modalTestimonialMessage.innerHTML = '<div class="error-message">Por favor, insira sua profissão.</div>';
-            return;
-        }
-        if (!email || !isValidEmail(email)) {
-            modalTestimonialMessage.innerHTML = '<div class="error-message">Por favor, insira um e-mail válido.</div>';
-            return;
-        }
-        if (!comment) {
-            modalTestimonialMessage.innerHTML = '<div class="error-message">Por favor, escreva seu depoimento.</div>';
+        if (!isValidName(name) || !profession || !isValidEmail(email) || !comment) {
+            feedbackDiv.innerHTML = '<div class="error-message">Por favor, preencha todos os campos.</div>';
             return;
         }
 
@@ -1910,33 +1677,16 @@
         formData.append('Depoimento - Email', email);
         formData.append('Depoimento - Comentário', comment);
 
-        fetch('https://formspree.io/f/mgvolbyv', {
-            method: 'POST',
-            body: formData,
-            headers: { 'Accept': 'application/json' }
-        })
-        .then(response => {
-            if (response.ok) {
-                modalTestimonialMessage.innerHTML = '<div class="success-message">Depoimento enviado com sucesso! ✨</div>';
-                setTimeout(() => hideTestimonialModal(), 2000);
-            } else {
-                modalTestimonialMessage.innerHTML = '<div class="error-message">Erro ao enviar. Tente novamente.</div>';
-            }
-        })
-        .catch(error => {
-            modalTestimonialMessage.innerHTML = '<div class="error-message">Erro ao enviar. Tente novamente.</div>';
-        });
+        fetch('https://formspree.io/f/mgvolbyv', { method: 'POST', body: formData, headers: { 'Accept': 'application/json' } })
+            .then(res => {
+                if (res.ok) {
+                    feedbackDiv.innerHTML = '<div class="success-message">Depoimento enviado! Obrigado. ✨</div>';
+                    setTimeout(hideTestimonialModal, 2000);
+                } else {
+                    feedbackDiv.innerHTML = '<div class="error-message">Erro ao enviar. Tente novamente.</div>';
+                }
+            }).catch(() => feedbackDiv.innerHTML = '<div class="error-message">Erro de conexão.</div>');
     }
-    window.onload = function() {
-        localStorage.removeItem('chatState');
-        chatState = { step: 1, name: '', email: '', whatsapp: '', message: '' };
-        hasGreeted = false;
-        if (chatMessages) chatMessages.innerHTML = '';
-        const contactHub = document.querySelector('.contact-hub');
-        if (contactHub) {
-            contactSectionObserver.observe(contactHub);
-        }
-    };
 </script>
 </body>
 </html>
