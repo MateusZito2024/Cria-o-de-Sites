@@ -773,18 +773,52 @@
 
     <script>
         // Smooth scroll for nav links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-                // Fecha o menu hambúrguer ao clicar em um link, apenas em telas menores
-                if (window.innerWidth <= 768) {
-                    toggleMenu();
-                }
-            });
-        });
+        function smoothScrollTo(elementId) {
+    const targetElement = document.querySelector(elementId);
+    if (!targetElement) return;
+
+    const startPosition = window.pageYOffset;
+    // O targetElement.getBoundingClientRect().top é relativo à viewport
+    const targetPosition = targetElement.getBoundingClientRect().top + startPosition;
+    const distance = targetPosition - startPosition;
+    const duration = 1500; // 1.5 SEGUNDOS. Aumente ou diminua este valor para controlar a velocidade.
+    let startTime = null;
+
+    function animation(currentTime) {
+        if (startTime === null) startTime = currentTime;
+        const timeElapsed = currentTime - startTime;
+        const run = ease(timeElapsed, startPosition, distance, duration);
+        window.scrollTo(0, run);
+        if (timeElapsed < duration) requestAnimationFrame(animation);
+    }
+
+    // Função de atenuação (easing) para um movimento mais natural
+    function ease(t, b, c, d) {
+        t /= d / 2;
+        if (t < 1) return c / 2 * t * t * t + b;
+        t -= 2;
+        return c / 2 * (t * t * t + 2) + b;
+    }
+
+    requestAnimationFrame(animation);
+}
+
+// Aplica a rolagem lenta a todos os links com href="#..."
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const href = this.getAttribute('href');
+        smoothScrollTo(href); // Chama a nova função de rolagem lenta
+
+        // Fecha o menu hambúrguer ao clicar em um link, apenas em telas menores
+        if (window.innerWidth <= 768) {
+            // Verifica se a função toggleMenu existe antes de chamar
+            if (typeof toggleMenu === 'function') {
+                toggleMenu();
+            }
+        }
+    });
+});
 
         // Hamburger menu functionality
         const hamburger = document.querySelector('.hamburger');
