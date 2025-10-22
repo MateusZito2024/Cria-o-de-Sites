@@ -876,24 +876,12 @@
                         <h3 class="text-lg font-semibold gradient-text mt-4 mb-2">O Futuro do Web Design</h3>
                         <p class="text-gray-400 text-sm">Tendências e inovações que moldarão os sites de amanhã.</p>
                     </div>
-                    <div class="carousel-item content-card p-6 float">
-                        <img src="https://i.postimg.cc/vBMmdmMR/carrossel-5-dicas.png" alt="Landing Page de Sucesso" class="w-full rounded-lg">
-                        <h3 class="text-lg font-semibold gradient-text mt-4 mb-2">Criando Landing Pages que Convertem</h3>
-                        <p class="text-gray-400 text-sm">Descubra os segredos para uma página de alta performance.</p>
-                    </div>
-                    <div class="carousel-item content-card p-6 float">
-                        <img src="https://i.postimg.cc/C19fgBPY/Carrossel-Ag-ncia-Nut.png" alt="Branding para Agências" class="w-full rounded-lg">
-                        <h3 class="text-lg font-semibold gradient-text mt-4 mb-2">Branding para Agências Criativas</h3>
-                        <p class="text-gray-400 text-sm">Como construímos a marca da agência "Visionária".</p>
-                    </div>
                 </div>
             </div>
             <div class="pagination" id="main-content-pagination">
                 <div class="pagination-number active" data-page="0">1</div>
                 <div class="pagination-number" data-page="1">2</div>
                 <div class="pagination-number" data-page="2">3</div>
-                <div class="pagination-number" data-page="3">4</div>
-                <div class="pagination-number" data-page="4">5</div>
             </div>
 
             
@@ -1086,8 +1074,15 @@
             }
 
             // Initialize carousels
-            setupCarousel('highlight-carousel', 'highlight-pagination', 5000);
-            setupCarousel('recent-projects-carousel-container', 'projects-pagination', 5000); /* Usando o novo ID */
+// Removendo chamadas antigas e ajustando para os novos IDs e funcionalidades:
+
+// 1. Carrossel de Depoimentos (O que nossos clientes dizem)
+// ID: testimonials-carousel, Paginação: testimonials-pagination. Intervalo de 6 segundos.
+setupCarousel('testimonials-carousel', 'testimonials-pagination', 6000); 
+
+// 2. Carrossel de Projetos e Inspiração (main-content-carousel-container)
+// ID: main-content-carousel-container, Paginação: main-content-pagination. Intervalo de 5 segundos.
+setupCarousel('main-content-carousel-container', 'main-content-pagination', 5000);
 
             // Newsletter form submission
             const submitButton = document.getElementById('newsletter-submit');
