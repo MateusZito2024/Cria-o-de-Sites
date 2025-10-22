@@ -376,87 +376,97 @@
         }
 
         /* Updated Styles for Nossos Serviços Section */
-        #services-testimonials .gradient-card {
-            background: linear-gradient(135deg, #1e293b, #2d3748);
-            border: 2px solid transparent;
-            border-radius: 1.2rem;
-            box-shadow: 0 0 15px rgba(165, 180, 252, 0.3), 0 0 25px rgba(232, 121, 249, 0.2);
-            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-            animation: neonPulse 4s ease-in-out infinite;
-            position: relative;
-            overflow: hidden;
-        }
+        /* REFAZENDO ESTILO DARK/NEON PARA CARDS E IMAGENS */
 
-        #services-testimonials .gradient-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, rgba(165, 180, 252, 0.1), rgba(232, 121, 249, 0.1));
-            opacity: 0.5;
-            z-index: 1;
-            transition: opacity 0.3s ease;
-        }
+.service-card-main {
+    background: rgba(31, 41, 55, 0.7); /* Fundo escuro semi-transparente (Glassmorphism) */
+    backdrop-filter: blur(8px);
+    border: 1px solid transparent;
+    border-image: linear-gradient(135deg, #a5b4fc, #e879f9) 1; /* Borda gradiente */
+    box-shadow: 0 0 15px rgba(232, 121, 249, 0.4);
+    transition: all 0.5s ease;
+    overflow: hidden;
+    display: flex; /* Para centralizar conteúdo verticalmente */
+    flex-direction: column;
+    justify-content: space-between; /* Empurra o botão para baixo */
+}
 
-        #services-testimonials .gradient-card:hover {
-            transform: scale(1.05) translateY(-5px);
-            box-shadow: 0 0 25px rgba(165, 180, 252, 0.6), 0 0 35px rgba(232, 121, 249, 0.4);
-            border-color: #e879f9;
-        }
+.service-card-main:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 15px 30px rgba(232, 121, 249, 0.6);
+    border-image: linear-gradient(135deg, #e879f9, #a5b4fc) 1;
+}
 
-        #services-testimonials .gradient-card:hover::before {
-            opacity: 0.8;
-        }
+.service-card-main h3 {
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: 0.05em;
+    background: linear-gradient(135deg, #a5b4fc, #e879f9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 5px rgba(232, 121, 249, 0.5);
+}
 
-        #services-testimonials .gradient-card h3 {
-            font-family: 'Montserrat', sans-serif;
-            letter-spacing: 0.05em;
-            background: linear-gradient(135deg, #a5b4fc, #e879f9);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 5px rgba(232, 121, 249, 0.5);
-            transition: text-shadow 0.3s ease;
-        }
+.service-card-main p {
+    color: #e2e8f0;
+    flex-grow: 1; /* Faz o parágrafo ocupar o espaço restante */
+}
 
-        #services-testimonials .gradient-card:hover h3 {
-            text-shadow: 0 0 10px rgba(232, 121, 249, 0.8);
-        }
+/* Estilo para ícones de serviço - tenta amenizar o fundo branco */
+.service-card-main img.service-icon {
+    background: rgba(255, 255, 255, 0.1); /* Um leve fundo translúcido para "misturar" */
+    border-radius: 50%; /* Se o ícone for quadrado, isso o tornará redondo */
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(165, 180, 252, 0.3);
+}
 
-        #services-testimonials .gradient-card p {
-            color: #e2e8f0;
-            letter-spacing: 0.03em;
-            z-index: 2;
-        }
+.testimonial-card-dark {
+    background: rgba(45, 55, 72, 0.9);
+    border-left: 5px solid #a5b4fc;
+    box-shadow: 0 0 10px rgba(165, 180, 252, 0.3);
+    padding: 2rem; /* Aumenta o padding para melhor visual */
+    border-radius: 0.75rem; /* Bordas arredondadas */
+}
 
-        #services-testimonials .gradient-card .service-icon {
-            background: linear-gradient(135deg, #a5b4fc, #e879f9);
-            padding: 0.75rem;
-            width: 48px;
-            height: 48px;
-            transition: transform 0.3s ease;
-            z-index: 2;
-        }
+.testimonial-card-dark p {
+    color: #a5b4fc;
+    font-size: 1.125rem; /* Ajusta o tamanho da fonte */
+    line-height: 1.6;
+}
 
-        #services-testimonials .gradient-card:hover .service-icon {
-            transform: rotate(360deg) scale(1.2);
-        }
+.testimonial-card-dark .author {
+    color: #e879f9;
+    font-size: 0.95rem;
+}
 
-        #services-testimonials .gradient-card .cta-button {
-            z-index: 2;
-            box-shadow: 0 0 10px rgba(232, 121, 249, 0.5);
-            transition: box-shadow 0.3s ease, transform 0.3s ease;
-        }
+/* Estilo para todos os cards de conteúdo (posts, projetos) */
+.content-card {
+    background: rgba(31, 41, 55, 0.9);
+    border: 1px solid rgba(165, 180, 252, 0.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    border-radius: 0.75rem; /* Bordas arredondadas */
+    padding: 1rem; /* Padding interno */
+}
 
-        #services-testimonials .gradient-card:hover .cta-button {
-            box-shadow: 0 0 20px rgba(232, 121, 249, 0.8);
-            transform: scale(1.15);
-        }
+/* REMOVENDO O EFEITO DE BRILHO ROXO/NEON NO HOVER */
+.content-card:hover {
+    /* box-shadow: 0 8px 16px rgba(232, 121, 249, 0.5); <--- Removido */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5); /* Mantém uma sombra escura sutil */
+    transform: translateY(-2px);
+}
 
-        #services-testimonials .content-card.float {
-            animation: float 4s ease-in-out infinite;
-        }
+/* Melhorar a visualização de imagens com fundo branco nos carrosséis - REMOVENDO A BORDA NEON DA IMAGEM */
+.content-card img {
+    border: none; /* <--- REMOVIDA A BORDA NEON */
+    box-shadow: none; /* <--- REMOVIDO O BRILHO */
+    background-color: transparent; /* Fundo transparente */
+    border-radius: 0.5rem;
+}
+
+/* Carrossel de Depoimentos */
+#testimonials-carousel .carousel-item {
+    padding: 1rem; /* Adiciona padding para o card do depoimento */
+}
 
         /* --- Mobile Responsiveness --- */
 
@@ -732,144 +742,184 @@
     </nav>
 
     <main>
-        <section id="services-hero" class="h-[60vh] flex items-center section-bg">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center content-layer">
-                <h2 class="text-4xl md:text-5xl font-bold gradient-text mb-6 float">Soluções Criativas para Sua Marca</h2>
-                <p class="text-lg text-gray-400 mb-8 float" style="animation-delay: 0.2s;">
-                    Design gráfico e criação de sites que engajam e convertem. Vamos transformar sua visão em realidade!
-                </p>
-                <a href="https://api.whatsapp.com/send/?phone=5511987637786" target="_blank" class="cta-button py-3 px-8 rounded-full text-lg pulse">Fale Conosco</a>
-            </div>
-        </section>
+    <section id="services-hero" class="h-[60vh] flex items-center section-bg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center content-layer">
+            <h2 class="text-4xl md:text-5xl font-bold gradient-text mb-6 float">Soluções Criativas para Sua Marca</h2>
+            <p class="text-lg text-gray-400 mb-8 float" style="animation-delay: 0.2s;">
+                Design gráfico e criação de sites que engajam e convertem. Vamos transformar sua visão em realidade!
+            </p>
+            <a href="https://api.whatsapp.com/send/?phone=5511987637786" target="_blank" class="cta-button py-3 px-8 rounded-full text-lg pulse">Fale Conosco</a>
+        </div>
+    </section>
 
-        <section id="recent-posts" class="py-16 section-bg">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 content-layer">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="md:col-span-2">
-                        <h2 class="text-3xl md:text-4xl font-bold gradient-text mb-8 float">Últimos Posts</h2>
-                        <div class="content-card p-6 mb-6 float">
-                            <img src="https://i.postimg.cc/fbCKxJ85/2.png" alt="Post 1" class="w-full rounded-lg mb-4 bounce">
-                        </div>
-                        <div class="content-card p-6 mb-6 float" style="animation-delay: 0.2s;">
-                            <img src="https://i.postimg.cc/mrLqfxqX/5.png" alt="Post 2" class="w-full rounded-lg mb-4 bounce" style="animation-delay: 0.2s;">
+    <section id="services-grid" class="py-20 section-bg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 content-layer">
+            <h2 class="text-3xl md:text-4xl font-bold gradient-text mb-16 text-center float">O Universo de Serviços Asthro</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                
+                <div class="p-6 rounded-xl service-card-main float">
+                    <div class="flex items-center justify-center mb-4">
+                        <img src="https://i.postimg.cc/RhkCP2SL/pngegg-3.png" alt="Design Icon" class="service-icon w-20 h-20 transition-transform">
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 text-center">Design Gráfico</h3>
+                    <p class="mb-4 text-center text-sm">
+                        Identidade visual, posts e banners que geram conexão.
+                    </p>
+                    <div class="text-center">
+                        <a href="https://api.whatsapp.com/send/?phone=5511987637786" target="_blank" class="cta-button py-2 px-6 rounded-full text-white">Ver Portfólio</a>
+                    </div>
+                </div>
+
+                <div class="p-6 rounded-xl service-card-main float" style="animation-delay: 0.2s;">
+                    <div class="flex items-center justify-center mb-4">
+                        <img src="https://i.postimg.cc/HLYYPwgR/pngegg-2.png" alt="Website Icon" class="service-icon w-20 h-20 transition-transform">
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 text-center">Desenvolvimento Web</h3>
+                    <p class="mb-4 text-center text-sm">
+                        Sites rápidos, responsivos e otimizados para SEO.
+                    </p>
+                    <div class="text-center">
+                        <a href="https://api.whatsapp.com/send/?phone=5511987637786" target="_blank" class="cta-button py-2 px-6 rounded-full text-white">Ver Preços</a>
+                    </div>
+                </div>
+
+                <div class="p-6 rounded-xl service-card-main float" style="animation-delay: 0.4s;">
+                    <div class="flex items-center justify-center mb-4">
+                        <img src="https://i.postimg.cc/RhkCP2SL/pngegg-3.png" alt="Marketing Icon" class="service-icon w-20 h-20 transition-transform">
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 text-center">Marketing Digital</h3>
+                    <p class="mb-4 text-center text-sm">
+                        Estratégias para redes sociais e e-mail marketing.
+                    </p>
+                    <div class="text-center">
+                        <a href="https://api.whatsapp.com/send/?phone=5511987637786" target="_blank" class="cta-button py-2 px-6 rounded-full text-white">Consultoria</a>
+                    </div>
+                </div>
+
+                <div class="p-6 rounded-xl service-card-main float" style="animation-delay: 0.6s;">
+                    <div class="flex items-center justify-center mb-4">
+                        <img src="https://i.postimg.cc/HLYYPwgR/pngegg-2.png" alt="Support Icon" class="service-icon w-20 h-20 transition-transform">
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 text-center">Suporte & Manutenção</h3>
+                    <p class="mb-4 text-center text-sm">
+                        Garantia de segurança, atualizações e performance.
+                    </p>
+                    <div class="text-center">
+                        <a href="https://api.whatsapp.com/send/?phone=5511987637786" target="_blank" class="cta-button py-2 px-6 rounded-full text-white">Orçamento</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    
+    <section id="testimonials" class="py-20 section-bg">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 content-layer">
+            <h2 class="text-3xl md:text-4xl font-bold gradient-text mb-12 text-center float">O Que Nossos Clientes Dizem</h2>
+            
+            <div class="carousel" id="testimonials-carousel">
+                <div class="carousel-items">
+                    <div class="carousel-item p-4">
+                        <div class="testimonial-card-dark float">
+                            <p class="text-lg italic mb-4">
+                                "A Asthro transformou nossa identidade visual com um design incrível! O atendimento e a qualidade do trabalho foram impecáveis."
+                            </p>
+                            <p class="author text-right font-semibold">Clara Oliveira, Empresária</p>
                         </div>
                     </div>
-                    <div>
-                        <h2 class="text-2xl font-semibold gradient-text mb-8 float">Posts em Destaque</h2>
-                        <div class="carousel" id="highlight-carousel">
-                            <div class="carousel-items">
-                                <div class="carousel-item content-card p-6 float">
-                                    <img src="https://i.postimg.cc/8CzyXRJx/Prancheta-1-2.png" alt="Post 1" class="w-full rounded-lg bounce">
-                                </div>
-                                <div class="carousel-item content-card p-6 float">
-                                    <img src="https://i.postimg.cc/ZKCqJ5kD/Prancheta-4.png" alt="Post 2" class="w-full rounded-lg bounce">
-                                </div>
-                                <div class="carousel-item content-card p-6 float">
-                                    <img src="https://i.postimg.cc/GprrTcNR/Prancheta-1-3.png" alt="Post 3" class="w-full rounded-lg bounce">
-                                </div>
-                            </div>
+                    <div class="carousel-item p-4">
+                        <div class="testimonial-card-dark float">
+                            <p class="text-lg italic mb-4">
+                                "Nosso novo site é rápido, funcional e super moderno. A equipe foi excepcional e entregou antes do prazo! Recomendo a todos."
+                            </p>
+                            <p class="author text-right font-semibold">Lucas Ferreira, Empreendedor</p>
                         </div>
-                        <div class="pagination" id="highlight-pagination">
-                            <div class="pagination-number active" data-page="0">1</div>
-                            <div class="pagination-number" data-page="1">2</div>
-                            <div class="pagination-number" data-page="2">3</div>
+                    </div>
+                    <div class="carousel-item p-4">
+                        <div class="testimonial-card-dark float">
+                            <p class="text-lg italic mb-4">
+                                "Um suporte incrível! Resolveram todos os meus problemas rapidamente e com total profissionalismo. Extremamente satisfeito!"
+                            </p>
+                            <p class="author text-right font-semibold">Mariana Santos, Freelancer</p>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
+            <div class="pagination" id="testimonials-pagination">
+                <div class="pagination-number active" data-page="0">1</div>
+                <div class="pagination-number" data-page="1">2</div>
+                <div class="pagination-number" data-page="2">3</div>
+            </div>
+        </div>
+    </section>
 
-        <section id="recent-projects" class="py-16 section-bg">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 content-layer">
-                <h2 class="text-3xl md:text-4xl font-bold gradient-text mb-12 float">Projetos Recentes</h2>
-                <div class="carousel" id="recent-projects-carousel-container"> <div class="carousel-items">
-                        <div class="carousel-item content-card p-6 float">
-                            <img src="https://i.postimg.cc/vBMmdmMR/carrossel-5-dicas.png" alt="Project 1" class="w-full rounded-lg bounce">
-                        </div>
-                        <div class="carousel-item content-card p-6 float">
-                            <img src="https://i.postimg.cc/C19fgBPY/Carrossel-Ag-ncia-Nut.png" alt="Project 2" class="w-full rounded-lg bounce">
-                        </div>
-                        <div class="carousel-item content-card p-6 float">
-                            <img src="https://i.postimg.cc/26LV2jzt/carrossel-transforme-curioso-em-cliente.png" alt="Project 3" class="w-full rounded-lg bounce">
-                        </div>
+    <section id="content-showcase" class="py-20 section-bg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 content-layer">
+            
+            <h2 class="text-3xl md:text-4xl font-bold gradient-text mb-12 text-center float">Inspiração & Projetos Recentes</h2>
+            
+            <div class="carousel max-w-lg mx-auto mb-16" id="main-content-carousel-container">
+                <div class="carousel-items">
+                    <div class="carousel-item content-card p-6 float">
+                        <img src="https://i.postimg.cc/8CzyXRJx/Prancheta-1-2.png" alt="Post de Dicas de Design" class="w-full rounded-lg">
+                        <h3 class="text-lg font-semibold gradient-text mt-4 mb-2">5 Dicas Essenciais de Design</h3>
+                        <p class="text-gray-400 text-sm">Melhore seus visuais com estas técnicas simples e eficazes.</p>
                     </div>
-                    <div class="pagination" id="projects-pagination">
-                        <div class="pagination-number active" data-page="0">1</div>
-                        <div class="pagination-number" data-page="1">2</div>
-                        <div class="pagination-number" data-page="2">3</div>
+                    <div class="carousel-item content-card p-6 float">
+                        <img src="https://i.postimg.cc/ZKCqJ5kD/Prancheta-4.png" alt="Carrossel Nutrição" class="w-full rounded-lg">
+                        <h3 class="text-lg font-semibold gradient-text mt-4 mb-2">Case: Identidade NutriVida</h3>
+                        <p class="text-gray-400 text-sm">Desenvolvemos a marca completa para a clínica NutriVida.</p>
+                    </div>
+                    <div class="carousel-item content-card p-6 float">
+                        <img src="https://i.postimg.cc/GprrTcNR/Prancheta-1-3.png" alt="Web Design Moderno" class="w-full rounded-lg">
+                        <h3 class="text-lg font-semibold gradient-text mt-4 mb-2">O Futuro do Web Design</h3>
+                        <p class="text-gray-400 text-sm">Tendências e inovações que moldarão os sites de amanhã.</p>
+                    </div>
+                    <div class="carousel-item content-card p-6 float">
+                        <img src="https://i.postimg.cc/vBMmdmMR/carrossel-5-dicas.png" alt="Landing Page de Sucesso" class="w-full rounded-lg">
+                        <h3 class="text-lg font-semibold gradient-text mt-4 mb-2">Criando Landing Pages que Convertem</h3>
+                        <p class="text-gray-400 text-sm">Descubra os segredos para uma página de alta performance.</p>
+                    </div>
+                    <div class="carousel-item content-card p-6 float">
+                        <img src="https://i.postimg.cc/C19fgBPY/Carrossel-Ag-ncia-Nut.png" alt="Branding para Agências" class="w-full rounded-lg">
+                        <h3 class="text-lg font-semibold gradient-text mt-4 mb-2">Branding para Agências Criativas</h3>
+                        <p class="text-gray-400 text-sm">Como construímos a marca da agência "Visionária".</p>
                     </div>
                 </div>
             </div>
-        </section>
+            <div class="pagination" id="main-content-pagination">
+                <div class="pagination-number active" data-page="0">1</div>
+                <div class="pagination-number" data-page="1">2</div>
+                <div class="pagination-number" data-page="2">3</div>
+                <div class="pagination-number" data-page="3">4</div>
+                <div class="pagination-number" data-page="4">5</div>
+            </div>
 
-        <section id="services-testimonials" class="py-16 section-bg">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 content-layer">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="md:col-span-2">
-                        <h2 class="text-3xl md:text-4xl font-bold gradient-text mb-8 float">Nossos Serviços</h2>
-                        <div class="content-card gradient-card p-6 mb-6 float">
-                            <div class="flex items-center justify-center mb-4">
-                                <img src="https://i.postimg.cc/RhkCP2SL/pngegg-3.png" alt="Design Icon" class="service-icon">
-                            </div>
-                            <h3 class="text-xl font-semibold mb-2 text-center">Design Gráfico</h3>
-                            <p class="mb-4 text-center">
-                                Criamos logotipos, banners e posts para redes sociais que capturam a essência da sua marca.
-                            </p>
-                            <div class="text-center">
-                                <a href="https://api.whatsapp.com/send/?phone=5511987637786" target="_blank" class="cta-button py-2 px-6 rounded-full text-white pulse">Solicite Agora</a>
-                            </div>
-                        </div>
-                        <div class="content-card gradient-card p-6 float">
-                            <div class="flex items-center justify-center mb-4">
-                                <img src="https://i.postimg.cc/HLYYPwgR/pngegg-2.png" alt="Website Icon" class="service-icon">
-                            </div>
-                            <h3 class="text-xl font-semibold mb-2 text-center">Criação de Sites</h3>
-                            <p class="mb-4 text-center">
-                                Desenvolvemos sites responsivos e otimizados para converter visitantes em clientes.
-                            </p>
-                            <div class="text-center">
-                                <a href="https://api.whatsapp.com/send/?phone=5511987637786" target="_blank" class="cta-button py-2 px-6 rounded-full text-white pulse">Solicite Agora</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <h2 class="text-2xl font-semibold gradient-text mb-8 float">Depoimentos em Destaque</h2>
-                        <div class="content-card gradient-card p-6 mb-6 float">
-                            <p class="text-gray-600 mb-4">
-                                "A Asthro transformou nossa identidade visual com um design incrível!"
-                            </p>
-                            <p class="text-gray-900 font-semibold">Clara Oliveira, Empresária</p>
-                        </div>
-                        <div class="content-card gradient-card p-6 float">
-                            <p class="text-gray-600 mb-4">
-                                "Nosso site ficou rápido e funcional. A equipe foi excepcional!"
-                            </p>
-                            <p class="text-gray-900 font-semibold">Lucas Ferreira, Empreendedor</p>
-                        </div>
-                    </div>
+            
+
+        </div>
+    </section>
+    
+    <section id="newsletter" class="py-16 section-bg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center content-layer">
+            <h2 class="text-3xl md:text-4xl font-bold gradient-text mb-6 float">Assine Nossa Newsletter</h2>
+            <p class="text-lg text-gray-400 mb-8 float">
+                Receba dicas de design, atualizações e promoções exclusivas no seu e-mail.
+            </p>
+            <div id="newsletter-container">
+                <div id="newsletter-form" class="flex flex-col md:flex-row justify-center gap-4">
+                    <input type="text" id="newsletter-name" placeholder="Digite seu nome" class="newsletter-input py-3 px-4 rounded-full w-full md:w-1/4 glow">
+                    <input type="email" id="newsletter-email" placeholder="Digite seu e-mail" class="newsletter-input py-3 px-4 rounded-full w-full md:w-1/4 glow">
+                    <button id="newsletter-submit" class="newsletter-button py-3 px-6 rounded-full pulse">Assinar</button>
+                </div>
+                <div id="confirmation-message" class="confirmation-message hidden">
+                    <div class="sparkle-text">Inscrição Concluída! ✨</div>
                 </div>
             </div>
-        </section>
-
-        <section id="newsletter" class="py-16 section-bg">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center content-layer">
-                <h2 class="text-3xl md:text-4xl font-bold gradient-text mb-6 float">Assine Nossa Newsletter</h2>
-                <p class="text-lg text-gray-400 mb-8 float">
-                    Receba dicas de design, atualizações e promoções exclusivas no seu e-mail.
-                </p>
-                <div id="newsletter-container">
-                    <div id="newsletter-form" class="flex flex-col md:flex-row justify-center gap-4">
-                        <input type="text" id="newsletter-name" placeholder="Digite seu nome" class="newsletter-input py-3 px-4 rounded-full w-full md:w-1/4 glow">
-                        <input type="email" id="newsletter-email" placeholder="Digite seu e-mail" class="newsletter-input py-3 px-4 rounded-full w-full md:w-1/4 glow">
-                        <button id="newsletter-submit" class="newsletter-button py-3 px-6 rounded-full pulse">Assinar</button>
-                    </div>
-                    <div id="confirmation-message" class="confirmation-message hidden">
-                        <div class="sparkle-text">Inscrição Concluída! ✨</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
+        </div>
+    </section>
+</main>
 
     <footer class="section-bg text-gray-200 py-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 content-layer">
