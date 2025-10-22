@@ -898,17 +898,47 @@
         <a href="#contact" onclick="hideInactivityCard();"><button>Fale Conosco</button></a>
     </div>
     <script>
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-                if (window.innerWidth <= 768) {
-                    toggleMenu();
-                }
-            });
-        });
+        function smoothScrollTo(elementId) {
+    const targetElement = document.querySelector(elementId);
+    if (!targetElement) return;
+
+    const startPosition = window.pageYOffset;
+    const targetPosition = targetElement.getBoundingClientRect().top + startPosition;
+    const distance = targetPosition - startPosition;
+    const duration = 1500; // Duração em milissegundos (1500ms = 1.5 segundos). Altere este valor para controlar a velocidade.
+    let startTime = null;
+
+    function animation(currentTime) {
+        if (startTime === null) startTime = currentTime;
+        const timeElapsed = currentTime - startTime;
+        const run = ease(timeElapsed, startPosition, distance, duration);
+        window.scrollTo(0, run);
+        if (timeElapsed < duration) requestAnimationFrame(animation);
+    }
+
+    // Função de atenuação (easing) para um movimento mais natural
+    function ease(t, b, c, d) {
+        t /= d / 2;
+        if (t < 1) return c / 2 * t * t * t + b;
+        t -= 2;
+        return c / 2 * (t * t * t + 2) + b;
+    }
+
+    requestAnimationFrame(animation);
+}
+
+// Aplica a rolagem lenta a todos os links com href="#..."
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const href = this.getAttribute('href');
+        smoothScrollTo(href); // Chama a nova função de rolagem lenta
+
+        if (window.innerWidth <= 768) {
+            toggleMenu();
+        }
+    });
+});
 
         const hamburger = document.querySelector('.hamburger');
         const navMenu = document.querySelector('.nav-menu');
