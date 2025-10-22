@@ -921,14 +921,24 @@
                 width: 30px;
                 height: 15px;
             }
+.contact-hub {
+                flex-direction: column; /* Garante que os blocos se empilhem */
+                padding: 1.5rem 1rem; /* Ajusta o padding horizontal do hub */
+            }
 
+            .main-contact-area {
+                width: 100%; /* Permite que ocupe a largura total */
+                min-width: unset;
+                align-items: center; /* Centraliza o chat horizontalmente dentro dele (se for menor que 100%) */
+            }
             /* Chat container */
             .chat-container {
-                height: 400px;
-                padding: 1rem;
-                width: 100%;
-                max-width: 100%;
-            }
+                height: 400px;
+                padding: 1rem;
+                width: 95%; /* Define a largura para permitir margem nas laterais */
+                max-width: 400px; /* Limita o tamanho, mesmo em telas maiores (mobile) */
+                margin: 0 auto; /* <<< ESSA LINHA FORÇA A CENTRALIZAÇÃO */
+            }
 
             .chat-messages {
                 padding: 0.5rem;
