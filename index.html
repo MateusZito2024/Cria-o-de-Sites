@@ -571,7 +571,69 @@
             padding-left: 1rem;
             padding-right: 1rem;
         }
+/* --- NOVOS ESTILOS PARA ELEGÂNCIA --- */
 
+.cta-button {
+    background: linear-gradient(135deg, #a5b4fc, #e879f9);
+    border: 1px solid #e879f9;
+    box-shadow: 0 0 10px rgba(232, 121, 249, 0.5);
+    transition: all 0.3s ease;
+}
+
+.cta-button:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 0 20px rgba(232, 121, 249, 0.8), 0 0 10px rgba(165, 180, 252, 0.6);
+}
+
+/* Melhorar a estética dos cards de Serviço (Menos "blocão") */
+.service-item {
+    /* Manter a cor de fundo transparente/escura do tema */
+    background: rgba(31, 41, 55, 0.7) !important;
+    backdrop-filter: blur(5px);
+    border: 1px solid #a5b4fc;
+    box-shadow: 0 0 10px rgba(165, 180, 252, 0.4);
+    animation: none !important; /* Remove a animação 'pulse' longa do item */
+    transition: all 0.3s ease;
+}
+
+.service-item:hover {
+    background: rgba(45, 55, 72, 0.8) !important;
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(232, 121, 249, 0.8);
+}
+
+.service-item .service-icon {
+    /* Melhorar o ícone para dark theme */
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    padding: 0.5rem;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+/* Estilo elegante para o Portfólio */
+.portfolio-item {
+    background: #1f2937 !important; /* Fundo mais sólido e escuro */
+    border: 1px solid rgba(165, 180, 252, 0.1);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+    animation: none !important; /* Remove a animação 'pulse' longa do item */
+}
+
+.portfolio-item:hover .overlay {
+    /* Deixa o overlay mais sutil */
+    opacity: 0.9;
+    background: linear-gradient(135deg, rgba(165, 180, 252, 0.1), rgba(232, 121, 249, 0.1));
+}
+
+.portfolio-item img {
+    filter: brightness(0.8) saturate(1.1); /* Dá um toque mais dramático à imagem */
+    transition: filter 0.3s ease;
+}
+
+.portfolio-item:hover img {
+    filter: brightness(1) saturate(1.2);
+}
+
+/* --- FIM DOS NOVOS ESTILOS --- */
         /* --- MEDIA QUERIES PARA MOBILE (max-width: 768px) --- */
         @media (max-width: 768px) {
             nav {
@@ -822,24 +884,27 @@
         </div>
     </section>
     <section id="services" class="py-20 section-bg section-animate">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 content-layer">
-            <h2 class="text-4xl font-bold text-center gradient-text mb-12">Nossos Serviços</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="service-item p-6 rounded-xl transition fade-in text-center">
-                    <img src="https://i.postimg.cc/wjGtqTVm/pngegg-1.png" alt="Ícone Marketing Digital" class="service-icon mx-auto">
-                    <h3 class="text-2xl font-semibold gradient-text mb-4">Marketing Digital</h3>
-                    <p class="text-gray-300">Campanhas estratégicas para engajar e converter seu público-alvo.</p>
-                </div>
-                <div class="service-item p-6 rounded-xl transition fade-in text-center" style="animation-delay: 0.2s;">
-                    <img src="https://i.postimg.cc/YqgkG2MF/pngegg-2.png" alt="Ícone Desenvolvimento Web" class="service-icon mx-auto">
-                    <h3 class="text-2xl font-semibold gradient-text mb-4">Desenvolvimento Web</h3>
-                    <p class="text-gray-300">Sites dinâmicos e responsivos que refletem sua marca.</p>
-                </div>
-                <div class="service-item p-6 rounded-xl transition fade-in text-center" style="animation-delay: 0.4s;">
-                    <img src="https://i.postimg.cc/63Gbj3HL/pngegg-3.png" alt="Ícone Design Gráfico" class="service-icon mx-auto">
-                    <h3 class="text-2xl font-semibold gradient-text mb-4">Design Gráfico</h3>
-                    <p class="text-gray-300">Visuais únicos que contam a história da sua marca.</p>
-                </div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 content-layer">
+        <h2 class="text-4xl font-bold text-center gradient-text mb-12">Nossos Serviços</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            
+            <div class="service-item p-8 rounded-xl transition fade-in text-center">
+                <img src="https://i.postimg.cc/wjGtqTVm/pngegg-1.png" alt="Ícone Marketing Digital" class="service-icon mx-auto">
+                <h3 class="text-2xl font-semibold gradient-text mb-3">Marketing Digital</h3>
+                <p class="text-gray-300">Campanhas estratégicas focadas em performance e conversão de público-alvo.</p>
+            </div>
+            
+            <div class="service-item p-8 rounded-xl transition fade-in text-center" style="animation-delay: 0.2s;">
+                <img src="https://i.postimg.cc/YqgkG2MF/pngegg-2.png" alt="Ícone Desenvolvimento Web" class="service-icon mx-auto">
+                <h3 class="text-2xl font-semibold gradient-text mb-3">Desenvolvimento Web</h3>
+                <p class="text-gray-300">Sites personalizados, rápidos e responsivos que são a espinha dorsal da sua marca.</p>
+            </div>
+            
+            <div class="service-item p-8 rounded-xl transition fade-in text-center" style="animation-delay: 0.4s;">
+                <img src="https://i.postimg.cc/63Gbj3HL/pngegg-3.png" alt="Ícone Design Gráfico" class="service-icon mx-auto">
+                <h3 class="text-2xl font-semibold gradient-text mb-3">Design Gráfico & UX</h3>
+                <p class="text-gray-300">Visuais únicos e interfaces intuitivas que elevam a percepção de valor da sua empresa.</p>
+            </div>
             </div>
         </div>
     </section>
