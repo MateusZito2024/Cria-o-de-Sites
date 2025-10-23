@@ -209,22 +209,29 @@
         }
 
         .service-item, .portfolio-item {
-            animation: pulse 3s infinite ease-in-out;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            position: relative;
-            z-index: 30;
-            background: #4b5563;
-            border: 3px solid #a5b4fc;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
-            opacity: 1 !important;
-        }
+    animation: pulse 3s infinite ease-in-out;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    z-index: 30;
+    background: #4b5563;
+    border: 3px solid #a5b4fc;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+    opacity: 1 !important;
+}
 
-        .service-item:hover, .portfolio-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(168, 85, 247, 0.5);
-            background: linear-gradient(135deg, #374151, #4b5563);
-            animation: stretch 0.6s ease-in-out, pulse 3s infinite ease-in-out;
-        }
+.service-item:hover, .portfolio-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(168, 85, 247, 0.5);
+    background: linear-gradient(135deg, #374151, #4b5563);
+    animation: stretch 0.6s ease-in-out, pulse 3s infinite ease-in-out;
+}
+/* E o bloco extra de portfolio-item que você adicionou no último código */
+.portfolio-item {
+    background: #1f2937 !important; /* Fundo mais sólido e escuro */
+    border: 1px solid rgba(165, 180, 252, 0.1);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+    animation: none !important; /* Remove a animação 'pulse' longa do item */
+}
 
         .portfolio-item .overlay {
             transition: opacity 0.3s ease, background 0.3s ease;
@@ -634,6 +641,34 @@
 }
 
 /* --- FIM DOS NOVOS ESTILOS --- */
+        /* NOVO ESTILO para Portfólio (Remover Bloco) */
+/* Resetamos os estilos de card para que pareçam apenas imagens */
+.portfolio-item {
+    padding: 0 !important; /* Remove padding que fazia parte do card */
+    background: none !important; /* Remove o fundo do card */
+    border: none !important; /* Remove a borda */
+    box-shadow: none !important; /* Remove a sombra */
+    border-radius: 0 !important; /* Remove o arredondamento */
+    overflow: visible !important; /* Garante que nada seja cortado */
+    transition: transform 0.3s ease;
+}
+
+/* Aplicamos a animação/estilo de hover na imagem interna (se houver) */
+.portfolio-item img {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 0.5rem; /* Mantemos um leve arredondamento na imagem, se desejar */
+}
+
+/* Adicionamos um efeito sutil de hover na imagem, se ela for o principal foco */
+.portfolio-item:hover img {
+    transform: scale(1.03);
+    box-shadow: 0 5px 15px rgba(232, 121, 249, 0.4); /* Brilho neon sutil */
+}
+
+/* O overlay ainda pode ser usado, mas é melhor removê-lo se o objetivo é a imagem pura */
+.portfolio-item .overlay {
+    /* Mantido: você pode remover esta regra se não quiser o overlay */
+}
         /* --- MEDIA QUERIES PARA MOBILE (max-width: 768px) --- */
         @media (max-width: 768px) {
             nav {
@@ -951,7 +986,7 @@
             </div>
         </div>
     </section>
-    <footer class="section-bg text-gray-200 py-8">
+    <footer class="text-gray-200 py-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center content-layer">
             <p>© 2025 Asthro. Todos os direitos reservados.</p>
         </div>
