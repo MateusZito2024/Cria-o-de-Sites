@@ -150,10 +150,10 @@
         }
 
         .content-layer {
-            position: relative;
-            z-index: 2;
-            pointer-events: auto;
-        }
+            position: relative;
+            z-index: 10; /* Aumentado para garantir que o conteúdo fique acima das estrelas */
+            pointer-events: auto;
+        }
 
         h1, h2, h3, p, a, button, img, input, form {
             position: relative;
@@ -198,9 +198,8 @@
         }
 
         .float {
-            animation: float 3s ease-in-out infinite;
-        }
-
+            /* animation: float 3s ease-in-out infinite; */
+        }
         .pulse {
             animation: pulse 2s ease-in-out infinite;
         }
@@ -241,10 +240,6 @@
 
         .carousel-item.active.content-card:hover {
             animation: pulse 2s ease-in-out infinite !important;
-        }
-
-        .carousel-item.float, .carousel-item.active.float {
-            animation: float 3s ease-in-out infinite;
         }
 
         .gradient-bg {
@@ -760,7 +755,7 @@
                 
                 <div class="p-6 rounded-xl service-card-main float">
                     <div class="flex items-center justify-center mb-4">
-                        <img src="https://i.postimg.cc/RhkCP2SL/pngegg-3.png" alt="Design Icon" class="service-icon w-20 h-20 transition-transform">
+                        <img src="https://i.imgur.com/d8jYxPc.png" alt="Design Icon" class="service-icon w-20 h-20 transition-transform">
                     </div>
                     <h3 class="text-xl font-semibold mb-3 text-center">Design Gráfico</h3>
                     <p class="mb-4 text-center text-sm">
@@ -773,7 +768,7 @@
 
                 <div class="p-6 rounded-xl service-card-main float" style="animation-delay: 0.2s;">
                     <div class="flex items-center justify-center mb-4">
-                        <img src="https://i.postimg.cc/HLYYPwgR/pngegg-2.png" alt="Website Icon" class="service-icon w-20 h-20 transition-transform">
+                        <img src="https://i.imgur.com/O0CMXrR.png" alt="Website Icon" class="service-icon w-20 h-20 transition-transform">
                     </div>
                     <h3 class="text-xl font-semibold mb-3 text-center">Desenvolvimento Web</h3>
                     <p class="mb-4 text-center text-sm">
@@ -786,7 +781,7 @@
 
                 <div class="p-6 rounded-xl service-card-main float" style="animation-delay: 0.4s;">
                     <div class="flex items-center justify-center mb-4">
-                        <img src="https://i.postimg.cc/RhkCP2SL/pngegg-3.png" alt="Marketing Icon" class="service-icon w-20 h-20 transition-transform">
+                        <img src="https://i.imgur.com/MiizSTk.png" alt="Marketing Icon" class="service-icon w-20 h-20 transition-transform">
                     </div>
                     <h3 class="text-xl font-semibold mb-3 text-center">Marketing Digital</h3>
                     <p class="mb-4 text-center text-sm">
@@ -799,7 +794,7 @@
 
                 <div class="p-6 rounded-xl service-card-main float" style="animation-delay: 0.6s;">
                     <div class="flex items-center justify-center mb-4">
-                        <img src="https://i.postimg.cc/HLYYPwgR/pngegg-2.png" alt="Support Icon" class="service-icon w-20 h-20 transition-transform">
+                        <img src="https://i.imgur.com/Qmco6a2.png" alt="Support Icon" class="service-icon w-20 h-20 transition-transform">
                     </div>
                     <h3 class="text-xl font-semibold mb-3 text-center">Suporte & Manutenção</h3>
                     <p class="mb-4 text-center text-sm">
