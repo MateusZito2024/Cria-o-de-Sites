@@ -22,10 +22,10 @@ img {
 
         html, body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #1e293b, #2d3748, #000000, #0f172a, #1e293b, #2d3748, #000000, #0f172a);
+            background: linear-gradient(135deg, #111111, #1e293b, #111111, #1e293b);
             background-size: 400% 400%;
             animation: gradientTransition 20s ease-in-out infinite;
-            color: #f8f8f8;
+            color: #edf1f7;
             margin: 0;
             padding: 0;
             position: relative;
@@ -63,17 +63,17 @@ img {
         }
 
         .star.purple {
-            background: #6a0dad;
+            background: #6627ff;
             box-shadow: 0 0 5px 1px rgba(106, 13, 173, 0.5);
         }
 
         .star.pink {
-            background: #e879f9;
+            background: #0bf4ed;
             box-shadow: 0 0 5px 1px rgba(232, 121, 249, 0.5);
         }
 
         .star.white {
-            background: #ffffff;
+            background: #edf1f7;
             box-shadow: 0 0 5px 1px rgba(255, 255, 255, 0.5);
         }
 
@@ -112,7 +112,7 @@ img {
             height: 2px;
             bottom: -4px;
             left: 0;
-            background: linear-gradient(135deg, #a5b4fc, #e879f9);
+            background: linear-gradient(135deg, #6627ff, #0bf4ed);
             transition: width 0.3s ease;
         }
 
@@ -121,11 +121,11 @@ img {
         }
 
         .nav-link:hover {
-            color: #e879f9;
+            color: #0bf4ed;
         }
 
         .gradient-text {
-            background: linear-gradient(135deg, #a5b4fc, #e879f9);
+            background: linear-gradient(135deg, #6627ff, #0bf4ed);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -191,7 +191,7 @@ img {
         }
 
         .animated-gradient-text {
-            background: linear-gradient(90deg, #6a0dad, #ffffff, #e879f9, #6a0dad);
+            background: linear-gradient(90deg, #6627ff, #edf1f7, #0bf4ed, #6627ff);
             background-size: 400% 100%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -274,20 +274,20 @@ img {
 
         .puzzle-section {
             position: relative;
-            background: #2d3748;
+            background: rgba(17, 17, 17, 0.6);
             border-radius: 1rem;
             padding: 2rem;
             margin: 2rem auto;
             max-width: 800px;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-            border: 2px solid #a5b4fc;
+            border: 2px solid #6627ff;
             animation: squish 30s infinite ease-in-out;
             transition: background 0.3s ease, box-shadow 0.3s ease;
         }
 
         .puzzle-section:hover {
-            background: #374151;
-            box-shadow: 0 10px 20px rgba(106, 13, 173, 0.3);
+            background: rgba(17, 17, 17, 0.8);
+            box-shadow: 0 10px 20px rgba(102, 39, 255, 0.4);
         }
 
         .puzzle-section::before {
@@ -297,8 +297,8 @@ img {
             left: 50%;
             width: 40px;
             height: 20px;
-            background: #2d3748;
-            border: 2px solid #a5b4fc;
+            background: #111111;
+            border: 2px solid #6627ff;
             border-bottom: none;
             border-radius: 50% 50% 0 0;
             transform: translateX(-50%);
@@ -311,8 +311,8 @@ img {
             left: 50%;
             width: 40px;
             height: 20px;
-            background: #2d3748;
-            border: 2px solid #a5b4fc;
+            background: #111111;
+            border: 2px solid #6627ff;
             border-top: none;
             border-radius: 0 0 50% 50%;
             transform: translateX(-50%);
@@ -320,7 +320,7 @@ img {
 
         .puzzle-section:hover::before,
         .puzzle-section:hover::after {
-            background: #374151;
+            background: #1e293b;
         }
 
         @keyframes squish {
@@ -345,16 +345,16 @@ img {
         }
 
         .whatsapp-button { background: #25D366; }
-        .form-button { background: #a78bfa; }
-        .schedule-button { background: #1e3a8a; }
-        .feedback-button { background: #be185d; }
-        .testimonial-button { background: #166534; }
+        .form-button { background: #6627ff; }
+        .schedule-button { background: #0bf4ed; }
+        .feedback-button { background: #30fca9; }
+        .testimonial-button { background: #6627ff; }
 
         .whatsapp-button:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(37, 211, 102, 0.5); }
-        .form-button:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(167, 139, 250, 0.5); }
-        .schedule-button:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(30, 58, 138, 0.5); }
-        .feedback-button:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(190, 24, 93, 0.5); }
-        .testimonial-button:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(22, 101, 52, 0.5); }
+        .form-button:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(102, 39, 255, 0.6); }
+        .schedule-button:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(11, 244, 237, 0.6); }
+        .feedback-button:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(48, 252, 169, 0.6); }
+        .testimonial-button:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(102, 39, 255, 0.6); }
 
         /* Buttons inside puzzle-section: remove specific margins, use flex for spacing */
         .puzzle-section .whatsapp-button,
@@ -425,7 +425,7 @@ img {
         .chat-container {
             max-width: 600px;
             margin: 0 auto;
-            background: #374151;
+            background: #1e293b;
             border-radius: 1rem;
             padding: 1.5rem;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
@@ -459,15 +459,15 @@ img {
         }
 
         .bot-message {
-            background: #4b5563;
-            color: #e2e8f0;
+            background: #374151;
+            color: #edf1f7;
             align-self: flex-start;
             border-bottom-left-radius: 0;
         }
 
         .user-message {
-            background: #a5b4fc;
-            color: #1f2937;
+            background: #6627ff;
+            color: #edf1f7;
             align-self: flex-end;
             border-bottom-right-radius: 0;
         }
@@ -482,7 +482,7 @@ img {
         .typing-indicator span {
             width: 8px;
             height: 8px;
-            background: #a5b4fc;
+            background: #0bf4ed;
             border-radius: 50%;
             animation: bounce 0.6s infinite alternate;
         }
@@ -504,16 +504,16 @@ img {
             display: flex;
             gap: 1rem;
             padding-top: 1rem;
-            border-top: 1px solid #4b5563;
+            border-top: 1px solid #6627ff;
             flex-wrap: nowrap; /* Impede a quebra de linha dos inputs no chat */
         }
 
         .chat-input textarea {
             flex: 1;
             padding: 0.75rem;
-            background: #4b5563;
+            background: #374151;
             color: #e2e8f0;
-            border: 1px solid #a5b4fc;
+            border: 1px solid #6627ff;
             border-radius: 0.5rem;
             outline: none;
             resize: none;
@@ -523,7 +523,7 @@ img {
         }
 
         .chat-input button {
-            background: #e879f9;
+            background: #0bf4ed;
             color: white;
             padding: 0.75rem 1.5rem;
             border-radius: 0.5rem;
@@ -535,7 +535,7 @@ img {
 
         .chat-input button:hover {
             transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(232, 121, 249, 0.5);
+            box-shadow: 0 5px 15px rgba(11, 244, 237, 0.6);
         }
 
         .sparkle-text {
@@ -543,7 +543,7 @@ img {
             font-weight: bold;
             text-align: center;
             color: #e2e8f0;
-            background: linear-gradient(90deg, #a5b4fc, #e879f9, #a5b4fc);
+            background: linear-gradient(90deg, #6627ff, #0bf4ed, #6627ff);
             background-size: 200%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -578,13 +578,13 @@ img {
         }
 
         .modal-content {
-            background: #2d3748;
+            background: #1e293b;
             border-radius: 1rem;
             padding: 2rem;
             max-width: 500px;
             width: 100%;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-            border: 2px solid #a5b4fc;
+            border: 2px solid #6627ff;
             position: relative;
             animation: slideInTopPiece 0.5s ease-out;
             box-sizing: border-box;
@@ -609,9 +609,9 @@ img {
             width: 100%;
             padding: 0.75rem;
             margin-bottom: 1rem;
-            background: #4b5563;
+            background: #374151;
             color: #e2e8f0;
-            border: 1px solid #a5b4fc;
+            border: 1px solid #6627ff;
             border-radius: 0.5rem;
             outline: none;
             font-family: 'Poppins', sans-serif;
@@ -624,7 +624,7 @@ img {
         }
 
         .modal-content .form-button { /* Alvo apenas os botões de submit DENTRO do modal */
-            background: #e879f9;
+            background: #0bf4ed;
             color: white;
             padding: 0.75rem 1.5rem;
             border-radius: 0.5rem;
@@ -638,7 +638,7 @@ img {
 
         .modal-content .form-button:hover {
             transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(232, 121, 249, 0.5);
+            box-shadow: 0 5px 15px rgba(11, 244, 237, 0.6);
         }
 
         .close-button {
@@ -663,7 +663,7 @@ img {
 
         .close-button:hover {
             background: rgba(255, 255, 255, 0.1);
-            color: #e879f9;
+            color: #0bf4ed;
         }
 
         .error-message,
@@ -674,7 +674,7 @@ img {
         }
 
         .error-message { color: #f87171; }
-        .success-message { color: #a5b4fc; }
+        .success-message { color: #0bf4ed; }
 
         @keyframes sparkle {
             0% { background-position: 0%; }
@@ -698,11 +698,11 @@ img {
 }
 
 .contact-hub {
-    background: rgba(45, 55, 72, 0.6); /* Fundo de vidro semi-transparente */
+    background: rgba(17, 17, 17, 0.8); /* Fundo de vidro semi-transparente */
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
     border-radius: 1.5rem;
-    border: 1px solid rgba(165, 180, 252, 0.3);
+    border: 1px solid rgba(102, 39, 255, 0.4);
     padding: 2rem;
     max-width: 950px;
     width: 100%;
@@ -753,7 +753,7 @@ img {
 
 .contact-option-btn:hover {
     transform: translateY(-4px) scale(1.03); /* Efeito de elevação mais pronunciado */
-    border-color: #e879f9;
+    border-color: #0bf4ed;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4) !important; /* Sombra mais forte no hover */
 }
 
