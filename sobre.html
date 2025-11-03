@@ -32,10 +32,10 @@
 
         html, body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #1e293b, #2d3748, #000000, #0f172a, #1e293b, #2d3748, #000000, #0f172a);
+            background: linear-gradient(135deg, #111111, #111111);
             background-size: 400% 400%;
             animation: gradientTransition 20s ease-in-out infinite;
-            color: #f8f8f8;
+            color: #edf1f7;
             margin: 0;
             padding: 0;
             position: relative;
@@ -74,12 +74,12 @@
         }
 
         .star.purple {
-            background: #6a0dad;
+            background: #6627ff;
             box-shadow: 0 0 5px 1px rgba(106, 13, 173, 0.5);
         }
 
         .star.pink {
-            background: #e879f9;
+            background: #0bf4ed;
             box-shadow: 0 0 5px 1px rgba(232, 121, 249, 0.5);
         }
 
@@ -126,7 +126,7 @@
             height: 2px;
             bottom: -4px;
             left: 0;
-            background: linear-gradient(135deg, #a5b4fc, #e879f9);
+            background: linear-gradient(135deg, #6627ff, #0bf4ed);
             transition: width 0.3s ease;
         }
 
@@ -135,11 +135,11 @@
         }
 
         .nav-link:hover {
-            color: #e879f9;
+            color: #0bf4ed;
         }
 
         .gradient-text {
-            background: linear-gradient(135deg, #a5b4fc, #e879f9);
+            background: linear-gradient(135deg, #6627ff, #0bf4ed);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -281,9 +281,9 @@
         .team-item:hover, .value-item:hover, .milestone-item:hover {
     transform: translateY(-5px);
     /* Manter o brilho neon no hover */
-    box-shadow: 0 10px 20px rgba(232, 121, 249, 0.6); /* Mais forte */
+    box-shadow: 0 10px 20px rgba(11, 244, 237, 0.6); /* Mais forte */
     /* Aumentar um pouco a opacidade do fundo no hover */
-    background: rgba(45, 55, 72, 0.6); 
+    background: rgba(45, 55, 72, 0.8);
     animation: stretch 0.6s ease-in-out, pulse 3s infinite ease-in-out;
 }
 
@@ -296,7 +296,7 @@
         }
 
         .animated-gradient-text {
-            background: linear-gradient(135deg, #a5b4fc, #e879f9, #a5b4fc);
+            background: linear-gradient(135deg, #6627ff, #0bf4ed, #6627ff);
             background-size: 200% 100%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -304,13 +304,13 @@
         }
 
         .team-img {
-            border: 3px solid #a5b4fc;
+            border: 3px solid #6627ff;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .team-img:hover {
             transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(232, 121, 249, 0.5);
+            box-shadow: 0 5px 15px rgba(11, 244, 237, 0.5);
         }
 
         .social-icon {
@@ -319,7 +319,7 @@
 
         .social-icon:hover {
             transform: scale(1.2);
-            color: #e879f9;
+            color: #0bf4ed;
         }
 
         /* Linha do tempo: ajustar o layout da linha e dos pontos para mobile */
@@ -370,7 +370,7 @@
         }
 
         .saiba-mais:hover {
-            animation: pulseGlow 1.2s ease-in-out infinite;
+            box-shadow: 0 0 20px rgba(11, 244, 237, 0.5);
         }
 
         /* Adjust image positioning */
@@ -397,7 +397,7 @@
         .hamburger span {
             width: 100%;
             height: 3px;
-            background: #f8f8f8;
+            background: #edf1f7;
             transition: all 0.3s ease;
         }
 
@@ -421,7 +421,7 @@
         @media (max-width: 768px) {
             /* Navbar adjustments */
             nav {
-                background: rgba(31, 41, 55, 0.95);
+                background: rgba(17, 17, 17, 0.95);
                 padding: 0.5rem 1rem;
             }
 
@@ -443,10 +443,10 @@
                 height: 100vh;
                 width: 100%;
                 max-width: 300px; /* Limit width for larger tablets */
-                background: rgba(31, 41, 55, 0.8); /* Fundo semi-transparente para o glassmorphism */
+                background: rgba(17, 17, 17, 0.9); /* Fundo semi-transparente para o glassmorphism */
                 backdrop-filter: blur(10px); /* Efeito de desfoque */
                 -webkit-backdrop-filter: blur(10px); /* Para compatibilidade com Safari */
-                border-left: 1px solid rgba(165, 180, 252, 0.3); /* Borda sutil */
+                border-left: 1px solid rgba(102, 39, 255, 0.5); /* Borda sutil */
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
@@ -488,10 +488,10 @@
             }
 
             .nav-menu-mobile .nav-link:hover {
-                background: linear-gradient(135deg, rgba(165, 180, 252, 0.3), rgba(232, 121, 249, 0.3)); /* Gradiente mais visível no hover */
+                background: linear-gradient(135deg, rgba(102, 39, 255, 0.3), rgba(11, 244, 237, 0.3)); /* Gradiente mais visível no hover */
                 transform: translateY(-4px) scale(1.02); /* Efeito de levantar e expandir levemente */
                 box-shadow: 0 8px 16px rgba(232, 121, 249, 0.4); /* Sombra mais intensa e colorida no hover */
-                border-color: #e879f9; /* Borda colorida no hover */
+                border-color: #0bf4ed; /* Borda colorida no hover */
             }
 
             .nav-menu-mobile .nav-link::after {
