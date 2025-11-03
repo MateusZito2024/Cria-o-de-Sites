@@ -19,6 +19,13 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://i.imgur.com/sE44ypp.png">
     <style>
+        img {
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none;     /* IE 10+ */
+    user-select: none;
+    -webkit-user-drag: none;   /* Bloqueia o arrasto em Webkit (Chrome, Safari) */
+    pointer-events: auto;      /* Garante que o cursor do mouse funciona, mas bloqueia o toque longo */
+}
         *, *::before, *::after {
             box-sizing: border-box;
         }
@@ -1784,6 +1791,11 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 contactSectionObserver.observe(contactSection);
             }
         });
+document.addEventListener('contextmenu', function(e) {
+    if (e.target.tagName === 'IMG') {
+        e.preventDefault();
+    }
+}, false);
     </script>
 </body>
 </html>
