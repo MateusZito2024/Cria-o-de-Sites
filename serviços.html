@@ -126,7 +126,7 @@
             position: fixed;
             top: 0;
             width: 100%;
-            z-index: 10;
+            z-index: 900;
             background: transparent;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             padding: 0 1rem;
@@ -157,7 +157,6 @@
 
         h1, h2, h3, p, a, button, img, input, form {
             position: relative;
-            z-index: 30;
             pointer-events: auto;
         }
 
@@ -327,48 +326,46 @@
         }
 
         .newsletter-input {
-            background: #2d3748;
-            color: #e2e8f0;
-            border: 1px solid #a5b4fc;
-            pointer-events: auto;
-            position: relative;
-            z-index: 40;
-        }
+    background: #2d3748;
+    color: #e2e8f0 !important; /* 👈 Adicione o !important */
+    border: 1px solid #a5b4fc;
+    pointer-events: auto;
+}
 
-        .newsletter-button {
-            background: linear-gradient(135deg, #a5b4fc, #e879f9);
-            color: white;
-            pointer-events: auto;
-            position: relative;
-            z-index: 40;
-            cursor: pointer;
-        }
+        .newsletter-button {
+            background: linear-gradient(135deg, #a5b4fc, #e879f9);
+            color: white;
+            pointer-events: auto;
+            /* position: relative; <--- REMOVIDO */
+            /* z-index: 40; <--- REMOVIDO */
+            cursor: pointer;
+        }
 
-        .newsletter-button:hover {
-            background: linear-gradient(135deg, #e879f9, #a5b4fc);
-        }
+        .newsletter-button:hover {
+            background: linear-gradient(135deg, #e879f9, #a5b4fc);
+        }
 
-        .confirmation-message {
-            background: transparent;
-            color: white;
-            text-align: center;
-            animation: float 3s ease-in-out infinite;
-            pointer-events: auto;
-            position: relative;
-            z-index: 40;
-        }
+        .confirmation-message {
+            background: transparent;
+            color: white;
+            text-align: center;
+            animation: float 3s ease-in-out infinite;
+            pointer-events: auto;
+            /* position: relative; <--- REMOVIDO */
+            /* z-index: 40; <--- REMOVIDO */
+        }
 
-        #newsletter-form {
-            pointer-events: auto;
-            position: relative;
-            z-index: 40;
-        }
+        #newsletter-form {
+            pointer-events: auto;
+            /* position: relative; <--- REMOVIDO */
+            /* z-index: 40; <--- REMOVIDO */
+        }
 
-        #newsletter-container {
-            pointer-events: auto;
-            position: relative;
-            z-index: 40;
-        }
+        #newsletter-container {
+            pointer-events: auto;
+            /* position: relative; <--- REMOVIDO */
+            /* z-index: 40; <--- REMOVIDO */
+        }
 
         /* Updated Styles for Nossos Serviços Section */
         /* REFAZENDO ESTILO DARK/NEON PARA CARDS E IMAGENS */
@@ -452,10 +449,10 @@
 
 /* Melhorar a visualização de imagens com fundo branco nos carrosséis - REMOVENDO A BORDA NEON DA IMAGEM */
 .content-card img {
-    border: none; /* <--- REMOVIDA A BORDA NEON */
-    box-shadow: none; /* <--- REMOVIDO O BRILHO */
-    background-color: transparent; /* Fundo transparente */
-    border-radius: 0.5rem;
+    border: none; /* <--- REMOVIDA A BORDA NEON */
+    box-shadow: none; /* <--- REMOVIDO O BRILHO */
+    background-color: transparent; /* Fundo transparente */
+    border-radius: 0.5rem;
 }
 
 /* Carrossel de Depoimentos */
@@ -476,7 +473,7 @@
             border: none;
             cursor: pointer;
             padding: 0;
-            z-index: 40;
+            z-index: 910;
         }
 
         .hamburger span {
@@ -537,7 +534,7 @@
                 align-items: center;
                 gap: 1.5rem; /* Espaçamento entre os itens */
                 transition: right 0.3s ease;
-                z-index: 100;
+                z-index: 999;
                 display: flex; /* Show flex container */
                 box-sizing: border-box;
                 padding: 0 1rem;
@@ -545,8 +542,9 @@
             }
 
             .nav-menu-mobile.active {
-                right: 0; /* Slide in */
-            }
+                right: 0;
+        z-index: 999; /* O mais alto de todos */
+    }
 
             /* Adjust brand name font size */
             .brand-name {
@@ -726,13 +724,13 @@
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/portf%C3%B3lio.html" class="nav-link text-lg transition">Portfólio</a>
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/contato.html" class="nav-link text-lg transition">Contato</a>
             </div>
-            <div class="nav-menu-mobile content-layer">
-                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/index.html" class="nav-link text-lg transition block">Início</a>
-                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/servi%C3%A7os.html" class="nav-link text-lg transition block">Serviços</a>
-                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/sobre.html" class="nav-link text-lg transition block">Sobre</a>
-                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/portf%C3%B3lio.html" class="nav-link text-lg transition block">Portfólio</a>
-                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/contato.html" class="nav-link text-lg transition block">Contato</a>
-            </div>
+            <div class="nav-menu-mobile">
+    <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/index.html" class="nav-link text-lg transition block">Início</a>
+    <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/servi%C3%A7os.html" class="nav-link text-lg transition block">Serviços</a>
+    <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/sobre.html" class="nav-link text-lg transition block">Sobre</a>
+    <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/portf%C3%B3lio.html" class="nav-link text-lg transition block">Portfólio</a>
+    <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/contato.html" class="nav-link text-lg transition block">Contato</a>
+</div>
         </div>
     </nav>
 
