@@ -32,10 +32,10 @@
 
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #1e293b, #2d3748, #000000, #0f172a, #1e293b, #2d3748, #000000, #0f172a);
+            background: linear-gradient(135deg, #111111, #111111);
             background-size: 400% 400%;
             animation: gradientTransition 20s ease-in-out infinite;
-            color: #f8f8f8;
+            color: #edf1f7;
             margin: 0;
             padding: 0;
             position: relative;
@@ -73,12 +73,12 @@
         }
 
         .star.purple {
-            background: #6a0dad;
+            background: #6627ff;
             box-shadow: 0 0 5px 1px rgba(106, 13, 173, 0.5);
         }
 
         .star.pink {
-            background: #e879f9;
+            background: #0bf4ed;
             box-shadow: 0 0 5px 1px rgba(232, 121, 249, 0.5);
         }
 
@@ -122,7 +122,7 @@
             height: 2px;
             bottom: -4px;
             left: 0;
-            background: linear-gradient(135deg, #a5b4fc, #e879f9);
+            background: linear-gradient(135deg, #6627ff, #0bf4ed);
             transition: width 0.3s ease;
         }
 
@@ -131,11 +131,11 @@
         }
 
         .nav-link:hover {
-            color: #e879f9;
+            color: #0bf4ed;
         }
 
         .gradient-text {
-            background: linear-gradient(135deg, #a5b4fc, #e879f9);
+            background: linear-gradient(135deg, #6627ff, #0bf4ed);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -234,7 +234,7 @@
             font-weight: bold;
             text-align: center;
             color: #e2e8f0;
-            background: linear-gradient(90deg, #a5b4fc, #e879f9, #a5b4fc);
+            background: linear-gradient(90deg, #6627ff, #0bf4ed, #6627ff);
             background-size: 200%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -315,8 +315,8 @@
         .pagination-number {
             width: 30px;
             height: 30px;
-            background: linear-gradient(135deg, #4a5568, #2d3748);
-            color: #e2e8f0;
+            background: linear-gradient(135deg, #1e293b, #111111);
+            color: #edf1f7;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -338,20 +338,20 @@
         }
 
         .pagination-number:hover {
-            background: linear-gradient(135deg, #e879f9, #a5b4fc);
+            background: linear-gradient(135deg, #0bf4ed, #6627ff);
             transform: scale(1.1);
             box-shadow: 0 0 10px rgba(165, 180, 252, 0.8);
         }
 
         .newsletter-input {
-    background: #2d3748;
+    background: #1e293b;
     color: #e2e8f0 !important; /* 👈 Adicione o !important */
-    border: 1px solid #a5b4fc;
+    border: 1px solid #6627ff;
     pointer-events: auto;
 }
 
         .newsletter-button {
-            background: linear-gradient(135deg, #a5b4fc, #e879f9);
+            background: linear-gradient(135deg, #6627ff, #0bf4ed);
             color: white;
             pointer-events: auto;
             /* position: relative; <--- REMOVIDO */
@@ -360,7 +360,7 @@
         }
 
         .newsletter-button:hover {
-            background: linear-gradient(135deg, #e879f9, #a5b4fc);
+            background: linear-gradient(135deg, #0bf4ed, #6627ff);
         }
 
         .confirmation-message {
@@ -389,11 +389,11 @@
         /* REFAZENDO ESTILO DARK/NEON PARA CARDS E IMAGENS */
 
 .service-card-main {
-    background: rgba(31, 41, 55, 0.7); /* Fundo escuro semi-transparente (Glassmorphism) */
+    background: rgba(17, 17, 17, 0.7); /* Fundo escuro semi-transparente (Glassmorphism) */
     backdrop-filter: blur(8px);
     border: 1px solid transparent;
-    border-image: linear-gradient(135deg, #a5b4fc, #e879f9) 1; /* Borda gradiente */
-    box-shadow: 0 0 15px rgba(232, 121, 249, 0.4);
+    border-image: linear-gradient(135deg, #6627ff, #0bf4ed) 1; /* Borda gradiente */
+    box-shadow: 0 0 15px rgba(102, 39, 255, 0.4);
     transition: all 0.5s ease;
     overflow: hidden;
     display: flex; /* Para centralizar conteúdo verticalmente */
@@ -403,21 +403,21 @@
 
 .service-card-main:hover {
     transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 15px 30px rgba(232, 121, 249, 0.6);
-    border-image: linear-gradient(135deg, #e879f9, #a5b4fc) 1;
+    box-shadow: 0 15px 30px rgba(11, 244, 237, 0.6);
+    border-image: linear-gradient(135deg, #0bf4ed, #6627ff) 1;
 }
 
 .service-card-main h3 {
     font-family: 'Montserrat', sans-serif;
     letter-spacing: 0.05em;
-    background: linear-gradient(135deg, #a5b4fc, #e879f9);
+    background: linear-gradient(135deg, #6627ff, #0bf4ed);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    text-shadow: 0 0 5px rgba(232, 121, 249, 0.5);
+    text-shadow: 0 0 5px rgba(11, 244, 237, 0.5);
 }
 
 .service-card-main p {
-    color: #e2e8f0;
+    color: #edf1f7;
     flex-grow: 1; /* Faz o parágrafo ocupar o espaço restante */
 }
 
@@ -430,27 +430,27 @@
 }
 
 .testimonial-card-dark {
-    background: rgba(45, 55, 72, 0.9);
-    border-left: 5px solid #a5b4fc;
+    background: rgba(17, 17, 17, 0.9);
+    border-left: 5px solid #6627ff;
     box-shadow: 0 0 10px rgba(165, 180, 252, 0.3);
     padding: 2rem; /* Aumenta o padding para melhor visual */
     border-radius: 0.75rem; /* Bordas arredondadas */
 }
 
 .testimonial-card-dark p {
-    color: #a5b4fc;
+    color: #6627ff;
     font-size: 1.125rem; /* Ajusta o tamanho da fonte */
     line-height: 1.6;
 }
 
 .testimonial-card-dark .author {
-    color: #e879f9;
+    color: #0bf4ed;
     font-size: 0.95rem;
 }
 
 /* Estilo para todos os cards de conteúdo (posts, projetos) */
 .content-card {
-    background: rgba(31, 41, 55, 0.9);
+    background: rgba(17, 17, 17, 0.9);
     border: 1px solid rgba(165, 180, 252, 0.2);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     transition: all 0.3s ease;
@@ -497,7 +497,7 @@
         .hamburger span {
             width: 100%;
             height: 3px;
-            background: #f8f8f8;
+            background: #edf1f7;
             transition: all 0.3s ease;
         }
 
@@ -521,7 +521,7 @@
         @media (max-width: 768px) {
             /* Navbar adjustments */
             nav {
-                background: rgba(31, 41, 55, 0.95);
+                background: rgba(17, 17, 17, 0.95);
                 padding: 0.5rem 1rem;
             }
 
@@ -543,10 +543,10 @@
                 height: 100vh;
                 width: 100%;
                 max-width: 300px; /* Limit width for larger tablets */
-                background: rgba(31, 41, 55, 0.8); /* Fundo semi-transparente para o glassmorphism */
+                background: rgba(17, 17, 17, 0.9); /* Fundo semi-transparente para o glassmorphism */
                 backdrop-filter: blur(10px); /* Efeito de desfoque */
                 -webkit-backdrop-filter: blur(10px); /* Para compatibilidade com Safari */
-                border-left: 1px solid rgba(165, 180, 252, 0.3); /* Borda sutil */
+                border-left: 1px solid rgba(102, 39, 255, 0.5); /* Borda sutil */
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
@@ -576,7 +576,7 @@
                 width: 90%; /* Ajuste a largura para um visual mais elegante */
                 padding: 0.8rem 1.5rem;
                 border-radius: 0.75rem; /* Mais arredondado */
-                background: rgba(165, 180, 252, 0.1); /* Fundo semi-transparente para o link */
+                background: rgba(102, 39, 255, 0.1); /* Fundo semi-transparente para o link */
                 color: #f8f8f8; /* Cor do texto clara */
                 text-align: center;
                 font-size: clamp(1.125rem, 4vw, 1.3rem); /* Fonte um pouco maior */
@@ -589,10 +589,10 @@
             }
 
             .nav-menu-mobile .nav-link:hover {
-                background: linear-gradient(135deg, rgba(165, 180, 252, 0.3), rgba(232, 121, 249, 0.3)); /* Gradiente mais visível no hover */
+                background: linear-gradient(135deg, rgba(102, 39, 255, 0.3), rgba(11, 244, 237, 0.3)); /* Gradiente mais visível no hover */
                 transform: translateY(-4px) scale(1.02); /* Efeito de levantar e expandir levemente */
-                box-shadow: 0 8px 16px rgba(232, 121, 249, 0.4); /* Sombra mais intensa e colorida no hover */
-                border-color: #e879f9; /* Borda colorida no hover */
+                box-shadow: 0 8px 16px rgba(11, 244, 237, 0.6); /* Sombra mais intensa e colorida no hover */
+                border-color: #0bf4ed; /* Borda colorida no hover */
             }
 
             .nav-menu-mobile .nav-link::after {
