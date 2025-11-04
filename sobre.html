@@ -418,85 +418,101 @@
             display: none; /* Hidden by default */
         }
 
-        @media (max-width: 768px) {
-            /* Navbar adjustments */
-            nav {
-                background: rgba(17, 17, 17, 0.95);
-                padding: 0.5rem 1rem;
-            }
+        .mobile-menu-logo {
+    display: none; /* Oculta a imagem por padrão (desktop) */
+    width: 80%;
+    max-width: 150px;
+    height: auto;
+    opacity: 0.7;
+    filter: drop-shadow(0 0 5px rgba(102, 39, 255, 0.4));
+}
 
-            /* Hide desktop nav links */
-            nav .flex.items-center.space-x-6 {
-                display: none;
-            }
+@media (max-width: 768px) {
+    /* Navbar adjustments */
+    nav {
+        /* CORREÇÃO: Fundo escuro para o cabeçalho no mobile */
+        background: rgba(17, 17, 17, 0.95);
+        padding: 0.5rem 1rem;
+    }
 
-            /* Show hamburger */
-            .hamburger {
-                display: flex;
-            }
+    /* Hide desktop nav links */
+    nav .flex.items-center.space-x-6 {
+        display: none;
+    }
 
-            /* Mobile nav menu com Glassmorphism */
-            .nav-menu-mobile {
-                position: fixed;
-                top: 0;
-                right: -100%; /* Initially off-screen */
-                height: 100vh;
-                width: 100%;
-                max-width: 300px; /* Limit width for larger tablets */
-                background: rgba(17, 17, 17, 0.9); /* Fundo semi-transparente para o glassmorphism */
-                backdrop-filter: blur(10px); /* Efeito de desfoque */
-                -webkit-backdrop-filter: blur(10px); /* Para compatibilidade com Safari */
-                border-left: 1px solid rgba(102, 39, 255, 0.5); /* Borda sutil */
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                gap: 1.5rem; /* Espaçamento entre os itens */
-                transition: right 0.3s ease;
-                z-index: 30;
-                display: flex; /* Show flex container */
-                box-sizing: border-box;
-                padding: 0 1rem;
-                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3); /* Sombra para profundidade */
-            }
+    /* Show hamburger */
+    .hamburger {
+        display: flex;
+    }
 
-            .nav-menu-mobile.active {
-                right: 0; /* Slide in */
-            }
+    /* Mobile nav menu com Glassmorphism */
+    .nav-menu-mobile {
+        position: fixed;
+        top: 0;
+        right: -100%; /* Initially off-screen */
+        height: 100vh;
+        width: 100%;
+        max-width: 300px; /* Limit width for larger tablets */
+        background: rgba(17, 17, 17, 0.9); /* Fundo semi-transparente para o glassmorphism */
+        backdrop-filter: blur(10px); /* Efeito de desfoque */
+        -webkit-backdrop-filter: blur(10px); /* Para compatibilidade com Safari */
+        border-left: 1px solid rgba(102, 39, 255, 0.5); /* Borda sutil */
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 1.5rem; /* Espaçamento entre os itens */
+        transition: right 0.3s ease;
+        z-index: 30;
+        display: flex; /* Show flex container */
+        box-sizing: border-box;
+        padding: 0 1rem;
+        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3); /* Sombra para profundidade */
+    }
 
-            /* Adjust brand name font size */
-            .brand-name {
-                font-size: clamp(1.75rem, 8vw, 2rem);
-                padding: 0.5rem;
-            }
+    .nav-menu-mobile.active {
+        right: 0; /* Slide in */
+    }
+    
+    /* Mostrar o logo e aplicar margem apenas no mobile */
+    .mobile-menu-logo {
+        display: block; 
+        margin-top: 3rem; 
+    }
 
-            /* Estilo dos links no menu mobile - Glassmorphism */
-            .nav-menu-mobile .nav-link {
-                display: block;
-                width: 90%; /* Ajuste a largura para um visual mais elegante */
-                padding: 0.8rem 1.5rem;
-                border-radius: 0.75rem; /* Mais arredondado */
-                background: rgba(165, 180, 252, 0.1); /* Fundo semi-transparente para o link */
-                color: #f8f8f8; /* Cor do texto clara */
-                text-align: center;
-                font-size: clamp(1.125rem, 4vw, 1.3rem); /* Fonte um pouco maior */
-                font-weight: 600; /* Mais negrito */
-                border: 1px solid rgba(255, 255, 255, 0.2); /* Borda sutil para o efeito de vidro */
-                backdrop-filter: blur(5px);
-                -webkit-backdrop-filter: blur(5px);
-                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra suave */
-                transition: all 0.3s ease; /* Transições suaves */
-            }
+    /* Adjust brand name font size */
+    .brand-name {
+        font-size: clamp(1.75rem, 8vw, 2rem);
+        padding: 0.5rem;
+    }
 
-            .nav-menu-mobile .nav-link:hover {
-                background: linear-gradient(135deg, rgba(102, 39, 255, 0.3), rgba(11, 244, 237, 0.3)); /* Gradiente mais visível no hover */
-                transform: translateY(-4px) scale(1.02); /* Efeito de levantar e expandir levemente */
-                box-shadow: 0 8px 16px rgba(232, 121, 249, 0.4); /* Sombra mais intensa e colorida no hover */
-                border-color: #0bf4ed; /* Borda colorida no hover */
-            }
+    /* Estilo dos links no menu mobile - Glassmorphism */
+    .nav-menu-mobile .nav-link {
+        display: block;
+        width: 90%; /* Ajuste a largura para um visual mais elegante */
+        padding: 0.8rem 1.5rem;
+        border-radius: 0.75rem; /* Mais arredondado */
+        background: rgba(102, 39, 255, 0.1); /* Fundo semi-transparente para o link */
+        color: #f8f8f8; /* Cor do texto clara */
+        text-align: center;
+        font-size: clamp(1.125rem, 4vw, 1.3rem); /* Fonte um pouco maior */
+        font-weight: 600; /* Mais negrito */
+        border: 1px solid rgba(255, 255, 255, 0.2); /* Borda sutil para o efeito de vidro */
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra suave */
+        transition: all 0.3s ease; /* Transições suaves */
+    }
 
-            .nav-menu-mobile .nav-link::after {
-                display: none; /* Remove a linha inferior dos links no mobile */
-            }
+    .nav-menu-mobile .nav-link:hover {
+        background: linear-gradient(135deg, rgba(102, 39, 255, 0.3), rgba(11, 244, 237, 0.3)); /* Gradiente mais visível no hover */
+        transform: translateY(-4px) scale(1.02); /* Efeito de levantar e expandir levemente */
+        box-shadow: 0 8px 16px rgba(11, 244, 237, 0.6); /* Sombra mais intensa e colorida no hover */
+        border-color: #0bf4ed; /* Borda colorida no hover */
+    }
+
+    .nav-menu-mobile .nav-link::after {
+        display: none; /* Remove a linha inferior dos links no mobile */
+    }
 
             /* Ajuste de padding para o conteúdo principal para não ficar sob a navbar */
             main {
@@ -677,6 +693,7 @@
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/sobre.html" class="nav-link text-lg transition block">Sobre</a>
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/portf%C3%B3lio.html" class="nav-link text-lg transition block">Portfólio</a>
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/contato.html" class="nav-link text-lg transition block">Contato</a>
+                <img src="https://i.imgur.com/sE44ypp.png" alt="Asthro" class="mobile-menu-logo" />
             </div>
         </div>
     </nav>
