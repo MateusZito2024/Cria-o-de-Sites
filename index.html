@@ -208,6 +208,11 @@
             from { opacity: 1; transform: translateY(0); }
             to { opacity: 0; transform: translateY(5px); }
         }
+        @keyframes colorPulse {
+    0% { background-color: #6627ff; }      /* Início: Violeta Cósmico */
+    50% { background-color: #0bf4ed; }      /* Meio: Azul Prisma */
+    100% { background-color: #6627ff; }     /* Fim: Violeta Cósmico */
+}
 
         .fade-in {
             opacity: 1 !important;
@@ -479,45 +484,62 @@
             min-width: 0;
         }
 
-        .chat-input button {
-            background: #0bf4ed;
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 0.5rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            font-size: clamp(0.875rem, 2.5vw, 1rem);
-        }
+       .chat-input button {
+    /* Cor de fundo base para quando a animação não estiver rodando (fallback) */
+    background: #0bf4ed;
+    
+    /* Aplicação da pulsação de cor. Mais lento: 5 segundos. */
+    animation: colorPulse 5s infinite ease-in-out; 
 
-        .chat-input button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(11, 244, 237, 0.5);
-        }
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+    font-size: clamp(0.875rem, 2.5vw, 1rem);
+}
+
+.chat-input button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(11, 244, 237, 0.6);
+    /* Desativa a pulsação no hover para o efeito de elevação */
+    animation: none;
+}
 
         .mic-button {
-            background: #6627ff;
-            color: white;
-            padding: 0.5rem;
-            border-radius: 0.5rem;
-            cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            flex-shrink: 0;
-        }
+    /* Cor de fundo base para quando a animação não estiver rodando (fallback) */
+    background: #6627ff; 
+    
+    /* Aplicação da pulsação de cor */
+    animation: colorPulse 3s infinite ease-in-out; 
 
-        .mic-button.recording {
-            background: #0bf4ed;
-            transform: scale(1.1);
-        }
+    color: white;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    flex-shrink: 0;
+}
 
-        .mic-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(11, 244, 237, 0.5);
-        }
+.mic-button.recording {
+    /* Estado de gravação: cor fixa e escala maior */
+    background: #0bf4ed; 
+    transform: scale(1.1);
+    /* Desativa a pulsação para indicar que está gravando */
+    animation: none; 
+}
+
+.mic-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(11, 244, 237, 0.5);
+    /* Desativa a pulsação no hover para o efeito de elevação */
+    animation: none; 
+}
 
         .mic-button:disabled {
             background: #6b7280;
