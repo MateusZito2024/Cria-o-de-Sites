@@ -324,55 +324,72 @@
         }
 
         .inactivity-card p {
-            color: #6627ff;
-            margin-bottom: 1.5rem;
-            background: rgba(55, 65, 81, 0.7);
-            padding: 0.5rem;
-            border-radius: 0.5rem;
-            font-size: clamp(0.875rem, 3vw, 1rem);
-        }
+    /* CORREÇÃO: Remove o fundo e garante cor de texto branca */
+    color: #edf1f7; /* Cinza Gelo, mais claro que o #e2e8f0 que estava */
+    margin-bottom: 1.5rem;
+    background: transparent; /* Fundo removido */
+    padding: 0; /* Padding removido para que apenas o texto apareça */
+    border-radius: 0;
+    font-size: clamp(0.875rem, 3vw, 1rem);
+}
 
-        .inactivity-card button {
-            background: #6627ff;
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.5rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
+        .inactivity-card .cta-pulse {
+    /* Cor de fundo base para quando a animação não estiver rodando (fallback) */
+    background: #6627ff;
+    
+    /* Aplicação da pulsação de cor, com duração sutil (5 segundos) */
+    animation: colorPulse 5s infinite ease-in-out;
+    
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
 
-        .inactivity-card button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(11, 244, 237, 0.5);
-        }
+.inactivity-card .cta-pulse:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(11, 244, 237, 0.5); /* Sombra Azul Prisma no hover */
+    /* Desativa a pulsação no hover */
+    animation: none;
+}
 
-        .inactivity-card .close-btn {
-            position: absolute;
-            top: 0.5rem;
-            right: 0.5rem;
-            background: none;
-            border: none;
-            color: #0bf4ed;
-            font-size: 1.25rem;
-            cursor: pointer;
-            width: 25px;
-            height: 25px;
-            line-height: 25px;
-            text-align: center;
-            border-radius: 50%;
-            transition: color 0.3s ease, background 0.3s ease;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+/* Garante que o botão de fechar (close-btn) mantenha seu estilo discreto */
+.inactivity-card .close-btn {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: none;
+    border: none;
+    color: #0bf4ed; /* Cor Azul Prisma para o X */
+    font-size: 1.25rem;
+    cursor: pointer;
+    /* ... (outras propriedades de layout) ... */
+    
+    /* 🚨 CORREÇÃO: Adiciona border-radius para o formato circular */
+    width: 25px; 
+    height: 25px; 
+    line-height: 25px; 
+    text-align: center;
+    border-radius: 50%; /* 👈 AGORA É UM CÍRCULO! */
+    /* ... */
+    transition: color 0.3s ease, background 0.3s ease;
+    animation: none; /* Garante que o X não pulse */
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
-        .inactivity-card .close-btn:hover {
-            color: #0bf4ed;
-            background: rgba(255, 255, 255, 0.1);
-        }
+/* Garante que o hover também seja circular */
+.inactivity-card .close-btn:hover {
+    color: #0bf4ed;
+    background: rgba(255, 255, 255, 0.1);
+    /* Garante que o fundo do hover seja exibido em formato circular */
+    border-radius: 50%; 
+}
 
         /* Ajustes para o chatbot (PC) */
         .chat-container {
@@ -1053,7 +1070,7 @@
         <button class="close-btn" onclick="hideInactivityCard()">×</button>
         <h3 class="gradient-text">Seu Site Ideal Começa Aqui</h3>
         <p>Quer saber quanto vai custar? Conta pra gente sua ideia e juntos, mapeamos o melhor caminho pro seu projeto. Mande mensagem agora!</p>
-        <a href="#contact" onclick="hideInactivityCard();"><button>Fale Conosco</button></a>
+        <a href="#contact" onclick="hideInactivityCard();"><button class="cta-pulse">Fale Conosco</button></a>
     </div>
     <script>
         function smoothScrollTo(elementId) {
