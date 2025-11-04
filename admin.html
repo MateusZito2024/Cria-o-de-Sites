@@ -91,7 +91,19 @@
             
             <p id="admin-feedback" class="mt-4 hidden"></p>
         </div>
-
+<div class="mb-8">
+            <h3 class="text-2xl font-bold gradient-text mb-4">Pesquisar Projetos</h3>
+            <div class="flex space-x-4">
+                <input type="text" id="searchInput" placeholder="Buscar por ID (ASTHRO-XXX) ou Nome do Cliente"
+                    class="w-full p-3 rounded-lg bg-gray-800 text-white border-gray-600 focus:ring-purple-500 focus:border-purple-500"
+                    onkeyup="debouncedSearch()" onchange="debouncedSearch()">
+                <button onclick="loadProjects(1)"
+                    class="bg-pink-600 hover:bg-pink-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300">
+                    Limpar
+                </button>
+            </div>
+            <p id="search-feedback" class="mt-2 text-sm text-gray-400 hidden"></p>
+        </div>
         <h3 class="text-2xl font-bold gradient-text mb-4">Projetos Existentes</h3>
         <div id="project-list" class="space-y-4">
             <p class="text-gray-500">Carregando projetos...</p>
@@ -123,7 +135,7 @@
         const HOME_PAGE_PROJECTS = 5;
         let currentPage = 1;
         let totalPages = 1;
-
+let searchTimeout = null;
         const projectListElement = document.getElementById('project-list');
         const adminFeedbackElement = document.getElementById('admin-feedback');
         
@@ -290,67 +302,115 @@
                 adminFeedbackElement.classList.remove('hidden');
             }
         }
-
+function debouncedSearch() {
+            // Limpa o timer anterior para não chamar a função imediatamente
+            clearTimeout(searchTimeout);
+            // Configura um novo timer para chamar loadProjects em 500ms
+            searchTimeout = setTimeout(() => {
+                loadProjects(1); // Sempre volta para a primeira página ao pesquisar
+            }, 500);
+        }
+        
+        function updateSearchFeedback(searchText, totalResults) {
+            const feedbackElement = document.getElementById('search-feedback');
+            if (searchText) {
+                feedbackElement.textContent = `Mostrando ${totalResults} resultado(s) para: "${searchText}"`;
+                feedbackElement.classList.remove('hidden');
+                feedbackElement.classList.remove('text-red-400');
+                feedbackElement.classList.add('text-green-400');
+            } else {
+                feedbackElement.classList.add('hidden');
+            }
+        }
         async function loadProjects(page = 1) {
-    projectListElement.innerHTML = '';
-    currentPage = page;
-    document.getElementById('pagination-container').innerHTML = ''; 
+            projectListElement.innerHTML = '';
+            currentPage = page;
+            document.getElementById('pagination-container').innerHTML = '';
 
-    try {
-        // Query base para TODOS os projetos (ativos e concluídos), ordenada por Status (Asc) e ID (Desc).
-        // A ordenação por status fará com que os "concluido" (z) fiquem no final, o que é bom.
-        let baseQuery = db.collection('projects')
-            .orderBy('status')
-            .orderBy(firebase.firestore.FieldPath.documentId(), 'desc');
+            const searchInput = document.getElementById('searchInput');
+            const searchText = searchInput ? searchInput.value.trim().toUpperCase() : '';
+            
+            // Variável para armazenar todos os documentos se houver pesquisa ou para contagem
+            let allDocs = [];
+            let isSearching = !!searchText;
 
-        const countSnapshot = await baseQuery.get();
-        const totalActiveProjects = countSnapshot.docs.length; // Aqui pegará todos os projetos
-
-                // Calcula o total de páginas (além da Home Page)
-                const projectsAfterHome = Math.max(0, totalActiveProjects - HOME_PAGE_PROJECTS);
-                totalPages = Math.ceil(projectsAfterHome / PROJECTS_PER_PAGE);
-
-                let query = baseQuery;
+            try {
+                // 1. QUERY DE BUSCA BASE
+                let baseQuery = db.collection('projects')
+                    .orderBy('status')
+                    .orderBy(firebase.firestore.FieldPath.documentId(), 'desc');
                 
-                // --- Lógica de Paginação ---
-
-                if (currentPage === 1) {
-                    // Página Inicial: mostra os 5 mais recentes (ou menos, se não houver 5)
-                    query = baseQuery.limit(HOME_PAGE_PROJECTS);
-                } else {
-                    // Páginas subsequentes: pula os 5 da home + as páginas anteriores
-                    const docsToSkip = HOME_PAGE_PROJECTS + (currentPage - 2) * PROJECTS_PER_PAGE;
+                // Se houver pesquisa, faremos a busca no cliente (browser)
+                if (isSearching) {
+                    projectListElement.innerHTML = '<p class="text-gray-500">Buscando...</p>';
+                    // Pega TODOS os projetos para filtro local (limitação do Firestore)
+                    const snapshot = await baseQuery.get();
                     
-                    if (docsToSkip > 0) {
-                        // Busca o documento que é o ponto de início (o último documento da página anterior)
-                        // A baseQuery é usada aqui para garantir a mesma ordenação e filtro
-                        const startDocSnapshot = await baseQuery.limit(docsToSkip).get();
-                        
-                        if (!startDocSnapshot.empty) {
-                            const startDoc = startDocSnapshot.docs[startDocSnapshot.docs.length - 1];
-                            // A query final começa APÓS o último documento pego e limita a 6
-                            query = baseQuery.startAfter(startDoc).limit(PROJECTS_PER_PAGE);
-                        } else {
-                            // Este caso deve ser capturado pelo countSnapshot.empty, mas é uma segurança.
-                            projectListElement.innerHTML = '<p class="text-gray-500">Nenhum projeto encontrado nesta página.</p>';
-                            return;
-                        }
-                    } else {
-                        // Se docsToSkip for 0 ou menos, volta para a primeira página (segurança)
-                         query = baseQuery.limit(HOME_PAGE_PROJECTS);
-                    }
-                }
-                
-                const snapshot = await query.get();
+                    // Armazena todos os documentos
+                    allDocs = snapshot.docs;
+                    
+                    // Filtra localmente por ID OU Nome do Cliente
+                    const filteredDocs = allDocs.filter(doc => {
+                        const data = doc.data();
+                        const projectId = doc.id.toUpperCase();
+                        const clientName = data.clientName ? data.clientName.toUpperCase() : '';
 
-                if (snapshot.empty) {
-                    projectListElement.innerHTML = `<p class="text-gray-500">${totalActiveProjects > 0 ? 'Nenhum projeto ativo nesta página.' : 'Nenhum projeto cadastrado ativo.'}</p>`;
-                    renderPaginationControls(totalPages); 
+                        return projectId.includes(searchText) || clientName.includes(searchText);
+                    });
+
+                    allDocs = filteredDocs; // Agora allDocs contém apenas os resultados filtrados
+                    
+                    updateSearchFeedback(searchText, allDocs.length);
+                    
+                } else {
+                    // SE NÃO ESTIVER PESQUISANDO, MANTÉM A LÓGICA DE PAGINAÇÃO
+                    
+                    const countSnapshot = await baseQuery.get();
+                    const totalActiveProjects = countSnapshot.docs.length; // Pega todos para contagem
+                    
+                    // Calcula o total de páginas (além da Home Page)
+                    const projectsAfterHome = Math.max(0, totalActiveProjects - HOME_PAGE_PROJECTS);
+                    totalPages = Math.ceil(projectsAfterHome / PROJECTS_PER_PAGE);
+
+                    let query = baseQuery;
+                    
+                    // Lógica de Paginação (a mesma que você já tinha)
+                    if (currentPage === 1) {
+                        query = baseQuery.limit(HOME_PAGE_PROJECTS);
+                    } else {
+                        const docsToSkip = HOME_PAGE_PROJECTS + (currentPage - 2) * PROJECTS_PER_PAGE;
+                        if (docsToSkip > 0) {
+                            const startDocSnapshot = await baseQuery.limit(docsToSkip).get();
+                            if (!startDocSnapshot.empty) {
+                                const startDoc = startDocSnapshot.docs[startDocSnapshot.docs.length - 1];
+                                query = baseQuery.startAfter(startDoc).limit(PROJECTS_PER_PAGE);
+                            } else {
+                                projectListElement.innerHTML = '<p class="text-gray-500">Nenhum projeto encontrado nesta página.</p>';
+                                updateSearchFeedback(searchText, 0);
+                                return;
+                            }
+                        } else {
+                            query = baseQuery.limit(HOME_PAGE_PROJECTS);
+                        }
+                    }
+                    
+                    const snapshot = await query.get();
+                    allDocs = snapshot.docs; // Armazena os documentos da página atual
+
+                    updateSearchFeedback(searchText, allDocs.length); // Limpa o feedback de pesquisa
+                }
+
+                
+                // 2. RENDERIZAÇÃO DOS PROJETOS (para pesquisa E paginação)
+                if (allDocs.length === 0) {
+                    projectListElement.innerHTML = `<p class="text-gray-500">${isSearching ? 'Nenhum resultado encontrado para a pesquisa.' : 'Nenhum projeto cadastrado ativo.'}</p>`;
+                    // Renderiza paginação apenas se não estiver pesquisando
+                    if (!isSearching) renderPaginationControls(totalPages);
                     return;
                 }
 
-                // 3. Renderiza os projetos
-                snapshot.forEach(doc => {
+                projectListElement.innerHTML = '';
+                allDocs.forEach(doc => {
                     const data = doc.data();
                     const statusInfo = statusMap[data.status] || { name: 'Desconhecido', color: 'text-red-500' };
 
@@ -358,7 +418,7 @@
                     projectCard.className = `p-4 bg-gray-800 rounded-lg flex justify-between items-center neon-border`;
                     projectCard.innerHTML = `
                         <div>
-                            <p class="text-lg font-semibold text-white">${data.clientName} (${doc.id})</p>
+                            <p class="text-lg font-semibold text-white">${data.clientName} (<span class="text-indigo-400">${doc.id}</span>)</p>
                             <p class="text-sm text-gray-400">Status: <span class="text-purple-400 font-bold">${statusInfo.name}</span></p>
                             <p class="text-sm text-gray-400">Entrega: ${data.deliveryDate || 'N/A'}</p>
                             <p class="text-xs text-gray-600 mt-1">ID: ${doc.id}</p>
@@ -368,18 +428,21 @@
                     projectListElement.appendChild(projectCard);
                 });
 
-                // 4. Renderiza os controles de paginação
-                renderPaginationControls(totalPages);
-                
+                // 3. Renderiza os controles de paginação (APENAS se não estiver pesquisando)
+                if (!isSearching) {
+                    renderPaginationControls(totalPages);
+                } else {
+                    document.getElementById('pagination-container').innerHTML = '';
+                }
+
             } catch (error) {
-                // Loga o erro exato e a URL se for um erro de índice
+                // Loga o erro, incluindo o erro de índice
                 console.error("ERRO CRÍTICO NA CONSULTA DO FIRESTORE:", error);
-                
+
                 if (error.message && error.message.includes('requires an index')) {
                     // Tenta extrair a URL de criação do índice do erro do Firebase (se for fornecida)
                     const indexUrlMatch = error.message.match(/https:\/\/[^\s]+/);
                     const indexUrl = indexUrlMatch ? indexUrlMatch[0] : 'Nenhuma URL de índice encontrada. Crie o índice manualmente: status ASC, __name__ DESC';
-                    
                     projectListElement.innerHTML = `
                         <p class="text-red-400 font-bold">ERRO DE ÍNDICE: O Firestore exige um índice composto específico.</p>
                         <p class="text-gray-400 mt-2">Por favor, verifique no Console do Firebase e crie o índice com a ordem exata:</p>
