@@ -53,7 +53,6 @@
                         <option value="design_andamento">Design e Criação</option>
                         <option value="dev_andamento">Desenvolvimento</option>
                         <option value="revisao_cliente">Revisão do Cliente</option>
-                        <option value="concluido">Concluído e Entregue</option>
                     </select>
                 </div>
                 <div>
@@ -65,8 +64,12 @@
             <label for="notesInput" class="block text-sm font-medium text-gray-400 mt-4">Notas do Consultor</label>
             <textarea id="notesInput" placeholder="Detalhes da etapa atual ou próximos passos." class="w-full p-3 rounded-lg bg-gray-800 text-white border-gray-600 focus:ring-purple-500 focus:border-purple-500"></textarea>
 
-            <button onclick="saveProject()" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 mt-6 w-full">Salvar / Atualizar Projeto</button>
-            <p id="admin-feedback" class="mt-4 text-green-400 hidden">Status atualizado com sucesso!</p>
+            <div class="flex gap-4 mt-6">
+                <button id="finishButton" onclick="finishProject()" class="hidden bg-yellow-600 hover:bg-yellow-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 flex-1">Finalizar Projeto</button>
+                <button onclick="saveProject()" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 flex-1">Salvar / Atualizar Projeto</button>
+            </div>
+            
+            <p id="admin-feedback" class="mt-4 hidden"></p>
         </div>
 
         <h3 class="text-2xl font-bold gradient-text mb-4">Projetos Existentes</h3>
@@ -77,7 +80,7 @@
 
 
     <script>
-        // 🚨 PASSO CRÍTICO: SUBSTITUA PELAS SUAS CREDENCIAIS E SENHA
+        // SUAS CREDENCIAIS DO FIREBASE
         const FIREBASE_CONFIG = {
             apiKey: "AIzaSyBb8jAT-VR5723XaxZnH4jcw-PxOlRKn8w", 
             authDomain: "asthro-status-tracker.firebaseapp.com",
@@ -95,12 +98,14 @@
 
         const projectListElement = document.getElementById('project-list');
         const adminFeedbackElement = document.getElementById('admin-feedback');
+        
+        // Mapeamento de Status
         const statusMap = {
             'setup': { name: 'Setup Inicial', percent: 10 },
             'design_andamento': { name: 'Design e Criação', percent: 35 },
             'dev_andamento': { name: 'Desenvolvimento em Andamento', percent: 65 },
             'revisao_cliente': { name: 'Revisão do Cliente', percent: 85 },
-            'concluido': { name: 'Concluído e Entregue', percent: 100 }
+            'concluido': { name: 'CONCLUÍDO', percent: 100 }
         };
 
         function login() {
@@ -116,6 +121,128 @@
                 feedback.classList.remove('hidden');
             }
         }
+        
+        function resetForm() {
+            document.getElementById('form-title').textContent = 'Criar Novo Projeto';
+            document.getElementById('idInput').value = '';
+            document.getElementById('idInput').disabled = false;
+            document.getElementById('clientNameInput').value = '';
+            document.getElementById('statusSelect').value = 'setup';
+            document.getElementById('deliveryDateInput').value = '';
+            document.getElementById('notesInput').value = '';
+            document.getElementById('finishButton').classList.add('hidden');
+        }
+
+        function editProject(projectId) {
+            db.collection('projects').doc(projectId).get().then(doc => {
+                if (doc.exists) {
+                    const data = doc.data();
+                    document.getElementById('form-title').textContent = `Editar Projeto: ${projectId}`;
+                    document.getElementById('idInput').value = projectId;
+                    document.getElementById('idInput').disabled = true; 
+                    document.getElementById('clientNameInput').value = data.clientName || '';
+                    document.getElementById('statusSelect').value = data.status === 'concluido' ? 'setup' : data.status || 'setup'; // Se for concluído, não mostra no dropdown
+                    document.getElementById('deliveryDateInput').value = data.deliveryDate || '';
+                    document.getElementById('notesInput').value = data.notes || '';
+                    
+                    // Exibe ou esconde o botão Finalizar
+                    const isConcluido = data.status === 'concluido';
+                    const finishButton = document.getElementById('finishButton');
+                    finishButton.classList.toggle('hidden', isConcluido);
+                    finishButton.setAttribute('data-project-id', projectId);
+
+                }
+            }).catch(error => console.error("Erro ao buscar projeto para edição:", error));
+        }
+
+        async function finishProject() {
+            const projectId = document.getElementById('finishButton').getAttribute('data-project-id');
+
+            if (!confirm(`Tem certeza que deseja FINALIZAR e ARQUIVAR o projeto ${projectId}? O ID ficará disponível para reutilização.`)) {
+                return;
+            }
+
+            try {
+                // Atualiza o projeto para o status "concluido"
+                await db.collection('projects').doc(projectId).update({
+                    status: 'concluido',
+                    notes: 'Projeto formalmente FINALIZADO e ENTREGUE.',
+                    deliveryDate: new Date().toISOString().split('T')[0] // Data de hoje
+                });
+                
+                adminFeedbackElement.textContent = `Projeto ${projectId} FINALIZADO com sucesso!`;
+                adminFeedbackElement.className = 'mt-4 text-green-400';
+                adminFeedbackElement.classList.remove('hidden');
+                
+                resetForm();
+                loadProjects();
+                
+            } catch (error) {
+                console.error("Erro ao finalizar projeto:", error);
+                adminFeedbackElement.textContent = "Erro ao finalizar: Verifique as permissões.";
+                adminFeedbackElement.className = 'mt-4 text-red-400';
+                adminFeedbackElement.classList.remove('hidden');
+            }
+        }
+
+
+        async function saveProject() {
+            const projectId = document.getElementById('idInput').value.trim().toUpperCase();
+            const clientName = document.getElementById('clientNameInput').value.trim();
+            const status = document.getElementById('statusSelect').value;
+            const deliveryDate = document.getElementById('deliveryDateInput').value;
+            const notes = document.getElementById('notesInput').value.trim();
+
+            const isEditMode = document.getElementById('idInput').disabled;
+
+            if (!projectId || !clientName || !status) {
+                adminFeedbackElement.textContent = "Nome do Cliente e ID do Projeto são obrigatórios.";
+                adminFeedbackElement.className = 'mt-4 text-red-400';
+                adminFeedbackElement.classList.remove('hidden');
+                return;
+            }
+
+            try {
+                const docRef = db.collection('projects').doc(projectId);
+                
+                if (!isEditMode) {
+                    // --- Lógica de Proteção Contra Sobrescrita ---
+                    const existingDoc = await docRef.get();
+                    if (existingDoc.exists) {
+                        const existingData = existingDoc.data();
+                        
+                        if (existingData.status !== 'concluido') {
+                            adminFeedbackElement.textContent = `ERRO: Já existe um projeto ATIVO (${existingData.clientName}, Status: ${statusMap[existingData.status].name}) com o ID ${projectId}. Finalize-o antes de reutilizar o ID.`;
+                            adminFeedbackElement.className = 'mt-4 text-red-400';
+                            adminFeedbackElement.classList.remove('hidden');
+                            return; // BLOQUEIA A CRIAÇÃO
+                        }
+                        // Se o status for 'concluido', o ID pode ser reutilizado (sobrescrito).
+                    }
+                }
+                
+                // --- Salva ou Atualiza o Projeto ---
+                await docRef.set({
+                    clientName: clientName,
+                    status: status, // Status virá do dropdown
+                    deliveryDate: deliveryDate,
+                    notes: notes
+                }, { merge: true });
+
+                adminFeedbackElement.textContent = `Projeto ${projectId} salvo com sucesso!`;
+                adminFeedbackElement.className = 'mt-4 text-green-400';
+                adminFeedbackElement.classList.remove('hidden');
+
+                resetForm();
+                loadProjects();
+
+            } catch (error) {
+                console.error("Erro ao salvar projeto:", error);
+                adminFeedbackElement.textContent = "Erro ao salvar: Verifique suas permissões do Firestore.";
+                adminFeedbackElement.className = 'mt-4 text-red-400';
+                adminFeedbackElement.classList.remove('hidden');
+            }
+        }
 
         async function loadProjects() {
             projectListElement.innerHTML = '';
@@ -128,15 +255,15 @@
 
                 snapshot.forEach(doc => {
                     const data = doc.data();
-                    const statusInfo = statusMap[data.status] || { name: 'Desconhecido' };
+                    const statusInfo = statusMap[data.status] || { name: 'Desconhecido', color: 'text-red-500' };
                     
                     const projectCard = document.createElement('div');
-                    projectCard.className = 'p-4 bg-gray-800 rounded-lg flex justify-between items-center neon-border';
+                    projectCard.className = `p-4 bg-gray-800 rounded-lg flex justify-between items-center neon-border ${data.status === 'concluido' ? 'opacity-50' : ''}`;
                     projectCard.innerHTML = `
                         <div>
                             <p class="text-lg font-semibold text-white">${data.clientName} (${doc.id})</p>
-                            <p class="text-sm text-gray-400">Status: ${statusInfo.name}</p>
-                            <p class="text-sm text-gray-400">Entrega: ${data.deliveryDate}</p>
+                            <p class="text-sm text-gray-400">Status: <span class="${data.status === 'concluido' ? 'text-green-400 font-bold' : 'text-purple-400'}">${statusInfo.name}</span></p>
+                            <p class="text-sm text-gray-400">Entrega: ${data.deliveryDate || 'N/A'}</p>
                         </div>
                         <button onclick="editProject('${doc.id}')" class="bg-indigo-500 hover:bg-indigo-600 text-white py-1 px-3 rounded-md text-sm">Editar</button>
                     `;
@@ -148,71 +275,11 @@
             }
         }
 
-        function editProject(projectId) {
-            db.collection('projects').doc(projectId).get().then(doc => {
-                if (doc.exists) {
-                    const data = doc.data();
-                    document.getElementById('form-title').textContent = `Editar Projeto: ${projectId}`;
-                    document.getElementById('idInput').value = projectId;
-                    document.getElementById('idInput').disabled = true; // Impede edição do ID
-                    document.getElementById('clientNameInput').value = data.clientName || '';
-                    document.getElementById('statusSelect').value = data.status || 'setup';
-                    document.getElementById('deliveryDateInput').value = data.deliveryDate || '';
-                    document.getElementById('notesInput').value = data.notes || '';
-                }
-            }).catch(error => console.error("Erro ao buscar projeto para edição:", error));
-        }
-
-        async function saveProject() {
-            const projectId = document.getElementById('idInput').value.trim().toUpperCase();
-            const clientName = document.getElementById('clientNameInput').value.trim();
-            const status = document.getElementById('statusSelect').value;
-            const deliveryDate = document.getElementById('deliveryDateInput').value;
-            const notes = document.getElementById('notesInput').value.trim();
-
-            if (!projectId || !clientName || !status) {
-                adminFeedbackElement.textContent = "Nome do Cliente e ID do Projeto são obrigatórios.";
-                adminFeedbackElement.className = 'mt-4 text-red-400';
-                adminFeedbackElement.classList.remove('hidden');
-                return;
-            }
-
-            try {
-                await db.collection('projects').doc(projectId).set({
-                    clientName: clientName,
-                    status: status,
-                    deliveryDate: deliveryDate,
-                    notes: notes
-                }, { merge: true }); // Usamos merge para atualizar sem apagar outros campos futuros
-
-                adminFeedbackElement.textContent = `Projeto ${projectId} salvo com sucesso!`;
-                adminFeedbackElement.className = 'mt-4 text-green-400';
-                adminFeedbackElement.classList.remove('hidden');
-
-                // Limpa o formulário e recarrega a lista
-                document.getElementById('idInput').value = '';
-                document.getElementById('idInput').disabled = false;
-                document.getElementById('clientNameInput').value = '';
-                document.getElementById('deliveryDateInput').value = '';
-                document.getElementById('notesInput').value = '';
-                document.getElementById('form-title').textContent = 'Criar Novo Projeto';
-                
-                loadProjects();
-
-            } catch (error) {
-                console.error("Erro ao salvar projeto:", error);
-                adminFeedbackElement.textContent = "Erro ao salvar: Verifique suas permissões do Firestore.";
-                adminFeedbackElement.className = 'mt-4 text-red-400';
-                adminFeedbackElement.classList.remove('hidden');
-            }
-        }
         
-        // Define que a função de login é chamada ao carregar a página
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('adminPassword').addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') login();
             });
-            // O loadProjects será chamado apenas após o login bem-sucedido
         });
     </script>
 </body>
