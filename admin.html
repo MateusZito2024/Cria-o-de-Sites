@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asthro | Painel de Administração</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700&family=Manrope:wght@400;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="https://i.imgur.com/ZeaGXHD.png">
+
+    <style>
+        /* Tipografia Padronizada */
+        h2, h3, h4 { font-family: 'Archivo', sans-serif; }
+        body, p, a, input, button, select, textarea { font-family: 'Manrope', sans-serif; font-weight: 400; }
+        
+        body { background: #111111; color: #edf1f7; min-height: 100vh; }
+        .gradient-text { background: linear-gradient(135deg, #6627ff, #0bf4ed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .neon-border { border: 1px solid rgba(102, 39, 255, 0.4); box-shadow: 0 0 10px rgba(11, 244, 237, 0.2); }
+    </style>
+</head>
+<body class="p-8">
+
+    <header class="text-center mb-12">
+        <h1 class="text-4xl font-bold gradient-text" style="font-family: 'Archivo', sans-serif;">Painel de Administração</h1>
+        <p class="text-lg mt-2">Gerenciamento de Status de Projetos Asthro</p>
+    </header>
+
+    <div id="login-section" class="max-w-md mx-auto p-6 rounded-xl bg-gray-900 neon-border">
+        <h3 class="text-2xl font-bold text-white mb-4">Acesso Restrito</h3>
+        <input type="password" id="adminPassword" placeholder="Digite a Senha de Admin" class="w-full p-3 rounded-lg bg-gray-800 text-white border-gray-600 focus:ring-purple-500 focus:border-purple-500 mb-4">
+        <button onclick="login()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 w-full">Entrar</button>
+        <p id="login-feedback" class="mt-4 text-red-400 hidden">Senha incorreta.</p>
+    </div>
+
+    <div id="admin-panel" class="max-w-4xl mx-auto hidden">
+        
+        <div class="p-6 rounded-xl bg-gray-900 neon-border mb-8">
+            <h3 class="text-2xl font-bold gradient-text mb-4" id="form-title">Criar Novo Projeto</h3>
+            
+            <label for="idInput" class="block text-sm font-medium text-gray-400 mt-4">ID do Projeto (ASTHRO-XXX)</label>
+            <input type="text" id="idInput" placeholder="Ex: ASTHRO-001" class="w-full p-3 rounded-lg bg-gray-800 text-white border-gray-600 focus:ring-purple-500 focus:border-purple-500">
+
+            <label for="clientNameInput" class="block text-sm font-medium text-gray-400 mt-4">Nome do Cliente / Projeto</label>
+            <input type="text" id="clientNameInput" placeholder="Nome do Cliente" class="w-full p-3 rounded-lg bg-gray-800 text-white border-gray-600 focus:ring-purple-500 focus:border-purple-500">
+
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label for="statusSelect" class="block text-sm font-medium text-gray-400 mt-4">Status Atual</label>
+                    <select id="statusSelect" class="w-full p-3 rounded-lg bg-gray-800 text-white border-gray-600 focus:ring-purple-500 focus:border-purple-500">
+                        <option value="setup">Setup Inicial</option>
+                        <option value="design_andamento">Design e Criação</option>
+                        <option value="dev_andamento">Desenvolvimento</option>
+                        <option value="revisao_cliente">Revisão do Cliente</option>
+                        <option value="concluido">Concluído e Entregue</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="deliveryDateInput" class="block text-sm font-medium text-gray-400 mt-4">Previsão de Entrega</label>
+                    <input type="date" id="deliveryDateInput" class="w-full p-3 rounded-lg bg-gray-800 text-white border-gray-600 focus:ring-purple-500 focus:border-purple-500">
+                </div>
+            </div>
+
+            <label for="notesInput" class="block text-sm font-medium text-gray-400 mt-4">Notas do Consultor</label>
+            <textarea id="notesInput" placeholder="Detalhes da etapa atual ou próximos passos." class="w-full p-3 rounded-lg bg-gray-800 text-white border-gray-600 focus:ring-purple-500 focus:border-purple-500"></textarea>
+
+            <button onclick="saveProject()" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 mt-6 w-full">Salvar / Atualizar Projeto</button>
+            <p id="admin-feedback" class="mt-4 text-green-400 hidden">Status atualizado com sucesso!</p>
+        </div>
+
+        <h3 class="text-2xl font-bold gradient-text mb-4">Projetos Existentes</h3>
+        <div id="project-list" class="space-y-4">
+            <p class="text-gray-500">Carregando projetos...</p>
+        </div>
+    </div>
+
+
+    <script>
+        // 🚨 PASSO CRÍTICO: SUBSTITUA PELAS SUAS CREDENCIAIS E SENHA
+        const FIREBASE_CONFIG = {
+            apiKey: "AIzaSyBb8jAT-VR5723XaxZnH4jcw-PxOlRKn8w", 
+            authDomain: "asthro-status-tracker.firebaseapp.com",
+            projectId: "asthro-status-tracker",
+            storageBucket: "asthro-status-tracker.firebasestorage.app",
+            messagingSenderId: "1023071296327",
+            appId: "1:1023071296327:web:477b39bd6d846fff148a62"
+        };
+        
+        const ADMIN_PASSWORD = "Marmat0155"; // 👈 DEFINA UMA SENHA AQUI PARA TESTE
+
+        // Inicializa o Firebase
+        firebase.initializeApp(FIREBASE_CONFIG);
+        const db = firebase.firestore();
+
+        const projectListElement = document.getElementById('project-list');
+        const adminFeedbackElement = document.getElementById('admin-feedback');
+        const statusMap = {
+            'setup': { name: 'Setup Inicial', percent: 10 },
+            'design_andamento': { name: 'Design e Criação', percent: 35 },
+            'dev_andamento': { name: 'Desenvolvimento em Andamento', percent: 65 },
+            'revisao_cliente': { name: 'Revisão do Cliente', percent: 85 },
+            'concluido': { name: 'Concluído e Entregue', percent: 100 }
+        };
+
+        function login() {
+            const inputPassword = document.getElementById('adminPassword').value;
+            const feedback = document.getElementById('login-feedback');
+
+            if (inputPassword === ADMIN_PASSWORD && ADMIN_PASSWORD !== "SUA_SENHA_SECRETA_AQUI") {
+                document.getElementById('login-section').classList.add('hidden');
+                document.getElementById('admin-panel').classList.remove('hidden');
+                loadProjects();
+            } else {
+                feedback.textContent = "Senha incorreta ou senha padrão não alterada.";
+                feedback.classList.remove('hidden');
+            }
+        }
+
+        async function loadProjects() {
+            projectListElement.innerHTML = '';
+            try {
+                const snapshot = await db.collection('projects').get();
+                if (snapshot.empty) {
+                    projectListElement.innerHTML = '<p class="text-gray-500">Nenhum projeto cadastrado.</p>';
+                    return;
+                }
+
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    const statusInfo = statusMap[data.status] || { name: 'Desconhecido' };
+                    
+                    const projectCard = document.createElement('div');
+                    projectCard.className = 'p-4 bg-gray-800 rounded-lg flex justify-between items-center neon-border';
+                    projectCard.innerHTML = `
+                        <div>
+                            <p class="text-lg font-semibold text-white">${data.clientName} (${doc.id})</p>
+                            <p class="text-sm text-gray-400">Status: ${statusInfo.name}</p>
+                            <p class="text-sm text-gray-400">Entrega: ${data.deliveryDate}</p>
+                        </div>
+                        <button onclick="editProject('${doc.id}')" class="bg-indigo-500 hover:bg-indigo-600 text-white py-1 px-3 rounded-md text-sm">Editar</button>
+                    `;
+                    projectListElement.appendChild(projectCard);
+                });
+            } catch (error) {
+                console.error("Erro ao carregar projetos:", error);
+                projectListElement.innerHTML = '<p class="text-red-400">Erro ao carregar lista de projetos.</p>';
+            }
+        }
+
+        function editProject(projectId) {
+            db.collection('projects').doc(projectId).get().then(doc => {
+                if (doc.exists) {
+                    const data = doc.data();
+                    document.getElementById('form-title').textContent = `Editar Projeto: ${projectId}`;
+                    document.getElementById('idInput').value = projectId;
+                    document.getElementById('idInput').disabled = true; // Impede edição do ID
+                    document.getElementById('clientNameInput').value = data.clientName || '';
+                    document.getElementById('statusSelect').value = data.status || 'setup';
+                    document.getElementById('deliveryDateInput').value = data.deliveryDate || '';
+                    document.getElementById('notesInput').value = data.notes || '';
+                }
+            }).catch(error => console.error("Erro ao buscar projeto para edição:", error));
+        }
+
+        async function saveProject() {
+            const projectId = document.getElementById('idInput').value.trim().toUpperCase();
+            const clientName = document.getElementById('clientNameInput').value.trim();
+            const status = document.getElementById('statusSelect').value;
+            const deliveryDate = document.getElementById('deliveryDateInput').value;
+            const notes = document.getElementById('notesInput').value.trim();
+
+            if (!projectId || !clientName || !status) {
+                adminFeedbackElement.textContent = "Nome do Cliente e ID do Projeto são obrigatórios.";
+                adminFeedbackElement.className = 'mt-4 text-red-400';
+                adminFeedbackElement.classList.remove('hidden');
+                return;
+            }
+
+            try {
+                await db.collection('projects').doc(projectId).set({
+                    clientName: clientName,
+                    status: status,
+                    deliveryDate: deliveryDate,
+                    notes: notes
+                }, { merge: true }); // Usamos merge para atualizar sem apagar outros campos futuros
+
+                adminFeedbackElement.textContent = `Projeto ${projectId} salvo com sucesso!`;
+                adminFeedbackElement.className = 'mt-4 text-green-400';
+                adminFeedbackElement.classList.remove('hidden');
+
+                // Limpa o formulário e recarrega a lista
+                document.getElementById('idInput').value = '';
+                document.getElementById('idInput').disabled = false;
+                document.getElementById('clientNameInput').value = '';
+                document.getElementById('deliveryDateInput').value = '';
+                document.getElementById('notesInput').value = '';
+                document.getElementById('form-title').textContent = 'Criar Novo Projeto';
+                
+                loadProjects();
+
+            } catch (error) {
+                console.error("Erro ao salvar projeto:", error);
+                adminFeedbackElement.textContent = "Erro ao salvar: Verifique suas permissões do Firestore.";
+                adminFeedbackElement.className = 'mt-4 text-red-400';
+                adminFeedbackElement.classList.remove('hidden');
+            }
+        }
+        
+        // Define que a função de login é chamada ao carregar a página
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('adminPassword').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') login();
+            });
+            // O loadProjects será chamado apenas após o login bem-sucedido
+        });
+    </script>
+</body>
+</html>
