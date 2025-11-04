@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AsthroBot | Consultor de Briefing</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700&family=Manrope:wght@400;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="https://i.imgur.com/ZeaGXHD.png">
+
+    <style>
+        /* Tipografia Padronizada */
+        h2, h3, h4 {
+            font-family: 'Archivo', sans-serif;
+        }
+        body, p, a, input, textarea, button, .message {
+            font-family: 'Manrope', sans-serif;
+            font-weight: 400;
+        }
+
+        /* Cores e Fundo */
+        body {
+            background: #111111;
+            color: #edf1f7;
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #6627ff, #0bf4ed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        /* Layout e Chat */
+        .chat-container {
+            max-width: 600px;
+            margin: 2rem auto;
+            background: linear-gradient(160deg, #111111, #1f2937);
+            border-radius: 1rem;
+            padding: 1rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            height: 70vh; /* Aumenta a altura para uma experiência de consultoria */
+            min-height: 450px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            box-sizing: border-box;
+            border: 1px solid rgba(102, 39, 255, 0.3);
+        }
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0.75rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        .message {
+            max-width: 85%;
+            padding: 0.75rem;
+            border-radius: 0.75rem;
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+        .bot-message {
+            background: #374151;
+            color: #e2e8f0;
+            align-self: flex-start;
+            border-bottom-left-radius: 0;
+        }
+        .user-message {
+            background: #6627ff;
+            color: #edf1f7;
+            align-self: flex-end;
+            border-bottom-right-radius: 0;
+        }
+        .typing-indicator {
+            display: flex;
+            gap: 0.3rem;
+            align-self: flex-start;
+            padding: 0.5rem;
+        }
+        .typing-indicator span {
+            width: 6px;
+            height: 6px;
+            background: #0bf4ed;
+            border-radius: 50%;
+            animation: bounce 0.6s infinite alternate;
+        }
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-5px); }
+        }
+        @keyframes colorPulse {
+            0% { background-color: #6627ff; }
+            50% { background-color: #0bf4ed; }
+            100% { background-color: #6627ff; }
+        }
+        
+        /* Input e Botões */
+        .chat-input {
+            display: flex;
+            gap: 0.5rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid #6627ff;
+            align-items: center;
+            position: relative;
+            flex-wrap: nowrap;
+        }
+        .chat-input textarea {
+            flex: 1;
+            padding: 0.5rem;
+            background: #374151;
+            color: #e2e8f0;
+            border: 1px solid #6627ff;
+            border-radius: 0.5rem;
+            outline: none;
+            resize: none;
+            font-size: 1rem;
+            min-width: 0;
+        }
+        .chat-input button {
+            background: #0bf4ed;
+            animation: colorPulse 5s infinite ease-in-out; 
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+            font-size: 1rem;
+        }
+        .chat-input button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(11, 244, 237, 0.6);
+            animation: none;
+        }
+
+        /* Mic Button */
+        .mic-button {
+            background: #6627ff;
+            animation: colorPulse 3s infinite ease-in-out;
+            color: white;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            flex-shrink: 0;
+            z-index: 10;
+        }
+        .mic-button.recording {
+            background: #0bf4ed; 
+            transform: scale(1.1);
+            animation: none; 
+        }
+        .mic-button svg {
+            pointer-events: none; /* Deixa o evento passar para o botão pai */
+            width: 20px;
+            height: 20px;
+        }
+        
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .chat-container {
+                width: 95%;
+                margin-top: 1rem;
+                margin-bottom: 1rem;
+                height: 75vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="text-center py-4 bg-gray-900 shadow-lg">
+        <h1 class="text-3xl font-bold gradient-text" style="font-family: 'Archivo', sans-serif;">AsthroBot Consultor</h1>
+        <p class="text-sm text-gray-400 mt-1">Análise de Briefing e Estratégia por IA.</p>
+    </header>
+
+    <div class="chat-container">
+        <div class="chat-messages" id="chatMessages"></div>
+        <div class="chat-input" id="chatInput">
+            <textarea id="userInput" placeholder="Descreva sua ideia de negócio ou marque 'Iniciar'..." rows="1" onkeypress="handleKeyPress(event)"></textarea>
+            
+            <button class="mic-button" id="micButton" title="Segure para gravar" onmousedown="startRecording(event)" onmouseup="stopRecording()" ontouchstart="startRecording(event)" ontouchend="stopRecording()">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm-1-9c0-.55.45-1 1-1s1 .45 1 1v6c0 .55-.45 1-1 1s-1-.45-1-1V5zm6 6c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.47 6 6.93V22h2v-3.07c3.39-.46 6-3.4 6-6.93h-2z"/>
+                </svg>
+            </button>
+            <button onclick="sendMessage()">Enviar</button>
+        </div>
+    </div>
+    
+    <script>
+        // ============== CONFIGURAÇÃO DA API GEMINI E PERSONA ==================
+        const GEMINI_API_KEY = "AIzaSyBq9kBfP3SLKcb7oBEfQiOr4DJh3ACei18"; // 🚨 SUBSTITUA PELA SUA CHAVE REAL!
+        const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=" + GEMINI_API_KEY;
+
+        const SYSTEM_PROMPT = `
+            Você é o AsthroBot, um Consultor Sênior de Branding, Design e Desenvolvimento Web para a agência Asthro.
+            Sua missão é atuar como um filtro e consultor inicial para novos leads, avaliando a qualidade do briefing.
+            A conversa deve ser uma análise de briefing, não um chat livre.
+            
+            1. No início (após a saudação), peça ao usuário para fornecer o briefing, a ideia ou o nome da marca.
+            2. Analise a entrada do usuário em 3 áreas: **Visão** (Metas e público), **Identidade** (Nome, logo, tom) e **Necessidades Técnicas** (Site, e-commerce, tráfego).
+            3. Responda com uma análise concisa e use a hashtag #AsthroBot.
+            4. **IMPORTANTE:** A cada resposta, formule uma **pergunta estratégica aberta** para o usuário, que o force a refinar o briefing. Por exemplo: "Que tipo de emoção sua marca deve evocar?" ou "Quais são as três principais métricas de sucesso do seu site?".
+            5. Mantenha as respostas profissionais, criativas e encorajadoras.
+            6. Se o usuário tentar sair do tópico de briefing, guie-o de volta gentilmente.
+        `;
+
+        // =====================================================================
+        // ======================= LÓGICA DO CHAT ==============================
+        // =====================================================================
+        
+        let chatMessages = document.getElementById('chatMessages');
+        let userInput = document.getElementById('userInput');
+        let micButton = document.getElementById('micButton');
+        
+        let chatHistory = [{ role: "system", parts: [{ text: SYSTEM_PROMPT }] }];
+        let isBotTyping = false;
+        let pressTimeout = null;
+
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        let recognition = null;
+        let isRecording = false;
+
+        // --- UI UTILS ---
+        function addMessage(text, type) {
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message', `${type}-message`);
+            messageElement.textContent = text;
+            chatMessages.appendChild(messageElement);
+            scrollToBottom();
+        }
+
+        function showTypingIndicator() {
+            if (isBotTyping) return;
+            isBotTyping = true;
+            const typingElement = document.createElement('div');
+            typingElement.id = 'typingIndicator';
+            typingElement.classList.add('typing-indicator');
+            typingElement.innerHTML = '<span></span><span></span><span></span>';
+            chatMessages.appendChild(typingElement);
+            scrollToBottom();
+        }
+
+        function removeTypingIndicator() {
+            const typingElement = document.getElementById('typingIndicator');
+            if (typingElement) typingElement.remove();
+            isBotTyping = false;
+        }
+
+        function scrollToBottom() {
+            if (chatMessages) chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        // --- SPEECH RECOGNITION (Lógica corrigida e simplificada) ---
+        if (SpeechRecognition) {
+            recognition = new SpeechRecognition();
+            recognition.lang = 'pt-BR';
+            recognition.interimResults = false;
+
+            recognition.onresult = function(event) {
+                const transcript = event.results[0][0].transcript;
+                userInput.value = transcript;
+                sendMessage();
+            };
+
+            recognition.onend = function() {
+                isRecording = false;
+                micButton.classList.remove('recording');
+                userInput.placeholder = "Descreva sua ideia de negócio ou marque 'Iniciar'...";
+            };
+            
+            // Corrige o problema de eventos de mouse/toque no ícone SVG
+            if (micButton && micButton.querySelector('svg')) {
+                micButton.querySelector('svg').style.pointerEvents = 'none';
+            }
+
+        } else {
+            if (micButton) micButton.style.display = 'none';
+        }
+
+        function startRecording(event) {
+            event.preventDefault();
+            if (!recognition || isRecording || isBotTyping) return;
+            
+            // Usa setTimeout para garantir que o evento de "segurar" seja registrado
+            if (pressTimeout) clearTimeout(pressTimeout);
+            
+            pressTimeout = setTimeout(() => {
+                try {
+                    recognition.start();
+                    isRecording = true;
+                    micButton.classList.add('recording');
+                    userInput.placeholder = "Gravando... Fale agora!";
+                } catch (e) {
+                    console.error('Error starting recognition:', e);
+                    isRecording = false;
+                    micButton.classList.remove('recording');
+                    userInput.placeholder = "Descreva sua ideia de negócio ou marque 'Iniciar'...";
+                }
+            }, 100); 
+        }
+
+        function stopRecording() {
+            if (!recognition || !isRecording) return;
+            recognition.stop();
+            if (pressTimeout) clearTimeout(pressTimeout);
+            isRecording = false;
+            micButton.classList.remove('recording');
+            userInput.placeholder = "Descreva sua ideia de negócio ou marque 'Iniciar'...";
+        }
+
+        // --- LOGIC GESTÃO DE CHAT E API ---
+        function handleKeyPress(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
+            }
+        }
+
+        function sendMessage() {
+            if (isBotTyping) return;
+            const userText = userInput.value.trim();
+            if (!userText) return;
+
+            addMessage(userText, 'user');
+            userInput.value = '';
+            
+            // Adiciona a mensagem do usuário ao histórico ANTES de chamar a API
+            chatHistory.push({ role: "user", parts: [{ text: userText }] });
+
+            callGeminiAPI();
+        }
+
+        async function callGeminiAPI() {
+            showTypingIndicator();
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: chatHistory,
+                        config: {
+                            systemInstruction: SYSTEM_PROMPT,
+                            temperature: 0.7 
+                        }
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(`API Error: ${response.status} - ${errorData.error.message}`);
+                }
+
+                const data = await response.json();
+                const botResponse = data.candidates[0]?.content?.parts[0]?.text || "Desculpe, não consegui processar a resposta.";
+                
+                removeTypingIndicator();
+                addMessage(botResponse, 'bot');
+                
+                // Adiciona a resposta do bot ao histórico
+                chatHistory.push({ role: "model", parts: [{ text: botResponse }] });
+
+            } catch (error) {
+                console.error("Erro na comunicação com a API Gemini:", error);
+                removeTypingIndicator();
+                addMessage("Desculpe, AsthroBot está fora do ar. Por favor, tente novamente mais tarde ou contate-nos via WhatsApp.", 'bot');
+            }
+        }
+
+        // --- INICIALIZAÇÃO ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Inicia a conversa
+            addMessage("Olá! Eu sou o AsthroBot, seu Consultor de Briefing. Para começarmos nossa análise, por favor, me diga: Qual é a sua ideia de negócio, o nome da marca ou o objetivo do seu projeto?", 'bot');
+        });
+    </script>
+</body>
+</html>
