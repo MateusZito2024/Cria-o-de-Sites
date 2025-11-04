@@ -193,10 +193,8 @@
     
     <script>
         // ============== CONFIGURAÇÃO DA API GEMINI E PERSONA ==================
-        const GEMINI_API_KEY = "AIzaSyBq9kBfP3SLKcb7oBEfQiOr4DJh3ACei18"; // 🚨 SUBSTITUA PELA SUA CHAVE REAL!
-        const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=" + GEMINI_API_KEY;
-
-        const SYSTEM_PROMPT = `
+        const PROXY_URL = "astrobot-proxy.js"; // <--- NOVO ENDEREÇO SEGURO
+const SYSTEM_PROMPT = `
             Você é o AsthroBot, um Consultor Sênior de Branding, Design e Desenvolvimento Web para a agência Asthro.
             Sua missão é atuar como um filtro e consultor inicial para novos leads, avaliando a qualidade do briefing.
             A conversa deve ser uma análise de briefing, não um chat livre.
@@ -336,20 +334,22 @@
         }
 
         async function callGeminiAPI() {
-            showTypingIndicator();
+    showTypingIndicator();
 
-            try {
-                const response = await fetch(API_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: chatHistory,
-                        config: {
-                            systemInstruction: SYSTEM_PROMPT,
-                            temperature: 0.7 
-                        }
-                    })
-                });
+    try {
+        // 1. O frontend chama o servidor proxy
+        const response = await fetch(PROXY_URL, { // Usando o NOVO PROXY_URL
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                // Enviamos APENAS os dados da conversa
+                contents: chatHistory,
+                config: {
+                    systemInstruction: SYSTEM_PROMPT,
+                    temperature: 0.7 
+                }
+            })
+        });
 
                 if (!response.ok) {
                     const errorData = await response.json();
