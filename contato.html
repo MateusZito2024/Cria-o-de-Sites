@@ -40,7 +40,11 @@ img {
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
-
+@keyframes colorPulse {
+    0% { background-color: #6627ff; }      /* Início: Violeta Cósmico */
+    50% { background-color: #0bf4ed; }      /* Meio: Azul Prisma */
+    100% { background-color: #6627ff; }     /* Fim: Violeta Cósmico */
+}
         .stars-container {
             position: fixed;
             top: 0;
@@ -131,14 +135,18 @@ img {
         }
 
         nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 10;
-            background: transparent;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 0 1rem;
-        }
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 10;
+    /* CORREÇÃO: Fundo escuro semi-transparente para o cabeçalho */
+    background: rgba(17, 17, 17, 0.95); 
+    /* Garante que o fundo seja padronizado mesmo no desktop */
+    
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 0 1rem;
+    box-sizing: border-box;
+}
 
         nav > div {
             display: flex;
@@ -523,20 +531,28 @@ img {
         }
 
         .chat-input button {
-            background: #0bf4ed;
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.5rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            font-size: clamp(0.875rem, 3vw, 1rem);
-        }
+    /* Cor de fundo base (Azul Prisma para fallback) */
+    background: #0bf4ed;
+    
+    /* Aplicação da pulsação de cor sutil (5 segundos) */
+    animation: colorPulse 5s infinite ease-in-out; 
 
-        .chat-input button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(11, 244, 237, 0.6);
-        }
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    /* Adicione background à transição para suavizar a mudança de cor no hover */
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+    font-size: clamp(0.875rem, 3vw, 1rem);
+}
+
+.chat-input button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(11, 244, 237, 0.6);
+    /* Desativa a pulsação no hover para o efeito de elevação */
+    animation: none;
+}
 
         .sparkle-text {
             font-size: clamp(1.5rem, 5vw, 2rem);
