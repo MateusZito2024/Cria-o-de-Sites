@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asthro | Acompanhamento de Projeto</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700&family=Manrope:wght@400;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="https://i.imgur.com/ZeaGXHD.png">
+
+    <style>
+        /* Tipografia Padronizada */
+        h2, h3, h4 { font-family: 'Archivo', sans-serif; }
+        body, p, a, input, button { font-family: 'Manrope', sans-serif; font-weight: 400; }
+        
+        body { background: #111111; color: #edf1f7; min-height: 100vh; display: flex; flex-direction: column; }
+        .gradient-text { background: linear-gradient(135deg, #6627ff, #0bf4ed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .neon-border { border: 1px solid rgba(102, 39, 255, 0.4); box-shadow: 0 0 10px rgba(11, 244, 237, 0.2); }
+
+        /* Estilo da Barra de Progresso (Timeline) */
+        .status-bar { height: 10px; background-color: #374151; border-radius: 5px; overflow: hidden; margin-top: 1rem; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #6627ff, #0bf4ed); transition: width 0.5s ease; }
+    </style>
+</head>
+<body class="p-8">
+
+    <header class="text-center mb-12">
+        <h1 class="text-4xl font-bold gradient-text" style="font-family: 'Archivo', sans-serif;">Acompanhamento de Projeto</h1>
+        <p class="text-lg mt-2">Insira o ID do seu projeto para ver o status atualizado em tempo real.</p>
+    </header>
+
+    <div class="max-w-xl mx-auto p-6 rounded-xl bg-gray-900 neon-border">
+        <div id="project-search">
+            <label for="projectId" class="block text-sm font-medium text-gray-400 mb-2">ID do Projeto:</label>
+            <div class="flex space-x-4">
+                <input type="text" id="projectId" placeholder="Ex: ASTHRO-001" class="flex-grow p-3 rounded-lg bg-gray-800 text-white border-gray-600 focus:ring-purple-500 focus:border-purple-500">
+                <button onclick="fetchProjectStatus()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300">Buscar</button>
+            </div>
+            <p id="search-feedback" class="mt-4 text-red-400 hidden">Projeto não encontrado.</p>
+        </div>
+
+        <div id="project-details" class="mt-8 hidden">
+            <h2 class="text-3xl font-bold gradient-text mb-4" id="projectName"></h2>
+            
+            <div class="space-y-4 text-left">
+                <p class="text-sm text-gray-400">Progresso:</p>
+                <div class="status-bar">
+                    <div id="progressBar" class="progress-fill" style="width: 0%;"></div>
+                </div>
+                <div id="statusLabels" class="flex justify-between mt-1 text-xs text-gray-400">
+                    <span>Início</span>
+                    <span>Andamento</span>
+                    <span>Revisão</span>
+                    <span>Concluído</span>
+                </div>
+
+                <div class="border-t border-gray-700 pt-4">
+                    <p class="text-md font-semibold text-gray-300">Etapa Atual:</p>
+                    <p id="currentStatus" class="text-xl text-white"></p>
+                </div>
+
+                <div class="border-t border-gray-700 pt-4">
+                    <p class="text-md font-semibold text-gray-300">Previsão de Entrega:</p>
+                    <p id="deliveryDate" class="text-lg text-yellow-400"></p>
+                </div>
+
+                <div class="border-t border-gray-700 pt-4">
+                    <p class="text-md font-semibold text-gray-300">Notas do Consultor:</p>
+                    <p id="notes" class="text-md text-gray-400 italic"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // SUAS CREDENCIAIS DO FIREBASE FORNECIDAS
+        const FIREBASE_CONFIG = {
+            apiKey: "AIzaSyBb8jAT-VR5723XaxZnH4jcw-PxOlRKn8w", 
+            authDomain: "asthro-status-tracker.firebaseapp.com",
+            projectId: "asthro-status-tracker",
+            storageBucket: "asthro-status-tracker.firebasestorage.app",
+            messagingSenderId: "1023071296327",
+            appId: "1:1023071296327:web:477b39bd6d846fff148a62"
+        };
+        
+        // Inicializa o Firebase
+        firebase.initializeApp(FIREBASE_CONFIG);
+        const db = firebase.firestore();
+
+        // Mapeamento dos status para a barra de progresso
+        const statusMap = {
+            'setup': { name: 'Setup Inicial', percent: 10 },
+            'design_andamento': { name: 'Design e Criação', percent: 35 },
+            'dev_andamento': { name: 'Desenvolvimento em Andamento', percent: 65 },
+            'revisao_cliente': { name: 'Revisão do Cliente', percent: 85 },
+            'concluido': { name: 'Concluído e Entregue', percent: 100 }
+        };
+
+        async function fetchProjectStatus() {
+            // Garante que o ID do projeto esteja em maiúsculas (padrão de ID)
+            const projectIdInput = document.getElementById('projectId').value.trim().toUpperCase();
+            const searchFeedback = document.getElementById('search-feedback');
+            const detailsDiv = document.getElementById('project-details');
+
+            searchFeedback.classList.add('hidden');
+            detailsDiv.classList.add('hidden');
+
+            if (!projectIdInput) return;
+
+            try {
+                // Acessa a coleção 'projects' e busca o documento com o ID inserido
+                const docRef = db.collection('projects').doc(projectIdInput);
+                const doc = await docRef.get();
+
+                if (doc.exists) {
+                    const data = doc.data();
+                    updateUI(data);
+                } else {
+                    searchFeedback.textContent = `Projeto com ID "${projectIdInput}" não encontrado. Verifique o ID.`;
+                    searchFeedback.classList.remove('hidden');
+                }
+            } catch (error) {
+                console.error("Erro ao buscar o projeto:", error);
+                searchFeedback.textContent = "Erro de conexão. Tente novamente.";
+                searchFeedback.classList.remove('hidden');
+            }
+        }
+
+        function updateUI(data) {
+            // Pega as informações de mapeamento, se o status for desconhecido, usa 'setup'
+            const statusInfo = statusMap[data.status] || statusMap['setup'];
+            
+            document.getElementById('projectName').textContent = data.clientName || 'Projeto sem nome';
+            document.getElementById('currentStatus').textContent = statusInfo.name;
+            document.getElementById('deliveryDate').textContent = data.deliveryDate || 'Em breve';
+            document.getElementById('notes').textContent = data.notes || 'Nenhuma nota recente.';
+            
+            // Atualiza a barra de progresso com a porcentagem do status
+            document.getElementById('progressBar').style.width = `${statusInfo.percent}%`;
+            
+            // Exibe a seção de detalhes
+            document.getElementById('project-details').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
