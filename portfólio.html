@@ -344,7 +344,7 @@
             border: none;
             cursor: pointer;
             padding: 0;
-            z-index: 40;
+            z-index: 1000;
         }
 
         .hamburger span {
@@ -371,8 +371,21 @@
             display: none; /* Hidden by default */
         }
 
-        @media (max-width: 768px) {
-            /* Navbar adjustments */
+        .mobile-menu-logo {
+    display: none; /* Oculta a imagem por padrão (desktop) */
+    width: 80%;
+    max-width: 150px;
+    height: auto;
+    opacity: 0.7;
+    filter: drop-shadow(0 0 5px rgba(102, 39, 255, 0.4));
+}
+
+@media (max-width: 768px) {
+    /* Exibir a imagem e adicionar margem apenas no mobile */
+    .mobile-menu-logo {
+        display: block;
+        margin-top: 3rem; /* Espaço entre o último link e o logo */
+    }
             nav {
                 background: rgba(17, 17, 17, 0.95);
                 padding: 0.5rem 1rem;
@@ -441,11 +454,13 @@
             }
 
             .nav-menu-mobile .nav-link:hover {
-                background: linear-gradient(135deg, rgba(102, 39, 255, 0.3), rgba(11, 244, 237, 0.3)); /* Gradiente mais visível no hover */
-                transform: translateY(-4px) scale(1.02); /* Efeito de levantar e expandir levemente */
-                box-shadow: 0 8px 16px rgba(232, 121, 249, 0.4); /* Sombra mais intensa e colorida no hover */
-                border-color: #0bf4ed; /* Borda colorida no hover */
-            }
+    /* CORREÇÃO: Trocar o roxo/rosa por Violeta Cósmico e Azul Prisma */
+    background: linear-gradient(135deg, rgba(102, 39, 255, 0.3), rgba(11, 244, 237, 0.3));
+    transform: translateY(-4px) scale(1.02);
+    /* CORREÇÃO: Usar o Azul Prisma para o brilho */
+    box-shadow: 0 8px 16px rgba(11, 244, 237, 0.6); 
+    border-color: #0bf4ed;
+}
 
             .nav-menu-mobile .nav-link::after {
                 display: none; /* Remove a linha inferior dos links no mobile */
@@ -593,6 +608,7 @@
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/sobre.html" class="nav-link text-lg transition block">Sobre</a>
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/portf%C3%B3lio.html" class="nav-link text-lg transition block">Portfólio</a>
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/contato.html" class="nav-link text-lg transition block">Contato</a>
+                <img src="https://i.imgur.com/sE44ypp.png" alt="Asthro" class="mobile-menu-logo" />
             </div>
         </div>
     </nav>
