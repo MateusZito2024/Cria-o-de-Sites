@@ -10,13 +10,22 @@
     <style>
         h2, h3, h4 {
     font-family: 'Archivo', sans-serif;
+    /* Remove opacidade temporária se estiver aqui */
+    opacity: 1 !important; 
 }
+
+/* 🚨 NOVO BLOCO: Garante que os elementos que não são títulos herdem Manrope. */
+p, a, input, textarea, button, .message {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400; /* Garante que elementos de texto não fiquem em negrito por padrão */
+}
+
 img {
     -webkit-user-select: none; /* Safari */
-    -ms-user-select: none;     /* IE 10+ */
+    -ms-user-select: none;      /* IE 10+ */
     user-select: none;
-    -webkit-user-drag: none;   /* Bloqueia o arrasto em Webkit (Chrome, Safari) */
-    pointer-events: auto;      /* Garante que o cursor do mouse funciona, mas bloqueia o toque longo */
+    -webkit-user-drag: none;    /* Bloqueia o arrasto em Webkit (Chrome, Safari) */
+    pointer-events: auto;       /* Garante que o cursor do mouse funciona, mas bloqueia o toque longo */
 }
         /* Reset para box-sizing global */
         *, *::before, *::after {
@@ -183,12 +192,15 @@ img {
         }
 
         h1, h2, h3, p, a, input, textarea, button, img, svg {
-            position: relative;
-            z-index: 30;
-            opacity: 1 !important;
-            font-family: 'Archivo', sans-serif;
-        }
-
+    position: relative;
+    z-index: 30;
+    opacity: 1 !important;
+    /* Removendo qualquer regra font-family que force Archivo aqui */
+}
+p, span, a {
+    font-weight: 400 !important; /* CORREÇÃO: Força o peso regular para o corpo do texto */
+    font-family: 'Manrope', sans-serif; /* Garante que elementos inline usem Manrope */
+}
         h2, h3 {
             color: #f8f8f8;
             text-align: center;
@@ -433,7 +445,7 @@ img {
         footer p {
     text-align: center;
     
-    /* 🚨 CORREÇÃO: Força a fonte Manrope e o peso regular (400) */
+    /* CORREÇÃO: Força a fonte Manrope e o peso regular (400) */
     font-family: 'Manrope', sans-serif;
     font-weight: 400; 
 }
