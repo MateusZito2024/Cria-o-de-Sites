@@ -292,20 +292,19 @@
         }
 
         async function loadProjects(page = 1) {
-            projectListElement.innerHTML = '';
-            currentPage = page;
-            document.getElementById('pagination-container').innerHTML = ''; 
+    projectListElement.innerHTML = '';
+    currentPage = page;
+    document.getElementById('pagination-container').innerHTML = ''; 
 
-            try {
-                // Query base para todos os projetos ativos, ordenada por Status (Asc) e ID (Desc)
-                // Esta query requer o índice composto: status ASC, __name__ DESC
-                let baseQuery = db.collection('projects')
-                                  .where('status', '!=', 'concluido') 
-                                  .orderBy('status') 
-                                  .orderBy(firebase.firestore.FieldPath.documentId(), 'desc');
+    try {
+        // Query base para TODOS os projetos (ativos e concluídos), ordenada por Status (Asc) e ID (Desc).
+        // A ordenação por status fará com que os "concluido" (z) fiquem no final, o que é bom.
+        let baseQuery = db.collection('projects')
+            .orderBy('status')
+            .orderBy(firebase.firestore.FieldPath.documentId(), 'desc');
 
-                const countSnapshot = await baseQuery.get();
-                const totalActiveProjects = countSnapshot.docs.length;
+        const countSnapshot = await baseQuery.get();
+        const totalActiveProjects = countSnapshot.docs.length; // Aqui pegará todos os projetos
 
                 // Calcula o total de páginas (além da Home Page)
                 const projectsAfterHome = Math.max(0, totalActiveProjects - HOME_PAGE_PROJECTS);
