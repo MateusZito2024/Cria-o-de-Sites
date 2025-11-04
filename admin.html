@@ -18,6 +18,12 @@
         body { background: #111111; color: #edf1f7; min-height: 100vh; }
         .gradient-text { background: linear-gradient(135deg, #6627ff, #0bf4ed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .neon-border { border: 1px solid rgba(102, 39, 255, 0.4); box-shadow: 0 0 10px rgba(11, 244, 237, 0.2); }
+        /* Estilo para a caixa de diálogo de confirmação (substituindo o confirm() nativo) */
+        .custom-dialog {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0, 0, 0, 0.7); display: flex; justify-content: center; align-items: center;
+            z-index: 100;
+        }
     </style>
 </head>
 <body class="p-8">
@@ -26,6 +32,19 @@
         <h1 class="text-4xl font-bold gradient-text" style="font-family: 'Archivo', sans-serif;">Painel de Administração</h1>
         <p class="text-lg mt-2">Gerenciamento de Status de Projetos Asthro</p>
     </header>
+
+    <!-- Diálogo de Confirmação Customizado -->
+    <div id="confirm-dialog" class="custom-dialog hidden">
+        <div class="p-6 rounded-xl bg-gray-900 neon-border max-w-sm w-full">
+            <h4 class="text-xl font-bold text-white mb-4">Confirmação</h4>
+            <p id="confirm-message" class="text-gray-300 mb-6"></p>
+            <div class="flex justify-end space-x-4">
+                <button id="confirm-cancel" class="bg-gray-700 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300">Cancelar</button>
+                <button id="confirm-ok" class="bg-yellow-600 hover:bg-yellow-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-300">Finalizar</button>
+            </div>
+        </div>
+    </div>
+
 
     <div id="login-section" class="max-w-md mx-auto p-6 rounded-xl bg-gray-900 neon-border">
         <h3 class="text-2xl font-bold text-white mb-4">Acesso Restrito</h3>
@@ -65,7 +84,8 @@
             <textarea id="notesInput" placeholder="Detalhes da etapa atual ou próximos passos." class="w-full p-3 rounded-lg bg-gray-800 text-white border-gray-600 focus:ring-purple-500 focus:border-purple-500"></textarea>
 
             <div class="flex gap-4 mt-6">
-                <button id="finishButton" onclick="finishProject()" class="hidden bg-yellow-600 hover:bg-yellow-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 flex-1">Finalizar Projeto</button>
+                <!-- Alterado o onclick para openConfirmDialog() -->
+                <button id="finishButton" onclick="openConfirmDialog()" class="hidden bg-yellow-600 hover:bg-yellow-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 flex-1">Finalizar Projeto</button>
                 <button onclick="saveProject()" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 flex-1">Salvar / Atualizar Projeto</button>
             </div>
             
@@ -76,6 +96,8 @@
         <div id="project-list" class="space-y-4">
             <p class="text-gray-500">Carregando projetos...</p>
         </div>
+        <!-- Controles de Paginação -->
+        <div id="pagination-container"></div>
     </div>
 
 
@@ -95,6 +117,12 @@
         // Inicializa o Firebase
         firebase.initializeApp(FIREBASE_CONFIG);
         const db = firebase.firestore();
+
+        // Variáveis de Paginação
+        const PROJECTS_PER_PAGE = 6;
+        const HOME_PAGE_PROJECTS = 5;
+        let currentPage = 1;
+        let totalPages = 1;
 
         const projectListElement = document.getElementById('project-list');
         const adminFeedbackElement = document.getElementById('admin-feedback');
@@ -133,6 +161,31 @@
             document.getElementById('finishButton').classList.add('hidden');
         }
 
+        // Função para mostrar o diálogo de confirmação (substitui confirm())
+        function openConfirmDialog() {
+            const projectId = document.getElementById('finishButton').getAttribute('data-project-id');
+            const dialog = document.getElementById('confirm-dialog');
+            document.getElementById('confirm-message').textContent = 
+                `Tem certeza que deseja FINALIZAR e ARQUIVAR o projeto ${projectId}? O ID ficará disponível para reutilização.`;
+            
+            dialog.classList.remove('hidden');
+
+            const handleFinish = () => {
+                finishProject(projectId);
+                dialog.classList.add('hidden');
+                document.getElementById('confirm-ok').removeEventListener('click', handleFinish);
+            };
+
+            const handleCancel = () => {
+                dialog.classList.add('hidden');
+                document.getElementById('confirm-cancel').removeEventListener('click', handleCancel);
+            };
+
+            document.getElementById('confirm-ok').addEventListener('click', handleFinish);
+            document.getElementById('confirm-cancel').addEventListener('click', handleCancel);
+        }
+
+
         function editProject(projectId) {
             db.collection('projects').doc(projectId).get().then(doc => {
                 if (doc.exists) {
@@ -141,7 +194,7 @@
                     document.getElementById('idInput').value = projectId;
                     document.getElementById('idInput').disabled = true; 
                     document.getElementById('clientNameInput').value = data.clientName || '';
-                    document.getElementById('statusSelect').value = data.status === 'concluido' ? 'setup' : data.status || 'setup'; // Se for concluído, não mostra no dropdown
+                    document.getElementById('statusSelect').value = data.status === 'concluido' ? 'setup' : data.status || 'setup'; 
                     document.getElementById('deliveryDateInput').value = data.deliveryDate || '';
                     document.getElementById('notesInput').value = data.notes || '';
                     
@@ -150,18 +203,12 @@
                     const finishButton = document.getElementById('finishButton');
                     finishButton.classList.toggle('hidden', isConcluido);
                     finishButton.setAttribute('data-project-id', projectId);
-
+                    window.scrollTo(0, 0); // Rola para o topo para ver o formulário
                 }
             }).catch(error => console.error("Erro ao buscar projeto para edição:", error));
         }
 
-        async function finishProject() {
-            const projectId = document.getElementById('finishButton').getAttribute('data-project-id');
-
-            if (!confirm(`Tem certeza que deseja FINALIZAR e ARQUIVAR o projeto ${projectId}? O ID ficará disponível para reutilização.`)) {
-                return;
-            }
-
+        async function finishProject(projectId) {
             try {
                 // Atualiza o projeto para o status "concluido"
                 await db.collection('projects').doc(projectId).update({
@@ -224,7 +271,7 @@
                 // --- Salva ou Atualiza o Projeto ---
                 await docRef.set({
                     clientName: clientName,
-                    status: status, // Status virá do dropdown
+                    status: status, 
                     deliveryDate: deliveryDate,
                     notes: notes
                 }, { merge: true });
@@ -244,34 +291,143 @@
             }
         }
 
-        async function loadProjects() {
+        async function loadProjects(page = 1) {
             projectListElement.innerHTML = '';
+            currentPage = page;
+            document.getElementById('pagination-container').innerHTML = ''; 
+
             try {
-                const snapshot = await db.collection('projects').get();
+                // Query base para todos os projetos ativos, ordenada por Status (Asc) e ID (Desc)
+                // Esta query requer o índice composto: status ASC, __name__ DESC
+                let baseQuery = db.collection('projects')
+                                  .where('status', '!=', 'concluido') 
+                                  .orderBy('status') 
+                                  .orderBy(firebase.firestore.FieldPath.documentId(), 'desc');
+
+                const countSnapshot = await baseQuery.get();
+                const totalActiveProjects = countSnapshot.docs.length;
+
+                // Calcula o total de páginas (além da Home Page)
+                const projectsAfterHome = Math.max(0, totalActiveProjects - HOME_PAGE_PROJECTS);
+                totalPages = Math.ceil(projectsAfterHome / PROJECTS_PER_PAGE);
+
+                let query = baseQuery;
+                
+                // --- Lógica de Paginação ---
+
+                if (currentPage === 1) {
+                    // Página Inicial: mostra os 5 mais recentes (ou menos, se não houver 5)
+                    query = baseQuery.limit(HOME_PAGE_PROJECTS);
+                } else {
+                    // Páginas subsequentes: pula os 5 da home + as páginas anteriores
+                    const docsToSkip = HOME_PAGE_PROJECTS + (currentPage - 2) * PROJECTS_PER_PAGE;
+                    
+                    if (docsToSkip > 0) {
+                        // Busca o documento que é o ponto de início (o último documento da página anterior)
+                        // A baseQuery é usada aqui para garantir a mesma ordenação e filtro
+                        const startDocSnapshot = await baseQuery.limit(docsToSkip).get();
+                        
+                        if (!startDocSnapshot.empty) {
+                            const startDoc = startDocSnapshot.docs[startDocSnapshot.docs.length - 1];
+                            // A query final começa APÓS o último documento pego e limita a 6
+                            query = baseQuery.startAfter(startDoc).limit(PROJECTS_PER_PAGE);
+                        } else {
+                            // Este caso deve ser capturado pelo countSnapshot.empty, mas é uma segurança.
+                            projectListElement.innerHTML = '<p class="text-gray-500">Nenhum projeto encontrado nesta página.</p>';
+                            return;
+                        }
+                    } else {
+                        // Se docsToSkip for 0 ou menos, volta para a primeira página (segurança)
+                         query = baseQuery.limit(HOME_PAGE_PROJECTS);
+                    }
+                }
+                
+                const snapshot = await query.get();
+
                 if (snapshot.empty) {
-                    projectListElement.innerHTML = '<p class="text-gray-500">Nenhum projeto cadastrado.</p>';
+                    projectListElement.innerHTML = `<p class="text-gray-500">${totalActiveProjects > 0 ? 'Nenhum projeto ativo nesta página.' : 'Nenhum projeto cadastrado ativo.'}</p>`;
+                    renderPaginationControls(totalPages); 
                     return;
                 }
 
+                // 3. Renderiza os projetos
                 snapshot.forEach(doc => {
                     const data = doc.data();
                     const statusInfo = statusMap[data.status] || { name: 'Desconhecido', color: 'text-red-500' };
-                    
+
                     const projectCard = document.createElement('div');
-                    projectCard.className = `p-4 bg-gray-800 rounded-lg flex justify-between items-center neon-border ${data.status === 'concluido' ? 'opacity-50' : ''}`;
+                    projectCard.className = `p-4 bg-gray-800 rounded-lg flex justify-between items-center neon-border`;
                     projectCard.innerHTML = `
                         <div>
                             <p class="text-lg font-semibold text-white">${data.clientName} (${doc.id})</p>
-                            <p class="text-sm text-gray-400">Status: <span class="${data.status === 'concluido' ? 'text-green-400 font-bold' : 'text-purple-400'}">${statusInfo.name}</span></p>
+                            <p class="text-sm text-gray-400">Status: <span class="text-purple-400 font-bold">${statusInfo.name}</span></p>
                             <p class="text-sm text-gray-400">Entrega: ${data.deliveryDate || 'N/A'}</p>
+                            <p class="text-xs text-gray-600 mt-1">ID: ${doc.id}</p>
                         </div>
                         <button onclick="editProject('${doc.id}')" class="bg-indigo-500 hover:bg-indigo-600 text-white py-1 px-3 rounded-md text-sm">Editar</button>
                     `;
                     projectListElement.appendChild(projectCard);
                 });
+
+                // 4. Renderiza os controles de paginação
+                renderPaginationControls(totalPages);
+                
             } catch (error) {
-                console.error("Erro ao carregar projetos:", error);
-                projectListElement.innerHTML = '<p class="text-red-400">Erro ao carregar lista de projetos.</p>';
+                // Loga o erro exato e a URL se for um erro de índice
+                console.error("ERRO CRÍTICO NA CONSULTA DO FIRESTORE:", error);
+                
+                if (error.message && error.message.includes('requires an index')) {
+                    // Tenta extrair a URL de criação do índice do erro do Firebase (se for fornecida)
+                    const indexUrlMatch = error.message.match(/https:\/\/[^\s]+/);
+                    const indexUrl = indexUrlMatch ? indexUrlMatch[0] : 'Nenhuma URL de índice encontrada. Crie o índice manualmente: status ASC, __name__ DESC';
+                    
+                    projectListElement.innerHTML = `
+                        <p class="text-red-400 font-bold">ERRO DE ÍNDICE: O Firestore exige um índice composto específico.</p>
+                        <p class="text-gray-400 mt-2">Por favor, verifique no Console do Firebase e crie o índice com a ordem exata:</p>
+                        <ul class="list-disc list-inside mt-2 ml-4 text-gray-300">
+                            <li>Campo 1: <code>status</code> (Ascendente)</li>
+                            <li>Campo 2: <code>__name__</code> (Descendente)</li>
+                        </ul>
+                        <p class="text-sm text-red-500 mt-4">Erro Bruto: ${error.message}</p>
+                        <p class="text-xs text-blue-400 mt-2">URL de Criação (Copie e Cole no seu navegador): ${indexUrl}</p>
+                    `;
+                } else {
+                     projectListElement.innerHTML = `<p class="text-red-400">Erro ao carregar lista de projetos: ${error.message}</p>`;
+                }
+            }
+        }
+
+
+        function renderPaginationControls(pages) {
+            const container = document.getElementById('pagination-container');
+            container.innerHTML = '';
+            
+            // +1 para incluir a Página Inicial (que é a primeira visualização)
+            const totalButtons = pages + 1; 
+
+            // Mostra apenas se houver mais de 5 projetos ativos
+            if (totalButtons > 1) { 
+                const paginationDiv = document.createElement('div');
+                paginationDiv.className = 'mt-8 flex justify-center flex-wrap gap-2';
+                
+                // i = 1 é a Página Inicial. i > 1 são as páginas numeradas.
+                for (let i = 1; i <= totalButtons; i++) {
+                    const pageButton = document.createElement('button');
+                    const pageIndex = i;
+                    
+                    pageButton.textContent = (pageIndex === 1) ? 'Página Inicial (5 Recentes)' : `Página ${pageIndex - 1}`;
+                    pageButton.onclick = () => loadProjects(pageIndex);
+                    
+                    const baseClasses = 'py-2 px-4 rounded-lg text-sm transition duration-300 whitespace-nowrap';
+                    
+                    if (pageIndex === currentPage) {
+                        pageButton.className = `${baseClasses} bg-purple-600 text-white font-bold`;
+                    } else {
+                        pageButton.className = `${baseClasses} bg-gray-800 hover:bg-purple-500 text-gray-300`;
+                    }
+                    paginationDiv.appendChild(pageButton);
+                }
+                container.appendChild(paginationDiv);
             }
         }
 
