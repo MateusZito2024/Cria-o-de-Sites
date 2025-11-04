@@ -690,7 +690,7 @@
         /* --- MEDIA QUERIES PARA MOBILE (max-width: 768px) --- */
         @media (max-width: 768px) {
             nav {
-                background: rgba(31, 41, 55, 0.95);
+                background: rgba(17, 17, 17, 0.95);
                 padding: 0.5rem 1rem;
                 width: 100%;
                 box-sizing: border-box;
@@ -900,6 +900,22 @@
                 /* As imagens agora usarão a altura automática (height: auto) */
             }
         }
+        .mobile-menu-logo {
+    display: none; /* Oculta a imagem por padrão (desktop) */
+    width: 80%;
+    max-width: 150px;
+    height: auto;
+    opacity: 0.7; /* Para um toque elegante e sutil */
+    filter: drop-shadow(0 0 5px rgba(102, 39, 255, 0.4));
+}
+
+@media (max-width: 768px) {
+    /* Exibir a imagem e adicionar margem apenas no mobile */
+    .mobile-menu-logo {
+        display: block;
+        margin-top: 3rem; /* Espaço entre o último link e o logo */
+    }
+}
     </style>
 </head>
 <body class="text-gray-100">
@@ -928,6 +944,7 @@
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/sobre.html" class="nav-link text-lg transition block md:inline-block">Sobre</a>
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/portf%C3%B3lio.html" class="nav-link text-lg transition block md:inline-block">Portfólio</a>
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/contato.html" class="nav-link text-lg transition block md:inline-block">Contato</a>
+                <img src="https://i.imgur.com/sE44ypp.png" alt="Asthro" class="mobile-menu-logo" />
             </div>
         </div>
     </nav>
