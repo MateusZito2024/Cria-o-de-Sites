@@ -660,22 +660,29 @@ p, span, a {
         }
 
         .modal-content .form-button { /* Alvo apenas os botões de submit DENTRO do modal */
-            background: #0bf4ed;
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.5rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: none;
-            width: 100%; /* Botão ocupa 100% da largura no modal */
-            font-size: clamp(0.9rem, 3.5vw, 1rem);
-        }
+    background: #6627ff; 
+    
+    /* 🚨 NOVO: Aplicação da pulsação de cor sutil (5 segundos) */
+    animation: colorPulse 5s infinite ease-in-out; 
 
-        .modal-content .form-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(11, 244, 237, 0.6);
-        }
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    /* Adicione background à transição para suavizar a mudança de cor no hover */
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+    border: none;
+    width: 100%; /* Botão ocupa 100% da largura no modal */
+    font-size: clamp(0.9rem, 3.5vw, 1rem);
+}
+
+/* Localize e substitua o hover para garantir que a animação pare */
+.modal-content .form-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(11, 244, 237, 0.6); 
+    animation: none; /* 👈 DESATIVA a pulsação no hover */
+}
 
         .close-button {
             position: absolute;
@@ -722,6 +729,11 @@ p, span, a {
             from { opacity: 0; }
             to { opacity: 1; }
         }
+        @keyframes colorPulse {
+    0% { background-color: #6627ff; }      /* Início: Violeta Cósmico */
+    50% { background-color: #0bf4ed; }      /* Meio: Azul Prisma */
+    100% { background-color: #6627ff; }     /* Fim: Violeta Cósmico */
+}
 /* --- Novo Layout Futurista --- */
 .contact-container {
     display: flex;
