@@ -1012,8 +1012,40 @@
             }
 
             .grid {
-                grid-template-columns: 1fr;
-            }
+                grid-template-columns: 1fr;
+            }
+#workflow .grid {
+    grid-template-columns: 1fr 1fr; 
+    gap: 0.75rem; /* 💥 AJUSTE: Diminuído levemente o gap para dar mais espaço aos cards */
+}
+
+#workflow .flip-card-container {
+    height: 260px; /* 💥 REDUZIDO: Um pouco mais baixo para tentar encaixar melhor */
+}
+
+/* 💥 CORREÇÃO PRINCIPAL: AJUSTE DO TAMANHO DA FONTE E PADDING INTERNO */
+#workflow .card-face {
+    padding: 1rem 0.5rem; /* 💥 REDUZIDO: Menos padding para mais espaço de texto */
+}
+
+#workflow .card-face h3 {
+    font-size: 1.1rem; /* 💥 REDUZIDO: Título um pouco menor (de 1.25rem) */
+    min-height: 40px; /* 💥 REDUZIDO: Altura mínima do bloco de título (de 50px) */
+}
+
+#workflow .card-back p {
+    font-size: 0.85rem; /* 💥 REDUZIDO: Texto do detalhe do processo menor */
+}
+
+#workflow .card-front p {
+    font-size: 0.85rem; /* 💥 REDUZIDO: Texto do resumo do processo menor */
+}
+
+/* 💥 Ajuste final do ícone (mantido de 50px) */
+#workflow .service-icon {
+    width: 50px; 
+    height: 50px;
+}
 
             .service-item, .portfolio-item {
                 padding: 1rem;
