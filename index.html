@@ -639,7 +639,119 @@
             padding-right: 1rem;
         }
 /* --- NOVOS ESTILOS PARA ELEGÂNCIA --- */
+        #workflow.section-bg {
+    background: transparent !important;
+}
 
+.flip-card-container {
+    perspective: 1000px;
+    height: 350px; /* 💥 AUMENTADO: De 300px para 350px para dar mais margem ao giro */
+    cursor: pointer;
+    max-width: 100%;
+    box-shadow: none; 
+    border-radius: 0.75rem;
+    /* 💥 CORREÇÃO PRINCIPAL: Remover overflow para não cortar a transformação 3D */
+    overflow: visible; 
+    padding: 0; /* Limpamos o padding extra que adicionamos antes */
+}
+
+.flip-card {
+    position: relative;
+    width: 100%;
+    height: 100%; 
+    text-align: center;
+    transition: transform 1.5s cubic-bezier(0.4, 0.0, 0.2, 1);
+    transform-style: preserve-3d;
+    transform: rotateY(180deg); /* Inicia virado */
+}
+
+.flip-card.flipped {
+    transform: rotateY(0deg); 
+}
+
+/* Efeito de Hover Sutil no Container */
+.flip-card-container:hover {
+    transform: scale(1.02);
+    transition: transform 0.3s ease;
+    /* Sombra de brilho aplicada ao HOVER do CONTAINER */
+    box-shadow: 0 0 20px rgba(102, 39, 255, 0.6), 0 0 5px rgba(11, 244, 237, 0.6);
+}
+
+.card-face {
+    position: absolute;
+    width: 100%;
+    height: 100%; 
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* O lado que aparecerá após a animação de scroll (resumo do processo) */
+.card-front {
+    background: #1f2937; 
+    border: 1px solid #0bf4ed;
+    box-shadow: 0 0 10px rgba(11, 244, 237, 0.3);
+    z-index: 2;
+    transform: rotateY(180deg); /* Inicia escondida */
+}
+
+/* O lado que estará visível inicialmente (detalhe do processo) - ROXO */
+.card-back {
+    background: #374151; 
+    color: #edf1f7;
+    border: 1px solid #6627ff;
+    box-shadow: 0 0 10px rgba(102, 39, 255, 0.3);
+    transform: rotateY(0deg); /* Inicia visível */
+}
+
+/* Garante que o service-item não interfira no flip */
+.service-item {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    animation: none !important;
+    transform: none !important;
+}
+
+/* Ajustes para os ícones dentro do flip-card-container */
+#workflow .service-icon {
+    width: 50px; 
+    height: 50px;
+    filter: drop-shadow(0 0 8px #0bf4ed); 
+}
+
+/* Reduz o tamanho do texto interno para evitar overflow no giro */
+.card-back p {
+    font-size: 0.95rem; 
+}
+
+/* Reduz o tamanho do texto interno para evitar overflow no giro */
+.card-front p {
+    font-size: 0.95rem; 
+}
+
+/* Garante que o service-item não interfira no flip */
+.service-item {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    animation: none !important;
+    transform: none !important;
+}
+
+/* Ajustes para os ícones dentro do flip-card-container */
+#workflow .service-icon {
+    width: 50px; 
+    height: 50px;
+    filter: drop-shadow(0 0 8px #0bf4ed); 
+}
+
+/* 💥 Novo: Reduz o tamanho do texto interno para evitar overflow no giro */
+.card-back p {
+    font-size: 0.95rem; 
+}
 .cta-button {
     background: linear-gradient(135deg, #6627ff, #0bf4ed);
     border: 1px solid #0bf4ed;
@@ -1014,32 +1126,60 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
             
-            <div class="service-item p-6 rounded-xl transition fade-in text-center shadow-lg border-opacity-30" style="animation-delay: 0s;">
-                <img src="https://i.postimg.cc/pr0v9h79/icon-discovery.png" alt="Ícone de Descoberta" class="service-icon mx-auto">
-                <div class="text-4xl font-bold gradient-text mb-2">01</div>
-                <h3 class="text-xl font-semibold text-white mb-2">Estratégia</h3>
-                <p class="text-gray-400 text-sm">Mapeamos seus objetivos, público e concorrentes para definir o caminho ideal.</p>
+            <div class="flip-card-container fade-in" data-delay="0.1s">
+                <div class="flip-card"> <div class="card-face card-front p-6 rounded-xl">
+                        <img src="https://i.postimg.cc/pr0v9h79/icon-discovery.png" alt="Ícone de Descoberta" class="service-icon mx-auto">
+                        <div class="text-4xl font-bold gradient-text mb-2">01</div>
+                        <h3 class="text-2xl font-semibold text-white mb-2">Estratégia</h3>
+                        <p class="text-gray-400 text-sm">Clique para ver o detalhe!</p>
+                    </div>
+                    <div class="card-face card-back p-6 rounded-xl">
+                        <h3 class="text-2xl font-semibold gradient-text mb-3">Imersão Estratégica</h3>
+                        <p class="text-gray-300">Começamos com uma Análise Profunda do seu mercado e público-alvo. Mapeamos seus objetivos e concorrentes para definir metas claras e um plano de ação tático, garantindo que seu investimento digital siga o caminho ideal para o sucesso.</p>
+                    </div>
+                </div>
             </div>
             
-            <div class="service-item p-6 rounded-xl transition fade-in text-center shadow-lg border-opacity-30" style="animation-delay: 0.2s;">
-                <img src="https://i.postimg.cc/qR56kFvB/icon-design.png" alt="Ícone de Design" class="service-icon mx-auto">
-                <div class="text-4xl font-bold gradient-text mb-2">02</div>
-                <h3 class="text-xl font-semibold text-white mb-2">Design</h3>
-                <p class="text-gray-400 text-sm">Criamos layouts modernos e focados na Experiência do Usuário (UX/UI).</p>
+            <div class="flip-card-container fade-in" data-delay="0.2s">
+                <div class="flip-card"> <div class="card-face card-front p-6 rounded-xl">
+                        <img src="https://i.postimg.cc/qR56kFvB/icon-design.png" alt="Ícone de Design" class="service-icon mx-auto">
+                        <div class="text-4xl font-bold gradient-text mb-2">02</div>
+                        <h3 class="text-2xl font-semibold text-white mb-2">Design 360º</h3>
+                        <p class="text-gray-400 text-sm">Clique para ver o detalhe!</p>
+                    </div>
+                    <div class="card-face card-back p-6 rounded-xl">
+                        <h3 class="text-2xl font-semibold gradient-text mb-3">Impacto Visual</h3>
+                        <p class="text-gray-300">Criação de Artes de Impacto para redes sociais e peças de marketing que fortalecem sua marca. Desenvolvimento de layouts modernos e interfaces visuais intuitivas, focadas em conversão e na melhor experiência do usuário em seu site.</p>
+                    </div>
+                </div>
             </div>
             
-            <div class="service-item p-6 rounded-xl transition fade-in text-center shadow-lg border-opacity-30" style="animation-delay: 0.4s;">
-                <img src="https://i.postimg.cc/85z1X2fX/icon-development.png" alt="Ícone de Desenvolvimento" class="service-icon mx-auto">
-                <div class="text-4xl font-bold gradient-text mb-2">03</div>
-                <h3 class="text-xl font-semibold text-white mb-2">Desenvolvimento</h3>
-                <p class="text-gray-400 text-sm">Construção do projeto com código limpo, performance e otimização SEO.</p>
+            <div class="flip-card-container fade-in" data-delay="0.3s">
+                <div class="flip-card"> <div class="card-face card-front p-6 rounded-xl">
+                        <img src="https://i.postimg.cc/85z1X2fX/icon-development.png" alt="Ícone de Desenvolvimento" class="service-icon mx-auto">
+                        <div class="text-4xl font-bold gradient-text mb-2">03</div>
+                        <h3 class="text-2xl font-semibold text-white mb-2">Desenvolvimento</h3>
+                        <p class="text-gray-400 text-sm">Clique para ver o detalhe!</p>
+                    </div>
+                    <div class="card-face card-back p-6 rounded-xl">
+                        <h3 class="text-2xl font-semibold gradient-text mb-3">Execução Técnica</h3>
+                        <p class="text-gray-300">Nesta fase, executamos a produção final de todos os seus ativos do site à finalização técnica das suas artes e peças gráficas. Garantimos que tudo seja entregue com as tecnologias mais recentes, velocidade e segurança.</p>
+                    </div>
+                </div>
             </div>
             
-            <div class="service-item p-6 rounded-xl transition fade-in text-center shadow-lg border-opacity-30" style="animation-delay: 0.6s;">
-                <img src="https://i.postimg.cc/cJ08q29j/icon-launch.png" alt="Ícone de Lançamento" class="service-icon mx-auto">
-                <div class="text-4xl font-bold gradient-text mb-2">04</div>
-                <h3 class="text-xl font-semibold text-white mb-2">Lançamento</h3>
-                <p class="text-gray-400 text-sm">Publicação do site e suporte contínuo para garantir o sucesso a longo prazo.</p>
+            <div class="flip-card-container fade-in" data-delay="0.4s">
+                <div class="flip-card"> <div class="card-face card-front p-6 rounded-xl">
+                        <img src="https://i.postimg.cc/cJ08q29j/icon-launch.png" alt="Ícone de Lançamento" class="service-icon mx-auto">
+                        <div class="text-4xl font-bold gradient-text mb-2">04</div>
+                        <h3 class="text-2xl font-semibold text-white mb-2">Lançamento e Suporte</h3>
+                        <p class="text-gray-400 text-sm">Clique para ver o detalhe!</p>
+                    </div>
+                    <div class="card-face card-back p-6 rounded-xl">
+                        <h3 class="text-2xl font-semibold gradient-text mb-3">Deploy e Suporte</h3>
+                        <p class="text-gray-300">Realizamos o deploy final do seu site e a publicação estratégica de suas campanhas de design gráfico. Oferecemos suporte técnico dedicado para garantir o funcionamento impecável de todas as plataformas e a sustentação do seu projeto a longo prazo.</p>
+                    </div>
+                </div>
             </div>
         </div>
         
@@ -1146,7 +1286,53 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         }
     });
 });
+function setupFlipCards() {
+    const cardContainers = document.querySelectorAll('#workflow .flip-card-container');
 
+    // 1. Inicia/Reseta o Flip dos Cards quando a Seção Fica Visível/Invisível
+    const workflowObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.target.id === 'workflow') {
+                if (entry.isIntersecting) {
+                    // A SEÇÃO ENTROU NA TELA: Inicia a animação de giro sequencial
+                    cardContainers.forEach((container, index) => {
+                        const flipCard = container.querySelector('.flip-card');
+                        const delay = (index * 400) + 200; // Atraso: 0.2s + (index * 0.4s)
+                        
+                        // Garante que o flip-card inicie de costas
+                        flipCard.classList.remove('flipped'); 
+                        
+                        setTimeout(() => {
+                            // Gira para a posição "flipped" (o resumo do processo)
+                            flipCard.classList.add('flipped'); 
+                        }, delay);
+                    });
+                } else {
+                    // 💥 NOVO: A SEÇÃO SAIU DA TELA: Reseta a posição para começar de costas
+                    cardContainers.forEach(container => {
+                        const flipCard = container.querySelector('.flip-card');
+                        // Remove a classe 'flipped' para que ele volte ao estado inicial (DE COSTAS)
+                        flipCard.classList.remove('flipped');
+                    });
+                }
+            }
+        });
+    }, { threshold: 0.1 }); // Aciona com 10% da seção visível
+
+    const workflowSection = document.getElementById('workflow');
+    if (workflowSection) {
+        workflowObserver.observe(workflowSection);
+    }
+    
+    // 2. Permite que o usuário gire o card novamente no clique
+    cardContainers.forEach(container => {
+        container.addEventListener('click', () => {
+            const flipCard = container.querySelector('.flip-card');
+            // O toggle inverte o estado entre o resumo (flipped) e o detalhe (não-flipped)
+            flipCard.classList.toggle('flipped'); 
+        });
+    });
+}
         const hamburger = document.querySelector('.hamburger');
         const navMenu = document.querySelector('.nav-menu');
 
@@ -1873,11 +2059,15 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            const contactSection = document.querySelector('#contact');
-            if (contactSection) {
-                contactSectionObserver.observe(contactSection);
-            }
-        });
+    // Adiciona a observação para o Chatbot
+    const contactSection = document.querySelector('#contact');
+    if (contactSection) {
+        contactSectionObserver.observe(contactSection);
+    }
+    
+    // 💥 NOVO: Chama a função para configurar a animação dos cards de fluxo de trabalho
+    setupFlipCards(); 
+});
 document.addEventListener('contextmenu', function(e) {
     if (e.target.tagName === 'IMG') {
         e.preventDefault();
