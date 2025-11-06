@@ -931,6 +931,24 @@
 }
         /* --- MEDIA QUERIES PARA MOBILE (max-width: 768px) --- */
         @media (max-width: 768px) {
+            .section-animate {
+    animation: none !important; /* Desabilita todas as animações na classe */
+    opacity: 1 !important; /* Garante que a seção esteja sempre visível (opacidade 1) */
+    transform: none !important; /* Desabilita qualquer transformação (como o movimento lateral) */
+}
+
+.section-animate.visible {
+    animation: none !important;
+}
+
+.section-animate:not(.visible) {
+    animation: none !important;
+}
+            .fade-in {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+}
             .logo-carousel {
     /* Aumenta a duração para dar tempo de renderizar o loop sem piscar */
     animation-duration: 60s !important; 
