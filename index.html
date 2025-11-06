@@ -1016,35 +1016,47 @@
             }
 #workflow .grid {
     grid-template-columns: 1fr 1fr; 
-    gap: 0.75rem; /* 💥 AJUSTE: Diminuído levemente o gap para dar mais espaço aos cards */
+    gap: 0.75rem; 
 }
 
+/* 💥 CORREÇÃO CRÍTICA: Removendo altura fixa para deixar o conteúdo definir a altura */
 #workflow .flip-card-container {
-    height: 260px; /* 💥 REDUZIDO: Um pouco mais baixo para tentar encaixar melhor */
+    /* 💥 NOVO: Retorna a altura para auto. O min-height garantirá a altura mínima */
+    height: auto; 
+    min-height: 250px; /* Garante que mesmo cards curtos tenham um mínimo de altura */
+    padding-bottom: 0; 
 }
 
-/* 💥 CORREÇÃO PRINCIPAL: AJUSTE DO TAMANHO DA FONTE E PADDING INTERNO */
+/* 💥 CORREÇÃO DE ALINHAMENTO DO CONTEÚDO DENTRO DA FACE */
 #workflow .card-face {
-    padding: 1rem 0.5rem; /* 💥 REDUZIDO: Menos padding para mais espaço de texto */
+    padding: 1rem 0.5rem; 
+    /* 💥 NOVO: Alinha o conteúdo ao topo para dar consistência */
+    justify-content: flex-start;
+    /* 💥 NOVO: Garante que o texto se quebre adequadamente */
+    word-wrap: break-word; 
+    text-align: center;
 }
 
+/* 💥 CORREÇÃO DE TÍTULO: Reduzimos o min-height e o tamanho da fonte */
 #workflow .card-face h3 {
-    font-size: 1.1rem; /* 💥 REDUZIDO: Título um pouco menor (de 1.25rem) */
-    min-height: 40px; /* 💥 REDUZIDO: Altura mínima do bloco de título (de 50px) */
+    font-size: 1.0rem; /* 💥 REDUZIDO: Título bem pequeno */
+    min-height: 30px; /* 💥 REDUZIDO: Menos altura mínima no título */
+    margin-bottom: 0.5rem;
 }
 
-#workflow .card-back p {
-    font-size: 0.85rem; /* 💥 REDUZIDO: Texto do detalhe do processo menor */
-}
-
+/* 💥 CORREÇÃO DE CORPO DE TEXTO: Menos fonte e menos altura mínima */
+#workflow .card-back p,
 #workflow .card-front p {
-    font-size: 0.85rem; /* 💥 REDUZIDO: Texto do resumo do processo menor */
+    font-size: 0.6rem; /* 💥 REDUZIDO: O menor tamanho possível para o corpo do texto */
+    min-height: 0; /* Remove a altura mínima para o corpo de texto poder fluir livremente */
+    flex-grow: 1; /* Permite que o texto preencha o espaço sem ser cortado */
 }
 
 /* 💥 Ajuste final do ícone (mantido de 50px) */
 #workflow .service-icon {
-    width: 50px; 
-    height: 50px;
+    width: 40px; /* Reduzimos um pouco mais o ícone */
+    height: 40px;
+    margin-bottom: 0.5rem;
 }
 
             .service-item, .portfolio-item {
@@ -1254,7 +1266,7 @@
                         <p class="text-gray-400 text-sm">Clique para ver o detalhe!</p>
                     </div>
                     <div class="card-face card-back p-6 rounded-xl">
-                        <h3 class="text-2xl font-semibold gradient-text mb-3">Imersão Estratégica</h3>
+                        <h3 class="text-2xl font-semibold gradient-text mb-3">Estratégia</h3>
                         <p class="text-gray-300">Começamos com uma Análise Profunda do seu mercado e público-alvo. Mapeamos seus objetivos e concorrentes para definir metas claras e um plano de ação tático, garantindo que seu investimento digital siga o caminho ideal para o sucesso.</p>
                     </div>
                 </div>
@@ -1282,7 +1294,7 @@
                         <p class="text-gray-400 text-sm">Clique para ver o detalhe!</p>
                     </div>
                     <div class="card-face card-back p-6 rounded-xl">
-                        <h3 class="text-2xl font-semibold gradient-text mb-3">Execução Técnica</h3>
+                        <h3 class="text-2xl font-semibold gradient-text mb-3">Execução</h3>
                         <p class="text-gray-300">Nesta fase, executamos a produção final de todos os seus ativos do site à finalização técnica das suas artes e peças gráficas. Garantimos que tudo seja entregue com as tecnologias mais recentes, velocidade e segurança.</p>
                     </div>
                 </div>
