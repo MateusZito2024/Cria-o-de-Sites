@@ -773,6 +773,24 @@
     transform: translateY(-3px) scale(1.05);
     box-shadow: 0 0 20px rgba(232, 121, 249, 0.8), 0 0 10px rgba(165, 180, 252, 0.6);
 }
+        .main-cta {
+    /* Base do seu botão original (fundo gradiente roxo/ciano) */
+    background: linear-gradient(135deg, #6627ff, #0bf4ed);
+    border: 1px solid #0bf4ed;
+    
+    /* Efeito de sombra roxa/brilho sutil */
+    box-shadow: 0 0 10px rgba(102, 39, 255, 0.5); 
+    
+    /* Garante que o hover funcione */
+    transition: all 0.3s ease;
+}
+
+.main-cta:hover {
+    /* Efeito de elevação e pulsação no hover */
+    transform: translateY(-3px) scale(1.02);
+    /* Efeito de sombra mais forte e ciano */
+    box-shadow: 0 0 20px rgba(11, 244, 237, 0.8), 0 0 10px rgba(102, 39, 255, 0.6);
+}
 
 /* Melhorar a estética dos cards de Serviço (Menos "blocão") */
 .service-item {
@@ -1126,7 +1144,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-in content-layer">
             <h2 class="text-5xl md:text-7xl font-bold gradient-text">Eleve Sua Marca</h2>
             <p class="mt-4 text-xl md:text-2xl text-gray-200">Soluções digitais com criatividade e impacto.</p>
-            <a href="#contact" class="mt-6 inline-block bg-indigo-500 text-white font-semibold py-3 px-8 rounded-full service-item transition">Comece Agora</a>
+            <a href="#contact" class="mt-6 inline-block bg-indigo-500 text-white font-semibold py-3 px-8 rounded-full main-cta transition">Comece Agora</a>
         </div>
     </section>
     <section id="workflow" class="py-20 section-bg section-animate">
