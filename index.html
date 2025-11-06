@@ -931,6 +931,27 @@
 }
         /* --- MEDIA QUERIES PARA MOBILE (max-width: 768px) --- */
         @media (max-width: 768px) {
+            .logo-carousel {
+    /* Aumenta a duração para dar tempo de renderizar o loop sem piscar */
+    animation-duration: 60s !important; 
+    /* Remove a largura 200% global para redefini-la abaixo, se necessário. */
+    width: auto; 
+}
+
+/* 2. Redefine o width da faixa do carrossel para o mobile */
+#toolkit .logo-carousel {
+    /* Define o width baseado no número de logos * a largura de cada uma (ajuste fino) */
+    /* 8 logos originais + 8 duplicatas = 16 logos. Vamos dar 120px para cada: 16 * 120px = 1920px. */
+    width: 1920px; /* Largura total fixa para mobile */
+}
+
+/* 3. Redefine o min-width de cada ícone apenas no mobile */
+.logo-item {
+    /* Garante que a largura de cada item seja menor e consistente */
+    min-width: 120px; 
+    width: 120px; 
+    padding: 0 0.5rem;
+}
             nav {
                 background: rgba(17, 17, 17, 0.95);
                 padding: 0.5rem 1rem;
