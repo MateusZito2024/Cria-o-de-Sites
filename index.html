@@ -216,6 +216,66 @@
     50% { background-color: #0bf4ed; }      /* Meio: Azul Prisma */
     100% { background-color: #6627ff; }     /* Fim: Violeta Cósmico */
 }
+        @keyframes scroll-left {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        /* Move 50% para a esquerda (tamanho do grupo de logos original) */
+        transform: translateX(-50%); 
+    }
+}
+
+@keyframes scroll-right {
+    from {
+        transform: translateX(-50%); /* Começa no meio */
+    }
+    to {
+        /* Move 50% para a direita (volta ao início) */
+        transform: translateX(0);
+    }
+}
+
+/* 2. Container Externo (Máscara) */
+.logo-carousel-container {
+    overflow: hidden; /* Oculta as duplicatas e as logos que estão fora da tela */
+    width: 100%;
+    /* Adiciona uma sombra sutil para efeito de profundidade, se desejar: */
+    /* box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5); */
+    /* background: rgba(0, 0, 0, 0.2); */
+}
+
+/* 3. A Faixa do Carrossel (Onde a Mágica Acontece) */
+.logo-carousel {
+    display: flex;
+    width: 200%; /* CRÍTICO: 2x a largura para caber o conjunto original + a duplicata */
+    animation: scroll-left 40s linear infinite; /* Velocidade do carrossel 1 (40s) */
+    padding: 20px 0; /* Espaçamento vertical */
+    box-sizing: border-box;
+    align-items: center;
+}
+
+/* 4. Carrossel 2 (Direção Inversa) */
+.logo-carousel-2 {
+    animation: scroll-right 40s linear infinite; /* Inverte a direção */
+}
+
+/* 5. Estilo de Cada Logo */
+.logo-item {
+    /* Largura fixa para cada logo (8 logos * 12.5% = 100%) */
+    width: 12.5%; 
+    min-width: 150px; /* Garante tamanho mínimo em telas grandes */
+    height: auto;
+    object-fit: contain;
+    padding: 0 1rem;
+    filter: grayscale(100%) opacity(70%); /* Deixa a logo em escala de cinza e semitransparente */
+    transition: filter 0.3s ease;
+}
+
+/* 6. Efeito de Hover/Destaque */
+.logo-item:hover {
+    filter: grayscale(0%) opacity(100%) drop-shadow(0 0 10px #0bf4ed); /* Cores originais + brilho neon no hover */
+}
 
         .fade-in {
             opacity: 1 !important;
@@ -1218,15 +1278,58 @@
         </div>
     </div>
 </section>
-    <section id="about" class="py-20 section-bg section-animate">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center content-layer">
-            <h2 class="text-4xl font-bold gradient-text mb-8">Quem Somos</h2>
-            <p class="text-xl text-gray-300 max-w-3xl mx-auto fade-in">Na Asthro, transformamos visões em realidade com criatividade e inovação. Nossa equipe é apaixonada por criar experiências digitais que inspiram.</p>
+    <section id="toolkit" class="py-20 gradient-bg section-animate overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 content-layer">
+        <h2 class="text-4xl font-bold text-center gradient-text mb-12 fade-in">Nosso Toolkit Tecnológico</h2>
+    </div>
+    
+    <div class="logo-carousel-container content-layer">
+        <div class="logo-carousel logo-carousel-1">
+            <img src="https://i.imgur.com/nZCoFYU.png" alt="Logo Adobe Photoshop" title="Adobe Photoshop" class="logo-item" />
+            <img src="https://i.imgur.com/PFtonWo.png" alt="Logo Adobe Illustrator" title="Adobe Illustrator" class="logo-item" />
+            <img src="https://i.imgur.com/XqkapiC.png" alt="Logo GitHub" title="GitHub" class="logo-item" />
+            <img src="https://i.imgur.com/awmZUgg.png" alt="Logo Hostinger" title="Hostinger" class="logo-item" />
+            <img src="https://i.imgur.com/ghGyx7F.jpeg" alt="Logo Canva" title="Canva" class="logo-item" />
+            <img src="https://i.imgur.com/QlKUONR.png" alt="Logo WordPress" title="WordPress" class="logo-item" />
+            <img src="https://i.imgur.com/uIPbttI.png" alt="Logo Nuvemshop" title="Nuvemshop" class="logo-item" />
+            <img src="https://i.imgur.com/ez7wN2B.png" alt="Logo Wix" title="Wix" class="logo-item" />
+
+            <img src="https://i.imgur.com/nZCoFYU.png" alt="Logo Adobe Photoshop" title="Adobe Photoshop" class="logo-item" />
+            <img src="https://i.imgur.com/PFtonWo.png" alt="Logo Adobe Illustrator" title="Adobe Illustrator" class="logo-item" />
+            <img src="https://i.imgur.com/XqkapiC.png" alt="Logo GitHub" title="GitHub" class="logo-item" />
+            <img src="https://i.imgur.com/awmZUgg.png" alt="Logo Hostinger" title="Hostinger" class="logo-item" />
+            <img src="https://i.imgur.com/ghGyx7F.jpeg" alt="Logo Canva" title="Canva" class="logo-item" />
+            <img src="https://i.imgur.com/QlKUONR.png" alt="Logo WordPress" title="WordPress" class="logo-item" />
+            <img src="https://i.imgur.com/uIPbttI.png" alt="Logo Nuvemshop" title="Nuvemshop" class="logo-item" />
+            <img src="https://i.imgur.com/ez7wN2B.png" alt="Logo Wix" title="Wix" class="logo-item" />
         </div>
-    </section>
+    </div>
+    
+    <div class="logo-carousel-container content-layer mt-8">
+        <div class="logo-carousel logo-carousel-2">
+            <img src="https://i.imgur.com/nZCoFYU.png" alt="Logo Adobe Photoshop" title="Adobe Photoshop" class="logo-item" />
+            <img src="https://i.imgur.com/PFtonWo.png" alt="Logo Adobe Illustrator" title="Adobe Illustrator" class="logo-item" />
+            <img src="https://i.imgur.com/XqkapiC.png" alt="Logo GitHub" title="GitHub" class="logo-item" />
+            <img src="https://i.imgur.com/awmZUgg.png" alt="Logo Hostinger" title="Hostinger" class="logo-item" />
+            <img src="https://i.imgur.com/ghGyx7F.jpeg" alt="Logo Canva" title="Canva" class="logo-item" />
+            <img src="https://i.imgur.com/QlKUONR.png" alt="Logo WordPress" title="WordPress" class="logo-item" />
+            <img src="https://i.imgur.com/uIPbttI.png" alt="Logo Nuvemshop" title="Nuvemshop" class="logo-item" />
+            <img src="https://i.imgur.com/ez7wN2B.png" alt="Logo Wix" title="Wix" class="logo-item" />
+            
+            <img src="https://i.imgur.com/nZCoFYU.png" alt="Logo Adobe Photoshop" title="Adobe Photoshop" class="logo-item" />
+            <img src="https://i.imgur.com/PFtonWo.png" alt="Logo Adobe Illustrator" title="Adobe Illustrator" class="logo-item" />
+            <img src="https://i.imgur.com/XqkapiC.png" alt="Logo GitHub" title="GitHub" class="logo-item" />
+            <img src="https://i.imgur.com/awmZUgg.png" alt="Logo Hostinger" title="Hostinger" class="logo-item" />
+            <img src="https://i.imgur.com/ghGyx7F.jpeg" alt="Logo Canva" title="Canva" class="logo-item" />
+            <img src="https://i.imgur.com/QlKUONR.png" alt="Logo WordPress" title="WordPress" class="logo-item" />
+            <img src="https://i.imgur.com/uIPbttI.png" alt="Logo Nuvemshop" title="Nuvemshop" class="logo-item" />
+            <img src="https://i.imgur.com/ez7wN2B.png" alt="Logo Wix" title="Wix" class="logo-item" />
+        </div>
+    </div>
+</section>
     <section id="portfolio" class="py-20 section-bg section-animate">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 content-layer">
-            <h2 class="text-4xl font-bold text-center gradient-text mb-12">Portfólio</h2>
+            <h2 class="text-4xl font-bold text-center gradient-text mb-12">Artes em Destaque</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="portfolio-item relative overflow-hidden rounded-xl transition fade-in">
                     <img src="https://i.postimg.cc/kGd1LsST/Prancheta-18.png" alt="Projeto 1 - Flow Digital" class="w-full h-64 object-cover">
