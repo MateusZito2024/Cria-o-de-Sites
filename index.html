@@ -957,6 +957,17 @@
         margin-top: 3rem; /* Espaço entre o último link e o logo */
     }
 }
+        /* Novo ajuste para os ícones no Processo de Criação */
+#workflow .service-item .service-icon {
+    width: 60px; /* Aumenta um pouco o tamanho do ícone */
+    height: 60px;
+    background: none; /* Remove o fundo do ícone que você adicionou para os serviços antigos */
+    border-radius: 0;
+    padding: 0;
+    box-shadow: none;
+    filter: drop-shadow(0 0 5px #0bf4ed); /* Adiciona um brilho sutil para destacar */
+    margin-bottom: 1rem;
+}
     </style>
 </head>
 <body class="text-gray-100">
@@ -996,31 +1007,49 @@
             <a href="#contact" class="mt-6 inline-block bg-indigo-500 text-white font-semibold py-3 px-8 rounded-full service-item transition">Comece Agora</a>
         </div>
     </section>
-    <section id="services" class="py-20 section-bg section-animate">
+    <section id="workflow" class="py-20 section-bg section-animate">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 content-layer">
-        <h2 class="text-4xl font-bold text-center gradient-text mb-12">Nossos Serviços</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        <h2 class="text-4xl font-bold text-center gradient-text mb-4">Nosso Processo de Criação</h2>
+        <p class="text-xl text-gray-300 max-w-3xl mx-auto mb-12 text-center fade-in">Transformamos sua ideia em realidade digital através de 4 etapas estratégicas e transparentes.</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
             
-            <div class="service-item p-8 rounded-xl transition fade-in text-center">
-                <img src="https://i.postimg.cc/wjGtqTVm/pngegg-1.png" alt="Ícone Marketing Digital" class="service-icon mx-auto">
-                <h3 class="text-2xl font-semibold gradient-text mb-3">Marketing Digital</h3>
-                <p class="text-gray-300">Campanhas estratégicas focadas em performance e conversão de público-alvo.</p>
+            <div class="service-item p-6 rounded-xl transition fade-in text-center shadow-lg border-opacity-30" style="animation-delay: 0s;">
+                <img src="https://i.postimg.cc/pr0v9h79/icon-discovery.png" alt="Ícone de Descoberta" class="service-icon mx-auto">
+                <div class="text-4xl font-bold gradient-text mb-2">01</div>
+                <h3 class="text-xl font-semibold text-white mb-2">Estratégia</h3>
+                <p class="text-gray-400 text-sm">Mapeamos seus objetivos, público e concorrentes para definir o caminho ideal.</p>
             </div>
             
-            <div class="service-item p-8 rounded-xl transition fade-in text-center" style="animation-delay: 0.2s;">
-                <img src="https://i.postimg.cc/YqgkG2MF/pngegg-2.png" alt="Ícone Desenvolvimento Web" class="service-icon mx-auto">
-                <h3 class="text-2xl font-semibold gradient-text mb-3">Desenvolvimento Web</h3>
-                <p class="text-gray-300">Sites personalizados, rápidos e responsivos que são a espinha dorsal da sua marca.</p>
+            <div class="service-item p-6 rounded-xl transition fade-in text-center shadow-lg border-opacity-30" style="animation-delay: 0.2s;">
+                <img src="https://i.postimg.cc/qR56kFvB/icon-design.png" alt="Ícone de Design" class="service-icon mx-auto">
+                <div class="text-4xl font-bold gradient-text mb-2">02</div>
+                <h3 class="text-xl font-semibold text-white mb-2">Design</h3>
+                <p class="text-gray-400 text-sm">Criamos layouts modernos e focados na Experiência do Usuário (UX/UI).</p>
             </div>
             
-            <div class="service-item p-8 rounded-xl transition fade-in text-center" style="animation-delay: 0.4s;">
-                <img src="https://i.postimg.cc/63Gbj3HL/pngegg-3.png" alt="Ícone Design Gráfico" class="service-icon mx-auto">
-                <h3 class="text-2xl font-semibold gradient-text mb-3">Design Gráfico & UX</h3>
-                <p class="text-gray-300">Visuais únicos e interfaces intuitivas que elevam a percepção de valor da sua empresa.</p>
+            <div class="service-item p-6 rounded-xl transition fade-in text-center shadow-lg border-opacity-30" style="animation-delay: 0.4s;">
+                <img src="https://i.postimg.cc/85z1X2fX/icon-development.png" alt="Ícone de Desenvolvimento" class="service-icon mx-auto">
+                <div class="text-4xl font-bold gradient-text mb-2">03</div>
+                <h3 class="text-xl font-semibold text-white mb-2">Desenvolvimento</h3>
+                <p class="text-gray-400 text-sm">Construção do projeto com código limpo, performance e otimização SEO.</p>
             </div>
+            
+            <div class="service-item p-6 rounded-xl transition fade-in text-center shadow-lg border-opacity-30" style="animation-delay: 0.6s;">
+                <img src="https://i.postimg.cc/cJ08q29j/icon-launch.png" alt="Ícone de Lançamento" class="service-icon mx-auto">
+                <div class="text-4xl font-bold gradient-text mb-2">04</div>
+                <h3 class="text-xl font-semibold text-white mb-2">Lançamento</h3>
+                <p class="text-gray-400 text-sm">Publicação do site e suporte contínuo para garantir o sucesso a longo prazo.</p>
             </div>
         </div>
-    </section>
+        
+        <div class="text-center mt-12">
+            <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/servi%C3%A7os.html" class="inline-block cta-button text-white font-semibold py-3 px-8 rounded-full transition hover:scale-105">
+                Ver Detalhes do Processo Completo →
+            </a>
+        </div>
+    </div>
+</section>
     <section id="about" class="py-20 section-bg section-animate">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center content-layer">
             <h2 class="text-4xl font-bold gradient-text mb-8">Quem Somos</h2>
