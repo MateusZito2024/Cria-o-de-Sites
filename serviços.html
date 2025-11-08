@@ -291,60 +291,125 @@
         }
 
         .carousel {
-            position: relative;
-            width: 100%;
-            overflow: hidden;
-            pointer-events: auto;
-        }
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    pointer-events: auto;
+}
 
-        .carousel-items {
-            display: flex;
-            width: 100%;
-            transition: transform 0.5s ease-in-out;
-        }
+.carousel-items {
+    display: flex;
+    width: 100%;
+    transition: transform 0.5s ease-in-out;
+}
 
-        .carousel-item {
-            flex: 0 0 100%;
-            opacity: 1;
-        }
+.carousel-item {
+    flex: 0 0 100%;
+    opacity: 1;
+}
 
-        .pagination {
-            display: flex;
-            justify-content: center;
-            margin-top: 1rem;
-            padding-bottom: 1rem;
-        }
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+    padding-bottom: 1rem;
+}
 
-        .pagination-number {
-            width: 30px;
-            height: 30px;
-            background: linear-gradient(135deg, #1e293b, #111111);
-            color: #edf1f7;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 5px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 14px;
-            font-weight: bold;
-            box-shadow: 0 0 5px rgba(165, 180, 252, 0.5);
-            pointer-events: auto;
-        }
+.pagination-number {
+    width: 30px;
+    height: 30px;
+    background: linear-gradient(135deg, #1e293b, #111111);
+    color: #edf1f7;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    font-weight: bold;
+    box-shadow: 0 0 5px rgba(165, 180, 252, 0.5);
+    pointer-events: auto;
+}
 
-        .pagination-number.active {
-            background: linear-gradient(135deg, #a5b4fc, #e879f9);
-            color: white;
-            transform: scale(1.2);
-            box-shadow: 0 0 15px rgba(232, 121, 249, 0.8);
-        }
+.pagination-number.active {
+    background: linear-gradient(135deg, #a5b4fc, #e879f9);
+    color: white;
+    transform: scale(1.2);
+    box-shadow: 0 0 15px rgba(232, 121, 249, 0.8);
+}
 
-        .pagination-number:hover {
-            background: linear-gradient(135deg, #0bf4ed, #6627ff);
-            transform: scale(1.1);
-            box-shadow: 0 0 10px rgba(165, 180, 252, 0.8);
-        }
+.pagination-number:hover {
+    background: linear-gradient(135deg, #0bf4ed, #6627ff);
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(165, 180, 252, 0.8);
+}
+
+/* --- NOVOS ESTILOS PARA O CARROSSEL DINÂMICO (PROJETOS) --- */
+.portfolio-carousel-section { /* Container da seção */
+    padding: 20px 0 60px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+}
+
+.carousel-container-dynamic { /* O viewport que corta as laterais */
+    overflow: hidden;
+    position: relative;
+    padding: 20px 0;
+    margin: 0 auto;
+}
+
+.carousel-images-dynamic { /* A faixa de imagens rolando */
+    display: flex;
+    gap: 20px;
+    padding: 10px 0;
+    transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.carousel-images-dynamic img {
+    flex-shrink: 0;
+    height: auto;
+    border-radius: 1rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4), 0 0 5px rgba(102, 39, 255, 0.2);
+    transition: transform 0.5s ease, box-shadow 0.5s ease, filter 0.5s ease;
+    filter: brightness(0.7) grayscale(0.6);
+    object-fit: cover;
+}
+
+.carousel-images-dynamic img.centered-image {
+    /* Imagem central em destaque */
+    transform: scale(1.15);
+    filter: brightness(1.1) grayscale(0);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6); /* Sombra mais sutil e escura */
+}
+
+.carousel-images-dynamic img:hover {
+    filter: brightness(0.9) grayscale(0.3);
+}
+
+/* Regras de Responsividade para o Carrossel Dinâmico */
+@media (min-width: 769px) {
+    .carousel-images-dynamic img {
+        width: 200px;
+        max-height: 250px;
+    }
+    .carousel-container-dynamic {
+        max-width: calc(200px * 5 + 20px * 4);
+        margin: 0 auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .carousel-images-dynamic img {
+        width: 150px;
+        max-height: 180px;
+    }
+    .carousel-container-dynamic {
+        max-width: calc(150px * 3 + 20px * 2);
+        margin: 0 auto;
+    }
+}
 
         .newsletter-input {
     background: #1e293b;
@@ -406,7 +471,7 @@
 
 .service-card-main:hover {
     transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 15px 30px rgba(11, 244, 237, 0.6);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6); /* Sombra mais sutil e escura */
     border-image: linear-gradient(135deg, #0bf4ed, #6627ff) 1;
 }
 
@@ -880,34 +945,134 @@
     <section id="content-showcase" class="py-20 section-bg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 content-layer">
             
-            <h2 class="text-3xl md:text-4xl font-bold gradient-text mb-12 text-center float">Inspiração & Projetos Recentes</h2>
+            <h2 class="text-3xl md:text-4xl font-bold gradient-text mb-12 text-center float">Inspiração & Projetos Recentes ✨</h2>
             
-            <div class="carousel max-w-lg mx-auto mb-16" id="main-content-carousel-container">
-                <div class="carousel-items">
-                    <div class="carousel-item content-card p-6 float">
-                        <img src="https://i.postimg.cc/8CzyXRJx/Prancheta-1-2.png" alt="Post de Dicas de Design" class="w-full rounded-lg">
-                        <h3 class="text-lg font-semibold gradient-text mt-4 mb-2">5 Dicas Essenciais de Design</h3>
-                        <p class="text-gray-400 text-sm">Melhore seus visuais com estas técnicas simples e eficazes.</p>
-                    </div>
-                    <div class="carousel-item content-card p-6 float">
-    <img src="https://i.postimg.cc/ZKCqJ5kD/Prancheta-4.png" alt="Carrossel Nutrição" class="w-full rounded-lg" style="object-position: top;">
-    <h3 class="text-lg font-semibold gradient-text mt-4 mb-2">Case: Identidade NutriVida</h3>
-    <p class="text-gray-400 text-sm">Desenvolvemos a marca completa para a clínica NutriVida.</p>
-</div>
-                    <div class="carousel-item content-card p-6 float">
-                        <img src="https://i.postimg.cc/GprrTcNR/Prancheta-1-3.png" alt="Web Design Moderno" class="w-full rounded-lg">
-                        <h3 class="text-lg font-semibold gradient-text mt-4 mb-2">O Futuro do Web Design</h3>
-                        <p class="text-gray-400 text-sm">Tendências e inovações que moldarão os sites de amanhã.</p>
+            <div class="portfolio-carousel-section">
+                <div class="carousel-container-dynamic">
+                    <div class="carousel-images-dynamic" id="main-content-carousel-images">
+                        <img src="https://i.imgur.com/Uyt4o4y.png" alt="Design Gráfico 1">
+                        <img src="https://i.imgur.com/jN8m68v.png" alt="Design Gráfico 2">
+                        <img src="https://i.imgur.com/EJTN4CF.png" alt="Design Gráfico 3">
+                        <img src="https://i.imgur.com/wDGznvt.png" alt="Design Gráfico 4">
+                        <img src="https://i.imgur.com/gOHAP0b.png" alt="Design Gráfico 5">
+                        <img src="https://i.imgur.com/QDWwiNa.png" alt="Design Gráfico 6">
+                        <img src="https://i.imgur.com/U9SiJuY.jpeg" alt="Design Gráfico 7">
+                        <img src="https://i.imgur.com/iPoArPf.jpeg" alt="Design Gráfico 8">
+                        <img src="https://i.imgur.com/W5MOebv.png" alt="Design Gráfico 9">
+                        <img src="https://i.imgur.com/zhPwVQ9.png" alt="Design Gráfico 10">
+                        <img src="https://i.imgur.com/IsW7asm.png" alt="Design Gráfico 11">
+                        <img src="https://i.imgur.com/ch4tPGI.png" alt="Design Gráfico 12">
+                        <img src="https://i.imgur.com/kQqWEmp.png" alt="Design Gráfico 13">
+                        <img src="https://i.imgur.com/xyatlHc.png" alt="Design Gráfico 14">
+                        <img src="https://i.imgur.com/aZX5Px0.png" alt="Design Gráfico 15">
+                        <img src="https://i.imgur.com/gwzR0dF.png" alt="Design Gráfico 16">
+                        <img src="https://i.imgur.com/UZXZlo1.png" alt="Design Gráfico 17">
+                        <img src="https://i.imgur.com/eerNUno.png" alt="Design Gráfico 18">
+                        <img src="https://i.imgur.com/YtE5aaM.png" alt="Design Gráfico 19">
+                        <img src="https://i.imgur.com/Na7vbzJ.png" alt="Design Gráfico 20">
+                        <img src="https://i.imgur.com/Uyt4o4y.png" alt="Design Gráfico 1">
+                        <img src="https://i.imgur.com/jN8m68v.png" alt="Design Gráfico 2">
+                        <img src="https://i.imgur.com/EJTN4CF.png" alt="Design Gráfico 3">
+                        <img src="https://i.imgur.com/wDGznvt.png" alt="Design Gráfico 4">
+                        <img src="https://i.imgur.com/gOHAP0b.png" alt="Design Gráfico 5">
+                        <img src="https://i.imgur.com/QDWwiNa.png" alt="Design Gráfico 6">
+                        <img src="https://i.imgur.com/U9SiJuY.jpeg" alt="Design Gráfico 7">
+                        <img src="https://i.imgur.com/iPoArPf.jpeg" alt="Design Gráfico 8">
+                        <img src="https://i.imgur.com/W5MOebv.png" alt="Design Gráfico 9">
+                        <img src="https://i.imgur.com/zhPwVQ9.png" alt="Design Gráfico 10">
+                        <img src="https://i.imgur.com/IsW7asm.png" alt="Design Gráfico 11">
+                        <img src="https://i.imgur.com/ch4tPGI.png" alt="Design Gráfico 12">
+                        <img src="https://i.imgur.com/kQqWEmp.png" alt="Design Gráfico 13">
+                        <img src="https://i.imgur.com/xyatlHc.png" alt="Design Gráfico 14">
+                        <img src="https://i.imgur.com/aZX5Px0.png" alt="Design Gráfico 15">
+                        <img src="https://i.imgur.com/gwzR0dF.png" alt="Design Gráfico 16">
+                        <img src="https://i.imgur.com/UZXZlo1.png" alt="Design Gráfico 17">
+                        <img src="https://i.imgur.com/eerNUno.png" alt="Design Gráfico 18">
+                        <img src="https://i.imgur.com/YtE5aaM.png" alt="Design Gráfico 19">
+                        <img src="https://i.imgur.com/Na7vbzJ.png" alt="Design Gráfico 20">
+                        <img src="https://i.imgur.com/Uyt4o4y.png" alt="Design Gráfico 1">
+                        <img src="https://i.imgur.com/jN8m68v.png" alt="Design Gráfico 2">
+                        <img src="https://i.imgur.com/EJTN4CF.png" alt="Design Gráfico 3">
+                        <img src="https://i.imgur.com/wDGznvt.png" alt="Design Gráfico 4">
+                        <img src="https://i.imgur.com/gOHAP0b.png" alt="Design Gráfico 5">
+                        <img src="https://i.imgur.com/QDWwiNa.png" alt="Design Gráfico 6">
+                        <img src="https://i.imgur.com/U9SiJuY.jpeg" alt="Design Gráfico 7">
+                        <img src="https://i.imgur.com/iPoArPf.jpeg" alt="Design Gráfico 8">
+                        <img src="https://i.imgur.com/W5MOebv.png" alt="Design Gráfico 9">
+                        <img src="https://i.imgur.com/zhPwVQ9.png" alt="Design Gráfico 10">
+                        <img src="https://i.imgur.com/IsW7asm.png" alt="Design Gráfico 11">
+                        <img src="https://i.imgur.com/ch4tPGI.png" alt="Design Gráfico 12">
+                        <img src="https://i.imgur.com/kQqWEmp.png" alt="Design Gráfico 13">
+                        <img src="https://i.imgur.com/xyatlHc.png" alt="Design Gráfico 14">
+                        <img src="https://i.imgur.com/aZX5Px0.png" alt="Design Gráfico 15">
+                        <img src="https://i.imgur.com/gwzR0dF.png" alt="Design Gráfico 16">
+                        <img src="https://i.imgur.com/UZXZlo1.png" alt="Design Gráfico 17">
+                        <img src="https://i.imgur.com/eerNUno.png" alt="Design Gráfico 18">
+                        <img src="https://i.imgur.com/YtE5aaM.png" alt="Design Gráfico 19">
+                        <img src="https://i.imgur.com/Na7vbzJ.png" alt="Design Gráfico 20">
+                        <img src="https://i.imgur.com/Uyt4o4y.png" alt="Design Gráfico 1">
+                        <img src="https://i.imgur.com/jN8m68v.png" alt="Design Gráfico 2">
+                        <img src="https://i.imgur.com/EJTN4CF.png" alt="Design Gráfico 3">
+                        <img src="https://i.imgur.com/wDGznvt.png" alt="Design Gráfico 4">
+                        <img src="https://i.imgur.com/gOHAP0b.png" alt="Design Gráfico 5">
+                        <img src="https://i.imgur.com/QDWwiNa.png" alt="Design Gráfico 6">
+                        <img src="https://i.imgur.com/U9SiJuY.jpeg" alt="Design Gráfico 7">
+                        <img src="https://i.imgur.com/iPoArPf.jpeg" alt="Design Gráfico 8">
+                        <img src="https://i.imgur.com/W5MOebv.png" alt="Design Gráfico 9">
+                        <img src="https://i.imgur.com/zhPwVQ9.png" alt="Design Gráfico 10">
+                        <img src="https://i.imgur.com/IsW7asm.png" alt="Design Gráfico 11">
+                        <img src="https://i.imgur.com/ch4tPGI.png" alt="Design Gráfico 12">
+                        <img src="https://i.imgur.com/kQqWEmp.png" alt="Design Gráfico 13">
+                        <img src="https://i.imgur.com/xyatlHc.png" alt="Design Gráfico 14">
+                        <img src="https://i.imgur.com/aZX5Px0.png" alt="Design Gráfico 15">
+                        <img src="https://i.imgur.com/gwzR0dF.png" alt="Design Gráfico 16">
+                        <img src="https://i.imgur.com/UZXZlo1.png" alt="Design Gráfico 17">
+                        <img src="https://i.imgur.com/eerNUno.png" alt="Design Gráfico 18">
+                        <img src="https://i.imgur.com/YtE5aaM.png" alt="Design Gráfico 19">
+                        <img src="https://i.imgur.com/Na7vbzJ.png" alt="Design Gráfico 20">
+                        <img src="https://i.imgur.com/Uyt4o4y.png" alt="Design Gráfico 1">
+                        <img src="https://i.imgur.com/jN8m68v.png" alt="Design Gráfico 2">
+                        <img src="https://i.imgur.com/EJTN4CF.png" alt="Design Gráfico 3">
+                        <img src="https://i.imgur.com/wDGznvt.png" alt="Design Gráfico 4">
+                        <img src="https://i.imgur.com/gOHAP0b.png" alt="Design Gráfico 5">
+                        <img src="https://i.imgur.com/QDWwiNa.png" alt="Design Gráfico 6">
+                        <img src="https://i.imgur.com/U9SiJuY.jpeg" alt="Design Gráfico 7">
+                        <img src="https://i.imgur.com/iPoArPf.jpeg" alt="Design Gráfico 8">
+                        <img src="https://i.imgur.com/W5MOebv.png" alt="Design Gráfico 9">
+                        <img src="https://i.imgur.com/zhPwVQ9.png" alt="Design Gráfico 10">
+                        <img src="https://i.imgur.com/IsW7asm.png" alt="Design Gráfico 11">
+                        <img src="https://i.imgur.com/ch4tPGI.png" alt="Design Gráfico 12">
+                        <img src="https://i.imgur.com/kQqWEmp.png" alt="Design Gráfico 13">
+                        <img src="https://i.imgur.com/xyatlHc.png" alt="Design Gráfico 14">
+                        <img src="https://i.imgur.com/aZX5Px0.png" alt="Design Gráfico 15">
+                        <img src="https://i.imgur.com/gwzR0dF.png" alt="Design Gráfico 16">
+                        <img src="https://i.imgur.com/UZXZlo1.png" alt="Design Gráfico 17">
+                        <img src="https://i.imgur.com/eerNUno.png" alt="Design Gráfico 18">
+                        <img src="https://i.imgur.com/YtE5aaM.png" alt="Design Gráfico 19">
+                        <img src="https://i.imgur.com/Na7vbzJ.png" alt="Design Gráfico 20">
+                        <img src="https://i.imgur.com/Uyt4o4y.png" alt="Design Gráfico 1">
+                        <img src="https://i.imgur.com/jN8m68v.png" alt="Design Gráfico 2">
+                        <img src="https://i.imgur.com/EJTN4CF.png" alt="Design Gráfico 3">
+                        <img src="https://i.imgur.com/wDGznvt.png" alt="Design Gráfico 4">
+                        <img src="https://i.imgur.com/gOHAP0b.png" alt="Design Gráfico 5">
+                        <img src="https://i.imgur.com/QDWwiNa.png" alt="Design Gráfico 6">
+                        <img src="https://i.imgur.com/U9SiJuY.jpeg" alt="Design Gráfico 7">
+                        <img src="https://i.imgur.com/iPoArPf.jpeg" alt="Design Gráfico 8">
+                        <img src="https://i.imgur.com/W5MOebv.png" alt="Design Gráfico 9">
+                        <img src="https://i.imgur.com/zhPwVQ9.png" alt="Design Gráfico 10">
+                        <img src="https://i.imgur.com/IsW7asm.png" alt="Design Gráfico 11">
+                        <img src="https://i.imgur.com/ch4tPGI.png" alt="Design Gráfico 12">
+                        <img src="https://i.imgur.com/kQqWEmp.png" alt="Design Gráfico 13">
+                        <img src="https://i.imgur.com/xyatlHc.png" alt="Design Gráfico 14">
+                        <img src="https://i.imgur.com/aZX5Px0.png" alt="Design Gráfico 15">
+                        <img src="https://i.imgur.com/gwzR0dF.png" alt="Design Gráfico 16">
+                        <img src="https://i.imgur.com/UZXZlo1.png" alt="Design Gráfico 17">
+                        <img src="https://i.imgur.com/eerNUno.png" alt="Design Gráfico 18">
+                        <img src="https://i.imgur.com/YtE5aaM.png" alt="Design Gráfico 19">
+                        <img src="https://i.imgur.com/Na7vbzJ.png" alt="Design Gráfico 20">
                     </div>
                 </div>
             </div>
-            <div class="pagination" id="main-content-pagination">
-                <div class="pagination-number active" data-page="0">1</div>
-                <div class="pagination-number" data-page="1">2</div>
-                <div class="pagination-number" data-page="2">3</div>
-            </div>
-
-            
 
         </div>
     </section>
@@ -939,246 +1104,346 @@
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Smooth scroll for nav links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    document.querySelector(this.getAttribute('href')).scrollIntoView({
-                        behavior: 'smooth'
-                    });
-                    // Fecha o menu hambúrguer ao clicar em um link, apenas em telas menores
-                    if (window.innerWidth <= 768) {
-                        toggleMenu();
+    const TRANSITION_DURATION = 800; // 0.8s do CSS
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // --- LÓGICA DE NAVEGAÇÃO E ESTRELAS MANTIDA ---
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+                if (window.innerWidth <= 768) {
+                    toggleMenu();
+                }
+            });
+        });
+
+        // Hamburger menu functionality
+        const hamburger = document.querySelector('.hamburger');
+        const mobileNavMenu = document.querySelector('.nav-menu-mobile');
+
+        function toggleMenu() {
+            hamburger.classList.toggle('active');
+            mobileNavMenu.classList.toggle('active');
+            document.body.style.overflowY = mobileNavMenu.classList.contains('active') ? 'hidden' : 'auto';
+        }
+
+        hamburger.addEventListener('click', toggleMenu);
+
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768 && mobileNavMenu.classList.contains('active')) {
+                toggleMenu();
+            }
+        });
+
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth <= 768 && !hamburger.contains(e.target) && !mobileNavMenu.contains(e.target) && mobileNavMenu.classList.contains('active')) {
+                toggleMenu();
+            }
+        });
+
+        // Stars animation
+        const starsContainer = document.getElementById('stars-container');
+        const colors = ['purple', 'pink', 'white'];
+        const numStars = 250;
+
+        function createStars() {
+            starsContainer.innerHTML = '';
+            const documentHeight = document.body.scrollHeight;
+            const viewportWidth = window.innerWidth;
+
+            for (let i = 0; i < numStars; i++) {
+                const star = document.createElement('span');
+                star.classList.add('star');
+                star.classList.add(colors[Math.floor(Math.random() * colors.length)]);
+                star.style.left = `${Math.random() * viewportWidth}px`;
+                star.style.top = `${Math.random() * documentHeight}px`;
+                const moveX = (Math.random() - 0.5) * 300;
+                const moveY = (Math.random() - 0.5) * 300;
+                star.style.setProperty('--move-x', `${moveX}px`);
+                star.style.setProperty('--move-y', `${moveY}px`);
+                star.style.animationDelay = `${Math.random() * 15}s`;
+                starsContainer.appendChild(star);
+            }
+        }
+
+        createStars();
+        window.addEventListener('resize', createStars);
+
+        // ----------------------------------------------------------------------
+        // --- 1. FUNÇÃO CARROSSEL DINÂMICO PARA PROJETOS (Rolagem Infinita e Suave) ---
+        // ----------------------------------------------------------------------
+        function setupDynamicCarousel(containerId, autoAdvanceInterval) {
+            const carouselContainer = document.getElementById(containerId);
+            if (!carouselContainer) return;
+
+            carouselContainer.classList.add('carousel-images-dynamic');
+
+            const imagesOriginal = Array.from(carouselContainer.querySelectorAll('img'));
+            if (imagesOriginal.length === 0) return;
+
+            let currentIndex = 0;
+            let carouselInterval = null;
+            let isAnimating = false;
+            const getPaddingCount = () => window.innerWidth <= 768 ? 1 : 2;
+
+            function initializeCarousel() {
+                if (carouselInterval) clearInterval(carouselInterval);
+                
+                // Armazena as imagens originais para clonagem posterior
+                const currentImages = Array.from(carouselContainer.querySelectorAll('img'));
+
+                // Limpa e recria o DOM com os clones (Se for a primeira execução ou resize)
+                if (currentImages.length <= imagesOriginal.length) {
+                     carouselContainer.innerHTML = '';
+                    carouselContainer.style.transition = 'none';
+
+                    const numPaddingImages = getPaddingCount();
+
+                    // 1. Clones iniciais (Imagens do final)
+                    for (let i = 0; i < numPaddingImages; i++) {
+                        carouselContainer.appendChild(imagesOriginal[imagesOriginal.length - numPaddingImages + i].cloneNode(true));
                     }
+                    // 2. Imagens originais (o que será mostrado)
+                    imagesOriginal.forEach(img => carouselContainer.appendChild(img.cloneNode(true)));
+                    // 3. Clones finais (Imagens do início para o loop)
+                    for (let i = 0; i < numPaddingImages; i++) {
+                        carouselContainer.appendChild(imagesOriginal[i].cloneNode(true));
+                    }
+                }
+                
+                currentIndex = 0;
+                updateCarousel(true);
+
+                carouselInterval = setInterval(updateCarousel, autoAdvanceInterval);
+            }
+
+            function updateCarousel(initial = false) {
+                if (isAnimating && !initial) return;
+
+                const allImages = Array.from(carouselContainer.querySelectorAll('img'));
+                if (allImages.length === 0) return;
+
+                const numPaddingImages = getPaddingCount();
+
+                // Lógica de Teletransporte Suave (CORRIGIDA)
+                if (currentIndex >= imagesOriginal.length) {
+                    // O teletransporte só pode ser agendado se não for a chamada inicial
+                    if (!initial) {
+                        isAnimating = true; // Mantém a animação bloqueada
+
+                        // Timeout para a transição suave para o clone (currentIndex = length)
+                        setTimeout(() => {
+                            carouselContainer.style.transition = 'none'; // Desliga a transição
+                            currentIndex = 0; // Reseta o índice para a primeira imagem real
+                            
+                            // Chama updateCarousel instantaneamente com a flag 'initial'
+                            updateCarousel(true); 
+                            isAnimating = false;
+                            
+                        }, TRANSITION_DURATION);
+                    }
+                    // O índice principal (currentIndex) NÃO é incrementado aqui, ele será resetado no timeout.
+                }
+
+                // Define a transição (normal ou nenhuma se for o reset instantâneo)
+                carouselContainer.style.transition = initial ? 'none' : `transform ${TRANSITION_DURATION}ms cubic-bezier(0.25, 1, 0.5, 1)`;
+
+                // Cálculo da Posição
+                const imageWidth = allImages[0].offsetWidth;
+                const gap = parseInt(window.getComputedStyle(carouselContainer).gap);
+                
+                const currentImageIndex = currentIndex + numPaddingImages;
+                
+                const offset = currentImageIndex * (imageWidth + gap); 
+                const containerWidth = carouselContainer.closest('.carousel-container-dynamic').offsetWidth;
+                const centerOffset = (containerWidth / 2) - (imageWidth / 2); 
+
+                carouselContainer.style.transform = `translateX(${-offset + centerOffset}px)`;
+
+                // Destaque da imagem central
+                allImages.forEach(img => img.classList.remove('centered-image'));
+                if (allImages[currentImageIndex]) {
+                    allImages[currentImageIndex].classList.add('centered-image');
+                }
+                
+                // Avança o índice (somente se a transição suave estiver ativa e não for o ponto de reset)
+                if (!initial && currentIndex < imagesOriginal.length) { 
+                    currentIndex++; 
+                } else if (!initial && currentIndex >= imagesOriginal.length) {
+                     // Se for a última imagem (o clone), já agendamos o reset, então paramos de animar por 800ms.
+                     isAnimating = true;
+                     setTimeout(() => { isAnimating = false; }, TRANSITION_DURATION);
+                }
+            }
+
+            // Garante que o carrossel se ajusta em caso de redimensionamento (re-inicializa)
+            window.addEventListener('resize', () => { initializeCarousel(); }); 
+            initializeCarousel();
+        }
+
+
+        // ----------------------------------------------------------------------
+        // --- 2. FUNÇÃO CARROSSEL DE DEPOIMENTOS (Slide a Slide/ Antigo) ---
+        // ----------------------------------------------------------------------
+        function setupTestimonialsCarousel(carouselId, paginationId, autoAdvanceInterval) {
+            const carousel = document.getElementById(carouselId);
+            if (!carousel) return;
+
+            const carouselItemsContainer = carousel.querySelector('.carousel-items');
+            const carouselItems = carousel.querySelectorAll(`.carousel-item`);
+            const pagination = document.getElementById(paginationId);
+
+            let numbers = [];
+            if (pagination) { numbers = pagination.querySelectorAll(`.pagination-number`); }
+
+            let currentIndex = 0;
+            let intervalId = null;
+
+            if (carouselItems.length === 0) return;
+
+            carouselItemsContainer.style.transform = `translateX(0%)`;
+            if (numbers.length > 0) numbers[0].classList.add('active');
+
+            function showItem(index) {
+                carouselItemsContainer.style.transform = `translateX(-${index * 100}%)`;
+                numbers.forEach(n => n.classList.remove('active'));
+                if (numbers[index]) numbers[index].classList.add('active');
+                currentIndex = index;
+            }
+
+            function autoAdvance() {
+                currentIndex = (currentIndex + 1) % carouselItems.length;
+                showItem(currentIndex);
+            }
+
+            numbers.forEach((number, index) => {
+                number.addEventListener('click', () => {
+                    showItem(index);
+                    clearInterval(intervalId);
+                    intervalId = setInterval(autoAdvance, autoAdvanceInterval);
                 });
             });
 
-            // Hamburger menu functionality
-            const hamburger = document.querySelector('.hamburger');
-            const mobileNavMenu = document.querySelector('.nav-menu-mobile');
-            const desktopNavMenu = document.querySelector('.desktop-nav'); // Referência ao menu desktop
-
-            function toggleMenu() {
-                hamburger.classList.toggle('active');
-                mobileNavMenu.classList.toggle('active');
-                document.body.style.overflowY = mobileNavMenu.classList.contains('active') ? 'hidden' : 'auto';
+            function startAutoAdvance() {
+                if (intervalId) clearInterval(intervalId);
+                intervalId = setInterval(autoAdvance, autoAdvanceInterval);
             }
 
-            hamburger.addEventListener('click', toggleMenu);
+            function stopAutoAdvance() { clearInterval(intervalId); }
 
-            // Hide mobile menu on resize if it becomes desktop view
-            window.addEventListener('resize', () => {
-                if (window.innerWidth > 768 && mobileNavMenu.classList.contains('active')) {
-                    toggleMenu();
-                }
+            startAutoAdvance();
+            // Mantém a pausa no hover para o carrossel de depoimentos, se desejar
+            carousel.addEventListener('mouseenter', stopAutoAdvance);
+            carousel.addEventListener('mouseleave', startAutoAdvance);
+
+            let touchStartX = 0;
+            let touchEndX = 0;
+
+            carousel.addEventListener('touchstart', (e) => {
+                touchStartX = e.touches[0].clientX;
+                stopAutoAdvance();
             });
 
-            // Close mobile menu if clicked outside
-            document.addEventListener('click', (e) => {
-                if (window.innerWidth <= 768 && !hamburger.contains(e.target) && !mobileNavMenu.contains(e.target) && mobileNavMenu.classList.contains('active')) {
-                    toggleMenu();
-                }
-            });
+            carousel.addEventListener('touchmove', (e) => { touchEndX = e.touches[0].clientX; });
 
-            // Stars animation
-            const starsContainer = document.getElementById('stars-container');
-            const colors = ['purple', 'pink', 'white'];
-            const numStars = 250; // Aumentado para mais estrelas
-
-            // Funcao para criar as estrelas, ajustando a altura com base no scrollHeight do body
-            function createStars() {
-                starsContainer.innerHTML = ''; // Limpa estrelas existentes antes de recriar
-                // Usa document.body.scrollHeight para cobrir toda a altura do conteúdo da página
-                const documentHeight = document.body.scrollHeight; 
-                const viewportWidth = window.innerWidth; 
-
-                for (let i = 0; i < numStars; i++) {
-                    const star = document.createElement('span');
-                    star.classList.add('star');
-                    star.classList.add(colors[Math.floor(Math.random() * colors.length)]);
-                    
-                    // Posicao aleatoria dentro da largura da viewport e da altura total do documento
-                    star.style.left = `${Math.random() * viewportWidth}px`;
-                    star.style.top = `${Math.random() * documentHeight}px`; // Usa documentHeight aqui
-                    
-                    const moveX = (Math.random() - 0.5) * 300;
-                    const moveY = (Math.random() - 0.5) * 300;
-                    star.style.setProperty('--move-x', `${moveX}px`);
-                    star.style.setProperty('--move-y', `${moveY}px`);
-                    star.style.animationDelay = `${Math.random() * 15}s`;
-                    starsContainer.appendChild(star);
-                }
-            }
-
-            // Cria estrelas no carregamento e ao redimensionar
-            createStars();
-            window.addEventListener('resize', createStars);
-
-
-            // Carousel functionality
-            function setupCarousel(carouselId, paginationId, autoAdvanceInterval) {
-                const carousel = document.getElementById(carouselId);
-                const carouselItemsContainer = carousel.querySelector('.carousel-items');
-                const carouselItems = carousel.querySelectorAll(`.carousel-item`); // Removed ID from selector
-                const numbers = document.querySelectorAll(`#${paginationId} .pagination-number`);
-                let currentIndex = 0;
-                let intervalId = null;
-
-                // Initialize first item
-                carouselItemsContainer.style.transform = `translateX(0%)`;
-                numbers[0].classList.add('active');
-
-                function showItem(index) {
-                    carouselItemsContainer.style.transform = `translateX(-${index * 100}%)`;
-                    numbers.forEach(n => n.classList.remove('active'));
-                    numbers[index].classList.add('active');
-                    currentIndex = index;
-                }
-
-                function autoAdvance() {
+            carousel.addEventListener('touchend', () => {
+                const swipeThreshold = 50;
+                if (touchEndX < touchStartX - swipeThreshold) {
                     currentIndex = (currentIndex + 1) % carouselItems.length;
                     showItem(currentIndex);
                 }
-
-                // Set up pagination click events
-                numbers.forEach((number, index) => {
-                    number.addEventListener('click', () => {
-                        showItem(index);
-                        // Reset interval to prevent immediate slide after click
-                        clearInterval(intervalId);
-                        intervalId = setInterval(autoAdvance, autoAdvanceInterval);
-                    });
-                });
-
-                // Start auto-advance
-                function startAutoAdvance() {
-                    if (intervalId) clearInterval(intervalId); // Prevent multiple intervals
-                    intervalId = setInterval(autoAdvance, autoAdvanceInterval);
+                if (touchEndX > touchStartX + swipeThreshold) {
+                    currentIndex = (currentIndex - 1 + carouselItems.length) % carouselItems.length;
+                    showItem(currentIndex);
                 }
-
-                // Stop auto-advance
-                function stopAutoAdvance() {
-                    clearInterval(intervalId);
-                }
-
-                // Initialize auto-advance
                 startAutoAdvance();
+            });
+        }
 
-                // Pause on hover, resume on leave
-                carousel.addEventListener('mouseenter', stopAutoAdvance);
-                carousel.addEventListener('mouseleave', startAutoAdvance);
+        // ------------------------------------
+        // --- INICIALIZAÇÃO CORRETA DOS CARROSSÉIS ---
+        // ------------------------------------
+        setupTestimonialsCarousel('testimonials-carousel', 'testimonials-pagination', 6000);
+        setupDynamicCarousel('main-content-carousel-images', 3000);
 
-                // Add touch support for carousels
-                let touchStartX = 0;
-                let touchEndX = 0;
 
-                carousel.addEventListener('touchstart', (e) => {
-                    touchStartX = e.touches[0].clientX;
-                    stopAutoAdvance(); // Pause auto-advance on touch
-                });
+        // --- CÓDIGO DE NEWSLETTER MANTIDO ---
 
-                carousel.addEventListener('touchmove', (e) => {
-                    touchEndX = e.touches[0].clientX;
-                });
+        const submitButton = document.getElementById('newsletter-submit');
+        const formContainer = document.getElementById('newsletter-form');
+        const confirmationMessage = document.getElementById('confirmation-message');
+        const nameInput = document.getElementById('newsletter-name');
+        const emailInput = document.getElementById('newsletter-email');
 
-                carousel.addEventListener('touchend', () => {
-                    const swipeThreshold = 50; // Pixels to trigger a swipe
-                    if (touchEndX < touchStartX - swipeThreshold) { // Swiped left
-                        currentIndex = (currentIndex + 1) % carouselItems.length;
-                        showItem(currentIndex);
-                    }
-                    if (touchEndX > touchStartX + swipeThreshold) { // Swiped right
-                        currentIndex = (currentIndex - 1 + carouselItems.length) % carouselItems.length;
-                        showItem(currentIndex);
-                    }
-                    startAutoAdvance(); // Resume auto-advance after touch
-                });
-            }
+        if (submitButton) {
+            submitButton.addEventListener('click', function() {
+                const name = nameInput.value.trim();
+                const email = emailInput.value.trim();
 
-            // Initialize carousels
-// Removendo chamadas antigas e ajustando para os novos IDs e funcionalidades:
+                if (!name || !email) {
+                    alert('Por favor, preencha todos os campos.');
+                    return;
+                }
 
-// 1. Carrossel de Depoimentos (O que nossos clientes dizem)
-// ID: testimonials-carousel, Paginação: testimonials-pagination. Intervalo de 6 segundos.
-setupCarousel('testimonials-carousel', 'testimonials-pagination', 6000); 
+                if (!isValidEmail(email)) {
+                    alert('Por favor, insira um e-mail válido (exemplo: seuemail@dominio.com).');
+                    return;
+                }
 
-// 2. Carrossel de Projetos e Inspiração (main-content-carousel-container)
-// ID: main-content-carousel-container, Paginação: main-content-pagination. Intervalo de 5 segundos.
-setupCarousel('main-content-carousel-container', 'main-content-pagination', 5000);
+                sendToFormspree(name, email);
+            });
+        } else {
+            console.error('Botão #newsletter-submit não encontrado!');
+        }
 
-            // Newsletter form submission
-            const submitButton = document.getElementById('newsletter-submit');
-            const formContainer = document.getElementById('newsletter-form');
-            const confirmationMessage = document.getElementById('confirmation-message');
-            const nameInput = document.getElementById('newsletter-name');
-            const emailInput = document.getElementById('newsletter-email');
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
 
-            if (submitButton) {
-                submitButton.addEventListener('click', function() {
-                    const name = nameInput.value.trim();
-                    const email = emailInput.value.trim();
+        function sendToFormspree(name, email) {
+            const formData = new FormData();
+            formData.append('name', name);
+            formData.append('email', email);
+            formData.append('_subject', 'Nova Assinatura de Newsletter');
+            formData.append('_next', 'https://yourwebsite.com/services.html');
 
-                    if (!name || !email) {
-                        alert('Por favor, preencha todos os campos.');
-                        return;
-                    }
-
-                    if (!isValidEmail(email)) {
-                        alert('Por favor, insira um e-mail válido (exemplo: seuemail@dominio.com).');
-                        return;
-                    }
-
-                    sendToFormspree(name, email);
-                });
-            } else {
-                console.error('Botão #newsletter-submit não encontrado!');
-            }
-
-            function isValidEmail(email) {
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                return emailRegex.test(email);
-            }
-
-            function sendToFormspree(name, email) {
-                const formData = new FormData();
-                formData.append('name', name);
-                formData.append('email', email);
-                formData.append('_subject', 'Nova Assinatura de Newsletter');
-                formData.append('_next', 'https://yourwebsite.com/services.html');
-
-                fetch('https://formspree.io/f/mgvolbyv', {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                })
-                .then(response => {
-                    if (response.ok) {
-                        showSuccessMessage();
-                    } else {
-                        alert('Houve um erro ao enviar sua inscrição. Tente novamente mais tarde.');
-                    }
-                })
-                .catch(error => {
+            fetch('https://formspree.io/f/mgvolbyv', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    showSuccessMessage();
+                } else {
                     alert('Houve um erro ao enviar sua inscrição. Tente novamente mais tarde.');
-                });
-            }
+                }
+            })
+            .catch(error => {
+                alert('Houve um erro ao enviar sua inscrição. Tente novamente mais tarde.');
+            });
+        }
 
-            function showSuccessMessage() {
-                formContainer.style.display = 'none';
-                confirmationMessage.classList.remove('hidden');
-                confirmationMessage.classList.add('block');
-                nameInput.value = '';
-                emailInput.value = '';
-            }
-        });
-        document.addEventListener('contextmenu', function(e) {
-    if (e.target.tagName === 'IMG') {
-        e.preventDefault();
-    }
-}, false);
-    </script>
+        function showSuccessMessage() {
+            formContainer.style.display = 'none';
+            confirmationMessage.classList.remove('hidden');
+            confirmationMessage.classList.add('block');
+            nameInput.value = '';
+            emailInput.value = '';
+        }
+    });
+
+    document.addEventListener('contextmenu', function(e) {
+        if (e.target.tagName === 'IMG') {
+            e.preventDefault();
+        }
+    }, false);
+</script>
 </body>
 </html>
