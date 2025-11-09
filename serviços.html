@@ -1175,98 +1175,151 @@
         // ----------------------------------------------------------------------
         // --- 1. FUNÇÃO CARROSSEL DINÂMICO PARA PROJETOS (Rolagem Infinita e Suave) ---
         // ----------------------------------------------------------------------
-        function setupDynamicCarousel(containerId, autoAdvanceInterval) {
-            const carouselContainer = document.getElementById(containerId);
-            if (!carouselContainer) return;
+        // --- 1. FUNÇÃO CARROSSEL DINÂMICO PARA PROJETOS (Rolagem Infinita e Suave) ---
+// Com Correção para Não Reiniciar no Mobile
+function setupDynamicCarousel(containerId, autoAdvanceInterval) {
+    const carouselContainer = document.getElementById(containerId);
+    if (!carouselContainer) return;
 
-            carouselContainer.classList.add('carousel-images-dynamic');
+    carouselContainer.classList.add('carousel-images-dynamic');
 
-            const imagesOriginal = Array.from(carouselContainer.querySelectorAll('img'));
-            if (imagesOriginal.length === 0) return;
+    const imagesOriginal = Array.from(carouselContainer.querySelectorAll('img')).slice(0, 20); // Pega apenas as 20 originais
+    if (imagesOriginal.length === 0) return;
 
-            let currentIndex = 0;
-            let carouselInterval = null;
-            let isAnimating = false;
-            const getPaddingCount = () => window.innerWidth <= 768 ? 1 : 2;
-            let isTeleporting = false;
+    let currentIndex = 0;
+    let carouselInterval = null;
+    let isAnimating = false;
+    let isVisible = true; // Assume visível na inicialização
+    const getPaddingCount = () => window.innerWidth <= 768 ? 1 : 2;
+    const TRANSITION_DURATION = 800; // Tempo de transição em milissegundos
 
-            function initializeCarousel() {
-                if (carouselInterval) clearInterval(carouselInterval);
-                
-                // Limpeza do DOM e setup dos clones
-                const currentImages = Array.from(carouselContainer.querySelectorAll('img'));
-                if (currentImages.length <= imagesOriginal.length) {
-                    carouselContainer.innerHTML = '';
-                    carouselContainer.style.transition = 'none';
+    function initializeCarousel() {
+        if (carouselInterval) clearInterval(carouselInterval);
+        
+        // --- Lógica de Clonagem e Setup ---
+        const currentImages = Array.from(carouselContainer.querySelectorAll('img'));
+        if (currentImages.length <= imagesOriginal.length * 3) {
+            carouselContainer.innerHTML = '';
+            carouselContainer.style.transition = 'none';
 
-                    const numPaddingImages = getPaddingCount();
+            const numPaddingImages = getPaddingCount();
 
-                    for (let i = 0; i < numPaddingImages; i++) {
-                        carouselContainer.appendChild(imagesOriginal[imagesOriginal.length - numPaddingImages + i].cloneNode(true));
-                    }
-                    imagesOriginal.forEach(img => carouselContainer.appendChild(img.cloneNode(true)));
-                    for (let i = 0; i < numPaddingImages; i++) {
-                        carouselContainer.appendChild(imagesOriginal[i].cloneNode(true));
-                    }
-                }
-                
-                currentIndex = 0;
-                updateCarousel(true); // Posiciona a primeira imagem real no centro
-                
-                // INICIALIZAÇÃO IMEDIATA: O carrossel começa a avançar imediatamente.
-                carouselInterval = setInterval(updateCarousel, autoAdvanceInterval); 
+            // Clones de trás para o início
+            for (let i = 0; i < numPaddingImages; i++) {
+                carouselContainer.appendChild(imagesOriginal[imagesOriginal.length - numPaddingImages + i].cloneNode(true));
             }
-
-            function updateCarousel(initial = false) {
-                if (isAnimating && !initial) return;
-
-                const allImages = Array.from(carouselContainer.querySelectorAll('img'));
-                if (allImages.length === 0) return;
-
-                const numPaddingImages = getPaddingCount();
-
-                // 1. Lógica de Teletransporte Suave (Elimina o "tranco")
-                if (currentIndex >= imagesOriginal.length) {
-                    // Chegamos ao clone da primeira imagem. Agendamos o teletransporte.
-                    if (!initial) {
-                        isAnimating = true; 
-
-                        setTimeout(() => {
-                            carouselContainer.style.transition = 'none';
-                            currentIndex = 0;
-                            updateCarousel(true); 
-                            isAnimating = false;
-                        }, TRANSITION_DURATION);
-                    }
-                }
-
-                // 2. Define a Transição e Calcula a Posição
-                carouselContainer.style.transition = initial ? 'none' : `transform ${TRANSITION_DURATION}ms cubic-bezier(0.25, 1, 0.5, 1)`;
-                
-                const imageWidth = allImages[0].offsetWidth;
-                const gap = parseInt(window.getComputedStyle(carouselContainer).gap);
-                
-                const currentImageIndex = currentIndex + numPaddingImages;
-                const offset = currentImageIndex * (imageWidth + gap); 
-                const containerWidth = carouselContainer.closest('.carousel-container-dynamic').offsetWidth;
-                const centerOffset = (containerWidth / 2) - (imageWidth / 2); 
-
-                carouselContainer.style.transform = `translateX(${-offset + centerOffset}px)`;
-
-                // 3. Destaque e Avanço
-                allImages.forEach(img => img.classList.remove('centered-image'));
-                if (allImages[currentImageIndex]) {
-                    allImages[currentImageIndex].classList.add('centered-image');
-                }
-                
-                if (!initial && currentIndex < imagesOriginal.length) { 
-                    currentIndex++; 
-                } 
+            // Imagens originais (Loop 1)
+            imagesOriginal.forEach(img => carouselContainer.appendChild(img.cloneNode(true)));
+            // Imagens originais (Loop 2)
+            imagesOriginal.forEach(img => carouselContainer.appendChild(img.cloneNode(true)));
+            // Clones do início para o fim
+            for (let i = 0; i < numPaddingImages; i++) {
+                carouselContainer.appendChild(imagesOriginal[i].cloneNode(true));
             }
-
-            window.addEventListener('resize', () => { initializeCarousel(); }); 
-            initializeCarousel();
         }
+        
+        currentIndex = 0;
+        updateCarousel(true); // Posiciona a primeira imagem real no centro
+        
+        // Garante que o intervalo só é reiniciado se estiver visível
+        if (isVisible) {
+            startAutoAdvance();
+        }
+    }
+    
+    // NOVO: Função para iniciar o avanço automático
+    function startAutoAdvance() {
+        if (carouselInterval) clearInterval(carouselInterval);
+        carouselInterval = setInterval(updateCarousel, autoAdvanceInterval);
+    }
+    
+    // NOVO: Função para parar o avanço automático
+    function stopAutoAdvance() {
+        if (carouselInterval) clearInterval(carouselInterval);
+        carouselInterval = null;
+    }
+
+
+    function updateCarousel(initial = false) {
+        if (isAnimating && !initial) return;
+        
+        // Se não está visível, apenas incrementa o índice para manter a contagem e retorna
+        if (!isVisible && !initial) {
+             currentIndex = (currentIndex + 1) % imagesOriginal.length; // Garante que a contagem segue
+             return;
+        }
+
+        const allImages = Array.from(carouselContainer.querySelectorAll('img'));
+        if (allImages.length === 0) return;
+
+        const numPaddingImages = getPaddingCount();
+
+        // 1. Lógica de Teletransporte Suave (Melhorada)
+        const totalImages = imagesOriginal.length;
+        if (currentIndex >= totalImages) {
+            if (!initial) {
+                isAnimating = true; 
+                setTimeout(() => {
+                    carouselContainer.style.transition = 'none';
+                    currentIndex = 0;
+                    updateCarousel(true); 
+                    isAnimating = false;
+                }, TRANSITION_DURATION);
+                return; // Espera o teletransporte
+            }
+        }
+
+        // 2. Define a Transição e Calcula a Posição
+        carouselContainer.style.transition = initial ? 'none' : `transform ${TRANSITION_DURATION}ms cubic-bezier(0.25, 1, 0.5, 1)`;
+        
+        const imageWidth = allImages[0].offsetWidth;
+        const gap = parseInt(window.getComputedStyle(carouselContainer).gap);
+        
+        // O índice real para o cálculo do offset é o currentIndex + numPaddingImages
+        const currentImageIndex = currentIndex + numPaddingImages; 
+        const offset = currentImageIndex * (imageWidth + gap); 
+        const containerWidth = carouselContainer.closest('.carousel-container-dynamic').offsetWidth;
+        const centerOffset = (containerWidth / 2) - (imageWidth / 2); 
+
+        carouselContainer.style.transform = `translateX(${-offset + centerOffset}px)`;
+
+        // 3. Destaque e Avanço
+        allImages.forEach(img => img.classList.remove('centered-image'));
+        if (allImages[currentImageIndex]) {
+            allImages[currentImageIndex].classList.add('centered-image');
+        }
+        
+        if (!initial) { 
+            currentIndex = (currentIndex + 1) % totalImages; // Avança o índice após a transição
+        } 
+    }
+    
+    // NOVO: 4. Interceptador de Visibilidade (Intersection Observer)
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                if (!isVisible) {
+                    isVisible = true;
+                    // Se voltou a ser visível, reinicia o avanço
+                    startAutoAdvance(); 
+                }
+            } else {
+                if (isVisible) {
+                    isVisible = false;
+                    // Se saiu, pausa o avanço
+                    stopAutoAdvance();
+                }
+            }
+        });
+    }, { threshold: 0.1 }); // Começa a observar quando 10% do elemento está visível
+
+    observer.observe(carouselContainer.closest('.portfolio-carousel-section'));
+
+
+    // Inicialização do Carrossel e do Listener de Redimensionamento
+    window.addEventListener('resize', () => { initializeCarousel(); }); 
+    initializeCarousel();
+}
 
 
         // ----------------------------------------------------------------------
