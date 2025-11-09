@@ -1183,20 +1183,20 @@ function setupDynamicCarousel(containerId, autoAdvanceInterval) {
 
     carouselContainer.classList.add('carousel-images-dynamic');
 
-    const imagesOriginal = Array.from(carouselContainer.querySelectorAll('img')).slice(0, 20); // Pega apenas as 20 originais
+    // Pegamos as imagens originais para clonagem
+    const imagesOriginal = Array.from(carouselContainer.querySelectorAll('img')).slice(0, 20); 
     if (imagesOriginal.length === 0) return;
 
     let currentIndex = 0;
     let carouselInterval = null;
     let isAnimating = false;
-    let isVisible = true; // Assume visível na inicialização
     const getPaddingCount = () => window.innerWidth <= 768 ? 1 : 2;
-    const TRANSITION_DURATION = 800; // Tempo de transição em milissegundos
+    const TRANSITION_DURATION = 800; 
 
     function initializeCarousel() {
         if (carouselInterval) clearInterval(carouselInterval);
         
-        // --- Lógica de Clonagem e Setup ---
+        // Limpeza do DOM e setup dos clones
         const currentImages = Array.from(carouselContainer.querySelectorAll('img'));
         if (currentImages.length <= imagesOriginal.length * 3) {
             carouselContainer.innerHTML = '';
@@ -1204,7 +1204,7 @@ function setupDynamicCarousel(containerId, autoAdvanceInterval) {
 
             const numPaddingImages = getPaddingCount();
 
-            // Clones de trás para o início
+            // Clones de trás para o início (Pre-pend)
             for (let i = 0; i < numPaddingImages; i++) {
                 carouselContainer.appendChild(imagesOriginal[imagesOriginal.length - numPaddingImages + i].cloneNode(true));
             }
@@ -1212,56 +1212,37 @@ function setupDynamicCarousel(containerId, autoAdvanceInterval) {
             imagesOriginal.forEach(img => carouselContainer.appendChild(img.cloneNode(true)));
             // Imagens originais (Loop 2)
             imagesOriginal.forEach(img => carouselContainer.appendChild(img.cloneNode(true)));
-            // Clones do início para o fim
+            // Clones do início para o fim (Append)
             for (let i = 0; i < numPaddingImages; i++) {
                 carouselContainer.appendChild(imagesOriginal[i].cloneNode(true));
             }
         }
         
-        currentIndex = 0;
-        updateCarousel(true); // Posiciona a primeira imagem real no centro
+        // NÃO RESETAR currentIndex, apenas posicionar
+        // Se a página for carregada, o currentIndex será 0 (que é o valor inicial)
+        currentIndex = currentIndex; // Garante que a posição não é resetada se chamado após a primeira vez
+        updateCarousel(true); // Posiciona a imagem real correta no centro
         
-        // Garante que o intervalo só é reiniciado se estiver visível
-        if (isVisible) {
-            startAutoAdvance();
-        }
+        // INICIALIZAÇÃO IMEDIATA DO INTERVALO
+        carouselInterval = setInterval(updateCarousel, autoAdvanceInterval); 
     }
-    
-    // NOVO: Função para iniciar o avanço automático
-    function startAutoAdvance() {
-        if (carouselInterval) clearInterval(carouselInterval);
-        carouselInterval = setInterval(updateCarousel, autoAdvanceInterval);
-    }
-    
-    // NOVO: Função para parar o avanço automático
-    function stopAutoAdvance() {
-        if (carouselInterval) clearInterval(carouselInterval);
-        carouselInterval = null;
-    }
-
 
     function updateCarousel(initial = false) {
         if (isAnimating && !initial) return;
-        
-        // Se não está visível, apenas incrementa o índice para manter a contagem e retorna
-        if (!isVisible && !initial) {
-             currentIndex = (currentIndex + 1) % imagesOriginal.length; // Garante que a contagem segue
-             return;
-        }
 
         const allImages = Array.from(carouselContainer.querySelectorAll('img'));
         if (allImages.length === 0) return;
 
         const numPaddingImages = getPaddingCount();
-
-        // 1. Lógica de Teletransporte Suave (Melhorada)
         const totalImages = imagesOriginal.length;
+
+        // 1. Lógica de Teletransporte Suave
         if (currentIndex >= totalImages) {
             if (!initial) {
                 isAnimating = true; 
                 setTimeout(() => {
                     carouselContainer.style.transition = 'none';
-                    currentIndex = 0;
+                    currentIndex = 0; // Reseta o índice para o início da faixa de imagens
                     updateCarousel(true); 
                     isAnimating = false;
                 }, TRANSITION_DURATION);
@@ -1275,8 +1256,7 @@ function setupDynamicCarousel(containerId, autoAdvanceInterval) {
         const imageWidth = allImages[0].offsetWidth;
         const gap = parseInt(window.getComputedStyle(carouselContainer).gap);
         
-        // O índice real para o cálculo do offset é o currentIndex + numPaddingImages
-        const currentImageIndex = currentIndex + numPaddingImages; 
+        const currentImageIndex = currentIndex + numPaddingImages;
         const offset = currentImageIndex * (imageWidth + gap); 
         const containerWidth = carouselContainer.closest('.carousel-container-dynamic').offsetWidth;
         const centerOffset = (containerWidth / 2) - (imageWidth / 2); 
@@ -1290,37 +1270,43 @@ function setupDynamicCarousel(containerId, autoAdvanceInterval) {
         }
         
         if (!initial) { 
-            currentIndex = (currentIndex + 1) % totalImages; // Avança o índice após a transição
+            currentIndex++; 
         } 
     }
     
-    // NOVO: 4. Interceptador de Visibilidade (Intersection Observer)
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                if (!isVisible) {
-                    isVisible = true;
-                    // Se voltou a ser visível, reinicia o avanço
-                    startAutoAdvance(); 
-                }
-            } else {
-                if (isVisible) {
-                    isVisible = false;
-                    // Se saiu, pausa o avanço
-                    stopAutoAdvance();
-                }
-            }
+    // NOVO: Função para lidar com o resize sem resetar o índice
+    function handleResize() {
+        const allImages = Array.from(carouselContainer.querySelectorAll('img'));
+        if (allImages.length === 0) return;
+
+        const numPaddingImages = getPaddingCount();
+        const imageWidth = allImages[0].offsetWidth;
+        const gap = parseInt(window.getComputedStyle(carouselContainer).gap);
+        
+        const currentImageIndex = currentIndex + numPaddingImages; 
+        const offset = currentImageIndex * (imageWidth + gap); 
+        const containerWidth = carouselContainer.closest('.carousel-container-dynamic').offsetWidth;
+        const centerOffset = (containerWidth / 2) - (imageWidth / 2); 
+
+        // Temporariamente desliga a transição para evitar animação errada no resize
+        carouselContainer.style.transition = 'none';
+        carouselContainer.style.transform = `translateX(${-offset + centerOffset}px)`;
+        
+        // Garante que a classe de destaque é mantida
+        allImages.forEach(img => img.classList.remove('centered-image'));
+        if (allImages[currentImageIndex]) {
+             allImages[currentImageIndex].classList.add('centered-image');
+        }
+        
+        // Reinicia a transição no próximo frame
+        requestAnimationFrame(() => {
+             carouselContainer.style.transition = `transform ${TRANSITION_DURATION}ms cubic-bezier(0.25, 1, 0.5, 1)`;
         });
-    }, { threshold: 0.1 }); // Começa a observar quando 10% do elemento está visível
+    }
 
-    observer.observe(carouselContainer.closest('.portfolio-carousel-section'));
-
-
-    // Inicialização do Carrossel e do Listener de Redimensionamento
-    window.addEventListener('resize', () => { initializeCarousel(); }); 
+    window.addEventListener('resize', handleResize);
     initializeCarousel();
 }
-
 
         // ----------------------------------------------------------------------
         // --- 2. FUNÇÃO CARROSSEL DE DEPOIMENTOS (Slide a Slide) ---
