@@ -1188,36 +1188,33 @@
             let carouselInterval = null;
             let isAnimating = false;
             const getPaddingCount = () => window.innerWidth <= 768 ? 1 : 2;
+            let isTeleporting = false;
 
             function initializeCarousel() {
                 if (carouselInterval) clearInterval(carouselInterval);
                 
-                // Armazena as imagens originais para clonagem posterior
+                // Limpeza do DOM e setup dos clones
                 const currentImages = Array.from(carouselContainer.querySelectorAll('img'));
-
-                // Limpa e recria o DOM com os clones (Se for a primeira execução ou resize)
                 if (currentImages.length <= imagesOriginal.length) {
-                     carouselContainer.innerHTML = '';
+                    carouselContainer.innerHTML = '';
                     carouselContainer.style.transition = 'none';
 
                     const numPaddingImages = getPaddingCount();
 
-                    // 1. Clones iniciais (Imagens do final)
                     for (let i = 0; i < numPaddingImages; i++) {
                         carouselContainer.appendChild(imagesOriginal[imagesOriginal.length - numPaddingImages + i].cloneNode(true));
                     }
-                    // 2. Imagens originais (o que será mostrado)
                     imagesOriginal.forEach(img => carouselContainer.appendChild(img.cloneNode(true)));
-                    // 3. Clones finais (Imagens do início para o loop)
                     for (let i = 0; i < numPaddingImages; i++) {
                         carouselContainer.appendChild(imagesOriginal[i].cloneNode(true));
                     }
                 }
                 
                 currentIndex = 0;
-                updateCarousel(true);
-
-                carouselInterval = setInterval(updateCarousel, autoAdvanceInterval);
+                updateCarousel(true); // Posiciona a primeira imagem real no centro
+                
+                // INICIALIZAÇÃO IMEDIATA: O carrossel começa a avançar imediatamente.
+                carouselInterval = setInterval(updateCarousel, autoAdvanceInterval); 
             }
 
             function updateCarousel(initial = false) {
@@ -1228,65 +1225,52 @@
 
                 const numPaddingImages = getPaddingCount();
 
-                // Lógica de Teletransporte Suave (CORRIGIDA)
+                // 1. Lógica de Teletransporte Suave (Elimina o "tranco")
                 if (currentIndex >= imagesOriginal.length) {
-                    // O teletransporte só pode ser agendado se não for a chamada inicial
+                    // Chegamos ao clone da primeira imagem. Agendamos o teletransporte.
                     if (!initial) {
-                        isAnimating = true; // Mantém a animação bloqueada
+                        isAnimating = true; 
 
-                        // Timeout para a transição suave para o clone (currentIndex = length)
                         setTimeout(() => {
-                            carouselContainer.style.transition = 'none'; // Desliga a transição
-                            currentIndex = 0; // Reseta o índice para a primeira imagem real
-                            
-                            // Chama updateCarousel instantaneamente com a flag 'initial'
+                            carouselContainer.style.transition = 'none';
+                            currentIndex = 0;
                             updateCarousel(true); 
                             isAnimating = false;
-                            
                         }, TRANSITION_DURATION);
                     }
-                    // O índice principal (currentIndex) NÃO é incrementado aqui, ele será resetado no timeout.
                 }
 
-                // Define a transição (normal ou nenhuma se for o reset instantâneo)
+                // 2. Define a Transição e Calcula a Posição
                 carouselContainer.style.transition = initial ? 'none' : `transform ${TRANSITION_DURATION}ms cubic-bezier(0.25, 1, 0.5, 1)`;
-
-                // Cálculo da Posição
+                
                 const imageWidth = allImages[0].offsetWidth;
                 const gap = parseInt(window.getComputedStyle(carouselContainer).gap);
                 
                 const currentImageIndex = currentIndex + numPaddingImages;
-                
                 const offset = currentImageIndex * (imageWidth + gap); 
                 const containerWidth = carouselContainer.closest('.carousel-container-dynamic').offsetWidth;
                 const centerOffset = (containerWidth / 2) - (imageWidth / 2); 
 
                 carouselContainer.style.transform = `translateX(${-offset + centerOffset}px)`;
 
-                // Destaque da imagem central
+                // 3. Destaque e Avanço
                 allImages.forEach(img => img.classList.remove('centered-image'));
                 if (allImages[currentImageIndex]) {
                     allImages[currentImageIndex].classList.add('centered-image');
                 }
                 
-                // Avança o índice (somente se a transição suave estiver ativa e não for o ponto de reset)
                 if (!initial && currentIndex < imagesOriginal.length) { 
                     currentIndex++; 
-                } else if (!initial && currentIndex >= imagesOriginal.length) {
-                     // Se for a última imagem (o clone), já agendamos o reset, então paramos de animar por 800ms.
-                     isAnimating = true;
-                     setTimeout(() => { isAnimating = false; }, TRANSITION_DURATION);
-                }
+                } 
             }
 
-            // Garante que o carrossel se ajusta em caso de redimensionamento (re-inicializa)
             window.addEventListener('resize', () => { initializeCarousel(); }); 
             initializeCarousel();
         }
 
 
         // ----------------------------------------------------------------------
-        // --- 2. FUNÇÃO CARROSSEL DE DEPOIMENTOS (Slide a Slide/ Antigo) ---
+        // --- 2. FUNÇÃO CARROSSEL DE DEPOIMENTOS (Slide a Slide) ---
         // ----------------------------------------------------------------------
         function setupTestimonialsCarousel(carouselId, paginationId, autoAdvanceInterval) {
             const carousel = document.getElementById(carouselId);
@@ -1335,7 +1319,6 @@
             function stopAutoAdvance() { clearInterval(intervalId); }
 
             startAutoAdvance();
-            // Mantém a pausa no hover para o carrossel de depoimentos, se desejar
             carousel.addEventListener('mouseenter', stopAutoAdvance);
             carousel.addEventListener('mouseleave', startAutoAdvance);
 
