@@ -46,7 +46,18 @@
             min-height: 100%;
             width: 100vw; /* Garante que o body ocupe 100% da largura da viewport */
         }
+@keyframes neonPulse {
+    0% { border-color: rgba(165, 180, 252, 0.5); box-shadow: 0 0 5px rgba(165, 180, 252, 0.5); }
+    50% { border-color: rgba(232, 121, 249, 0.8); box-shadow: 0 0 20px rgba(232, 121, 249, 0.8); }
+    100% { border-color: rgba(165, 180, 252, 0.5); box-shadow: 0 0 5px rgba(165, 180, 252, 0.5); }
+}
 
+/* 🚨 NOVO: ANIMAÇÃO DE PULSAÇÃO DE COR (USADA NA PÁGINA INICIAL) */
+@keyframes colorPulse {
+    0% { background-color: #6627ff; }      /* Início: Violeta Cósmico */
+    50% { background-color: #0bf4ed; }      /* Meio: Azul Prisma */
+    100% { background-color: #6627ff; }     /* Fim: Violeta Cósmico */
+}
         @keyframes gradientTransition {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
@@ -279,16 +290,24 @@
         }
 
         .cta-button {
-            background: linear-gradient(135deg, #a5b4fc, #e879f9);
-            color: white;
-            font-weight: bold;
-            transition: transform 0.3s ease, background 0.3s ease;
-        }
+    /* Base do botão original (gradiente roxo/ciano) */
+    background: linear-gradient(135deg, #6627ff, #0bf4ed);
+    border: 1px solid #0bf4ed;
+    
+    /* Efeito de sombra roxa/brilho sutil */
+    box-shadow: 0 0 10px rgba(102, 39, 255, 0.5); 
+    
+    color: white; /* Cor do texto garantida */
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
 
-        .cta-button:hover {
-            transform: scale(1.1);
-            background: linear-gradient(135deg, #e879f9, #a5b4fc);
-        }
+.cta-button:hover {
+    /* Efeito de elevação e pulsação no hover */
+    transform: translateY(-3px) scale(1.05);
+    /* Efeito de sombra mais forte e ciano */
+    box-shadow: 0 0 20px rgba(11, 244, 237, 0.8), 0 0 10px rgba(102, 39, 255, 0.6);
+}
 
         .carousel {
     position: relative;
@@ -318,6 +337,7 @@
 .pagination-number {
     width: 30px;
     height: 30px;
+    /* Fundo Escuro para a numeração normal */
     background: linear-gradient(135deg, #1e293b, #111111);
     color: #edf1f7;
     border-radius: 50%;
@@ -329,21 +349,26 @@
     transition: all 0.3s ease;
     font-size: 14px;
     font-weight: bold;
-    box-shadow: 0 0 5px rgba(165, 180, 252, 0.5);
+    /* Sombra roxa sutil */
+    box-shadow: 0 0 5px rgba(102, 39, 255, 0.5); 
     pointer-events: auto;
 }
 
 .pagination-number.active {
-    background: linear-gradient(135deg, #a5b4fc, #e879f9);
+    /* Gradiente Roxo/Ciano para a página ativa */
+    background: linear-gradient(135deg, #6627ff, #0bf4ed);
     color: white;
     transform: scale(1.2);
-    box-shadow: 0 0 15px rgba(232, 121, 249, 0.8);
+    /* Sombra Ciano forte para destaque */
+    box-shadow: 0 0 15px rgba(11, 244, 237, 0.8);
 }
 
 .pagination-number:hover {
+    /* Gradiente Invertido no hover */
     background: linear-gradient(135deg, #0bf4ed, #6627ff);
     transform: scale(1.1);
-    box-shadow: 0 0 10px rgba(165, 180, 252, 0.8);
+    /* Sombra Roxo/Ciano */
+    box-shadow: 0 0 10px rgba(102, 39, 255, 0.8);
 }
 
 /* --- NOVOS ESTILOS PARA O CARROSSEL DINÂMICO (PROJETOS) --- */
@@ -419,17 +444,23 @@
 }
 
         .newsletter-button {
-            background: linear-gradient(135deg, #6627ff, #0bf4ed);
-            color: white;
-            pointer-events: auto;
-            /* position: relative; <--- REMOVIDO */
-            /* z-index: 40; <--- REMOVIDO */
-            cursor: pointer;
-        }
+    /* Gradiente Roxo -> Ciano */
+    background: linear-gradient(135deg, #6627ff, #0bf4ed);
+    color: white;
+    pointer-events: auto;
+    cursor: pointer;
+    /* Adiciona a animação de pulsação de cor */
+    animation: colorPulse 5s infinite ease-in-out; 
+    transition: all 0.3s ease; /* Adiciona transição para o hover */
+}
 
-        .newsletter-button:hover {
-            background: linear-gradient(135deg, #0bf4ed, #6627ff);
-        }
+.newsletter-button:hover {
+    /* Remove a pulsação no hover e aplica a sombra */
+    animation: none;
+    background: linear-gradient(135deg, #0bf4ed, #6627ff);
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(11, 244, 237, 0.8);
+}
 
         .confirmation-message {
             background: transparent;
@@ -795,9 +826,7 @@
     <svg width="0" height="0">
         <defs>
             <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" style="stop-color:#a5b4fc;stop-opacity:1" />
-                <stop offset="100%" style="stop-color:#e879f9;stop-opacity:1" />
-            </linearGradient>
+                <stop offset="0%" style="stop-color:#6627ff;stop-opacity:1" /> <stop offset="100%" style="stop-color:#0bf4ed;stop-opacity:1" /> </linearGradient>
         </defs>
     </svg>
 
