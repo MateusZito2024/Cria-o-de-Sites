@@ -18,6 +18,94 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://i.imgur.com/sE44ypp.png">
     <style>
+        @keyframes softFloat {
+    0% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-8px) rotate(2deg); } /* Move um pouco para cima e gira levemente */
+    100% { transform: translateY(0px) rotate(0deg); }
+}
+
+.astronaut-float-anim {
+    animation: softFloat 4s ease-in-out infinite; 
+    /* 👈 NOVO VALOR AQUI: Se você quer 120px ou mais */
+    max-width: 120px; 
+    height: auto;
+}
+
+/* Posicionamento (ao lado do título, um pouco acima da palavra MARCA) */
+.absolute-center-right {
+    position: absolute;
+    /* Posição: 50% de cima, 0% da direita (será ajustado para mobile/desktop) */
+    top: 50%; 
+    right: 50%; /* Posiciona no centro-direito da div Hero */
+    transform: translate(calc(50% + 20px), -100%); /* Ajuste final: Move 50% para a direita do próprio elemento + 20px, e 100% para cima. */
+    z-index: 50; /* Garante que fique acima de tudo, exceto talvez a navbar */
+}
+
+/* Ajustes finos de posição para Desktop (tela grande) */
+@media (min-width: 1024px) {
+    .absolute-center-right {
+        top: 50%;
+        right: 50%;
+        transform: translate(calc(100% + 390px), -50%);
+        /* REMOVA: max-width: 150px; (para não confundir o container) */
+    }
+
+    /* 👈 NOVO BLOCO (Ou altere o .absolute-center-right) */
+    /* Aplica o tamanho diretamente na imagem no desktop (telas grandes) */
+    .absolute-center-right .astronaut-float-anim {
+        max-width: 320px; /* <--- COLOQUE AQUI O TAMANHO GRANDE DESEJADO (ex: 200px) */
+    }
+}
+        /* --- ESTILOS DOS ASTEROIDES --- */
+
+/* Keyframes para a animação de flutuação e deslocamento dos Asteroides */
+@keyframes floatAndDrift {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    25% { transform: translate(5px, 10px) rotate(2deg); }
+    50% { transform: translate(-10px, -5px) rotate(-3deg); }
+    75% { transform: translate(8px, -12px) rotate(1deg); }
+    100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+/* Container de Fundo dos Asteroides */
+#asteroid-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden; 
+    pointer-events: none; 
+    z-index: 1; /* Fica ATRÁS do astronauta */
+}
+
+.asteroid {
+    position: absolute;
+    pointer-events: none; 
+    opacity: 0.7; /* Sutilidade */
+    animation: floatAndDrift linear infinite; 
+    will-change: transform, opacity; 
+    z-index: 1;
+}
+
+/* Definição de Posição, Tamanho e Velocidade INDIVIDUAL (BRINQUE COM ESTES VALORES!) */
+
+.asteroid-1 { width: 100px; height: auto; top: 10%; left: 70%; animation-duration: 20s; animation-delay: 0s; }
+.asteroid-2 { width: 100px; height: auto; top: 10%; left: 90%; animation-duration: 25s; animation-delay: 5s; }
+.asteroid-3 { width: 100px; height: auto; top: 2%; left: 65%; animation-duration: 18s; animation-delay: 10s; }
+.asteroid-4 { width: 100px; height: auto; top: 8%; left: 65%; animation-duration: 22s; animation-delay: 3s; }
+.asteroid-5 { width: 100px; height: auto; top: 12%; left: 84%; animation-duration: 28s; animation-delay: 8s; }
+.asteroid-6 { width: 100px; height: auto; top: 4%; left: 85%; animation-duration: 21s; animation-delay: 12s; }
+.asteroid-7 { width: 100px; height: auto; top: 14%; left: 70%; animation-duration: 26s; animation-delay: 1s; }
+.asteroid-8 { width: 100px; height: auto; top: 1%; left: 82%; animation-duration: 19s; animation-delay: 7s; }
+.asteroid-9 { width: 100px; height: auto; top: 7%; left: 86%; animation-duration: 23s; animation-delay: 14s; }
+
+/* Asteroides LENTOS (Quase Imóveis - Opacidade mais baixa, Duração mais longa) */
+.slow-asteroid {
+    animation-duration: 40s; 
+    opacity: 0.5;
+}
+/* --- FIM DOS ESTILOS ASTEROIDES --- */
         h2, h3, h4 {
     font-family: 'Archivo', sans-serif;
 }
@@ -826,7 +914,17 @@
 </head>
 <body class="text-gray-200">
     <div class="stars-container" id="stars-container"></div>
-
+<div id="asteroid-container">
+    <img src="https://i.imgur.com/k2XclVG.png" alt="Asteroide" class="asteroid asteroid-1">
+    <img src="https://i.imgur.com/T3nZZge.png" alt="Asteroide" class="asteroid asteroid-2">
+    <img src="https://i.imgur.com/FOmEdvr.png" alt="Asteroide" class="asteroid asteroid-3">
+    <img src="https://i.imgur.com/pCCttrj.png" alt="Asteroide" class="asteroid asteroid-4">
+    <img src="https://i.imgur.com/x9NjqfM.png" alt="Asteroide" class="asteroid asteroid-5">
+    <img src="https://i.imgur.com/MInjv2e.png" alt="Asteroide" class="asteroid asteroid-6">
+    <img src="https://i.imgur.com/txl3Z34.png" alt="Asteroide" class="asteroid asteroid-7">
+    <img src="https://i.imgur.com/YJAyynE.png" alt="Asteroide" class="asteroid asteroid-8">
+    <img src="https://i.imgur.com/xoKZq1y.png" alt="Asteroide" class="asteroid asteroid-9">
+</div>
     <svg width="0" height="0">
         <defs>
             <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -864,10 +962,13 @@
 
     <main>
     <section id="services-hero" class="h-[60vh] flex items-center section-bg">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center content-layer">
-            <h2 class="text-4xl md:text-5xl font-bold gradient-text mb-6 float">Soluções Criativas para Sua Marca</h2>
-            <p class="text-lg text-gray-400 mb-8 float" style="animation-delay: 0.2s;">
-                Design gráfico e criação de sites que engajam e convertem. Vamos transformar sua visão em realidade!
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center content-layer relative">
+    <div class="astronaut-container absolute-center-right hidden md:block">
+        <img src="https://i.imgur.com/2n9Qq9B.png" alt="Astronauta Flutuando" class="astronaut-float-anim h-auto">
+    </div>
+    <h2 class="text-4xl md:text-5xl font-bold gradient-text mb-6 float">Soluções Criativas para Sua Marca</h2>
+    <p class="text-lg text-gray-400 mb-8 float" style="animation-delay: 0.2s;">
+                Design gráfico e criação de sites que engajam e convertem.
             </p>
             <a href="https://api.whatsapp.com/send/?phone=5511987637786" target="_blank" class="cta-button py-3 px-8 rounded-full text-lg pulse">Fale Conosco</a>
         </div>
