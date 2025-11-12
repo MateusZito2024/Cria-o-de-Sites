@@ -586,20 +586,21 @@
 
             /* Ajuste de padding para o conteúdo principal para não ficar sob a navbar */
             main {
-                padding-top: 4rem; /* Ajuste para compensar a navbar fixa */
-            }
+                padding-top: 2rem; /* Mantém a distância da Navbar ao topo do Conteúdo */
+            }
 
-            /* Hero Section adjustments */
-            #hero {
-                min-height: 60vh; /* Diminuído de 80vh para 60vh */
-                padding-top: 4rem;
+            /* Hero Section adjustments */
+            #hero {
+                min-height: 40vh; /* REDUZIDO: Diminui a altura total da seção para 50% da viewport */
+                padding-top: 1rem; /* REDUZIDO: Diminui o espaço interno do topo da seção */
                 align-items: flex-start;
                 justify-content: center;
             }
 
             #hero .content-layer {
                 position: static;
-                transform: none;
+                top: 50% !important;
+                transform: translate(-50%, -50%) !important;
                 text-align: center;
                 padding: 1rem 1rem; /* Reduzido o padding vertical de 2rem para 1rem */
                 max-width: 100%;
