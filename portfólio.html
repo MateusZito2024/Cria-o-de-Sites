@@ -8,15 +8,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700&family=Manrope:wght@400;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="https://i.imgur.com/ZeaGXHD.png">
     <style>
-        const explosionCSS = `
-    @keyframes explode {
-        0% { transform: translate(calc(50vw - 50%), -50%) scale(0.1); opacity: 1; }
-        100% { transform: translate(calc(50vw - 50%), -50%) scale(2); opacity: 0; }
-    }
-    .dart-ship-img.exploding {
-        animation: explode 0.5s ease-out forwards; /* Animação rápida de 0.5 segundos */
-    }
-`;
         h2, h3, h4 {
     font-family: 'Archivo', sans-serif;
 }
@@ -32,7 +23,7 @@
             box-sizing: border-box;
         }
 
-      html, body {
+        html, body {
             font-family: 'Manrope', sans-serif;
             background: linear-gradient(135deg, #111111, #111111);
             background-size: 400% 400%;
@@ -45,11 +36,6 @@
             overflow-y: auto; /* Permite rolagem vertical */
             min-height: 100%;
             width: 100vw; /* Garante que o body ocupe exatamente 100% da largura da viewport */
-            
-            /* -- NOVO: Adicione estas linhas -- */
-            height: 100%; /* Garante altura para transformação */
-            transform-origin: 50% 50%; /* Define o centro como ponto de pivô para o transform */
-            /* ---------------------------------- */
         }
 
         @keyframes gradientTransition {
@@ -600,7 +586,7 @@
 </head>
 <body class="text-gray-100">
     <div class="stars-container" id="stars-container"></div>
-   
+
     <nav class="shadow-lg fixed w-full z-10">
         <div class="flex justify-between h-16 items-center">
             <div class="flex items-center content-layer">
