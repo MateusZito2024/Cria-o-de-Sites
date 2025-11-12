@@ -58,8 +58,8 @@
         <div class="p-6 rounded-xl bg-gray-900 neon-border mb-8">
             <h3 class="text-2xl font-bold gradient-text mb-4" id="form-title">Criar Novo Projeto</h3>
             
-            <label for="idInput" class="block text-sm font-medium text-gray-400 mt-4">ID do Projeto (ASTHRO-XXX)</label>
-            <input type="text" id="idInput" placeholder="Ex: ASTHRO-001" class="w-full p-3 rounded-lg bg-gray-800 text-white border-gray-600 focus:ring-purple-500 focus:border-purple-500">
+            <label for="idInput" class="block text-sm font-medium text-gray-400 mt-4">ID do Projeto (Gerado Automaticamente)</label>
+                        <input type="text" id="idInput" value="" readonly class="w-full p-3 rounded-lg bg-gray-800 text-white border-gray-600 focus:ring-purple-500 focus:border-purple-500">
 
             <label for="clientNameInput" class="block text-sm font-medium text-gray-400 mt-4">Nome do Cliente / Projeto</label>
             <input type="text" id="clientNameInput" placeholder="Nome do Cliente" class="w-full p-3 rounded-lg bg-gray-800 text-white border-gray-600 focus:ring-purple-500 focus:border-purple-500">
@@ -147,31 +147,57 @@ let searchTimeout = null;
             'revisao_cliente': { name: 'Revisão do Cliente', percent: 85 },
             'concluido': { name: 'CONCLUÍDO', percent: 100 }
         };
+function pad(num) {
+    return num.toString().padStart(2, '0');
+}
 
+// 🆕 FUNÇÃO PARA GERAR ID AUTOMÁTICO BASEADO NA DATA E HORA
+function generateAsthroId() {
+    const now = new Date();
+    
+    // Captura as partes no formato solicitado
+    const hour = pad(now.getHours()); // HH
+    const day = pad(now.getDate());   // DD
+    const minute = pad(now.getMinutes()); // MM
+    const month = pad(now.getMonth() + 1); // MM (meses são 0-11)
+    const second = pad(now.getSeconds()); // SS
+    const year = now.getFullYear().toString().substring(2); // AA (últimos 2 dígitos)
+    
+    // Formato: Asthro-HH,DD,MM,MM,SS,AA (onde o segundo 'MM' é o mês)
+    const trackingId = `ASTHRO-${hour}${day}${minute}${month}${second}${year}`;
+    
+    return trackingId;
+}
         function login() {
             const inputPassword = document.getElementById('adminPassword').value;
             const feedback = document.getElementById('login-feedback');
 
             if (inputPassword === ADMIN_PASSWORD && ADMIN_PASSWORD !== "SUA_SENHA_SECRETA_AQUI") {
-                document.getElementById('login-section').classList.add('hidden');
-                document.getElementById('admin-panel').classList.remove('hidden');
-                loadProjects();
-            } else {
+                document.getElementById('login-section').classList.add('hidden');
+                document.getElementById('admin-panel').classList.remove('hidden');
+                
+                // 🆕 CHAMA resetForm PARA GERAR O ID NA ENTRADA
+                resetForm(); 
+                loadProjects();
+            } else {
                 feedback.textContent = "Senha incorreta ou senha padrão não alterada.";
                 feedback.classList.remove('hidden');
             }
         }
         
-        function resetForm() {
-            document.getElementById('form-title').textContent = 'Criar Novo Projeto';
-            document.getElementById('idInput').value = '';
-            document.getElementById('idInput').disabled = false;
-            document.getElementById('clientNameInput').value = '';
-            document.getElementById('statusSelect').value = 'setup';
-            document.getElementById('deliveryDateInput').value = '';
-            document.getElementById('notesInput').value = '';
-            document.getElementById('finishButton').classList.add('hidden');
-        }
+       function resetForm() {
+            document.getElementById('form-title').textContent = 'Criar Novo Projeto';
+            
+            // 🆕 GERA E PREENCHE O ID AUTOMATICAMENTE
+            document.getElementById('idInput').value = generateAsthroId();
+             
+            
+            document.getElementById('clientNameInput').value = '';
+            document.getElementById('statusSelect').value = 'setup';
+            document.getElementById('deliveryDateInput').value = '';
+            document.getElementById('notesInput').value = '';
+            document.getElementById('finishButton').classList.add('hidden');
+        }
 
         // Função para mostrar o diálogo de confirmação (substitui confirm())
         function openConfirmDialog() {
@@ -199,26 +225,25 @@ let searchTimeout = null;
 
 
         function editProject(projectId) {
-            db.collection('projects').doc(projectId).get().then(doc => {
-                if (doc.exists) {
-                    const data = doc.data();
-                    document.getElementById('form-title').textContent = `Editar Projeto: ${projectId}`;
-                    document.getElementById('idInput').value = projectId;
-                    document.getElementById('idInput').disabled = true; 
-                    document.getElementById('clientNameInput').value = data.clientName || '';
-                    document.getElementById('statusSelect').value = data.status === 'concluido' ? 'setup' : data.status || 'setup'; 
-                    document.getElementById('deliveryDateInput').value = data.deliveryDate || '';
-                    document.getElementById('notesInput').value = data.notes || '';
-                    
-                    // Exibe ou esconde o botão Finalizar
-                    const isConcluido = data.status === 'concluido';
-                    const finishButton = document.getElementById('finishButton');
-                    finishButton.classList.toggle('hidden', isConcluido);
-                    finishButton.setAttribute('data-project-id', projectId);
-                    window.scrollTo(0, 0); // Rola para o topo para ver o formulário
-                }
-            }).catch(error => console.error("Erro ao buscar projeto para edição:", error));
-        }
+            db.collection('projects').doc(projectId).get().then(doc => {
+                if (doc.exists) {
+                    const data = doc.data();
+                    document.getElementById('form-title').textContent = `Editar Projeto: ${projectId}`;
+                    document.getElementById('idInput').value = projectId;
+                    // document.getElementById('idInput').disabled = true; // Mantido readonly no HTML
+                    document.getElementById('clientNameInput').value = data.clientName || '';
+                    document.getElementById('statusSelect').value = data.status || 'setup'; 
+                    document.getElementById('deliveryDateInput').value = data.deliveryDate || '';
+                    document.getElementById('notesInput').value = data.notes || '';
+                    
+                    // 🆕 Sempre exibe o botão Finalizar/Arquivar na edição
+                    const finishButton = document.getElementById('finishButton');
+                    finishButton.classList.remove('hidden'); // Torna visível
+                    finishButton.setAttribute('data-project-id', projectId);
+                    window.scrollTo(0, 0); // Rola para o topo para ver o formulário
+                }
+            }).catch(error => console.error("Erro ao buscar projeto para edição:", error));
+        }
 
         async function finishProject(projectId) {
             try {
@@ -246,39 +271,40 @@ let searchTimeout = null;
 
 
         async function saveProject() {
-            const projectId = document.getElementById('idInput').value.trim().toUpperCase();
-            const clientName = document.getElementById('clientNameInput').value.trim();
-            const status = document.getElementById('statusSelect').value;
-            const deliveryDate = document.getElementById('deliveryDateInput').value;
-            const notes = document.getElementById('notesInput').value.trim();
+            const projectId = document.getElementById('idInput').value.trim().toUpperCase();
+            const clientName = document.getElementById('clientNameInput').value.trim();
+            const status = document.getElementById('statusSelect').value;
+            const deliveryDate = document.getElementById('deliveryDateInput').value;
+            const notes = document.getElementById('notesInput').value.trim();
 
-            const isEditMode = document.getElementById('idInput').disabled;
+            // 🆕 VERIFICA SE O CAMPO ID ESTÁ DESABILITADO (Modo de Criação)
+            const isCreationMode = document.getElementById('idInput').disabled; 
 
-            if (!projectId || !clientName || !status) {
-                adminFeedbackElement.textContent = "Nome do Cliente e ID do Projeto são obrigatórios.";
-                adminFeedbackElement.className = 'mt-4 text-red-400';
-                adminFeedbackElement.classList.remove('hidden');
-                return;
-            }
+            if (!projectId || !clientName || !status) {
+                adminFeedbackElement.textContent = "Nome do Cliente e ID do Projeto são obrigatórios.";
+                adminFeedbackElement.className = 'mt-4 text-red-400';
+                adminFeedbackElement.classList.remove('hidden');
+                return;
+            }
 
-            try {
-                const docRef = db.collection('projects').doc(projectId);
-                
-                if (!isEditMode) {
-                    // --- Lógica de Proteção Contra Sobrescrita ---
-                    const existingDoc = await docRef.get();
-                    if (existingDoc.exists) {
-                        const existingData = existingDoc.data();
-                        
-                        if (existingData.status !== 'concluido') {
-                            adminFeedbackElement.textContent = `ERRO: Já existe um projeto ATIVO (${existingData.clientName}, Status: ${statusMap[existingData.status].name}) com o ID ${projectId}. Finalize-o antes de reutilizar o ID.`;
-                            adminFeedbackElement.className = 'mt-4 text-red-400';
-                            adminFeedbackElement.classList.remove('hidden');
-                            return; // BLOQUEIA A CRIAÇÃO
-                        }
-                        // Se o status for 'concluido', o ID pode ser reutilizado (sobrescrito).
-                    }
-                }
+            try {
+                const docRef = db.collection('projects').doc(projectId);
+                
+                if (isCreationMode) { 
+                    // 🆕 Lógica de Proteção Contra Sobrescrita (Apenas no Modo de Criação)
+                    const existingDoc = await docRef.get();
+                    if (existingDoc.exists) {
+                        const existingData = existingDoc.data();
+                        
+                        if (existingData.status !== 'concluido') {
+                            adminFeedbackElement.textContent = `ERRO: Já existe um projeto ATIVO (${existingData.clientName}, Status: ${statusMap[existingData.status].name}) com o ID ${projectId}. O ID gerado automaticamente não pode ser usado. Tente novamente em 1 minuto.`;
+                            adminFeedbackElement.className = 'mt-4 text-red-400';
+                            adminFeedbackElement.classList.remove('hidden');
+                            return; // BLOQUEIA A CRIAÇÃO
+                        }
+                        // Se o status for 'concluido', o ID pode ser reutilizado (sobrescrito).
+                    }
+                }
                 
                 // --- Salva ou Atualiza o Projeto ---
                 await docRef.set({
