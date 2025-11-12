@@ -263,40 +263,40 @@
         }
 
         /* Animação: O TREMOR e INCLINAÇÃO de TELA (no Body) */
-        @keyframes dartImpact {
-            0% { 
-                transform: rotate(0deg) translateX(0) translateY(0); 
-                filter: brightness(1); /* Sem brilho */
-            }
-            10% { 
-                transform: rotate(-0.8deg) translateX(5px); 
-            }
-            20% { 
-                transform: rotate(1.5deg) translateX(-8px) scale(1.002); 
-                filter: brightness(1.2); /* Flash de impacto */
-            }
-            30% { 
-                transform: rotate(-1.2deg) translateX(6px) translateY(-2px); 
-            }
-            50% { 
-                transform: rotate(0.6deg) translateX(-4px); 
-                filter: brightness(1);
-            }
-            75% { 
-                transform: rotate(-0.3deg) translateX(2px); 
-            }
-            100% { 
-                transform: rotate(0deg) translateX(0) translateY(0) scale(1); 
-            }
-        }
+      @keyframes dartImpact {
+    0% {
+        /* Estado inicial: normal */
+        transform-origin: 100% 100%; /* Canto inferior direito como ponto de foco */
+        transform: rotate(0deg) translate(0px, 0px);
+        filter: brightness(1);
+    }
+    10% {
+        /* Ponto de impacto: O canto é puxado para baixo */
+        transform-origin: 100% 100%;
+        transform: rotate(1deg) translate(15px, 15px);
+        filter: brightness(1.2); /* Flash de impacto */
+    }
+    80% {
+        /* Mantém o canto "abaixado" */
+        transform-origin: 100% 100%;
+        transform: rotate(1deg) translate(15px, 15px);
+        filter: brightness(1);
+    }
+    100% {
+        /* Retorna ao normal suavemente */
+        transform-origin: 100% 100%;
+        transform: rotate(0deg) translate(0px, 0px);
+        filter: brightness(1);
+    }
+}
 
-        .dart-body-impact {
-            /* Aplica a animação ao corpo da página (body) */
-            animation: dartImpact 0.7s ease-out 1 forwards;
-            /* -- NOVO: Adicione esta linha para compatibilidade -- */
-            -webkit-animation: dartImpact 0.7s ease-out 1 forwards;
-            /* -------------------------------------------------- */
-        }
+.dart-body-impact {
+    /* Define o ponto de origem da transformação no CSS do seletor */
+    transform-origin: 100% 100%; /* Canto inferior direito */
+    /* AUMENTA A DURAÇÃO DO RETORNO (20% do tempo) e MUDA A CURVA CUBIC-BEZIER */
+    animation: dartImpact 2.5s cubic-bezier(0.23, 1, 0.32, 1) 1 forwards; 
+    -webkit-animation: dartImpact 2.5s cubic-bezier(0.23, 1, 0.32, 1) 1 forwards;
+}
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -1045,13 +1045,12 @@ function triggerDartEffectSequence() {
             
             // Duração da animação de explosão (0.5s) e do shake do corpo (0.7s)
             const explosionAnimationDuration = 500; 
-            const shakeDuration = 700;
+const shakeDuration = 1500; // <<< NOVO VALOR: 2500ms (2.5 segundos)
 
-            // Remove o shake do body após a duração da animação (700ms)
-            setTimeout(() => {
-                body.classList.remove('dart-body-impact');
-            }, shakeDuration);
-
+// Remove o shake do body após a duração da animação (2500ms)
+setTimeout(() => {
+    body.classList.remove('dart-body-impact');
+}, shakeDuration);
             // Reseta a imagem para a nave original e a esconde após a explosão (500ms)
             setTimeout(() => {
                 dartShipImg.classList.remove('exploding');
