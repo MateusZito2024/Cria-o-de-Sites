@@ -92,18 +92,30 @@
             <p id="admin-feedback" class="mt-4 hidden"></p>
         </div>
 <div class="mb-8">
-            <h3 class="text-2xl font-bold gradient-text mb-4">Pesquisar Projetos</h3>
-            <div class="flex space-x-4">
-                <input type="text" id="searchInput" placeholder="Buscar por ID (ASTHRO-XXX) ou Nome do Cliente"
-                    class="w-full p-3 rounded-lg bg-gray-800 text-white border-gray-600 focus:ring-purple-500 focus:border-purple-500"
-                    onkeyup="debouncedSearch()" onchange="debouncedSearch()">
-                <button onclick="loadProjects(1)"
-                    class="bg-pink-600 hover:bg-pink-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300">
-                    Limpar
-                </button>
-            </div>
-            <p id="search-feedback" class="mt-2 text-sm text-gray-400 hidden"></p>
-        </div>
+            <h3 class="text-2xl font-bold gradient-text mb-4">Pesquisar e Ordenar Projetos</h3>
+            <div class="flex space-x-4 mb-4">
+                <input type="text" id="searchInput" placeholder="Buscar por ID ou Nome do Cliente"
+                    class="w-full p-3 rounded-lg bg-gray-800 text-white border-gray-600 focus:ring-purple-500 focus:border-purple-500"
+                    onkeyup="debouncedSearch()" onchange="debouncedSearch()">
+                <button onclick="clearSearchAndReload()"
+                    class="bg-pink-600 hover:bg-pink-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300">
+                    Limpar
+                </button>
+            </div>
+            
+                        <div class="flex space-x-4">
+                <select id="orderBySelect" onchange="loadProjects(1)" 
+                    class="w-full p-3 rounded-lg bg-gray-800 text-white border-gray-600 focus:ring-purple-500 focus:border-purple-500">
+                    <option value="status_id_desc">Status e Recente (Padrão)</option>
+                    <option value="clientName_asc">Nome do Cliente (A-Z)</option>
+                    <option value="clientName_desc">Nome do Cliente (Z-A)</option>
+                    <option value="id_desc">ID Mais Recente</option>
+                    <option value="id_asc">ID Mais Antigo</option>
+                </select>
+            </div>
+
+            <p id="search-feedback" class="mt-2 text-sm text-gray-400 hidden"></p>
+        </div>
         <h3 class="text-2xl font-bold gradient-text mb-4">Projetos Existentes</h3>
         <div id="project-list" class="space-y-4">
             <p class="text-gray-500">Carregando projetos...</p>
@@ -147,6 +159,10 @@ let searchTimeout = null;
             'revisao_cliente': { name: 'Revisão do Cliente', percent: 85 },
             'concluido': { name: 'CONCLUÍDO', percent: 100 }
         };
+        function clearSearchAndReload() {
+    document.getElementById('searchInput').value = '';
+    loadProjects(1);
+}
 function pad(num) {
     return num.toString().padStart(2, '0');
 }
@@ -349,22 +365,44 @@ function debouncedSearch() {
             }
         }
         async function loadProjects(page = 1) {
-            projectListElement.innerHTML = '';
-            currentPage = page;
-            document.getElementById('pagination-container').innerHTML = '';
+    projectListElement.innerHTML = '';
+    currentPage = page;
+    document.getElementById('pagination-container').innerHTML = '';
 
-            const searchInput = document.getElementById('searchInput');
-            const searchText = searchInput ? searchInput.value.trim().toUpperCase() : '';
-            
-            // Variável para armazenar todos os documentos se houver pesquisa ou para contagem
-            let allDocs = [];
-            let isSearching = !!searchText;
+    const searchInput = document.getElementById('searchInput');
+    const orderBySelect = document.getElementById('orderBySelect'); // 🆕 Pega o elemento Select
+    
+    // Pega o valor da ordenação
+    const selectedOrder = orderBySelect ? orderBySelect.value : 'status_id_desc'; 
+    const searchText = searchInput ? searchInput.value.trim().toUpperCase() : '';
+    
+    // Variável para armazenar todos os documentos se houver pesquisa ou para contagem
+    let allDocs = [];
+    let isSearching = !!searchText;
 
-            try {
-                // 1. QUERY DE BUSCA BASE
-                let baseQuery = db.collection('projects')
-                    .orderBy('status')
-                    .orderBy(firebase.firestore.FieldPath.documentId(), 'desc');
+    try {
+        // 1. QUERY DE BUSCA BASE - LÓGICA DE ORDENAÇÃO
+        let baseQuery = db.collection('projects');
+        
+        switch (selectedOrder) {
+            case 'clientName_asc':
+                baseQuery = baseQuery.orderBy('clientName', 'asc');
+                break;
+            case 'clientName_desc':
+                baseQuery = baseQuery.orderBy('clientName', 'desc');
+                break;
+            case 'id_asc':
+                baseQuery = baseQuery.orderBy(firebase.firestore.FieldPath.documentId(), 'asc');
+                break;
+            case 'id_desc':
+                baseQuery = baseQuery.orderBy(firebase.firestore.FieldPath.documentId(), 'desc');
+                break;
+            case 'status_id_desc':
+            default:
+                // Padrão: Ordena por Status e depois por ID (Mais Recente)
+                baseQuery = baseQuery.orderBy('status', 'asc')
+                                     .orderBy(firebase.firestore.FieldPath.documentId(), 'desc');
+        }
                 
                 // Se houver pesquisa, faremos a busca no cliente (browser)
                 if (isSearching) {
