@@ -606,7 +606,25 @@
                 max-width: 100%;
                 margin: 0 auto;
             }
+/* NOVO: REGRAS PARA FORÇAR A CENTRALIZAÇÃO DO TEXTO LONGO E SUBTÍTULOS */
+    #sobre .fade-in,
+    #sobre .fade-in p,
+    #equipe .max-w-3xl, /* Container de texto da equipe */
+    #timeline .milestone-item,
+    #valores .value-item {
+        text-align: center !important; /* Centraliza todo o texto e blocos */
+    }
+    
+    /* Centraliza o parágrafo de introdução da seção Equipe */
+    #equipe p.text-xl {
+        text-align: center !important;
+    }
 
+    /* Garante que os cards em geral estejam centralizados (já estava na sua versão, mas é bom reforçar) */
+    .team-item, .value-item, .milestone-item {
+        padding: 1.5rem;
+        text-align: center;
+    }
             #hero h2 {
                 font-size: clamp(2.5rem, 10vw, 3.5rem); /* Ajusta tamanho do título */
                 line-height: 1.2;
