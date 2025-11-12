@@ -92,30 +92,31 @@
             <p id="admin-feedback" class="mt-4 hidden"></p>
         </div>
 <div class="mb-8">
-            <h3 class="text-2xl font-bold gradient-text mb-4">Pesquisar e Ordenar Projetos</h3>
-            <div class="flex space-x-4 mb-4">
-                <input type="text" id="searchInput" placeholder="Buscar por ID ou Nome do Cliente"
-                    class="w-full p-3 rounded-lg bg-gray-800 text-white border-gray-600 focus:ring-purple-500 focus:border-purple-500"
-                    onkeyup="debouncedSearch()" onchange="debouncedSearch()">
-                <button onclick="clearSearchAndReload()"
-                    class="bg-pink-600 hover:bg-pink-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300">
-                    Limpar
-                </button>
-            </div>
-            
-                        <div class="flex space-x-4">
-                <select id="orderBySelect" onchange="loadProjects(1)" 
-                    class="w-full p-3 rounded-lg bg-gray-800 text-white border-gray-600 focus:ring-purple-500 focus:border-purple-500">
-                    <option value="status_id_desc">Status e Recente (Padrão)</option>
-                    <option value="clientName_asc">Nome do Cliente (A-Z)</option>
-                    <option value="clientName_desc">Nome do Cliente (Z-A)</option>
-                    <option value="id_desc">ID Mais Recente</option>
-                    <option value="id_asc">ID Mais Antigo</option>
-                </select>
-            </div>
+    <h3 class="text-2xl font-bold gradient-text mb-4">Pesquisar e Ordenar Projetos</h3>
+    
+    <div class="flex space-x-4 mb-4 items-stretch">
+        <input type="text" id="searchInput" placeholder="Buscar por ID ou Nome do Cliente"
+            class="w-full p-3 rounded-lg bg-gray-800 text-white border-gray-600 focus:ring-purple-500 focus:border-purple-500"
+            onkeyup="debouncedSearch()" onchange="debouncedSearch()">
+        <button onclick="clearSearchAndReload()"
+            class="bg-pink-600 hover:bg-pink-700 text-white font-semibold px-6 rounded-lg transition duration-300">
+            Limpar
+        </button>
+    </div>
+    
+    <div class="flex space-x-4">
+        <select id="orderBySelect" onchange="loadProjects(1)" 
+            class="w-full p-3 rounded-lg bg-gray-800 text-white border-gray-600 focus:ring-purple-500 focus:border-purple-500">
+            <option value="status_id_desc">Status e Recente (Padrão)</option>
+            <option value="clientName_asc">Nome do Cliente (A-Z)</option>
+            <option value="clientName_desc">Nome do Cliente (Z-A)</option>
+            <option value="id_desc">ID Mais Recente</option>
+            <option value="id_asc">ID Mais Antigo</option>
+        </select>
+    </div>
 
-            <p id="search-feedback" class="mt-2 text-sm text-gray-400 hidden"></p>
-        </div>
+    <p id="search-feedback" class="mt-2 text-sm text-gray-400 hidden"></p>
+</div>
         <h3 class="text-2xl font-bold gradient-text mb-4">Projetos Existentes</h3>
         <div id="project-list" class="space-y-4">
             <p class="text-gray-500">Carregando projetos...</p>
