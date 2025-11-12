@@ -92,29 +92,32 @@
             <p id="admin-feedback" class="mt-4 hidden"></p>
         </div>
 <div class="mb-8">
-    <h3 class="text-2xl font-bold gradient-text mb-4">Pesquisar e Ordenar Projetos</h3>
+    <h3 class="text-2xl font-bold gradient-text mb-4">Gerenciamento Rápido</h3>
     
-    <div class="flex space-x-4 mb-4 items-stretch">
-        <input type="text" id="searchInput" placeholder="Buscar por ID ou Nome do Cliente"
-            class="w-full p-3 rounded-lg bg-gray-800 text-white border-gray-600 focus:ring-purple-500 focus:border-purple-500"
-            onkeyup="debouncedSearch()" onchange="debouncedSearch()">
-        <button onclick="clearSearchAndReload()"
-            class="bg-pink-600 hover:bg-pink-700 text-white font-semibold px-6 rounded-lg transition duration-300">
-            Limpar
-        </button>
-    </div>
-    
-    <div class="flex space-x-4">
-        <select id="orderBySelect" onchange="loadProjects(1)" 
-            class="w-full p-3 rounded-lg bg-gray-800 text-white border-gray-600 focus:ring-purple-500 focus:border-purple-500">
-            <option value="status_id_desc">Status e Recente (Padrão)</option>
-            <option value="clientName_asc">Nome do Cliente (A-Z)</option>
-            <option value="clientName_desc">Nome do Cliente (Z-A)</option>
-            <option value="id_desc">ID Mais Recente</option>
-            <option value="id_asc">ID Mais Antigo</option>
-        </select>
-    </div>
+    <div class="flex flex-col md:flex-row gap-2 md:gap-4 items-stretch">
+        
+        <div class="w-full md:w-auto flex-shrink-0">
+            <select id="orderBySelect" onchange="loadProjects(1)" 
+                class="w-full p-3 rounded-lg bg-gray-800 text-white border-gray-600 focus:ring-purple-500 focus:border-purple-500 appearance-none pr-8">
+                <option value="status_id_desc">✨ Status/Recente</option>
+                <option value="id_desc">⏳ Antigos</option>
+                <option value="id_asc">🗓️ Recentes</option>
+                <option value="clientName_asc">A-Z</option>
+                <option value="clientName_desc">Z-A</option>
+            </select>
+        </div>
 
+        <div class="flex space-x-4 items-stretch w-full">
+            <input type="text" id="searchInput" placeholder="Buscar por ID ou Nome do Cliente..."
+                class="w-full p-3 rounded-lg bg-gray-800 text-white border-gray-600 focus:ring-purple-500 focus:border-purple-500"
+                onkeyup="debouncedSearch()" onchange="debouncedSearch()">
+            
+            <button onclick="clearSearchAndReload()"
+                class="bg-pink-600 hover:bg-pink-700 text-white font-semibold px-6 rounded-lg transition duration-300 whitespace-nowrap">
+                Limpar
+            </button>
+        </div>
+    </div>
     <p id="search-feedback" class="mt-2 text-sm text-gray-400 hidden"></p>
 </div>
         <h3 class="text-2xl font-bold gradient-text mb-4">Projetos Existentes</h3>
