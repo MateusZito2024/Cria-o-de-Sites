@@ -1096,8 +1096,8 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             NOVO CÓDIGO JS para EFEITO PARALLAX REVERSO (MÚLTIPLOS ITENS)
         ------------------------------------- */
 
-        const parallaxItems = document.querySelectorAll('.parallax-item'); // Seleciona todos os itens
-
+        const parallaxItems = document.querySelectorAll('.parallax-item');
+        
         document.addEventListener('mousemove', (e) => {
             // Calcula o desvio do mouse em relação ao centro da viewport
             const centerX = window.innerWidth / 2;
@@ -1105,17 +1105,20 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             const deltaX = e.clientX - centerX;
             const deltaY = e.clientY - centerY;
 
-            parallaxItems.forEach(item => {
-                // Obtém a força do parallax de cada item (o atributo data-parallax-strength)
-                const strength = parseFloat(item.dataset.parallaxStrength) || 0.05; // Padrão de 0.05 se não definido
-
-                // Calcula a translação inversa usando a força específica de cada item
+            parallaxItems.forEach((item, index) => {
+                // 1. Extrai a força e calcula o movimento
+                const strength = parseFloat(item.dataset.parallaxStrength) || 0.05;
                 const moveX = deltaX * -strength;
                 const moveY = deltaY * -strength;
+                
+                // 2. Define um delay escalonado em milissegundos
+                // O primeiro item tem 0ms, o segundo 20ms, o terceiro 40ms, etc.
+                const delay = index * 60; 
 
-                // Aplica a transformação CSS
-                // Mantém as posições 'top' e 'left' definidas no CSS e adiciona o movimento.
-                item.style.transform = `translate(${moveX}px, ${moveY}px)`;
+                // 3. Aplica a transformação com um pequeno atraso
+                setTimeout(() => {
+                    item.style.transform = `translate(${moveX}px, ${moveY}px)`;
+                }, delay);
             });
         });
     </script>
