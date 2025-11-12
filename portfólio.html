@@ -201,102 +201,7 @@
         .content-layer h3.text-left {
             text-align: left;
         }
-.ship-layer {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: 1000; /* Garante que fique acima de tudo */
-            pointer-events: none; /* Não interfere no clique da página */
-        }
 
-     .dart-ship-img {
-            position: absolute;
-            width: 80px; /* Tamanho da nave */
-            height: 80px;
-            top: 50%; /* Centraliza verticalmente */
-            left: 0;   /* Começa na extremidade esquerda */
-            transform: translate(-100%, -50%); /* Garante que ela esteja completamente fora da tela à esquerda e centralizada verticalmente */
-            opacity: 0; /* Começa invisível */
-            z-index: 10000;
-            /* Adicione uma transição para o src da imagem para suavizar a troca */
-            transition: opacity 0.1s ease-out; /* Transição curta para opacidade */
-        }
-
-        /* Animação: A nave voa da esquerda para a direita, parando no centro */
-        @keyframes flyToTarget {
-            0% {
-                transform: translate(-100%, -50%); /* Totalmente fora da tela à esquerda, centralizado verticalmente */
-                opacity: 0; /* Invisível no início */
-            }
-            10% {
-                opacity: 1; /* Aparece rapidamente */
-            }
-            100% {
-                /* Chega ao alvo: centro da tela, opacidade 1 */
-                transform: translate(calc(50vw - 50%), -50%); /* Chega ao centro horizontalmente, ajustando -50% para centralizar a própria imagem */
-                opacity: 1; /* Permanece visível para a troca */
-            }
-        }
-
-        /* A animação de voo da nave agora só a leva até o ponto de impacto */
-        .ship-flying {
-            animation: flyToTarget 2.5s ease-out forwards;
-        }
-
-        /* NOVO: Animação para a explosão: aparecer e desaparecer rapidamente */
-        @keyframes explodeEffect {
-            0% { 
-                transform: translate(calc(50vw - 50%), -50%) scale(0.1); 
-                opacity: 1; /* Começa visível */
-            }
-            100% { 
-                transform: translate(calc(50vw - 50%), -50%) scale(2); 
-                opacity: 0; /* Desaparece */
-            }
-        }
-
-        /* Aplica a animação ao elemento da imagem quando a classe 'exploding' estiver ativa */
-        .dart-ship-img.exploding {
-            animation: explodeEffect 0.5s ease-out forwards; /* Duração rápida para a explosão */
-        }
-
-        /* Animação: O TREMOR e INCLINAÇÃO de TELA (no Body) */
-      @keyframes dartImpact {
-    0% {
-        /* Estado inicial: normal */
-        transform-origin: 100% 100%; /* Canto inferior direito como ponto de foco */
-        transform: rotate(0deg) translate(0px, 0px);
-        filter: brightness(1);
-    }
-    10% {
-        /* Ponto de impacto: O canto é puxado para baixo */
-        transform-origin: 100% 100%;
-        transform: rotate(1deg) translate(15px, 15px);
-        filter: brightness(1.2); /* Flash de impacto */
-    }
-    80% {
-        /* Mantém o canto "abaixado" */
-        transform-origin: 100% 100%;
-        transform: rotate(1deg) translate(15px, 15px);
-        filter: brightness(1);
-    }
-    100% {
-        /* Retorna ao normal suavemente */
-        transform-origin: 100% 100%;
-        transform: rotate(0deg) translate(0px, 0px);
-        filter: brightness(1);
-    }
-}
-
-.dart-body-impact {
-    /* Define o ponto de origem da transformação no CSS do seletor */
-    transform-origin: 100% 100%; /* Canto inferior direito */
-    /* AUMENTA A DURAÇÃO DO RETORNO (20% do tempo) e MUDA A CURVA CUBIC-BEZIER */
-    animation: dartImpact 2.5s cubic-bezier(0.23, 1, 0.32, 1) 1 forwards; 
-    -webkit-animation: dartImpact 2.5s cubic-bezier(0.23, 1, 0.32, 1) 1 forwards;
-}
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -695,10 +600,7 @@
 </head>
 <body class="text-gray-100">
     <div class="stars-container" id="stars-container"></div>
-    <div class="ship-layer">
-        <img src="https://i.imgur.com/IpuE4sC.png" alt="Nave DART" class="dart-ship-img" id="dartShipImg" />
-    </div>
-    <div id="collisionTarget" class="collision-target"></div>
+   
     <nav class="shadow-lg fixed w-full z-10">
         <div class="flex justify-between h-16 items-center">
             <div class="flex items-center content-layer">
@@ -1004,89 +906,7 @@
                 autoAdvanceInterval = setInterval(nextSlide, 4000); // Resume auto-advance
             });
         }
-function triggerDartEffectSequence() {
-    const body = document.body;
-    const dartShipImg = document.getElementById('dartShipImg');
-    const originalShipSrc = "https://i.imgur.com/IpuE4sC.png"; // URL da nave original
-    // NOVO URL da explosão:
-    const explosionSrc = "https://i.imgur.com/lsJqwMX.png"; // Nova imagem de explosão
 
-    // --- RESET DO ESTADO INICIAL ---
-    dartShipImg.src = originalShipSrc;
-    dartShipImg.classList.remove('exploding');
-    dartShipImg.classList.remove('ship-flying');
-    dartShipImg.style.opacity = '0';
-    dartShipImg.style.transform = 'translate(-100%, -50%)';
-
-    // Define o atraso para o início da sequência de animação
-    setTimeout(() => {
-        // 1. Inicia o voo da nave
-        dartShipImg.classList.add('ship-flying');
-
-        const flightDuration = 2500; // Duração da animação da nave (2.5 segundos)
-        const impactDelay = flightDuration - 50; // Momento da troca (2450ms)
-
-        // Atraso para o impacto (coincide com a nave chegando ao centro)
-        setTimeout(() => {
-            // ---- MOMENTO DO IMPACTO ----
-            
-            // A. Troca a imagem para a explosão INSTANTANEAMENTE
-            dartShipImg.src = explosionSrc;
-            
-            // B. Aplica a animação de explosão (crescer e sumir)
-            dartShipImg.classList.add('exploding'); 
-            
-            // C. Remove a animação de voo da nave para que a explosão assuma o controle
-            // É crucial remover isso APÓS a mudança de src para garantir que o 100% do flyToTarget seja atingido.
-            dartShipImg.classList.remove('ship-flying');
-
-            // D. Adiciona o shake/inclinação na tela
-            body.classList.add('dart-body-impact');
-            
-            // Duração da animação de explosão (0.5s) e do shake do corpo (0.7s)
-            const explosionAnimationDuration = 500; 
-const shakeDuration = 1500; // <<< NOVO VALOR: 2500ms (2.5 segundos)
-
-// Remove o shake do body após a duração da animação (2500ms)
-setTimeout(() => {
-    body.classList.remove('dart-body-impact');
-}, shakeDuration);
-            // Reseta a imagem para a nave original e a esconde após a explosão (500ms)
-            setTimeout(() => {
-                dartShipImg.classList.remove('exploding');
-                dartShipImg.src = originalShipSrc; // Volta para a imagem da nave
-                dartShipImg.style.opacity = '0'; // Esconde a nave novamente
-                dartShipImg.style.transform = 'translate(-100%, -50%)'; // Reseta a posição da nave
-            }, explosionAnimationDuration);
-
-        }, impactDelay); 
-    }, 500); // Inicia a sequência 500ms após o carregamento da página
-}
-
-// Executa a sequência assim que a página estiver totalmente carregada
-window.addEventListener('load', () => {
-    // 3. Garante que o CSS da explosão esteja no DOM
-    const styleSheet = document.createElement("style");
-    styleSheet.type = "text/css";
-    styleSheet.innerText = `
-        @keyframes explodeEffect {
-            0% { 
-                transform: translate(calc(50vw - 50%), -50%) scale(0.1); 
-                opacity: 1;
-            }
-            100% { 
-                transform: translate(calc(50vw - 50%), -50%) scale(2); 
-                opacity: 0;
-            }
-        }
-        .dart-ship-img.exploding {
-            animation: explodeEffect 0.5s ease-out forwards;
-        }
-    `;
-    document.head.appendChild(styleSheet);
-
-    triggerDartEffectSequence(); // Chama a função principal
-});
         // Initial slide display
         showSlide(currentSlide);
         document.addEventListener('contextmenu', function(e) {
