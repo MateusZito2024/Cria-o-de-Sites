@@ -385,7 +385,70 @@
         .office-img {
             object-position: center bottom; /* Focus on the bottom part of the image */
         }
+.parallax-item {
+    position: absolute;
+    pointer-events: none; /* Ignora cliques */
+    z-index: 20; /* Fica acima das estrelas, abaixo do texto principal */
+    transition: transform 0.1s ease-out; /* Transição suave */
+    will-change: transform; /* Otimiza a animação */
+}
 
+.parallax-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Garante que a imagem se ajuste */
+    
+}
+
+/* Tamanhos e Posições Iniciais para cada imagem (desktop) */
+.parallax-item-1 { /* Estrela azul */
+    width: 200px; height: 200px;
+    top: 20%; left: -60%;
+    /* No JS, iremos aplicar translate(-50%, -50%) para centralizar. */
+    /* Aqui, só defina top/left para o ponto de origem. */
+}
+.parallax-item-2 { /* Planeta roxo */
+    width: 90px; height: 90px;
+    top: 100%; left: -10%;
+}
+.parallax-item-3 { /* Satélite verde */
+    width: 60px; height: 60px;
+    top: 1%; right: -30%;
+}
+.parallax-item-4 { /* Estrela amarela */
+    width: 160px; height: 160px;
+    top: 80%; right: -65%;
+}
+.parallax-item-5 { /* Nave espacial vermelha */
+    width: 70px; height: 70px;
+    top: 40%; right: -60%;
+}
+.parallax-item-6 { /* Asteroide cinza */
+    width: 200px; height: 200px;
+    top: 70%; left: 65%;
+}
+.parallax-item-7 { /* Lua crescente */
+    width: 110px; height: 110px;
+    top: -25%; left: 25%;
+}
+
+
+/* --- Responsividade para Telas Menores (desktop) --- */
+@media (max-width: 1280px) {
+    .parallax-item-1 { top: 15%; left: 5%; width: 70px; height: 70px; }
+    .parallax-item-2 { top: 75%; left: 8%; width: 100px; height: 100px; }
+    .parallax-item-3 { top: 5%; right: 8%; width: 50px; height: 50px; }
+    .parallax-item-4 { top: 85%; right: 3%; width: 90px; height: 90px; }
+    .parallax-item-5 { top: 35%; right: 15%; width: 80px; height: 80px; }
+    .parallax-item-6 { top: 60%; left: 1%; width: 60px; height: 60px; }
+    .parallax-item-7 { top: 10%; left: 20%; width: 90px; height: 90px; }
+}
+
+@media (max-width: 1024px) {
+    .parallax-item {
+        display: none; /* Oculta todas as imagens parallax em tablets e celulares para evitar sobrecarga e manter o foco no conteúdo principal */
+    }
+}
         /* --- Mobile Responsiveness --- */
 
         /* Hamburger menu styles */
@@ -712,6 +775,21 @@
                     <h2 id="hero-title" class="text-5xl md:text-6xl font-bold animated-gradient-text leading-tight md:leading-snug pb-2" style="opacity: 1">Conheça a Asthro</h2>
                     <p id="hero-description" class="mt-4 text-xl md:text-2xl animated-gradient-text" style="opacity: 1">Somos uma equipe apaixonada por transformar ideias em realidade.</p>
                     <a href="#sobre" id="hero-button" class="saiba-mais mt-8 inline-block bg-indigo-500 text-white font-semibold py-4 px-10 rounded-full transition text-lg" style="opacity: 1">Saiba Mais</a>
+                    <div class="parallax-item parallax-item-1" data-parallax-strength="0.03">
+    <img src="https://i.imgur.com/0dgjfLh.png" alt="Ícone de estrela azul">
+</div>
+
+
+<div class="parallax-item parallax-item-4" data-parallax-strength="0.08">
+    <img src="https://i.imgur.com/IyMK2EQ.png" alt="Ícone de estrela amarela">
+</div>
+
+<div class="parallax-item parallax-item-6" data-parallax-strength="0.07">
+    <img src="https://i.imgur.com/LwAEyCD.png" alt="Ícone de asteroide cinza">
+</div>
+<div class="parallax-item parallax-item-7" data-parallax-strength="0.02">
+    <img src="https://i.imgur.com/csaXhYa.png" alt="Ícone de lua crescente">
+</div>
                 </div>
             </div>
         </section>
@@ -1013,6 +1091,33 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         e.preventDefault();
     }
 }, false);
+
+        /* -------------------------------------
+            NOVO CÓDIGO JS para EFEITO PARALLAX REVERSO (MÚLTIPLOS ITENS)
+        ------------------------------------- */
+
+        const parallaxItems = document.querySelectorAll('.parallax-item'); // Seleciona todos os itens
+
+        document.addEventListener('mousemove', (e) => {
+            // Calcula o desvio do mouse em relação ao centro da viewport
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 2;
+            const deltaX = e.clientX - centerX;
+            const deltaY = e.clientY - centerY;
+
+            parallaxItems.forEach(item => {
+                // Obtém a força do parallax de cada item (o atributo data-parallax-strength)
+                const strength = parseFloat(item.dataset.parallaxStrength) || 0.05; // Padrão de 0.05 se não definido
+
+                // Calcula a translação inversa usando a força específica de cada item
+                const moveX = deltaX * -strength;
+                const moveY = deltaY * -strength;
+
+                // Aplica a transformação CSS
+                // Mantém as posições 'top' e 'left' definidas no CSS e adiciona o movimento.
+                item.style.transform = `translate(${moveX}px, ${moveY}px)`;
+            });
+        });
     </script>
 </body>
 </html>
