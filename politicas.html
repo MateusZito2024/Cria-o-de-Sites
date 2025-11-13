@@ -242,8 +242,6 @@ p, span, a, li { /* Adicionado 'li' aqui */
             animation: slideInRightPiece 0.8s ease-out forwards;
         }
 
-        /* Removidas as regras de .puzzle-section, pois o layout foi alterado para Tabs */
-        /* Mantendo o .float, embora não seja mais usado na seção principal */
         @keyframes float {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
@@ -315,6 +313,7 @@ p, span, a, li { /* Adicionado 'li' aqui */
         
         .tab-content.active {
             display: block;
+            opacity: 1; /* GARANTE VISIBILIDADE */
         }
         
         .policy-content p, .policy-content li {
@@ -349,7 +348,6 @@ p, span, a, li { /* Adicionado 'li' aqui */
 
         /* --- Mobile Responsiveness --- */
         
-        /* ... (Mantenha o resto do CSS do Mobile Responsiveness do código anterior, que está abaixo deste bloco) ... */
         /* Hamburger menu styles */
         .hamburger {
             display: none;
@@ -595,7 +593,7 @@ p, span, a, li { /* Adicionado 'li' aqui */
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/index.html" class="nav-link text-lg transition block">Início</a>
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/servi%C3%A7os.html" class="nav-link text-lg transition block">Serviços</a>
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/sobre.html" class="nav-link text-lg transition block">Sobre</a>
-                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/portf%C3%B3lio.html" class="nav-link text-lg transition block">Portfólio</a>
+                <a href="https://mateuszito2024.io/Cria-o-de-Sites/portf%C3%B3lio.html" class="nav-link text-lg transition block">Portfólio</a>
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/contato.html" class="nav-link text-lg transition block">Contato</a>
                 <img src="https://i.imgur.com/sE44ypp.png" alt="Asthro" class="mobile-menu-logo" />
             </div>
@@ -628,81 +626,104 @@ p, span, a, li { /* Adicionado 'li' aqui */
                     <div id="termos-content" class="tab-content active policy-content">
                         <h3 class="text-2xl font-bold mb-4 text-left">Termos de Uso da Asthro</h3>
                         
-                        <p><strong>Última Atualização: 13 de Novembro de 2025</strong></p>
+                        <p><strong>Data de Vigência: 13 de Novembro de 2025</strong></p>
                         
                         <p>
-                            Estes Termos de Uso ("Termos") regem o uso dos serviços digitais e de desenvolvimento de sites fornecidos pela Asthro (doravante, "Nós" ou "Asthro"). Ao acessar nosso site, você concorda automaticamente com estes Termos. Por favor, leia-os atentamente.
+                            Estes Termos de Uso ("Termos") regem o uso dos serviços digitais e de desenvolvimento de sites fornecidos pela **Asthro**. Ao acessar nosso site, você concorda automaticamente com estes Termos. Por favor, leia-os atentamente.
                         </p>
 
-                        <h3>1. Aceitação e Objeto</h3>
+                        <h3>1. Aceitação dos Termos</h3>
                         <p>
-                            A utilização de quaisquer recursos do site Asthro implica na sua irrestrita concordância com estes Termos. O objeto destes Termos é regular a utilização do website e os serviços de consultoria e desenvolvimento de sites.
+                            A utilização de quaisquer recursos ou serviços do site Asthro implica na sua total e irrestrita concordância com estes Termos, bem como com nossa Política de Privacidade e Política de Cookies. Caso não concorde com qualquer um dos termos, você deve cessar imediatamente o uso de nosso website.
                         </p>
 
-                        <h3>2. Propriedade Intelectual e Uso de Conteúdo</h3>
+                        <h3>2. Serviços Oferecidos</h3>
                         <p>
-                            Todo o conteúdo do site (textos, design, código-fonte, imagens, etc.) é propriedade da Asthro, protegido por leis de direitos autorais. É proibida a cópia, reprodução ou distribuição não autorizada, exceto para fins estritamente pessoais de visualização.
+                            A Asthro fornece serviços de criação, desenvolvimento e manutenção de websites, consultoria digital e soluções de branding. Todos os detalhes e escopo dos serviços contratados serão regidos por um contrato de serviço separado, que complementa estes Termos.
                         </p>
                         
-                        <h4>2.1. Obras Entregues ao Cliente</h4>
+                        <h3>3. Propriedade Intelectual</h3>
                         <p>
-                            Após o pagamento integral de um projeto, o cliente adquire a licença de uso (ou a propriedade, dependendo do contrato) da obra digital desenvolvida pela Asthro, conforme detalhado no contrato de serviço assinado.
+                            Todo o conteúdo do site Asthro, incluindo textos, código-fonte, design, logotipos e imagens, é de propriedade exclusiva da Asthro e protegido por leis de direitos autorais.
+                        </p>
+                        
+                        <h4>3.1. Direitos do Cliente sobre Projetos</h4>
+                        <p>
+                            Após o pagamento integral de um projeto de desenvolvimento web, o Cliente adquire os direitos de propriedade intelectual (ou a licença de uso, conforme especificado no contrato) sobre o produto final (website, logotipo, etc.), excluindo as ferramentas e bibliotecas de terceiros que possam ter sido utilizadas.
                         </p>
 
-                        <h3>3. Modificações dos Termos</h3>
+                        <h3>4. Limitações de Responsabilidade</h3>
                         <p>
-                            A Asthro se reserva o direito de modificar estes Termos a qualquer momento. Quaisquer alterações serão publicadas nesta página e entrarão em vigor imediatamente após a publicação. Seu uso continuado implica aceitação das novas regras.
+                            A Asthro não se responsabiliza por:
+                            <ul class="ml-4 list-disc">
+                                <li>Quaisquer danos decorrentes do mau uso do nosso website ou da incapacidade de usá-lo.</li>
+                                <li>Erros, interrupções ou falhas no sistema operacional de terceiros não gerenciados diretamente pela Asthro.</li>
+                                <li>Conteúdo de links externos que possam estar referenciados em nosso site.</li>
+                            </ul>
+                        </p>
+                        
+                        <h3>5. Conduta do Usuário</h3>
+                        <p>
+                            Você se compromete a utilizar o site de forma ética e legal, não realizando atividades que possam danificar, sobrecarregar ou prejudicar a segurança do sistema ou de outros usuários.
                         </p>
                         
                         <p>
-                            [... Continue com suas regras detalhadas de Termos de Uso ...]
+                            <strong>Contato:</strong> Para quaisquer dúvidas sobre estes Termos de Uso, por favor, utilize nossa página de contato.
                         </p>
                     </div>
 
                     <div id="privacidade-content" class="tab-content policy-content">
                         <h3 class="text-2xl font-bold mb-4 text-left">Política de Privacidade</h3>
                         
-                        <p><strong>Última Atualização: 13 de Novembro de 2025</strong></p>
+                        <p><strong>Data de Vigência: 13 de Novembro de 2025</strong></p>
                         
                         <p>
-                            Sua privacidade é fundamental para a Asthro. Esta política detalha como suas informações são coletadas, utilizadas, armazenadas e protegidas em conformidade com a Lei Geral de Proteção de Dados (LGPD).
+                            Na Asthro, a privacidade dos seus dados é a nossa prioridade. Esta política detalha como coletamos, usamos, armazenamos e protegemos suas informações pessoais, em conformidade com a Lei Geral de Proteção de Dados (LGPD) e demais regulamentações aplicáveis.
                         </p>
 
-                        <h3>1. Coleta de Dados Pessoais</h3>
+                        <h3>1. Dados Coletados</h3>
                         <p>
-                            Coletamos dados através dos formulários de contato, agendamento, feedback e depoimento presentes em nosso site. Os dados coletados incluem:
+                            Coletamos os seguintes tipos de dados:
                             <ul class="ml-4 list-disc">
-                                <li>Nome completo ou Apelido</li>
-                                <li>Endereço de e-mail</li>
-                                <li>Número de telefone/WhatsApp</li>
-                                <li>Mensagens e comentários fornecidos livremente</li>
-                                <li>Informações de navegação (IP, tipo de navegador, tempo de visita)</li>
+                                <li>**Dados Fornecidos pelo Usuário:** Nome, e-mail, telefone/WhatsApp (através dos formulários de contato e agendamento).</li>
+                                <li>**Dados de Navegação:** Endereço IP, localização geográfica aproximada, tipo de navegador, páginas visitadas, tempo de permanência e outras informações coletadas por cookies e ferramentas de análise (Google Analytics).</li>
                             </ul>
                         </p>
                         
                         <h3>2. Finalidade do Uso dos Dados</h3>
                         <p>
-                            Os dados são utilizados exclusivamente para:
+                            Os dados coletados são utilizados para:
                             <ol class="ml-4 list-decimal">
-                                <li>Responder a consultas e solicitações (Contato e Agendamento).</li>
-                                <li>Melhorar nossos serviços e personalizar o atendimento (Feedback).</li>
-                                <li>Publicar depoimentos (somente com consentimento explícito do usuário).</li>
-                                <li>Análise estatística e de segurança do site.</li>
+                                <li>Processar suas solicitações de contato, agendamento e orçamentos.</li>
+                                <li>Melhorar e personalizar a experiência do usuário em nosso site.</li>
+                                <li>Enviar comunicações de marketing ou novidades (somente com seu consentimento prévio).</li>
+                                <li>Publicar depoimentos (apenas com sua autorização expressa no formulário de envio de depoimento).</li>
                             </ol>
                         </p>
 
-                        <h3>3. Armazenamento e Segurança</h3>
+                        <h3>3. Compartilhamento de Dados</h3>
                         <p>
-                            Seus dados são armazenados em servidores seguros, com uso de criptografia e acesso restrito a colaboradores autorizados. Utilizamos serviços de terceiros (como Formspree) que também se comprometem com a proteção de dados.
+                            A Asthro não vende, aluga ou compartilha seus dados pessoais com terceiros para fins comerciais. Podemos compartilhar dados apenas nas seguintes circunstâncias:
+                            <ul class="ml-4 list-disc">
+                                <li>Com prestadores de serviços terceirizados (ex: Formspree, ferramentas de análise) estritamente necessários para a execução dos serviços do site, e que estejam sujeitos a obrigações de confidencialidade.</li>
+                                <li>Mediante exigência legal ou ordem judicial.</li>
+                            </ul>
                         </p>
 
-                        <h3>4. Direitos do Usuário (LGPD)</h3>
+                        <h3>4. Direitos do Titular dos Dados (LGPD)</h3>
                         <p>
-                            Você tem o direito de solicitar a qualquer momento: o acesso, correção, anonimização ou exclusão dos seus dados pessoais. Para exercer seus direitos, utilize a página de Contato.
+                            De acordo com a LGPD, você tem o direito de:
+                            <ul class="ml-4 list-disc">
+                                <li>Confirmar a existência de tratamento de seus dados.</li>
+                                <li>Acessar e corrigir seus dados.</li>
+                                <li>Solicitar a anonimização, bloqueio ou eliminação de dados desnecessários ou tratados em desconformidade.</li>
+                                <li>Revogar o consentimento a qualquer momento.</li>
+                            </ul>
+                            Para exercer esses direitos, entre em contato através do nosso canal oficial.
                         </p>
                         
                         <p>
-                            [... Continue com suas regras detalhadas de Política de Privacidade ...]
+                            <strong>Contato:</strong> Para questões relacionadas à privacidade, utilize o canal de contato e especifique que o assunto é "LGPD/Privacidade".
                         </p>
                     </div>
 
@@ -710,30 +731,35 @@ p, span, a, li { /* Adicionado 'li' aqui */
                         <h3 class="text-2xl font-bold mb-4 text-left">Política de Cookies</h3>
                         
                         <p>
-                            Para garantir o pleno funcionamento e uma melhor experiência de navegação, a Asthro utiliza cookies e tecnologias similares.
+                            Esta Política de Cookies explica o que são cookies e como os utilizamos no site da Asthro.
                         </p>
 
                         <h3>1. O que são Cookies?</h3>
                         <p>
-                            Cookies são pequenos arquivos de texto que são colocados no seu dispositivo (computador, smartphone ou tablet) quando você visita um site. Eles são amplamente utilizados para fazer os sites funcionarem, ou funcionarem de forma mais eficiente, além de fornecerem informações aos proprietários do site.
+                            Cookies são pequenos arquivos de texto armazenados no seu dispositivo pelo navegador. Eles são usados principalmente para "lembrar" de você e suas preferências em visitas futuras.
                         </p>
 
-                        <h3>2. Cookies Utilizados no Site</h3>
+                        <h3>2. Como Usamos os Cookies</h3>
                         <p>
-                            Nós utilizamos:
+                            Utilizamos cookies para:
                             <ul class="ml-4 list-disc">
-                                <li><strong>Cookies Estritamente Necessários:</strong> Essenciais para a navegação e para o uso das funcionalidades básicas (ex: manter a sessão ativa).</li>
-                                <li><strong>Cookies de Desempenho/Análise:</strong> Coletam informações sobre como os visitantes usam o site (ex: quais páginas são mais acessadas, erros encontrados). Estes dados são anônimos e usados para otimizar o site.</li>
+                                <li>**Cookies Estritamente Necessários:** Para garantir que o site funcione corretamente (ex: carregar estilos e scripts).</li>
+                                <li>**Cookies de Desempenho e Funcionalidade:** Para coletar informações sobre como os visitantes utilizam o nosso site e monitorar o desempenho. Isso nos ajuda a identificar erros e melhorar a experiência de navegação.</li>
+                                <li>**Cookies de Terceiros:** Utilizamos ferramentas como o Google Analytics para entender o tráfego do site. Esses cookies são gerenciados por terceiros e estão sujeitos às suas próprias políticas.</li>
+                            </ul>
+                        </p>
+
+                        <h3>3. Suas Opções de Cookies</h3>
+                        <p>
+                            Ao navegar em nosso site, você concorda com o uso de cookies. No entanto, você tem o controle sobre eles.
+                            <ul class="ml-4 list-disc">
+                                <li>Você pode alterar as configurações do seu navegador a qualquer momento para bloquear ou receber alertas sobre cookies.</li>
+                                <li>O bloqueio de cookies pode afetar a funcionalidade de algumas partes do nosso site.</li>
                             </ul>
                         </p>
                         
-                        <h3>3. Sua Escolha</h3>
                         <p>
-                            Ao continuar a navegar em nosso site, você concorda com o uso de cookies. Você pode, a qualquer momento, configurar seu navegador para recusar cookies ou alertá-lo quando um cookie estiver sendo enviado. No entanto, se você desativar os cookies, algumas partes do nosso site podem não funcionar corretamente.
-                        </p>
-
-                        <p>
-                            [... Continue com suas regras detalhadas de Política de Cookies ...]
+                            <strong>Gerenciamento:</strong> Para mais informações ou para revogar seu consentimento, consulte as configurações do seu navegador ou entre em contato.
                         </p>
                     </div>
                     
@@ -873,8 +899,11 @@ p, span, a, li { /* Adicionado 'li' aqui */
                 });
             }
 
-            // Garante que a primeira aba esteja ativa por padrão
-            switchTab('termos');
+            // 4. FORÇA A EXIBIÇÃO DA PRIMEIRA ABA APÓS O DOM CARREGAR
+            // Isso resolve a falha na exibição inicial.
+            setTimeout(() => {
+                switchTab('termos');
+            }, 50); // Pequeno atraso para garantir que o CSS/DOM esteja pronto
         });
 
         document.addEventListener('contextmenu', function(e) {
