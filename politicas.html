@@ -8,6 +8,49 @@
     <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700&family=Manrope:wght@400;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="https://i.imgur.com/ZeaGXHD.png">
     <style>
+        .relative-title-container {
+    /* Torna este contêiner o ponto de referência (0,0) para o GIF */
+    position: relative;
+    /* Garante que o texto dentro dele seja centrado, mas o elemento é relativo */
+    text-align: center;
+    /* Permite que o GIF saia um pouco da área do contêiner se necessário */
+    overflow: visible; 
+}
+
+.title-gif-decoration {
+    /* 1. Ativa o posicionamento absoluto */
+    position: absolute;
+    /* 2. Define o tamanho inicial (manter o mesmo) */
+    width: 120px; 
+    height: auto;
+    
+    /* 3. Definimos top e left para âncoras no h2 */
+    top: 50%; /* Ancoragem vertical: Começa no meio do h2 */
+    left: 100%; /* Ancoragem horizontal: Começa exatamente após o h2 */
+    
+    /* 4. Ajuste Fino: Mover para o centro verticalmente (-50% no Y) */
+    /* e deslocar um pouco para a direita (X) ou esquerda (-) para a estética final */
+    transform: translate(20px, -50%); /* Move 20px para a direita (X) e centraliza verticalmente (Y) */
+    
+    /* 5. Outros efeitos visuais */
+    
+    pointer-events: none; 
+    z-index: 1; /* Garante que fique acima de outros elementos do background */
+}
+
+/* --- Mobile Responsiveness (Ajuste fino para telas menores) --- */
+@media (max-width: 768px) {
+    .title-gif-decoration {
+        /* Diminui o tamanho do GIF no mobile */
+        width: 40px; 
+        
+        /* Reposiciona o GIF no mobile (exemplo: logo abaixo do título) */
+        top: 0;
+        right: 0;
+        /* Mova para o centro, 50px acima do H2 */
+        transform: translate(0, -50px); 
+    }
+}
         /* INÍCIO DO CSS HERDADO DA PÁGINA DE CONTATO (Copie e Cole TODO o bloco <style> da página de contato aqui) */
         h2, h3, h4 {
     font-family: 'Archivo', sans-serif;
@@ -550,10 +593,11 @@ img {
     <main>
         <section class="policies-container content-layer">
             
-            <div class="text-center mb-12">
-                <h2 class="text-5xl font-bold gradient-text">
-    Diretrizes Cósmicas
-</h2>
+            <div class="text-center mb-12 relative-title-container">
+                <h2 class="text-5xl font-bold gradient-text inline-block"> 
+        Diretrizes Cósmicas
+    </h2>
+                <img src="https://i.imgur.com/bkm5URV.gif" alt="Decoração Animada" class="title-gif-decoration" />
                 <p class="text-xl text-gray-200 mt-6 max-w-3xl mx-auto">
                     <span class="puzzle-piece puzzle-piece-left">Sua experiência com a Asthro é transparente e segura.</span>
                     <span class="puzzle-piece puzzle-piece-right">Selecione a política desejada para começar a leitura.</span>
