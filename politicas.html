@@ -313,11 +313,17 @@ nav > div {
 }
         
         .tab-button.active {
-            color: #0bf4ed; /* Azul Prisma para o ativo */
-            border-bottom: 4px solid;
-            border-image: linear-gradient(to right, #6627ff, #0bf4ed) 1; /* Gradiente na borda ativa */
-            background: rgba(102, 39, 255, 0.05); /* Fundo sutil para destaque */
-        }
+    color: #0bf4ed; /* Azul Prisma para o ativo */
+    border-bottom: 4px solid;
+    border-image: linear-gradient(to right, #6627ff, #0bf4ed) 1; /* Gradiente na borda ativa */
+    background: rgba(102, 39, 255, 0.05); /* Fundo sutil para destaque */
+    
+    /* 🚨 NOVO: MANTÉM O EFEITO DE INCLINAÇÃO (COPIA O HOVER) */
+    transform: rotateZ(1.5deg) translateX(2px) translateY(-3px); 
+    
+    /* 🚨 NOVO: Adiciona a sombra para reforçar a elevação (copia o hover) */
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
 
         /* Estilos do Conteúdo das Abas */
        .tab-content {
