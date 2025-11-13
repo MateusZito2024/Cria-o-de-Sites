@@ -191,7 +191,27 @@ img {
             -webkit-text-fill-color: transparent;
             animation: gradientShift 8s ease-in-out infinite;
         }
+nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 10;
+    /* Adapte o background se a página de Políticas usa uma cor diferente */
+    background: transparent; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    
+    /* 🚨 ESTE É O CSS CRÍTICO DA PÁGINA DE CONTATO */
+    padding: 0 1rem;
+    box-sizing: border-box;
+}
 
+nav > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%; 
+    /* Removemos o max-width e mx-auto, deixando o padding acima fazer o trabalho */
+}
         @keyframes gradientShift {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
@@ -563,32 +583,32 @@ img {
 <body class="text-gray-100">
     <div class="stars-container" id="stars-container"></div>
     <nav class="shadow-lg fixed w-full z-10">
-        <div class="flex justify-between h-16 items-center">
-            <div class="flex items-center content-layer">
-                <img src="https://i.imgur.com/sE44ypp.png" alt="Logo da Asthro" class="h-40 md:h-40" />
-            </div>
-            <button class="hamburger" aria-label="Toggle menu">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-            <div class="flex items-center space-x-6 content-layer desktop-nav">
-                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/index.html" class="nav-link text-lg transition">Início</a>
-                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/servi%C3%A7os.html" class="nav-link text-lg transition">Serviços</a>
-                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/sobre.html" class="nav-link text-lg transition">Sobre</a>
-                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/portf%C3%B3lio.html" class="nav-link text-lg transition">Portfólio</a>
-                <a href="https://mateuszito2024.io/Cria-o-de-Sites/contato.html" class="nav-link text-lg transition">Contato</a>
-            </div>
-            <div class="nav-menu-mobile content-layer">
-                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/index.html" class="nav-link text-lg transition block">Início</a>
-                <a href="https://mateuszito2024.io/Cria-o-de-Sites/servi%C3%A7os.html" class="nav-link text-lg transition block">Serviços</a>
-                <a href="https://mateuszito2024.io/Cria-o-de-Sites/sobre.html" class="nav-link text-lg transition block">Sobre</a>
-                <a href="https://mateuszito2024.io/Cria-o-de-Sites/portf%C3%B3lio.html" class="nav-link text-lg transition block">Portfólio</a>
-                <a href="https://mateuszito2024.io/Cria-o-de-Sites/contato.html" class="nav-link text-lg transition block">Contato</a>
-                <img src="https://i.imgur.com/sE44ypp.png" alt="Asthro" class="mobile-menu-logo" />
-            </div>
+    <div class="flex justify-between h-16 items-center"> 
+        <div class="flex items-center content-layer">
+            <img src="https://i.imgur.com/sE44ypp.png" alt="Logo da Asthro" class="h-40 md:h-40" />
         </div>
-    </nav>
+        <button class="hamburger" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="flex items-center space-x-6 content-layer desktop-nav">
+            <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/index.html" class="nav-link text-lg transition">Início</a>
+            <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/servi%C3%A7os.html" class="nav-link text-lg transition">Serviços</a>
+            <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/sobre.html" class="nav-link text-lg transition">Sobre</a>
+            <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/portf%C3%B3lio.html" class="nav-link text-lg transition">Portfólio</a>
+            <a href="https://mateuszito2024.io/Cria-o-de-Sites/contato.html" class="nav-link text-lg transition">Contato</a>
+        </div>
+        <div class="nav-menu-mobile content-layer">
+            <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/index.html" class="nav-link text-lg transition block">Início</a>
+            <a href="https://mateuszito2024.io/Cria-o-de-Sites/servi%C3%A7os.html" class="nav-link text-lg transition block">Serviços</a>
+            <a href="https://mateuszito2024.io/Cria-o-de-Sites/sobre.html" class="nav-link text-lg transition block">Sobre</a>
+            <a href="https://mateuszito2024.io/Cria-o-de-Sites/portf%C3%B3lio.html" class="nav-link text-lg transition block">Portfólio</a>
+            <a href="https://mateuszito2024.io/Cria-o-de-Sites/contato.html" class="nav-link text-lg transition block">Contato</a>
+            <img src="https://i.imgur.com/sE44ypp.png" alt="Asthro" class="mobile-menu-logo" />
+        </div>
+    </div>
+</nav>
 
     <main>
         <section class="policies-container content-layer">
