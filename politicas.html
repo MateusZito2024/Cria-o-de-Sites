@@ -49,10 +49,10 @@ img {
         }
 
         @keyframes gradientTransition {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+    0% { background-position: 0% 50%; } /* Posição inicial do degradê */
+    50% { background-position: 100% 50%; } /* Posição no meio da animação */
+    100% { background-position: 0% 50%; } /* Volta para a posição inicial */
+}
 @keyframes colorPulse {
     0% { background-color: #6627ff; }       /* Início: Violeta Cósmico */
     50% { background-color: #0bf4ed; }      /* Meio: Azul Prisma */
@@ -551,9 +551,9 @@ img {
         <section class="policies-container content-layer">
             
             <div class="text-center mb-12">
-                <h2 class="text-5xl font-bold animated-gradient-text">
-                    Diretrizes Cósmicas
-                </h2>
+                <h2 class="text-5xl font-bold gradient-text">
+    Diretrizes Cósmicas
+</h2>
                 <p class="text-xl text-gray-200 mt-6 max-w-3xl mx-auto">
                     <span class="puzzle-piece puzzle-piece-left">Sua experiência com a Asthro é transparente e segura.</span>
                     <span class="puzzle-piece puzzle-piece-right">Selecione a política desejada para começar a leitura.</span>
