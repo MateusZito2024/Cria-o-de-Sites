@@ -86,7 +86,7 @@ img {
             padding: 0;
             position: relative;
             overflow-x: hidden; /* Garante que não haja rolagem horizontal */
-            overflow-y: auto; /* Permite rolagem vertical */
+            overflow-y: scroll; /* Permite rolagem vertical */
             min-height: 100%;
             width: 100vw; /* Garante que o body ocupe exatamente 100% da largura da viewport */
         }
@@ -302,9 +302,15 @@ nav > div {
         }
         
         .tab-button:hover {
-            color: #edf1f7;
-            border-bottom-color: #6627ff; /* Violeta Cósmico no hover */
-        }
+    color: #edf1f7; /* Cor do texto ao passar o mouse */
+    border-bottom-color: #6627ff; /* Cor da borda inferior ao passar o mouse */
+
+    /* 🚨 NOVO EFEITO: Inclinação para a direita, leve movimento para a direita e elevação */
+    transform: rotateZ(1.5deg) translateX(2px) translateY(-3px); 
+    
+    /* 🚨 SOMBRA SUTIL (opcional, melhora a sensação de elevação) */
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
         
         .tab-button.active {
             color: #0bf4ed; /* Azul Prisma para o ativo */
@@ -314,17 +320,36 @@ nav > div {
         }
 
         /* Estilos do Conteúdo das Abas */
-        .tab-content {
-            display: none;
-            opacity: 0;
-            padding: 1rem;
-            animation: fadeIn 0.5s ease-in-out forwards;
-        }
-        
-        .tab-content.active {
-            display: block;
-            opacity: 1; /* GARANTE VISIBILIDADE */
-        }
+       .tab-content {
+    /* Mantenha estas propriedades de esconder: */
+    opacity: 0;
+    max-height: 0; 
+    overflow: hidden; 
+    padding: 0 1rem; 
+    
+    /* 🚨 NOVO: Transição de 0.6s. Altura/Padding levam mais tempo. */
+    /* Opacidade (0.3s): Começa imediatamente e some rápido. */
+    /* Altura/Padding (0.6s): Começa junto com a opacidade, mas dura o dobro. */
+    transition: 
+        opacity 0.3s ease-out,
+        max-height 0.6s ease-in-out, /* Duração maior para a suavidade vertical */
+        padding 0.6s ease-in-out; 
+}
+ 
+.tab-content.active {
+    opacity: 1;
+    max-height: 5000px; 
+    padding: 1rem; 
+    overflow: visible; 
+    
+    /* 🚨 NOVO: Atrasamos a opacidade na entrada para garantir que a expansão da altura comece primeiro. */
+    /* Opacidade (0.3s): Espera 0.3s para começar a aparecer. */
+    /* Altura/Padding (0.6s): Começa a expandir imediatamente. */
+    transition: 
+        opacity 0.3s 0.3s ease-in-out, 
+        max-height 0.6s ease-in-out,
+        padding 0.6s ease-in-out; 
+}
         
         .policy-content p, .policy-content li {
             font-family: 'Manrope', sans-serif;
@@ -962,23 +987,42 @@ A Asthro reserva-se o direito de utilizar o trabalho realizado (incluindo logoti
         // ===================================================================
 
         function switchTab(tabId) {
-            // 1. Oculta todos os conteúdos e remove a classe 'active' dos botões
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.remove('active');
-            });
-            document.querySelectorAll('.tab-button').forEach(button => {
-                button.classList.remove('active');
-            });
+    const tabsContent = document.querySelectorAll('.tab-content');
+    const tabsButtons = document.querySelectorAll('.tab-button');
+    const newContent = document.getElementById(tabId + '-content');
+    const newButton = document.querySelector(`.tab-button[data-tab="${tabId}"]`);
+    const activeContent = document.querySelector('.tab-content.active');
 
-            // 2. Exibe o conteúdo da aba clicada e ativa o botão
-            const newContent = document.getElementById(tabId + '-content');
-            const newButton = document.querySelector(`.tab-button[data-tab="${tabId}"]`);
+    // 1. Desativa e Inicia o Fade-Out da aba ATUAL (se houver)
+    if (activeContent) {
+        // Remove a classe 'active' para iniciar o Fade-Out/recolhimento
+        activeContent.classList.remove('active');
+        
+        // Remove o botão 'active'
+        tabsButtons.forEach(button => button.classList.remove('active'));
 
-            if (newContent && newButton) {
-                newContent.classList.add('active');
-                newButton.classList.add('active');
-            }
+        // Define um pequeno atraso para permitir que a transição de 0.5s termine
+        setTimeout(() => {
+            
+            // 2. Garante que a aba antiga esteja totalmente recolhida antes de mostrar a nova
+            showNewTab();
+
+        }, 300); // 🚨 Atraso de 500ms (0.5s), deve corresponder ao CSS transition
+        
+    } else {
+        // Se não houver aba ativa, mostra a nova imediatamente
+        showNewTab();
+    }
+
+    function showNewTab() {
+        if (newContent && newButton) {
+            // 3. Ativa o botão e a aba (Fade-In/Expansão)
+            newButton.classList.add('active');
+            // 🚨 Adiciona a classe 'active' para iniciar o Fade-In
+            newContent.classList.add('active'); 
         }
+    }
+}
 
         document.addEventListener('DOMContentLoaded', () => {
             const tabsMenu = document.getElementById('tabsMenu');
