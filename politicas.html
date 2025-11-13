@@ -208,17 +208,20 @@ img {
         }
 
         /* Estilos do Menu de Abas (Tabs) */
-        .tabs-menu {
+       .tabs-menu {
             display: flex;
-            justify-content: center;
+            /* Alterado para 'start' ou 'center' para melhor alinhamento das linhas quebradas */
+            justify-content: center; 
+            align-items: stretch; 
             margin-bottom: 2rem;
-            border-bottom: 2px solid #374151; /* Linha sutil para separar do conteúdo */
-            flex-wrap: wrap; /* Adicionado para quebrar em múltiplas linhas se necessário */
+            border-bottom: 2px solid #374151;
+            flex-wrap: wrap; /* Permite a quebra para 3 colunas */
+            padding: 0; /* Remove padding lateral que atrapalhe o cálculo de 3 colunas */
         }
         
         .tab-button {
             padding: 1rem 1.5rem;
-            font-family: 'Archivo', sans-serif; /* Fonte de destaque para os botões */
+            font-family: 'Archivo', sans-serif;
             font-weight: 700;
             color: #9ca3af;
             cursor: pointer;
@@ -226,6 +229,13 @@ img {
             transition: all 0.3s ease;
             text-transform: uppercase;
             letter-spacing: 0.05em;
+            
+            /* >>> CORREÇÃO CRÍTICA PARA O DESKTOP <<< */
+            /* Força os botões a ficarem com 1/3 da largura menos o espaçamento entre eles. */
+            flex-basis: calc(33.33% - 10px); /* 33.33% - largura para 3 colunas */
+            flex-grow: 0; /* Desativa o crescimento desigual */
+            margin: 5px; /* Adiciona espaçamento entre os botões */
+            text-align: center; 
         }
         
         .tab-button:hover {
