@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asthro - Políticas e Termos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700&family=Manrope:wght@400;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="https://i.imgur.com/ZeaGXHD.png">
+    <style>
+        /* INÍCIO DO CSS HERDADO DA PÁGINA DE CONTATO (Copie e Cole TODO o bloco <style> da página de contato aqui) */
+        h2, h3, h4 {
+    font-family: 'Archivo', sans-serif;
+    /* Remove opacidade temporária se estiver aqui */
+    opacity: 1 !important; 
+}
+
+/* 🚨 NOVO BLOCO: Garante que os elementos que não são títulos herdem Manrope. */
+p, a, input, textarea, button, .message {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400; /* Garante que elementos de texto não fiquem em negrito por padrão */
+}
+
+img {
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none;      /* IE 10+ */
+    user-select: none;
+    -webkit-user-drag: none;    /* Bloqueia o arrasto em Webkit (Chrome, Safari) */
+    pointer-events: auto;       /* Garante que o cursor do mouse funciona, mas bloqueia o toque longo */
+}
+        /* Reset para box-sizing global */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            font-family: 'Manrope', sans-serif;
+            background: linear-gradient(135deg, #111111, #111111);
+            background-size: 400% 400%;
+            animation: gradientTransition 20s ease-in-out infinite;
+            color: #edf1f7;
+            margin: 0;
+            padding: 0;
+            position: relative;
+            overflow-x: hidden; /* Garante que não haja rolagem horizontal */
+            overflow-y: auto; /* Permite rolagem vertical */
+            min-height: 100%;
+            width: 100vw; /* Garante que o body ocupe exatamente 100% da largura da viewport */
+        }
+
+        @keyframes gradientTransition {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+@keyframes colorPulse {
+    0% { background-color: #6627ff; }       /* Início: Violeta Cósmico */
+    50% { background-color: #0bf4ed; }      /* Meio: Azul Prisma */
+    100% { background-color: #6627ff; }      /* Fim: Violeta Cósmico */
+}
+        .stars-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #ffffff;
+            border-radius: 50%;
+            box-shadow: 0 0 5px 1px rgba(255, 255, 255, 0.5);
+            opacity: 0.3;
+            animation: floatStar 15s infinite ease-in-out;
+        }
+
+        .star.purple {
+            background: #6627ff;
+            box-shadow: 0 0 5px 1px rgba(106, 13, 173, 0.5);
+        }
+
+        .star.pink {
+            background: #0bf4ed;
+            box-shadow: 0 0 5px 1px rgba(232, 121, 249, 0.5);
+        }
+
+        .star.white {
+            background: #edf1f7;
+            box-shadow: 0 0 5px 1px rgba(255, 255, 255, 0.5);
+        }
+
+        @keyframes floatStar {
+            0% { opacity: 0.3; transform: translate(0, 0); }
+            50% { opacity: 0.6; transform: translate(var(--move-x), var(--move-y)); }
+            100% { opacity: 0.3; transform: translate(0, 0); }
+        }
+
+        .brand-name {
+            font-family: 'Great Vibes', cursive;
+            line-height: 2;
+            padding: 1rem;
+            display: block;
+            overflow: visible;
+            font-size: clamp(2rem, 6vw, 2.5rem);
+        }
+
+        .flex.items-center.content-layer {
+            overflow: visible;
+        }
+
+        .nav-link {
+    font-family: 'Manrope', sans-serif;
+    position: relative;
+    text-decoration: none;
+    color: #edf1f7; /* Cor base padronizada (Cinza Gelo) */
+    transition: color 0.3s ease;
+    font-size: clamp(1rem, 3vw, 1.125rem);
+}
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background: linear-gradient(135deg, #6627ff, #0bf4ed);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-link:hover {
+            color: #0bf4ed;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #6627ff, #0bf4ed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 10;
+            background: transparent;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 0 1rem;
+            box-sizing: border-box;
+        }
+
+        nav > div {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        nav .flex.items-center.content-layer:first-child {
+            margin-right: auto;
+        }
+
+        nav .flex.items-center.content-layer:last-child {
+            margin-left: auto;
+        }
+
+        nav, section, footer {
+            position: relative;
+            z-index: 1;
+        }
+
+        .content-layer {
+            position: relative;
+            z-index: 2;
+        }
+
+        h1, h2, h3, p, a, input, textarea, button, img, svg {
+    position: relative;
+    z-index: 30;
+    opacity: 1 !important;
+}
+p, span, a, li { /* Adicionado 'li' aqui */
+    font-weight: 400 !important; /* CORREÇÃO: Força o peso regular para o corpo do texto */
+    font-family: 'Manrope', sans-serif; /* Garante que elementos inline usem Manrope */
+}
+        h2, h3 {
+            color: #f8f8f8;
+            text-align: center;
+            opacity: 0; /* Controlado por JS */
+        }
+
+        .cursive-text {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2rem;
+            line-height: 1.4;
+            color: #e2e8f0;
+        }
+
+        .animated-gradient-text {
+            background: linear-gradient(90deg, #6627ff, #edf1f7, #0bf4ed, #6627ff);
+            background-size: 400% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 8s ease-in-out infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes slideInLeftPiece {
+            from { opacity: 0; transform: translateX(-50px) rotate(-5deg); }
+            to { opacity: 1; transform: translateX(0) rotate(0); }
+        }
+
+        @keyframes slideInRightPiece {
+            from { opacity: 0; transform: translateX(50px) rotate(5deg); }
+            to { opacity: 1; transform: translateX(0) rotate(0); }
+        }
+
+        .puzzle-piece {
+            opacity: 0;
+            display: inline-block;
+        }
+
+        .puzzle-piece-left {
+            animation: slideInLeftPiece 0.8s ease-out forwards;
+        }
+
+        .puzzle-piece-right {
+            animation: slideInRightPiece 0.8s ease-out forwards;
+        }
+
+        /* Removidas as regras de .puzzle-section, pois o layout foi alterado para Tabs */
+        /* Mantendo o .float, embora não seja mais usado na seção principal */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Layout de Políticas (Novo Estilo Tabs) */
+        .policies-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: calc(100vh - 120px);
+            padding: 8rem 1rem 4rem 1rem;
+            box-sizing: border-box;
+        }
+        
+        .policies-hub {
+            background: rgba(17, 17, 17, 0.8); /* Fundo de vidro semi-transparente */
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 1.5rem;
+            border: 1px solid rgba(102, 39, 255, 0.4);
+            padding: 2rem;
+            max-width: 1000px;
+            width: 100%;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37), 0 0 15px rgba(165, 180, 252, 0.2);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Estilos do Menu de Abas (Tabs) */
+        .tabs-menu {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #374151; /* Linha sutil para separar do conteúdo */
+        }
+        
+        .tab-button {
+            padding: 1rem 1.5rem;
+            font-family: 'Archivo', sans-serif; /* Fonte de destaque para os botões */
+            font-weight: 700;
+            color: #9ca3af;
+            cursor: pointer;
+            border-bottom: 4px solid transparent;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .tab-button:hover {
+            color: #edf1f7;
+            border-bottom-color: #6627ff; /* Violeta Cósmico no hover */
+        }
+        
+        .tab-button.active {
+            color: #0bf4ed; /* Azul Prisma para o ativo */
+            border-bottom: 4px solid;
+            border-image: linear-gradient(to right, #6627ff, #0bf4ed) 1; /* Gradiente na borda ativa */
+            background: rgba(102, 39, 255, 0.05); /* Fundo sutil para destaque */
+        }
+
+        /* Estilos do Conteúdo das Abas */
+        .tab-content {
+            display: none;
+            opacity: 0;
+            padding: 1rem;
+            animation: fadeIn 0.5s ease-in-out forwards;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .policy-content p, .policy-content li {
+            font-family: 'Manrope', sans-serif;
+            color: #cbd5e1;
+            text-align: justify; /* Melhora a leitura de textos longos */
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+        .policy-content h3 {
+            font-size: 1.75rem;
+            color: #0bf4ed;
+            text-align: left;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        .policy-content h4 {
+            font-size: 1.25rem;
+            color: #a5b4fc;
+            text-align: left;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .policy-content ul, .policy-content ol {
+            margin-left: 2rem;
+            list-style-type: disc;
+            padding-left: 0; /* Remove padding duplicado se houver */
+        }
+        .policy-content ol {
+            list-style-type: decimal;
+        }
+
+        /* --- Mobile Responsiveness --- */
+        
+        /* ... (Mantenha o resto do CSS do Mobile Responsiveness do código anterior, que está abaixo deste bloco) ... */
+        /* Hamburger menu styles */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            justify-content: space-around;
+            width: 2rem;
+            height: 2rem;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            z-index: 40;
+        }
+
+        .hamburger span {
+            width: 100%;
+            height: 3px;
+            background: #edf1f7;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        /* Nav menu for mobile */
+        .nav-menu-mobile {
+            display: none; /* Escondido por padrão, exibido via JS */
+        }
+        .mobile-menu-logo {
+            display: none; /* Oculta a imagem por padrão (desktop) */
+            width: 80%;
+            max-width: 150px;
+            height: auto;
+            filter: drop-shadow(0 0 5px rgba(102, 39, 255, 0.4));
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                background: rgba(17, 17, 17, 0.95);
+                padding: 0.5rem 1rem;
+                width: 100%;
+                box-sizing: border-box;
+            }
+            
+            /* Exibir a imagem e adicionar margem apenas no mobile */
+            .mobile-menu-logo {
+                display: block;
+                margin-top: 3rem; /* Espaço entre o último link e o logo */
+            }
+
+            /* Hide desktop nav links */
+            nav .flex.items-center.space-x-6 {
+                display: none;
+            }
+
+            /* Show hamburger */
+            .hamburger {
+                display: flex;
+            }
+
+            /* Mobile nav menu com Glassmorphism */
+            .nav-menu-mobile {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                height: 100vh;
+                width: 100%;
+                max-width: 300px;
+                background: rgba(17, 17, 17, 0.9); /* Fundo semi-transparente para o glassmorphism */
+                backdrop-filter: blur(10px); /* Efeito de desfoque */
+                -webkit-backdrop-filter: blur(10px); /* Para compatibilidade com Safari */
+                border-left: 1px solid rgba(102, 39, 255, 0.5); /* Borda sutil */
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 1.5rem; /* Espaçamento entre os itens */
+                transition: right 0.3s ease;
+                z-index: 30;
+                display: flex; /* Exibido via JS quando ativo */
+                box-sizing: border-box;
+                padding: 0 1rem;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3); /* Sombra para profundidade */
+            }
+
+            .nav-menu-mobile.active {
+                right: 0;
+            }
+
+            /* Adjust brand name font size */
+            .brand-name {
+                font-size: clamp(1.75rem, 8vw, 2rem);
+                padding: 0.5rem;
+            }
+
+            /* Estilo dos links no menu mobile - Glassmorphism */
+            .nav-menu-mobile .nav-link {
+                display: block;
+                width: 90%; /* Ajuste a largura para um visual mais elegante */
+                padding: 0.8rem 1.5rem;
+                border-radius: 0.75rem; /* Mais arredondado */
+                background: rgba(102, 39, 255, 0.1); /* Fundo semi-transparente para o link */
+                color: #f8f8f8; /* Cor do texto clara */
+                text-align: center;
+                font-size: clamp(1.125rem, 4vw, 1.3rem); /* Fonte um pouco maior */
+                font-weight: 600; /* Mais negrito */
+                border: 1px solid rgba(255, 255, 255, 0.2); /* Borda sutil para o efeito de vidro */
+                backdrop-filter: blur(5px);
+                -webkit-backdrop-filter: blur(5px);
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra suave */
+                transition: all 0.3s ease; /* Transições suaves */
+            }
+
+            .nav-menu-mobile .nav-link:hover {
+                /* CORREÇÃO: Trocar o roxo/rosa por Violeta Cósmico e Azul Prisma */
+                background: linear-gradient(135deg, rgba(102, 39, 255, 0.3), rgba(11, 244, 237, 0.3));
+                transform: translateY(-4px) scale(1.02);
+                /* CORREÇÃO: Usar o Azul Prisma para o brilho */
+                box-shadow: 0 8px 16px rgba(11, 244, 237, 0.6); 
+                border-color: #0bf4ed;
+            }
+
+            .nav-menu-mobile .nav-link::after {
+                display: none; /* Remove a linha inferior dos links no mobile */
+            }
+
+            /* Titles and paragraphs */
+            h2 {
+                font-size: clamp(2.25rem, 9vw, 3rem);
+                line-height: 1.2;
+            }
+
+            p {
+                font-size: clamp(1rem, 4.5vw, 1.25rem);
+            }
+
+            .cursive-text {
+                font-size: clamp(1.5rem, 6vw, 1.8rem);
+            }
+
+            /* Puzzle pieces text */
+            .puzzle-piece {
+                display: block;
+                margin-bottom: 0.5rem;
+                animation-delay: 0s !important;
+            }
+            .puzzle-piece:last-child {
+                margin-bottom: 0;
+            }
+
+            /* Ajustes para o container de Políticas em mobile */
+            .policies-container {
+                padding-top: 6rem;
+                padding-bottom: 2rem;
+            }
+            .policies-hub {
+                padding: 1.5rem;
+            }
+            .policy-content p, .policy-content li {
+                font-size: 0.9rem;
+                line-height: 1.6;
+            }
+            .policy-content h3 {
+                font-size: 1.5rem;
+            }
+            .policy-content h4 {
+                font-size: 1.1rem;
+            }
+            
+            /* Ajuste do menu de abas em mobile */
+            .tabs-menu {
+                flex-wrap: wrap;
+                margin-bottom: 1rem;
+                border-bottom: none;
+            }
+            .tab-button {
+                flex: 1 1 100%; /* Ocupa a linha inteira */
+                margin: 0.5rem 0;
+                border-radius: 0.5rem;
+                border-bottom: 2px solid transparent !important; /* Desabilita a linha no final */
+                border: 1px solid #374151;
+            }
+            .tab-button.active {
+                background: rgba(102, 39, 255, 0.2);
+                border-color: #0bf4ed !important;
+                border-image: none;
+            }
+
+        }
+
+        @media (max-width: 480px) {
+            /* Further small adjustments for very small screens */
+            .brand-name {
+                font-size: clamp(1.5rem, 7vw, 1.75rem);
+            }
+
+            h2 {
+                font-size: clamp(1.8rem, 7vw, 2.25rem);
+            }
+
+            h3 {
+                font-size: clamp(1.3rem, 5.5vw, 1.6rem);
+            }
+
+            p {
+                font-size: clamp(0.85rem, 4vw, 1rem);
+            }
+
+            .cursive-text {
+                font-size: clamp(1.2rem, 5vw, 1.5rem);
+            }
+        }
+    </style>
+</head>
+<body class="text-gray-100">
+    <div class="stars-container" id="stars-container"></div>
+    <nav class="shadow-lg fixed w-full z-10">
+        <div class="flex justify-between h-16 items-center">
+            <div class="flex items-center content-layer">
+                <img src="https://i.imgur.com/sE44ypp.png" alt="Logo da Asthro" class="h-40 md:h-40" />
+            </div>
+            <button class="hamburger" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="flex items-center space-x-6 content-layer desktop-nav">
+                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/index.html" class="nav-link text-lg transition">Início</a>
+                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/servi%C3%A7os.html" class="nav-link text-lg transition">Serviços</a>
+                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/sobre.html" class="nav-link text-lg transition">Sobre</a>
+                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/portf%C3%B3lio.html" class="nav-link text-lg transition">Portfólio</a>
+                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/contato.html" class="nav-link text-lg transition">Contato</a>
+            </div>
+            <div class="nav-menu-mobile content-layer">
+                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/index.html" class="nav-link text-lg transition block">Início</a>
+                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/servi%C3%A7os.html" class="nav-link text-lg transition block">Serviços</a>
+                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/sobre.html" class="nav-link text-lg transition block">Sobre</a>
+                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/portf%C3%B3lio.html" class="nav-link text-lg transition block">Portfólio</a>
+                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/contato.html" class="nav-link text-lg transition block">Contato</a>
+                <img src="https://i.imgur.com/sE44ypp.png" alt="Asthro" class="mobile-menu-logo" />
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="policies-container content-layer">
+            
+            <div class="text-center mb-12">
+                <h2 class="text-5xl font-bold animated-gradient-text">
+                    Diretrizes Cósmicas
+                </h2>
+                <p class="text-xl text-gray-200 mt-6 max-w-3xl mx-auto">
+                    <span class="puzzle-piece puzzle-piece-left">Sua experiência com a Asthro é transparente e segura.</span>
+                    <span class="puzzle-piece puzzle-piece-right">Selecione a política desejada para começar a leitura.</span>
+                </p>
+            </div>
+
+            <div class="policies-hub">
+                
+                <div class="tabs-menu" id="tabsMenu">
+                    <button class="tab-button active" data-tab="termos">Termos de Uso</button>
+                    <button class="tab-button" data-tab="privacidade">Política de Privacidade</button>
+                    <button class="tab-button" data-tab="cookies">Política de Cookies</button>
+                    </div>
+                
+                <div class="tabs-content" id="tabsContent">
+                    
+                    <div id="termos-content" class="tab-content active policy-content">
+                        <h3 class="text-2xl font-bold mb-4 text-left">Termos de Uso da Asthro</h3>
+                        
+                        <p><strong>Última Atualização: 13 de Novembro de 2025</strong></p>
+                        
+                        <p>
+                            Estes Termos de Uso ("Termos") regem o uso dos serviços digitais e de desenvolvimento de sites fornecidos pela Asthro (doravante, "Nós" ou "Asthro"). Ao acessar nosso site, você concorda automaticamente com estes Termos. Por favor, leia-os atentamente.
+                        </p>
+
+                        <h3>1. Aceitação e Objeto</h3>
+                        <p>
+                            A utilização de quaisquer recursos do site Asthro implica na sua irrestrita concordância com estes Termos. O objeto destes Termos é regular a utilização do website e os serviços de consultoria e desenvolvimento de sites.
+                        </p>
+
+                        <h3>2. Propriedade Intelectual e Uso de Conteúdo</h3>
+                        <p>
+                            Todo o conteúdo do site (textos, design, código-fonte, imagens, etc.) é propriedade da Asthro, protegido por leis de direitos autorais. É proibida a cópia, reprodução ou distribuição não autorizada, exceto para fins estritamente pessoais de visualização.
+                        </p>
+                        
+                        <h4>2.1. Obras Entregues ao Cliente</h4>
+                        <p>
+                            Após o pagamento integral de um projeto, o cliente adquire a licença de uso (ou a propriedade, dependendo do contrato) da obra digital desenvolvida pela Asthro, conforme detalhado no contrato de serviço assinado.
+                        </p>
+
+                        <h3>3. Modificações dos Termos</h3>
+                        <p>
+                            A Asthro se reserva o direito de modificar estes Termos a qualquer momento. Quaisquer alterações serão publicadas nesta página e entrarão em vigor imediatamente após a publicação. Seu uso continuado implica aceitação das novas regras.
+                        </p>
+                        
+                        <p>
+                            [... Continue com suas regras detalhadas de Termos de Uso ...]
+                        </p>
+                    </div>
+
+                    <div id="privacidade-content" class="tab-content policy-content">
+                        <h3 class="text-2xl font-bold mb-4 text-left">Política de Privacidade</h3>
+                        
+                        <p><strong>Última Atualização: 13 de Novembro de 2025</strong></p>
+                        
+                        <p>
+                            Sua privacidade é fundamental para a Asthro. Esta política detalha como suas informações são coletadas, utilizadas, armazenadas e protegidas em conformidade com a Lei Geral de Proteção de Dados (LGPD).
+                        </p>
+
+                        <h3>1. Coleta de Dados Pessoais</h3>
+                        <p>
+                            Coletamos dados através dos formulários de contato, agendamento, feedback e depoimento presentes em nosso site. Os dados coletados incluem:
+                            <ul class="ml-4 list-disc">
+                                <li>Nome completo ou Apelido</li>
+                                <li>Endereço de e-mail</li>
+                                <li>Número de telefone/WhatsApp</li>
+                                <li>Mensagens e comentários fornecidos livremente</li>
+                                <li>Informações de navegação (IP, tipo de navegador, tempo de visita)</li>
+                            </ul>
+                        </p>
+                        
+                        <h3>2. Finalidade do Uso dos Dados</h3>
+                        <p>
+                            Os dados são utilizados exclusivamente para:
+                            <ol class="ml-4 list-decimal">
+                                <li>Responder a consultas e solicitações (Contato e Agendamento).</li>
+                                <li>Melhorar nossos serviços e personalizar o atendimento (Feedback).</li>
+                                <li>Publicar depoimentos (somente com consentimento explícito do usuário).</li>
+                                <li>Análise estatística e de segurança do site.</li>
+                            </ol>
+                        </p>
+
+                        <h3>3. Armazenamento e Segurança</h3>
+                        <p>
+                            Seus dados são armazenados em servidores seguros, com uso de criptografia e acesso restrito a colaboradores autorizados. Utilizamos serviços de terceiros (como Formspree) que também se comprometem com a proteção de dados.
+                        </p>
+
+                        <h3>4. Direitos do Usuário (LGPD)</h3>
+                        <p>
+                            Você tem o direito de solicitar a qualquer momento: o acesso, correção, anonimização ou exclusão dos seus dados pessoais. Para exercer seus direitos, utilize a página de Contato.
+                        </p>
+                        
+                        <p>
+                            [... Continue com suas regras detalhadas de Política de Privacidade ...]
+                        </p>
+                    </div>
+
+                    <div id="cookies-content" class="tab-content policy-content">
+                        <h3 class="text-2xl font-bold mb-4 text-left">Política de Cookies</h3>
+                        
+                        <p>
+                            Para garantir o pleno funcionamento e uma melhor experiência de navegação, a Asthro utiliza cookies e tecnologias similares.
+                        </p>
+
+                        <h3>1. O que são Cookies?</h3>
+                        <p>
+                            Cookies são pequenos arquivos de texto que são colocados no seu dispositivo (computador, smartphone ou tablet) quando você visita um site. Eles são amplamente utilizados para fazer os sites funcionarem, ou funcionarem de forma mais eficiente, além de fornecerem informações aos proprietários do site.
+                        </p>
+
+                        <h3>2. Cookies Utilizados no Site</h3>
+                        <p>
+                            Nós utilizamos:
+                            <ul class="ml-4 list-disc">
+                                <li><strong>Cookies Estritamente Necessários:</strong> Essenciais para a navegação e para o uso das funcionalidades básicas (ex: manter a sessão ativa).</li>
+                                <li><strong>Cookies de Desempenho/Análise:</strong> Coletam informações sobre como os visitantes usam o site (ex: quais páginas são mais acessadas, erros encontrados). Estes dados são anônimos e usados para otimizar o site.</li>
+                            </ul>
+                        </p>
+                        
+                        <h3>3. Sua Escolha</h3>
+                        <p>
+                            Ao continuar a navegar em nosso site, você concorda com o uso de cookies. Você pode, a qualquer momento, configurar seu navegador para recusar cookies ou alertá-lo quando um cookie estiver sendo enviado. No entanto, se você desativar os cookies, algumas partes do nosso site podem não funcionar corretamente.
+                        </p>
+
+                        <p>
+                            [... Continue com suas regras detalhadas de Política de Cookies ...]
+                        </p>
+                    </div>
+                    
+                </div>
+                <div class="text-center mt-8 pt-4 border-t border-gray-700">
+                    <p class="text-lg text-indigo-300">
+                        Se restarem dúvidas, entre em contato: <a href="contato.html" class="nav-link inline-block hover:text-white">Fale com a Asthro</a>
+                    </p>
+                </div>
+                
+            </div>
+        </section>
+    </main>
+    <footer class="text-gray-200 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 content-layer">
+            <p>© 2025 Asthro. Todos os direitos reservados. | <a href="#" class="nav-link inline-block text-sm">Topo da Página</a></p>
+        </div>
+    </footer>
+    <script>
+        // SMOOTH SCROLL & MENU
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }
+                if (window.innerWidth <= 768 && navMenu.classList.contains('active')) {
+                    toggleMenu();
+                }
+            });
+        });
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu-mobile');
+        function toggleMenu() {
+            if(hamburger && navMenu){
+                hamburger.classList.toggle('active');
+                navMenu.classList.toggle('active');
+                document.body.style.overflowY = navMenu.classList.contains('active') ? 'hidden' : 'auto';
+            }
+        }
+        if (hamburger && navMenu) {
+            hamburger.addEventListener('click', toggleMenu);
+            document.addEventListener('click', (e) => {
+                if (window.innerWidth <= 768 && !hamburger.contains(e.target) && !navMenu.contains(e.target) && navMenu.classList.contains('active')) {
+                    toggleMenu();
+                }
+            });
+        }
+
+        // ANIMAÇÕES DE ENTRADA (PUZZLE PIECES, TÍTULOS)
+        const fadeInObserver = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.querySelectorAll('.puzzle-piece').forEach((el, index) => {
+                        el.style.animationDelay = `${index * 0.2}s`;
+                        if (el.classList.contains('puzzle-piece-left')) el.classList.add('puzzle-piece-left');
+                        else if (el.classList.contains('puzzle-piece-right')) el.classList.add('puzzle-piece-right');
+                    });
+                    fadeInObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.3 });
+        document.querySelectorAll('.content-layer').forEach(el => fadeInObserver.observe(el));
+        const titleObserver = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.classList.add('fade-in');
+                    titleObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.3 });
+        document.querySelectorAll('h2, h3').forEach(title => {
+            title.style.opacity = '0';
+            titleObserver.observe(title);
+        });
+
+        // FUNDO DE ESTRELAS ANIMADO
+        const starsContainer = document.getElementById('stars-container');
+        function createStars() {
+            if (!starsContainer) return;
+            starsContainer.innerHTML = '';
+            const colors = ['purple', 'pink', 'white'];
+            const numStars = 150;
+            for (let i = 0; i < numStars; i++) {
+                const star = document.createElement('span');
+                star.classList.add('star', colors[Math.floor(Math.random() * colors.length)]);
+                star.style.left = `${Math.random() * window.innerWidth}px`;
+                star.style.top = `${Math.random() * window.innerHeight}px`;
+                const moveX = (Math.random() - 0.5) * 300;
+                const moveY = (Math.random() - 0.5) * 300;
+                star.style.setProperty('--move-x', `${moveX}px`);
+                star.style.setProperty('--move-y', `${moveY}px`);
+                star.style.animationDelay = `${Math.random() * 15}s`;
+                starsContainer.appendChild(star);
+            }
+        }
+        createStars();
+        window.addEventListener('resize', createStars);
+
+        // ===================================================================
+        // ================ LÓGICA DE ABAS (TABS) INTERATIVAS =================
+        // ===================================================================
+
+        function switchTab(tabId) {
+            // 1. Oculta todos os conteúdos e remove a classe 'active' dos botões
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // 2. Exibe o conteúdo da aba clicada e ativa o botão
+            const newContent = document.getElementById(tabId + '-content');
+            const newButton = document.querySelector(`.tab-button[data-tab="${tabId}"]`);
+
+            if (newContent && newButton) {
+                newContent.classList.add('active');
+                newButton.classList.add('active');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const tabsMenu = document.getElementById('tabsMenu');
+            
+            // 3. Adiciona o listener de clique ao menu de abas
+            if (tabsMenu) {
+                tabsMenu.addEventListener('click', (event) => {
+                    const button = event.target.closest('.tab-button');
+                    if (button) {
+                        const tabId = button.getAttribute('data-tab');
+                        switchTab(tabId);
+                    }
+                });
+            }
+
+            // Garante que a primeira aba esteja ativa por padrão
+            switchTab('termos');
+        });
+
+        document.addEventListener('contextmenu', function(e) {
+            if (e.target.tagName === 'IMG') {
+                e.preventDefault();
+            }
+        }, false);
+    </script>
+</body>
+</html>
