@@ -11,30 +11,56 @@
     <link rel="icon" type="image/png" href="https://i.imgur.com/ZeaGXHD.png">
 
     <style>
-        /* Tipografia Padronizada */
-        h2, h3, h4 { font-family: 'Archivo', sans-serif; }
-        body, p, a, input, button, select, textarea { font-family: 'Manrope', sans-serif; font-weight: 400; }
-        
-        body { background: #111111; color: #edf1f7; min-height: 100vh; }
-        .gradient-text { background: linear-gradient(135deg, #6627ff, #0bf4ed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .neon-border { border: 1px solid rgba(102, 39, 255, 0.4); box-shadow: 0 0 10px rgba(11, 244, 237, 0.2); }
-        /* Estilo para a caixa de diálogo de confirmação (substituindo o confirm() nativo) */
-        .custom-dialog {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0, 0, 0, 0.7); display: flex; justify-content: center; align-items: center;
-            z-index: 100;
-        }
-    </style>
+    /* Tipografia Padronizada */
+    h2, h3, h4 { font-family: 'Archivo', sans-serif; }
+    body, p, a, input, button, select, textarea { font-family: 'Manrope', sans-serif; font-weight: 400; }
+    
+    /* Fundo Escuro para Estilo de Sistema */
+    body { 
+        background: #0d0d1a; /* Roxo escuro para base */
+        color: #edf1f7; 
+        min-height: 100vh;
+        overflow-x: hidden; /* Evita barra de rolagem horizontal */
+    }
+    
+    /* Efeito de Neon Animado para Títulos */
+    @keyframes neon-glow {
+        0% { text-shadow: 0 0 5px #0bf4ed, 0 0 10px #0bf4ed; color: #0bf4ed; }
+        25% { text-shadow: 0 0 5px #6627ff, 0 0 10px #6627ff; color: #6627ff; }
+        50% { text-shadow: 0 0 5px #ff2766, 0 0 10px #ff2766; color: #ff2766; }
+        75% { text-shadow: 0 0 5px #ffd700, 0 0 10px #ffd700; color: #ffd700; }
+        100% { text-shadow: 0 0 5px #0bf4ed, 0 0 10px #0bf4ed; color: #0bf4ed; }
+    }
+
+    .animated-neon-text {
+        animation: neon-glow 6s ease-in-out infinite alternate;
+        -webkit-text-fill-color: initial; /* Anula o gradient-text */
+    }
+
+    /* Borda e Sombra de Container */
+    .neon-border { 
+        border: 1px solid rgba(102, 39, 255, 0.4); 
+        box-shadow: 0 0 15px rgba(11, 244, 237, 0.3); 
+        background-color: #1a1a2e; /* Fundo do card mais escuro */
+    }
+
+    /* Para manter a barra lateral fixa e o conteúdo rolável */
+    .dashboard-grid {
+        display: grid;
+        /* Sidebar de 250px, e o restante para o conteúdo */
+        grid-template-columns: 250px 1fr; 
+        min-height: 100vh;
+    }
+    
+    /* Estilo para a caixa de diálogo de confirmação (sem alteração) */
+    .custom-dialog {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+        background: rgba(0, 0, 0, 0.7); display: flex; justify-content: center; align-items: center;
+        z-index: 100;
+    }
+</style>
 </head>
-<body class="p-8">
-
-    <header class="text-center mb-12">
-        <h1 class="text-4xl font-bold gradient-text" style="font-family: 'Archivo', sans-serif;">Painel de Administração</h1>
-        <p class="text-lg mt-2">Gerenciamento de Status de Projetos Asthro</p>
-    </header>
-
-    <!-- Diálogo de Confirmação Customizado -->
-    <div id="confirm-dialog" class="custom-dialog hidden">
+<body class="p-0"> <div id="confirm-dialog" class="custom-dialog hidden">
         <div class="p-6 rounded-xl bg-gray-900 neon-border max-w-sm w-full">
             <h4 class="text-xl font-bold text-white mb-4">Confirmação</h4>
             <p id="confirm-message" class="text-gray-300 mb-6"></p>
@@ -46,106 +72,205 @@
     </div>
 
 
-    <div id="login-section" class="max-w-md mx-auto p-6 rounded-xl bg-gray-900 neon-border">
-        <h3 class="text-2xl font-bold text-white mb-4">Acesso Restrito</h3>
-        <input type="password" id="adminPassword" placeholder="Digite a Senha de Admin" class="w-full p-3 rounded-lg bg-gray-800 text-white border-gray-600 focus:ring-purple-500 focus:border-purple-500 mb-4">
-        <button onclick="login()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 w-full">Entrar</button>
-        <p id="login-feedback" class="mt-4 text-red-400 hidden">Senha incorreta.</p>
+    <div id="login-section" class="flex items-center justify-center min-h-screen">
+        <div class="max-w-md w-full mx-auto p-8 rounded-xl bg-gray-900 neon-border">
+            <h3 class="text-3xl font-bold text-center mb-6 animated-neon-text" style="font-family: 'Archivo', sans-serif;">🔒 Acesso Asthro Admin</h3>
+            <input type="password" id="adminPassword" placeholder="Digite a Senha de Admin" class="w-full p-4 rounded-lg bg-gray-800 text-white border-gray-600 focus:ring-purple-500 focus:border-purple-500 mb-4 text-lg">
+            <button onclick="login()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-4 px-6 rounded-lg transition duration-300 w-full text-xl shadow-lg shadow-indigo-500/50">ENTRAR</button>
+            <p id="login-feedback" class="mt-4 text-red-400 text-center hidden">Senha incorreta.</p>
+        </div>
     </div>
 
-    <div id="admin-panel" class="max-w-4xl mx-auto hidden">
-        
-        <div class="p-8 rounded-2xl bg-gray-950 border-2 border-purple-800 shadow-xl shadow-purple-900/40 mb-10">
-            <h3 class="text-3xl font-bold gradient-text mb-6" id="form-title">Criar Novo Projeto</h3>
-            
-                        <div class="mb-5">
-                <label for="idInput" class="block text-sm font-medium text-gray-400 mb-1">ID do Projeto (Gerado Automaticamente)</label>
-                <input type="text" id="idInput" value="" readonly class="w-full p-3 rounded-lg bg-gray-800 text-indigo-400 font-mono text-lg border border-gray-700 focus:ring-purple-500">
-            </div>
 
-                        <div id="audit-fields-container" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5 form-audit-field hidden">
-                <div>
-                    <label for="createdAtInput" class="block text-sm font-medium text-gray-400 mb-1">Criado em</label>
-                    <input type="text" id="createdAtInput" value="N/A" readonly class="w-full p-3 rounded-lg bg-gray-800 text-gray-300 border border-gray-700">
-                </div>
-                <div>
-                    <label for="lastUpdatedInput" class="block text-sm font-medium text-gray-400 mb-1">Última Edição</label>
-                    <input type="text" id="lastUpdatedInput" value="N/A" readonly class="w-full p-3 rounded-lg bg-gray-800 text-gray-300 border border-gray-700">
-                </div>
-            </div>
-                        
-                        <div class="mb-5">
-                <label for="clientNameInput" class="block text-sm font-medium text-gray-400 mb-1">Nome do Cliente / Projeto</label>
-                <input type="text" id="clientNameInput" placeholder="Ex: Projeto Landing Page Empresa X" class="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:ring-purple-500 focus:border-purple-500">
-            </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
-                <div>
-                    <label for="statusSelect" class="block text-sm font-medium text-gray-400 mb-1">Status Atual</label>
-                    <select id="statusSelect" class="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:ring-purple-500 focus:border-purple-500">
-                        <option value="setup">Setup Inicial</option>
-                        <option value="design_andamento">Design e Criação</option>
-                        <option value="dev_andamento">Desenvolvimento</option>
-                        <option value="revisao_cliente">Revisão do Cliente</option>
-                    </select>
-                </div>
-                <div>
-                    <label for="deliveryDateInput" class="block text-sm font-medium text-gray-400 mb-1">Previsão de Entrega</label>
-                    <input type="date" id="deliveryDateInput" class="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:ring-purple-500 focus:border-purple-500">
-                </div>
-            </div>
-
-                        <div class="mb-6">
-                <label for="notesInput" class="block text-sm font-medium text-gray-400 mb-1">Notas do Consultor</label>
-                <textarea id="notesInput" placeholder="Detalhes da etapa atual ou próximos passos." class="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:ring-purple-500 focus:border-purple-500 h-24"></textarea>
-            </div>
-
-                        <div class="flex gap-4">
-                <button id="finishButton" onclick="openConfirmDialog()" class="hidden bg-yellow-600 hover:bg-yellow-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 flex-1">Finalizar Projeto</button>
-                <button onclick="saveProject()" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 flex-1">Salvar / Atualizar Projeto</button>
-            </div>
-            
-            <p id="admin-feedback" class="mt-4 hidden"></p>
-        </div>
-<div class="mb-8">
-    <h3 class="text-2xl font-bold gradient-text mb-4">Gerenciamento Rápido</h3>
-    
-    <div class="flex flex-col md:flex-row gap-2 md:gap-4 items-stretch">
-        
-        <div class="w-full md:w-auto flex-shrink-0">
-            <select id="orderBySelect" onchange="loadProjects(1)" 
-                class="w-full p-3 rounded-lg bg-gray-800 text-white border-gray-600 focus:ring-purple-500 focus:border-purple-500 appearance-none pr-8">
-                <option value="status_id_desc">🔍 Filtro</option>
-                <option value="id_desc">⏳ Antigos</option>
-                <option value="id_asc">🗓️ Recentes</option>
-                <option value="clientName_asc">A-Z</option>
-                <option value="clientName_desc">Z-A</option>
-            </select>
-        </div>
-
-        <div class="flex space-x-4 items-stretch w-full">
-            <input type="text" id="searchInput" placeholder="Buscar por ID ou Nome do Cliente..."
-                class="w-full p-3 rounded-lg bg-gray-800 text-white border-gray-600 focus:ring-purple-500 focus:border-purple-500"
-                onkeyup="debouncedSearch()" onchange="debouncedSearch()">
+    <div id="admin-panel" class="dashboard-grid hidden"> <aside class="bg-gray-950 border-r border-gray-800 p-6 flex flex-col justify-between fixed h-full w-[250px]">
+            <div>
+                <h1 class="text-2xl font-bold animated-neon-text mb-8" style="font-family: 'Archivo', sans-serif;">🌌 ASTHRO Admin</h1>
+                
+                <nav class="space-y-4">
+                    <button onclick="resetForm(); scrollToTop()" class="flex items-center w-full text-left p-3 rounded-lg bg-purple-900/50 hover:bg-purple-800/70 text-purple-300 font-semibold transition duration-300 border border-purple-700 shadow-lg shadow-purple-900/40">
+                        ✨ Criar Novo Projeto
+                    </button>
+                    <button onclick="loadProjects(1); scrollToProjects()" class="flex items-center w-full text-left p-3 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 transition duration-300">
+                        📄 Ver/Editar Projetos
+                    </button>
+                    <button class="flex items-center w-full text-left p-3 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 transition duration-300 opacity-50 cursor-not-allowed">
+                        📊 Relatórios (Em breve)
+                    </button>
+                </nav>
+            </div>
             
-            <button onclick="clearSearchAndReload()"
-                class="bg-pink-600 hover:bg-pink-700 text-white font-semibold px-6 rounded-lg transition duration-300 whitespace-nowrap">
-                Limpar
-            </button>
+            <div class="text-sm text-gray-500">
+                <p>Status Tracker v1.0</p>
+                <p class="mt-1">Desenvolvido por Asthro</p>
+            </div>
+        </aside>
+
+        <main class="col-start-2 p-10">
+    
+    <div class="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-5 gap-10">
+        
+        <div class="lg:col-span-2 xl:col-span-3">
+            <section id="project-list-section">
+                <h3 class="text-2xl font-bold text-cyan-400 mb-6">📂 Projetos Existentes</h3>
+                
+                <section id="search-section" class="mb-8">
+                    <h4 class="text-xl font-bold text-purple-400 mb-4">🔍 Gerenciamento Rápido</h4>
+                    
+                    <div class="flex flex-col md:flex-row gap-4 items-stretch p-6 rounded-xl bg-gray-900 border border-gray-800">
+                        <div class="w-full md:w-auto flex-shrink-0">
+                            <select id="orderBySelect" onchange="loadProjects(1)" 
+                                class="w-full p-3 rounded-lg bg-gray-800 text-white border-gray-600 focus:ring-purple-500 focus:border-purple-500 appearance-none pr-8">
+                                <option value="status_id_desc">✨ Prioridade/Status</option>
+                                <option value="id_desc">🗓️ Mais Recentes</option>
+                                <option value="id_asc">⏳ Mais Antigos</option>
+                                <option value="clientName_asc">A-Z</option>
+                                <option value="clientName_desc">Z-A</option>
+                            </select>
+                        </div>
+
+                        <div class="flex space-x-4 items-stretch w-full">
+                            <input type="text" id="searchInput" placeholder="Buscar por ID ou Nome do Cliente..."
+                                class="w-full p-3 rounded-lg bg-gray-800 text-white border-gray-600 focus:ring-purple-500 focus:border-purple-500"
+                                onkeyup="debouncedSearch()" onchange="debouncedSearch()">
+                            
+                            <button onclick="clearSearchAndReload()"
+                                class="bg-pink-600 hover:bg-pink-700 text-white font-semibold px-6 rounded-lg transition duration-300 whitespace-nowrap shadow-md">
+                                Limpar Busca
+                            </button>
+                        </div>
+                    </div>
+                    <p id="search-feedback" class="mt-2 text-sm text-gray-400 hidden"></p>
+                </section>
+                
+                <div id="project-list" class="space-y-6">
+                    <p class="text-gray-500">Carregando projetos...</p>
+                </div>
+                <div id="pagination-container" class="mt-8"></div>
+            </section>
         </div>
-    </div>
-    <p id="search-feedback" class="mt-2 text-sm text-gray-400 hidden"></p>
+
+        <div class="lg:col-span-1 xl:col-span-2">
+            <section id="form-section">
+                <div class="p-8 rounded-2xl neon-border shadow-xl shadow-cyan-900/30 sticky top-10">
+                    <h3 class="text-3xl font-bold text-cyan-400 mb-8" id="form-title">✨ Criar Novo Projeto</h3>
+                    
+                    <div class="mb-6 grid grid-cols-1 gap-4">
+                        <div>
+                            <label for="idInput" class="block text-sm font-medium text-gray-400 mb-1">ID do Projeto</label>
+                            <input type="text" id="idInput" value="" readonly class="w-full p-3 rounded-lg bg-gray-800 text-indigo-400 font-mono text-lg border border-gray-700">
+                        </div>
+                        <div id="audit-fields-container" class="grid grid-cols-2 gap-4 form-audit-field hidden">
+                            <div>
+                                <label for="createdAtInput" class="block text-sm font-medium text-gray-400 mb-1">Criado em</label>
+                                <input type="text" id="createdAtInput" value="N/A" readonly class="w-full p-3 rounded-lg bg-gray-800 text-gray-300 border border-gray-700 text-sm">
+                            </div>
+                            <div>
+                                <label for="lastUpdatedInput" class="block text-sm font-medium text-gray-400 mb-1">Última Edição</label>
+                                <input type="text" id="lastUpdatedInput" value="N/A" readonly class="w-full p-3 rounded-lg bg-gray-800 text-gray-300 border border-gray-700 text-sm">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label for="clientNameInput" class="block text-sm font-medium text-gray-400 mb-1">Nome do Cliente / Projeto</label>
+                        <input type="text" id="clientNameInput" placeholder="Ex: Projeto Landing Page Empresa X" class="w-full p-4 rounded-lg bg-gray-800 text-white border border-gray-700 focus:ring-cyan-500 focus:border-cyan-500 text-xl">
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                        <div>
+                            <label for="statusSelect" class="block text-sm font-medium text-gray-400 mb-1">Status Atual</label>
+                            <select id="statusSelect" class="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:ring-cyan-500 focus:border-cyan-500">
+                                <option value="setup">Setup Inicial</option>
+                                <option value="design_andamento">Design e Criação</option>
+                                <option value="dev_andamento">Desenvolvimento</option>
+                                <option value="revisao_cliente">Revisão do Cliente</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="deliveryDateInput" class="block text-sm font-medium text-gray-400 mb-1">Previsão de Entrega</label>
+                            <input type="date" id="deliveryDateInput" class="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:ring-cyan-500 focus:border-cyan-500">
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <label for="notesInput" class="block text-sm font-medium text-gray-400 mb-1">Notas do Consultor</label>
+                        <textarea id="notesInput" placeholder="Detalhes da etapa atual ou próximos passos." class="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:ring-cyan-500 focus:border-cyan-500 h-24"></textarea>
+                    </div>
+
+                    <div class="flex flex-col gap-3 md:flex-row md:gap-4">
+    <button id="cancelButton" onclick="resetForm()" class="hidden bg-gray-700 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 flex-1 order-3 md:order-1 text-sm">
+        ❌ Cancelar
+    </button>
+
+    <button id="finishButton" onclick="openConfirmDialog()" class="hidden bg-yellow-600 hover:bg-yellow-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 flex-1 order-1 md:order-2 shadow-md hover:shadow-lg text-sm">Finalizar Projeto</button>
+    
+    <button onclick="saveProject()" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 flex-1 order-2 md:order-3 shadow-lg shadow-purple-500/50 hover:shadow-xl text-sm">Salvar / Atualizar Projeto</button>
 </div>
-        <h3 class="text-2xl font-bold gradient-text mb-4">Projetos Existentes</h3>
-        <div id="project-list" class="space-y-4">
-            <p class="text-gray-500">Carregando projetos...</p>
+                    
+                    <p id="admin-feedback" class="mt-4 hidden text-center"></p>
+                </div>
+            </section>
         </div>
-        <!-- Controles de Paginação -->
-        <div id="pagination-container"></div>
+        
+    </div>
+</main>
+        
     </div>
 
 
     <script>
+        function checkFormDirty() {
+    const clientName = document.getElementById('clientNameInput').value.trim();
+    const deliveryDate = document.getElementById('deliveryDateInput').value;
+    const notes = document.getElementById('notesInput').value.trim();
+    const status = document.getElementById('statusSelect').value;
+    
+    const cancelButton = document.getElementById('cancelButton');
+    
+    // O formulário está "sujo" se:
+    // 1. O Nome do Cliente NÃO estiver vazio, OU
+    // 2. A Data de Entrega NÃO estiver vazia, OU
+    // 3. As Notas NÃO estiverem vazias, OU
+    // 4. O Status NÃO for o valor padrão 'setup'.
+    const isDirty = clientName.length > 0 || 
+                    deliveryDate.length > 0 || 
+                    notes.length > 0 ||
+                    status !== 'setup';
+                    
+    if (isDirty) {
+        cancelButton.classList.remove('hidden');
+    } else {
+        cancelButton.classList.add('hidden');
+    }
+}
+
+// 📌 ADICIONE ESTE BLOCO DE EVENT LISTENERS (DEPOIS DAS FUNÇÕES)
+// Garante que a função checkFormDirty seja chamada toda vez que o usuário interagir com o formulário
+document.addEventListener('DOMContentLoaded', () => {
+    // Campos que devem ser monitorados
+    const monitoredFields = [
+        document.getElementById('clientNameInput'),
+        document.getElementById('deliveryDateInput'),
+        document.getElementById('notesInput'),
+        document.getElementById('statusSelect')
+    ];
+
+    monitoredFields.forEach(field => {
+        // 'input' funciona para texto, 'change' funciona para select/date
+        field.addEventListener('input', checkFormDirty);
+        field.addEventListener('change', checkFormDirty);
+    });
+    
+    // Checagem inicial ao carregar a página
+    checkFormDirty(); 
+});
+        function scrollToTop() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    function scrollToProjects() {
+        // Rola até a seção de Projetos Existentes
+        document.getElementById('project-list-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
         // SUAS CREDENCIAIS DO FIREBASE
         const FIREBASE_CONFIG = {
             apiKey: "AIzaSyBb8jAT-VR5723XaxZnH4jcw-PxOlRKn8w", 
@@ -164,9 +289,9 @@
 
         // Variáveis de Paginação
         const PROJECTS_PER_PAGE = 6;
-        const HOME_PAGE_PROJECTS = 5;
-        let currentPage = 1;
-        let totalPages = 1;
+const HOME_PAGE_PROJECTS = 1; // 👈 AGORA MOSTRA APENAS UM PROJETO NA PÁGINA INICIAL
+let currentPage = 1;
+let totalPages = 1;
 let searchTimeout = null;
         const projectListElement = document.getElementById('project-list');
         const adminFeedbackElement = document.getElementById('admin-feedback');
@@ -233,23 +358,26 @@ function generateAsthroId() {
         }
         
        function resetForm() {
-            document.getElementById('form-title').textContent = 'Criar Novo Projeto';
-            // 🆕 ESCONDE CAMPOS DE AUDITORIA NO MODO CRIAÇÃO
+    document.getElementById('form-title').textContent = 'Criar Novo Projeto';
     document.getElementById('audit-fields-container').classList.add('hidden');
-            // 🆕 GERA E PREENCHE O ID AUTOMATICAMENTE
-            document.getElementById('idInput').value = generateAsthroId();
-             
-            
-            document.getElementById('clientNameInput').value = '';
-            document.getElementById('statusSelect').value = 'setup';
-            document.getElementById('deliveryDateInput').value = '';
-            document.getElementById('notesInput').value = '';
-           // 🆕 LIMPA OS CAMPOS DE DATA/HORA
-            document.getElementById('createdAtInput').value = 'N/A';
-            document.getElementById('lastUpdatedInput').value = 'N/A';
-            document.getElementById('finishButton').classList.add('hidden');
-        }
-
+    document.getElementById('idInput').value = generateAsthroId();
+    
+    // Limpeza dos campos
+    document.getElementById('clientNameInput').value = '';
+    document.getElementById('statusSelect').value = 'setup'; // Valor padrão
+    document.getElementById('deliveryDateInput').value = '';
+    document.getElementById('notesInput').value = '';
+    
+    document.getElementById('createdAtInput').value = 'N/A';
+    document.getElementById('lastUpdatedInput').value = 'N/A';
+    document.getElementById('finishButton').classList.add('hidden');
+    
+    // 🎯 NOVO: Verifica o estado do formulário. Como todos estão limpos, o botão 'Cancelar' será ocultado.
+    checkFormDirty(); 
+    
+    loadProjects(1);
+    scrollToTop();
+}
         // Função para mostrar o diálogo de confirmação (substitui confirm())
         function openConfirmDialog() {
             const projectId = document.getElementById('finishButton').getAttribute('data-project-id');
@@ -296,6 +424,9 @@ function generateAsthroId() {
                     finishButton.classList.remove('hidden'); // Torna visível
                     finishButton.setAttribute('data-project-id', projectId);
                     window.scrollTo(0, 0); // Rola para o topo para ver o formulário
+                    checkFormDirty();
+
+    scrollToTop();
                 }
             }).catch(error => console.error("Erro ao buscar projeto para edição:", error));
         }
