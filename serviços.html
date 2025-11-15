@@ -722,7 +722,7 @@
     
     /* 🚀 NOVO: Adiciona a margem da logo (que foi removida acima) de volta ao topo da logo mobile */
     .nav-menu-mobile .mobile-menu-logo {
-        margin-top: 3rem; 
+        margin-top: 0rem; 
     }
         .hamburger span {
             width: 100%;
@@ -755,6 +755,17 @@
     filter: drop-shadow(0 0 5px rgba(102, 39, 255, 0.4));
 }
         @media (max-width: 768px) {
+            .mobile-menu-logo {
+        display: block;
+        
+        /* 💡 CORREÇÃO 1: Removido margin-top para que a logo fique no final do menu */
+        margin-top: 0; 
+        
+        width: 80%;
+        max-width: 150px;
+        height: auto;
+        filter: drop-shadow(0 0 5px rgba(102, 39, 255, 0.4));
+    }
     /* Navbar adjustments */
     nav {
         /* Fundo Escuro Consistente no cabeçalho */
