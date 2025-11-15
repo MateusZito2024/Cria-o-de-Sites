@@ -900,43 +900,64 @@ p, span, a {
         border-left: 1px solid rgba(102, 39, 255, 0.5);
         flex-direction: column;
         
-        /* 🚀 MUDANÇA ESSENCIAL 1: Altera o alinhamento para começar do topo */
+        /* Alinhamento ao topo, conforme o primeiro código */
         justify-content: flex-start; 
         
         align-items: center;
-        gap: 1.5rem; /* Espaçamento entre os itens */
+        gap: 1.5rem; 
         transition: right 0.3s ease;
         z-index: 30;
-        display: flex; /* Exibido via JS quando ativo */
+        display: flex; 
         box-sizing: border-box;
         
-        /* 🚀 MUDANÇA ESSENCIAL 2: Zera o padding superior! O nav já tem o padding de 0.5rem 1rem */
+        /* Zera o padding superior para que o margin-top do link funcione */
         padding: 0 1rem; 
         
-        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3); /* Sombra para profundidade */
+        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
     }
-
-    /* 🚀 NOVO: Aplica o espaçamento para baixo APENAS no primeiro link */
-    .nav-menu-mobile .nav-link:first-child {
-        /* Ajuste este valor (ex: 5rem, 6rem) para empurrar o primeiro link para baixo 
-           e evitar a colisão com o ícone X. */
-        margin-top: 6rem; 
+    .nav-menu-mobile.active {
+        right: 0;
     }
     
-    /* 🚀 NOVO: Adiciona a margem da logo (que foi removida acima) de volta ao topo da logo mobile */
-    .nav-menu-mobile .mobile-menu-logo {
-        margin-top: 3rem; 
+    /* CRÍTICO: Aplica o espaçamento para baixo APENAS no primeiro link */
+    .nav-menu-mobile .nav-link:first-child {
+        margin-top: 6rem; /* Empurra o primeiro link para baixo */
     }
 
-            .nav-menu-mobile.active {
-                right: 0;
-            }
+    /* Estilo de Botão para Links Mobile (Glassmorphism) */
+    .nav-menu-mobile .nav-link {
+        display: block;
+        width: 90%;
+        padding: 0.8rem 1.5rem;
+        border-radius: 0.75rem;
+        background: rgba(102, 39, 255, 0.1);
+        color: #f8f8f8;
+        text-align: center;
+        font-size: clamp(1.125rem, 4vw, 1.3rem);
+        font-weight: 600;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+    }
 
-            /* Adjust brand name font size */
-            .brand-name {
-                font-size: clamp(1.75rem, 8vw, 2rem);
-                padding: 0.5rem;
-            }
+    .nav-menu-mobile .nav-link:hover {
+        background: linear-gradient(135deg, rgba(102, 39, 255, 0.3), rgba(11, 244, 237, 0.3));
+        transform: translateY(-4px) scale(1.02);
+        box-shadow: 0 8px 16px rgba(11, 244, 237, 0.6);
+        border-color: #0bf4ed;
+    }
+
+    .nav-menu-mobile .nav-link::after {
+        display: none; /* Remove a linha inferior dos links no mobile */
+    }
+
+    /* Outros Ajustes de Estilo e Layout */
+    .brand-name {
+        font-size: clamp(1.75rem, 8vw, 2rem);
+        padding: 0.5rem;
+    }
 
             /* Estilo dos links no menu mobile - Glassmorphism */
             .nav-menu-mobile .nav-link {
