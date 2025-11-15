@@ -8,28 +8,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700&family=Manrope:wght@400;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="https://i.imgur.com/ZeaGXHD.png">
     <style>
-        .nav-link.active-page::after {
-    width: 100%; /* Ativa a linha gradiente de 100% */
-}
-
-.nav-link.active-page {
-    color: #0bf4ed; /* Mantém a cor do texto destacada */
-}
-
-/* Para garantir que o hover do link ativo não mude a cor se houver conflito */
-.nav-link.active-page:hover {
-    color: #0bf4ed;
-}
-
-/* Novo estilo para mobile: remove o fundo gradiente e a transformação do link ativo */
-@media (max-width: 768px) {
-    .nav-menu-mobile .nav-link.active-page {
-        background: linear-gradient(135deg, #6627ff, #0bf4ed); /* Fundo com gradiente no link ativo */
-        color: white;
-        transform: none; /* Remove a pequena elevação */
-        box-shadow: 0 0 15px rgba(102, 39, 255, 0.8);
-    }
-}
         h2, h3, h4 {
     font-family: 'Archivo', sans-serif;
     /* Remove opacidade temporária se estiver aqui */
@@ -1414,46 +1392,6 @@ p, span, a {
         </div>
     </footer>
     <script>
-       function highlightActivePage() {
-    // 1. Obtém o pathname do URL atual e decodifica caracteres especiais (como %C3%A7)
-    // Exemplo: "/Cria-o-de-Sites/contato.html" ou "/Cria-o-de-Sites/serviços.html"
-    const currentPathname = decodeURI(window.location.pathname);
-
-    // Seleciona todos os links de navegação (desktop e mobile)
-    const navLinks = document.querySelectorAll('.nav-link');
-
-    navLinks.forEach(link => {
-        // 2. Obtém o pathname do link e decodifica
-        const linkPathname = decodeURI(link.pathname);
-        
-        // Remove a classe ativa para limpar destaques anteriores
-        link.classList.remove('active-page');
-
-        // 3. Lógica de Comparação Robusta:
-
-        // Verifica a correspondência exata para a maioria das páginas (Contato, Sobre, Portfólio, Políticas)
-        if (currentPathname.endsWith(linkPathname)) {
-            link.classList.add('active-page');
-            return;
-        }
-
-        // LÓGICA ESPECIAL PARA A PÁGINA INÍCIO (INDEX.HTML)
-        // Se a página atual for a raiz do site OU index.html.
-        // O GitHub Pages frequentemente simplifica o URL raiz para terminar em apenas /
-        const isHomePage = currentPathname.endsWith('/Cria-o-de-Sites/') || currentPathname.endsWith('/Cria-o-de-Sites/index.html');
-        
-        if (linkPathname.endsWith('/index.html') && isHomePage) {
-            link.classList.add('active-page');
-        }
-    });
-}
-
-// Chama a função após o DOM ser carregado para aplicar o destaque
-document.addEventListener('DOMContentLoaded', () => {
-    // ... [Seu código existente] ...
-    setupFlipCards();
-    highlightActivePage(); // 👈 CHAMADA ADICIONADA AQUI
-});
     // SMOOTH SCROLL & MENU
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
