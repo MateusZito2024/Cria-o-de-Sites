@@ -930,6 +930,14 @@
     /* Mantido: você pode remover esta regra se não quiser o overlay */
 }
         /* --- MEDIA QUERIES PARA MOBILE (max-width: 768px) --- */
+        .nav-menu-mobile {
+    display: none; 
+}
+    /* Exibe a imagem e adiciona margem apenas no menu mobile */
+    .mobile-menu-logo {
+        display: none;
+        margin-top: 3rem; /* Espaço entre o último link e o logo */
+    }
         @media (max-width: 768px) {
     /* Desativa Animações no Mobile para Performance e Consistência */
     .section-animate, .fade-in, .section-animate.visible, .section-animate:not(.visible) {
@@ -968,11 +976,6 @@
         display: flex;
     }
 
-    /* Exibe a imagem e adiciona margem apenas no menu mobile */
-    .mobile-menu-logo {
-        display: block;
-        margin-top: 3rem; /* Espaço entre o último link e o logo */
-    }
 
     /* Estilo do Menu Mobile (Sanduíche) - CRÍTICO */
     .nav-menu-mobile {
