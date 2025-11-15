@@ -1414,31 +1414,34 @@ p, span, a {
         </div>
     </footer>
     <script>
-        function highlightActivePage() {
-    // Obtém o caminho (pathname) do URL atual (ex: /Cria-o-de-Sites/servi%C3%A7os.html)
-    const currentPath = window.location.href;
+       function highlightActivePage() {
+    // 1. Obtém o pathname do URL atual (ex: /Cria-o-de-Sites/contato.html)
+    // Usamos decodeURI para tratar caracteres especiais (como o %C3%A7 de 'serviços.html')
+    const currentPathname = decodeURI(window.location.pathname); 
 
     // Seleciona todos os links de navegação (desktop e mobile)
     const navLinks = document.querySelectorAll('.nav-link');
 
     navLinks.forEach(link => {
-        const linkHref = link.href;
+        // 2. Obtém o pathname do link (ex: /Cria-o-de-Sites/contato.html)
+        const linkPathname = decodeURI(new URL(link.href).pathname);
 
-        // 1. Lógica principal: Verifica se o href do link está contido no URL atual.
-        // Isso funciona bem para páginas como 'index.html' vs. 'index.html#secao'.
-        // Usamos uma verificação mais robusta (endsWith) para evitar erros de substring.
-        if (currentPath.endsWith(linkHref)) {
+        // Remove a classe ativa se ela já estiver lá
+        link.classList.remove('active-page');
+
+        // 3. Lógica de Comparação:
+        
+        // CUIDADO 1: Trata o link de Início (index.html)
+        // Se a página atual for a raiz do site, ou seja, termina em /Cria-o-de-Sites/
+        if (link.textContent.trim() === 'Início' && (currentPathname.endsWith('/Cria-o-de-Sites/') || currentPathname.endsWith('/Cria-o-de-Sites/index.html'))) {
             link.classList.add('active-page');
-            
-            // Lógica para links que são URLs raiz, como 'https://mateuszito2024.github.io/Cria-o-de-Sites/index.html'
-            // O caminho raiz ('/') é normalmente 'index.html' para evitar duplicidade na home.
-            // Se o link for 'Início' e a URL for exatamente o caminho principal, ative-o.
-        } else if (link.textContent.trim() === 'Início' && 
-                   (currentPath.endsWith('/Cria-o-de-Sites/') || currentPath.endsWith('index.html'))) {
+            return; // Sai da iteração
+        }
+        
+        // CUIDADO 2: Trata as outras páginas.
+        // Se o pathname do link corresponder exatamente ao pathname da página atual
+        if (currentPathname.endsWith(linkPathname)) {
             link.classList.add('active-page');
-        } else {
-            // Remove a classe se não for a página atual
-            link.classList.remove('active-page');
         }
     });
 }
