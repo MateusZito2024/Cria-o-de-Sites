@@ -465,33 +465,37 @@
             z-index: 40;
         }
 .nav-menu-mobile {
-        position: fixed;
-        top: 0;
-        right: -100%;
-        height: 100vh;
-        width: 100%;
-        max-width: 300px;
-        background: rgba(17, 17, 17, 0.9);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        border-left: 1px solid rgba(102, 39, 255, 0.5);
-        flex-direction: column;
-        
-        /* 🚀 MUDANÇA ESSENCIAL 1: Altera o alinhamento para começar do topo */
-        justify-content: flex-start; 
-        
-        align-items: center;
-        gap: 1.5rem; /* Espaçamento entre os itens */
-        transition: right 0.3s ease;
-        z-index: 30;
-        display: flex; /* Exibido via JS quando ativo */
-        box-sizing: border-box;
-        
-        /* 🚀 MUDANÇA ESSENCIAL 2: Zera o padding superior! O nav já tem o padding de 0.5rem 1rem */
-        padding: 0 1rem; 
-        
-        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3); /* Sombra para profundidade */
-    }
+    position: fixed;
+    top: 0;
+    right: -100%; /* Inicia fora da tela */
+    height: 100vh;
+    width: 100%;
+    max-width: 300px;
+    background: rgba(17, 17, 17, 0.9);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-left: 1px solid rgba(102, 39, 255, 0.5);
+    flex-direction: column;
+    
+    /* 🚨 CRÍTICO: Alinha ao topo (flex-start) para respeitar margens */
+    justify-content: flex-start; 
+    
+    align-items: center;
+    gap: 1.5rem;
+    transition: right 0.3s ease;
+    z-index: 999;
+    box-sizing: border-box;
+    
+    /* 🚨 CRÍTICO: Esconde no desktop e por padrão no mobile */
+    display: none; 
+    
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Regra que reverte o display:none quando o JS aplica a classe .active */
+.nav-menu-mobile.active {
+    display: flex;
+}
 
     /* 🚀 NOVO: Aplica o espaçamento para baixo APENAS no primeiro link */
     .nav-menu-mobile .nav-link:first-child {
