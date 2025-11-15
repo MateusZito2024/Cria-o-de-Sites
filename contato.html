@@ -1415,16 +1415,30 @@ p, span, a {
     </footer>
     <script>
        function highlightActivePage() {
-    const currentPathname = decodeURI(window.location.pathname);
+    // Obtém o caminho (pathname) do URL atual (ex: /Cria-o-de-Sites/servi%C3%A7os.html)
+    const currentPath = window.location.href;
+
+    // Seleciona todos os links de navegação (desktop e mobile)
     const navLinks = document.querySelectorAll('.nav-link');
 
     navLinks.forEach(link => {
-        link.classList.remove('active-page');
-        const linkPathname = decodeURI(link.pathname); // Usando link.pathname
-        
-        // Lógica de Ativação:
-        if (currentPathname.endsWith(linkPathname)) {
+        const linkHref = link.href;
+
+        // 1. Lógica principal: Verifica se o href do link está contido no URL atual.
+        // Isso funciona bem para páginas como 'index.html' vs. 'index.html#secao'.
+        // Usamos uma verificação mais robusta (endsWith) para evitar erros de substring.
+        if (currentPath.endsWith(linkHref)) {
             link.classList.add('active-page');
+            
+            // Lógica para links que são URLs raiz, como 'https://mateuszito2024.github.io/Cria-o-de-Sites/index.html'
+            // O caminho raiz ('/') é normalmente 'index.html' para evitar duplicidade na home.
+            // Se o link for 'Início' e a URL for exatamente o caminho principal, ative-o.
+        } else if (link.textContent.trim() === 'Início' && 
+                   (currentPath.endsWith('/Cria-o-de-Sites/') || currentPath.endsWith('index.html'))) {
+            link.classList.add('active-page');
+        } else {
+            // Remove a classe se não for a página atual
+            link.classList.remove('active-page');
         }
     });
 }
