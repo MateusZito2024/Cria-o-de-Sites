@@ -1415,30 +1415,35 @@ p, span, a {
     </footer>
     <script>
        function highlightActivePage() {
-    // Obtém o caminho (pathname) do URL atual (ex: /Cria-o-de-Sites/servi%C3%A7os.html)
-    const currentPath = window.location.href;
+    // 1. Obtém o pathname do URL atual e decodifica caracteres especiais (como %C3%A7)
+    // Exemplo: "/Cria-o-de-Sites/contato.html" ou "/Cria-o-de-Sites/serviços.html"
+    const currentPathname = decodeURI(window.location.pathname);
 
     // Seleciona todos os links de navegação (desktop e mobile)
     const navLinks = document.querySelectorAll('.nav-link');
 
     navLinks.forEach(link => {
-        const linkHref = link.href;
+        // 2. Obtém o pathname do link e decodifica
+        const linkPathname = decodeURI(link.pathname);
+        
+        // Remove a classe ativa para limpar destaques anteriores
+        link.classList.remove('active-page');
 
-        // 1. Lógica principal: Verifica se o href do link está contido no URL atual.
-        // Isso funciona bem para páginas como 'index.html' vs. 'index.html#secao'.
-        // Usamos uma verificação mais robusta (endsWith) para evitar erros de substring.
-        if (currentPath.endsWith(linkHref)) {
+        // 3. Lógica de Comparação Robusta:
+
+        // Verifica a correspondência exata para a maioria das páginas (Contato, Sobre, Portfólio, Políticas)
+        if (currentPathname.endsWith(linkPathname)) {
             link.classList.add('active-page');
-            
-            // Lógica para links que são URLs raiz, como 'https://mateuszito2024.github.io/Cria-o-de-Sites/index.html'
-            // O caminho raiz ('/') é normalmente 'index.html' para evitar duplicidade na home.
-            // Se o link for 'Início' e a URL for exatamente o caminho principal, ative-o.
-        } else if (link.textContent.trim() === 'Início' && 
-                   (currentPath.endsWith('/Cria-o-de-Sites/') || currentPath.endsWith('index.html'))) {
+            return;
+        }
+
+        // LÓGICA ESPECIAL PARA A PÁGINA INÍCIO (INDEX.HTML)
+        // Se a página atual for a raiz do site OU index.html.
+        // O GitHub Pages frequentemente simplifica o URL raiz para terminar em apenas /
+        const isHomePage = currentPathname.endsWith('/Cria-o-de-Sites/') || currentPathname.endsWith('/Cria-o-de-Sites/index.html');
+        
+        if (linkPathname.endsWith('/index.html') && isHomePage) {
             link.classList.add('active-page');
-        } else {
-            // Remove a classe se não for a página atual
-            link.classList.remove('active-page');
         }
     });
 }
