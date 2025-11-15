@@ -444,9 +444,16 @@ nav > div {
             
             /* Exibir a imagem e adicionar margem apenas no mobile */
             .mobile-menu-logo {
-                display: block;
-                margin-top: 3rem; /* Espaço entre o último link e o logo */
-            }
+        display: block;
+        
+        /* 💡 CORREÇÃO 1: Removido margin-top para que a logo fique no final do menu */
+        margin-top: 0; 
+        
+        width: 80%;
+        max-width: 150px;
+        height: auto;
+        filter: drop-shadow(0 0 5px rgba(102, 39, 255, 0.4));
+    }
 
             /* Hide desktop nav links */
             nav .flex.items-center.space-x-6 {
@@ -472,52 +479,73 @@ nav > div {
         border-left: 1px solid rgba(102, 39, 255, 0.5);
         flex-direction: column;
         
-        /* 🚀 MUDANÇA ESSENCIAL 1: Altera o alinhamento para começar do topo */
+        /* Alinhamento ao topo, conforme o primeiro código */
         justify-content: flex-start; 
         
         align-items: center;
-        gap: 1.5rem; /* Espaçamento entre os itens */
+        gap: 1.5rem; 
         transition: right 0.3s ease;
         z-index: 30;
-        display: flex; /* Exibido via JS quando ativo */
+        display: flex; 
         box-sizing: border-box;
         
-        /* 🚀 MUDANÇA ESSENCIAL 2: Zera o padding superior! O nav já tem o padding de 0.5rem 1rem */
+        /* Zera o padding superior para que o margin-top do link funcione */
         padding: 0 1rem; 
         
-        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3); /* Sombra para profundidade */
+        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
     }
-
-    /* 🚀 NOVO: Aplica o espaçamento para baixo APENAS no primeiro link */
-    .nav-menu-mobile .nav-link:first-child {
-        /* Ajuste este valor (ex: 5rem, 6rem) para empurrar o primeiro link para baixo 
-           e evitar a colisão com o ícone X. */
-        margin-top: 6rem; 
+    .nav-menu-mobile.active {
+        right: 0;
     }
     
-    /* 🚀 NOVO: Adiciona a margem da logo (que foi removida acima) de volta ao topo da logo mobile */
-    .nav-menu-mobile .mobile-menu-logo {
-        margin-top: 3rem; 
+    /* CRÍTICO: Aplica o espaçamento para baixo APENAS no primeiro link */
+    .nav-menu-mobile .nav-link:first-child {
+        margin-top: 6rem; /* Empurra o primeiro link para baixo */
     }
 
-            .nav-menu-mobile.active {
-                right: 0;
-            }
+    /* Estilo de Botão para Links Mobile (Glassmorphism) */
+    .nav-menu-mobile .nav-link {
+        display: block;
+        width: 90%;
+        padding: 0.8rem 1.5rem;
+        border-radius: 0.75rem;
+        background: rgba(102, 39, 255, 0.1);
+        color: #f8f8f8;
+        text-align: center;
+        font-size: clamp(1.125rem, 4vw, 1.3rem);
+        font-weight: 600;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+    }
 
-            /* Adjust brand name font size */
-            .brand-name {
-                font-size: clamp(1.75rem, 8vw, 2rem);
-                padding: 0.5rem;
-            }
+    .nav-menu-mobile .nav-link:hover {
+        background: linear-gradient(135deg, rgba(102, 39, 255, 0.3), rgba(11, 244, 237, 0.3));
+        transform: translateY(-4px) scale(1.02);
+        box-shadow: 0 8px 16px rgba(11, 244, 237, 0.6);
+        border-color: #0bf4ed;
+    }
+
+    .nav-menu-mobile .nav-link::after {
+        display: none; /* Remove a linha inferior dos links no mobile */
+    }
+
+    /* Outros Ajustes de Estilo e Layout */
+    .brand-name {
+        font-size: clamp(1.75rem, 8vw, 2rem);
+        padding: 0.5rem;
+    }
 
             /* Estilo dos links no menu mobile - Glassmorphism */
-            .nav-menu-mobile .nav-link {
+            .nav-menu .nav-link {
                 display: block;
                 width: 90%; /* Ajuste a largura para um visual mais elegante */
                 padding: 0.8rem 1.5rem;
                 border-radius: 0.75rem; /* Mais arredondado */
                 background: rgba(102, 39, 255, 0.1); /* Fundo semi-transparente para o link */
-                color: #f8f8f8; /* Cor do texto clara */
+                color: #edf1f7; /* Cor do texto clara */
                 text-align: center;
                 font-size: clamp(1.125rem, 4vw, 1.3rem); /* Fonte um pouco maior */
                 font-weight: 600; /* Mais negrito */
@@ -528,16 +556,14 @@ nav > div {
                 transition: all 0.3s ease; /* Transições suaves */
             }
 
-            .nav-menu-mobile .nav-link:hover {
-                /* CORREÇÃO: Trocar o roxo/rosa por Violeta Cósmico e Azul Prisma */
-                background: linear-gradient(135deg, rgba(102, 39, 255, 0.3), rgba(11, 244, 237, 0.3));
-                transform: translateY(-4px) scale(1.02);
-                /* CORREÇÃO: Usar o Azul Prisma para o brilho */
-                box-shadow: 0 8px 16px rgba(11, 244, 237, 0.6); 
-                border-color: #0bf4ed;
+            .nav-menu .nav-link:hover {
+                background: linear-gradient(135deg, rgba(102, 39, 255, 0.3), rgba(11, 244, 237, 0.3)); /* Gradiente mais visível no hover */
+                transform: translateY(-4px) scale(1.02); /* Efeito de levantar e expandir levemente */
+                box-shadow: 0 8px 16px rgba(11, 244, 237, 0.6); /* Sombra mais intensa e colorida no hover */
+                border-color: #0bf4ed; /* Borda colorida no hover */
             }
 
-            .nav-menu-mobile .nav-link::after {
+            .nav-menu .nav-link::after {
                 display: none; /* Remove a linha inferior dos links no mobile */
             }
 
@@ -642,22 +668,22 @@ nav > div {
             <span></span>
         </button>
         <div class="flex items-center space-x-6 content-layer desktop-nav">
-            <a href="https://asthro.com.br/index.html" class="nav-link text-lg transition">Início</a>
-            <a href="https://asthro.com.br/servi%C3%A7os.html" class="nav-link text-lg transition">Serviços</a>
-            <a href="https://asthro.com.br/sobre.html" class="nav-link text-lg transition">Sobre</a>
-            <a href="https://asthro.com.br/portf%C3%B3lio.html" class="nav-link text-lg transition">Portfólio</a>
-            <a href="https://asthro.com.br/contato.html" class="nav-link text-lg transition">Contato</a>
-            <a href="https://asthro.com.br/politicas.html" class="nav-link text-lg transition">Políticas</a>
-        </div>
-        <div class="nav-menu-mobile content-layer">
-            <a href="https://asthro.com.br/index.html" class="nav-link text-lg transition">Início</a>
-            <a href="https://asthro.com.br/servi%C3%A7os.html" class="nav-link text-lg transition">Serviços</a>
-            <a href="https://asthro.com.br/sobre.html" class="nav-link text-lg transition">Sobre</a>
-            <a href="https://asthro.com.br/portf%C3%B3lio.html" class="nav-link text-lg transition">Portfólio</a>
-            <a href="https://asthro.com.br/contato.html" class="nav-link text-lg transition">Contato</a>
-            <a href="https://asthro.com.br/politicas.html" class="nav-link text-lg transition">Políticas</a>
-            <img src="https://i.imgur.com/sE44ypp.png" alt="Asthro" class="mobile-menu-logo" />
-        </div>
+    <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/index.html" class="nav-link text-lg transition">Início</a>
+    <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/servi%C3%A7os.html" class="nav-link text-lg transition">Serviços</a>
+    <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/sobre.html" class="nav-link text-lg transition">Sobre</a>
+    <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/portf%C3%B3lio.html" class="nav-link text-lg transition">Portfólio</a>
+    <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/contato.html" class="nav-link text-lg transition">Contato</a>
+    <a href="https://asthro.com.br/politicas.html" class="nav-link text-lg transition">Políticas</a>
+</div>
+<div class="nav-menu-mobile content-layer">
+    <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/index.html" class="nav-link text-lg transition block">Início</a>
+    <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/servi%C3%A7os.html" class="nav-link text-lg transition block">Serviços</a>
+    <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/sobre.html" class="nav-link text-lg transition block">Sobre</a>
+    <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/portf%C3%B3lio.html" class="nav-link text-lg transition block">Portfólio</a>
+    <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/contato.html" class="nav-link text-lg transition block">Contato</a>
+    <a href="https://asthro.com.br/politicas.html" class="nav-link text-lg transition">Políticas</a>
+    <img src="https://i.imgur.com/sE44ypp.png" alt="Asthro" class="mobile-menu-logo" />
+</div>
     </div>
 </nav>
 
