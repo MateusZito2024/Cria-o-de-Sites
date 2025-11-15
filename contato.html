@@ -8,6 +8,28 @@
     <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700&family=Manrope:wght@400;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="https://i.imgur.com/ZeaGXHD.png">
     <style>
+        .nav-link.active-page::after {
+    width: 100%; /* Ativa a linha gradiente de 100% */
+}
+
+.nav-link.active-page {
+    color: #0bf4ed; /* Mantém a cor do texto destacada */
+}
+
+/* Para garantir que o hover do link ativo não mude a cor se houver conflito */
+.nav-link.active-page:hover {
+    color: #0bf4ed;
+}
+
+/* Novo estilo para mobile: remove o fundo gradiente e a transformação do link ativo */
+@media (max-width: 768px) {
+    .nav-menu-mobile .nav-link.active-page {
+        background: linear-gradient(135deg, #6627ff, #0bf4ed); /* Fundo com gradiente no link ativo */
+        color: white;
+        transform: none; /* Remove a pequena elevação */
+        box-shadow: 0 0 15px rgba(102, 39, 255, 0.8);
+    }
+}
         h2, h3, h4 {
     font-family: 'Archivo', sans-serif;
     /* Remove opacidade temporária se estiver aqui */
@@ -1392,6 +1414,41 @@ p, span, a {
         </div>
     </footer>
     <script>
+        function highlightActivePage() {
+    // Obtém o caminho (pathname) do URL atual (ex: /Cria-o-de-Sites/servi%C3%A7os.html)
+    const currentPath = window.location.href;
+
+    // Seleciona todos os links de navegação (desktop e mobile)
+    const navLinks = document.querySelectorAll('.nav-link');
+
+    navLinks.forEach(link => {
+        const linkHref = link.href;
+
+        // 1. Lógica principal: Verifica se o href do link está contido no URL atual.
+        // Isso funciona bem para páginas como 'index.html' vs. 'index.html#secao'.
+        // Usamos uma verificação mais robusta (endsWith) para evitar erros de substring.
+        if (currentPath.endsWith(linkHref)) {
+            link.classList.add('active-page');
+            
+            // Lógica para links que são URLs raiz, como 'https://mateuszito2024.github.io/Cria-o-de-Sites/index.html'
+            // O caminho raiz ('/') é normalmente 'index.html' para evitar duplicidade na home.
+            // Se o link for 'Início' e a URL for exatamente o caminho principal, ative-o.
+        } else if (link.textContent.trim() === 'Início' && 
+                   (currentPath.endsWith('/Cria-o-de-Sites/') || currentPath.endsWith('index.html'))) {
+            link.classList.add('active-page');
+        } else {
+            // Remove a classe se não for a página atual
+            link.classList.remove('active-page');
+        }
+    });
+}
+
+// Chama a função após o DOM ser carregado para aplicar o destaque
+document.addEventListener('DOMContentLoaded', () => {
+    // ... [Seu código existente] ...
+    setupFlipCards();
+    highlightActivePage(); // 👈 CHAMADA ADICIONADA AQUI
+});
     // SMOOTH SCROLL & MENU
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
