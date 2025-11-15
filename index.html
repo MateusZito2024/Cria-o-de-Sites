@@ -931,53 +931,51 @@
 }
         /* --- MEDIA QUERIES PARA MOBILE (max-width: 768px) --- */
         @media (max-width: 768px) {
-            .section-animate {
-    animation: none !important; /* Desabilita todas as animações na classe */
-    opacity: 1 !important; /* Garante que a seção esteja sempre visível (opacidade 1) */
-    transform: none !important; /* Desabilita qualquer transformação (como o movimento lateral) */
-}
+    /* Desativa Animações no Mobile para Performance e Consistência */
+    .section-animate, .fade-in, .section-animate.visible, .section-animate:not(.visible) {
+        animation: none !important; 
+        opacity: 1 !important; 
+        transform: none !important; 
+    }
+    
+    /* Carousel: Ajuste de Largura Fixa e Velocidade */
+    .logo-carousel {
+        animation-duration: 60s !important; 
+        width: auto; 
+    }
+    #toolkit .logo-carousel {
+        width: 1920px;
+    }
+    .logo-item {
+        min-width: 120px; 
+        width: 120px; 
+        padding: 0 0.5rem;
+    }
+    
+    /* Configurações Base da Navegação */
+    nav {
+        background: rgba(17, 17, 17, 0.95);
+        padding: 0.5rem 1rem;
+    }
 
-.section-animate.visible {
-    animation: none !important;
-}
+    /* Esconde os links do Desktop */
+    nav .flex.items-center.content-layer.desktop-nav {
+        display: none;
+    }
 
-.section-animate:not(.visible) {
-    animation: none !important;
-}
-            .fade-in {
-    animation: none !important;
-    opacity: 1 !important;
-    transform: none !important;
-}
-            .logo-carousel {
-    /* Aumenta a duração para dar tempo de renderizar o loop sem piscar */
-    animation-duration: 60s !important; 
-    /* Remove a largura 200% global para redefini-la abaixo, se necessário. */
-    width: auto; 
-}
+    /* Exibe o Hambúrguer */
+    .hamburger {
+        display: flex;
+    }
 
-/* 2. Redefine o width da faixa do carrossel para o mobile */
-#toolkit .logo-carousel {
-    /* Define o width baseado no número de logos * a largura de cada uma (ajuste fino) */
-    /* 8 logos originais + 8 duplicatas = 16 logos. Vamos dar 120px para cada: 16 * 120px = 1920px. */
-    width: 1920px; /* Largura total fixa para mobile */
-}
+    /* Exibe a imagem e adiciona margem apenas no menu mobile */
+    .mobile-menu-logo {
+        display: block;
+        margin-top: 3rem; /* Espaço entre o último link e o logo */
+    }
 
-/* 3. Redefine o min-width de cada ícone apenas no mobile */
-.logo-item {
-    /* Garante que a largura de cada item seja menor e consistente */
-    min-width: 120px; 
-    width: 120px; 
-    padding: 0 0.5rem;
-}
-            nav {
-                background: rgba(17, 17, 17, 0.95);
-                padding: 0.5rem 1rem;
-                width: 100%;
-                box-sizing: border-box;
-            }
-
-            .nav-menu {
+    /* Estilo do Menu Mobile (Sanduíche) - CRÍTICO */
+    .nav-menu-mobile {
         position: fixed;
         top: 0;
         right: -100%;
@@ -990,77 +988,64 @@
         border-left: 1px solid rgba(102, 39, 255, 0.5);
         flex-direction: column;
         
-        /* 💡 MUDANÇA 1: Altera o alinhamento para o topo para que o padding funcione melhor */
+        /* Alinhamento ao topo, conforme o primeiro código */
         justify-content: flex-start; 
         
         align-items: center;
-        gap: 1.5rem;
+        gap: 1.5rem; 
         transition: right 0.3s ease;
         z-index: 30;
-        display: flex;
+        display: flex; 
         box-sizing: border-box;
         
-        /* 💡 MUDANÇA 2: Adiciona um padding superior para empurrar os links */
-        /* Use o valor que você achar melhor, 8rem é um bom ponto de partida */
-        padding: 8rem 1rem 1rem 1rem; 
+        /* Zera o padding superior para que o margin-top do link funcione */
+        padding: 0 1rem; 
         
         box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
     }
-            .nav-menu.active {
-                right: 0;
-            }
-
-            .hamburger {
-                display: flex;
-            }
-.nav-menu-mobile {
-        position: fixed;
-        top: 0;
-        right: -100%;
-        height: 100vh;
-        width: 100%;
-        max-width: 300px;
-        background: rgba(17, 17, 17, 0.9);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        border-left: 1px solid rgba(102, 39, 255, 0.5);
-        flex-direction: column;
-        
-        /* 🚀 MUDANÇA ESSENCIAL 1: Altera o alinhamento para começar do topo */
-        justify-content: flex-start; 
-        
-        align-items: center;
-        gap: 1.5rem; /* Espaçamento entre os itens */
-        transition: right 0.3s ease;
-        z-index: 30;
-        display: flex; /* Exibido via JS quando ativo */
-        box-sizing: border-box;
-        
-        /* 🚀 MUDANÇA ESSENCIAL 2: Zera o padding superior! O nav já tem o padding de 0.5rem 1rem */
-        padding: 0 1rem; 
-        
-        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3); /* Sombra para profundidade */
-    }
-
-    /* 🚀 NOVO: Aplica o espaçamento para baixo APENAS no primeiro link */
-    .nav-menu-mobile .nav-link:first-child {
-        /* Ajuste este valor (ex: 5rem, 6rem) para empurrar o primeiro link para baixo 
-           e evitar a colisão com o ícone X. */
-        margin-top: 6rem; 
+    .nav-menu-mobile.active {
+        right: 0;
     }
     
-    /* 🚀 NOVO: Adiciona a margem da logo (que foi removida acima) de volta ao topo da logo mobile */
-    .nav-menu-mobile .mobile-menu-logo {
-        margin-top: 3rem; 
+    /* CRÍTICO: Aplica o espaçamento para baixo APENAS no primeiro link */
+    .nav-menu-mobile .nav-link:first-child {
+        margin-top: 6rem; /* Empurra o primeiro link para baixo */
     }
 
-            .nav-menu-mobile.active {
-                right: 0;
-            }
-            .brand-name {
-                font-size: clamp(1.75rem, 8vw, 2rem);
-                padding: 0.5rem;
-            }
+    /* Estilo de Botão para Links Mobile (Glassmorphism) */
+    .nav-menu-mobile .nav-link {
+        display: block;
+        width: 90%;
+        padding: 0.8rem 1.5rem;
+        border-radius: 0.75rem;
+        background: rgba(102, 39, 255, 0.1);
+        color: #f8f8f8;
+        text-align: center;
+        font-size: clamp(1.125rem, 4vw, 1.3rem);
+        font-weight: 600;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+    }
+
+    .nav-menu-mobile .nav-link:hover {
+        background: linear-gradient(135deg, rgba(102, 39, 255, 0.3), rgba(11, 244, 237, 0.3));
+        transform: translateY(-4px) scale(1.02);
+        box-shadow: 0 8px 16px rgba(11, 244, 237, 0.6);
+        border-color: #0bf4ed;
+    }
+
+    .nav-menu-mobile .nav-link::after {
+        display: none; /* Remove a linha inferior dos links no mobile */
+    }
+
+    /* Outros Ajustes de Estilo e Layout */
+    .brand-name {
+        font-size: clamp(1.75rem, 8vw, 2rem);
+        padding: 0.5rem;
+    }
 
             /* Estilo dos links no menu mobile - Glassmorphism */
             .nav-menu .nav-link {
@@ -1328,15 +1313,23 @@
                 <span></span>
                 <span></span>
             </button>
-            <div class="nav-menu content-layer space-y-4 md:space-y-0 md:space-x-6">
-                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/index.html" class="nav-link text-lg transition block md:inline-block">Início</a>
-                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/servi%C3%A7os.html" class="nav-link text-lg transition block md:inline-block">Serviços</a>
-                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/sobre.html" class="nav-link text-lg transition block md:inline-block">Sobre</a>
-                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/portf%C3%B3lio.html" class="nav-link text-lg transition block md:inline-block">Portfólio</a>
-                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/contato.html" class="nav-link text-lg transition block md:inline-block">Contato</a>
-                <a href="https://asthro.com.br/politicas.html" class="nav-link text-lg transition">Políticas</a>
-                <img src="https://i.imgur.com/sE44ypp.png" alt="Asthro" class="mobile-menu-logo" />
-            </div>
+            <div class="flex items-center space-x-6 content-layer desktop-nav">
+    <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/index.html" class="nav-link text-lg transition">Início</a>
+    <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/servi%C3%A7os.html" class="nav-link text-lg transition">Serviços</a>
+    <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/sobre.html" class="nav-link text-lg transition">Sobre</a>
+    <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/portf%C3%B3lio.html" class="nav-link text-lg transition">Portfólio</a>
+    <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/contato.html" class="nav-link text-lg transition">Contato</a>
+    <a href="https://asthro.com.br/politicas.html" class="nav-link text-lg transition">Políticas</a>
+</div>
+<div class="nav-menu-mobile content-layer">
+    <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/index.html" class="nav-link text-lg transition block">Início</a>
+    <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/servi%C3%A7os.html" class="nav-link text-lg transition block">Serviços</a>
+    <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/sobre.html" class="nav-link text-lg transition block">Sobre</a>
+    <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/portf%C3%B3lio.html" class="nav-link text-lg transition block">Portfólio</a>
+    <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/contato.html" class="nav-link text-lg transition block">Contato</a>
+    <a href="https://asthro.com.br/politicas.html" class="nav-link text-lg transition">Políticas</a>
+    <img src="https://i.imgur.com/sE44ypp.png" alt="Asthro" class="mobile-menu-logo" />
+</div>
         </div>
     </nav>
     <section id="home" class="min-h-screen flex items-center gradient-bg section-animate">
@@ -1620,7 +1613,7 @@ function setupFlipCards() {
     });
 }
         const hamburger = document.querySelector('.hamburger');
-        const navMenu = document.querySelector('.nav-menu');
+        const navMenu = document.querySelector('.nav-menu-mobile');
 
         function toggleMenu() {
             hamburger.classList.toggle('active');
