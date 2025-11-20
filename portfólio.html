@@ -8,6 +8,62 @@
     <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700&family=Manrope:wght@400;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="https://i.imgur.com/ZeaGXHD.png">
     <style>
+        footer .content-layer {
+    display: block !important; 
+    pointer-events: auto !important;
+}
+        .social-links-png {
+    /* Container de layout */
+    margin-top: 1rem;
+}
+
+.social-img-icon {
+    width: 35px; 
+    height: 35px;
+    transition: transform 0.3s ease, filter 0.3s ease;
+    
+    /* Efeito para deixar a imagem um pouco mais escura (Dark Theme) */
+    filter: brightness(85%); 
+    
+    /* Garante que a imagem não possa ser arrastada/selecionada */
+    -webkit-user-drag: none;
+    user-select: none;
+}
+
+/* Efeito de Hover PADRÃO: (Elevação e Brilho 100%) */
+.social-links-png a:hover .social-img-icon {
+    transform: scale(1.15) rotate(2deg); 
+    filter: brightness(100%); /* Força o ícone a ter brilho total no hover */
+}
+
+/* --- BRILHOS INDIVIDUAIS (NEON GLOW) --- */
+
+/* 1. Instagram: Brilho Rosa/Magenta */
+.social-links-png a:nth-child(1):hover .social-img-icon {
+    /* A cor #E1306C é um tom de rosa/magenta que representa o Instagram */
+    filter: drop-shadow(0 0 10px #E1306C) brightness(100%);
+    transform: scale(1.15) rotate(5deg); 
+}
+
+/* 2. TikTok: Brilho Ciano (para combinar com o esquema do seu site) */
+.social-links-png a:nth-child(2):hover .social-img-icon {
+    /* A cor #0bf4ed é o ciano que você já usa no seu gradiente */
+    filter: drop-shadow(0 0 10px #0bf4ed) brightness(100%);
+    transform: scale(1.15); /* Sem rotação no TikTok, para variar */
+}
+
+/* 3. YouTube: Brilho Vermelho */
+.social-links-png a:nth-child(3):hover .social-img-icon {
+    /* A cor #FF0000 é o vermelho clássico do YouTube */
+    filter: drop-shadow(0 0 10px #FF0000) brightness(100%);
+    transform: scale(1.15) translateY(-2px); 
+}
+
+/* CORREÇÃO CRÍTICA: GARANTE QUE O CONTEÚDO DO RODAPÉ SEJA VISÍVEL NO DESKTOP */
+footer .content-layer {
+    display: block !important; 
+    pointer-events: auto !important;
+}
         h2, h3, h4 {
     font-family: 'Archivo', sans-serif;
 }
@@ -784,10 +840,26 @@
     </main>
 
     <footer class="text-gray-200 py-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 content-layer">
-            <p>© 2025 Asthro. Todos os direitos reservados.</p>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center content-layer">
+        
+        <div class="social-links-png flex justify-center space-x-6 mb-4">
+            
+            <a href="SUA_URL_INSTAGRAM" target="_blank" aria-label="Instagram">
+                <img src="https://i.imgur.com/OPiG8xz.png" alt="Instagram" class="social-img-icon" />
+            </a>
+            
+            <a href="SUA_URL_TIKTOK" target="_blank" aria-label="TikTok">
+                <img src="https://i.imgur.com/xnCkLVF.png" alt="TikTok" class="social-img-icon" />
+            </a>
+            
+            <a href="SUA_URL_YOUTUBE" target="_blank" aria-label="YouTube">
+                <img src="https://i.imgur.com/RyvrExk.png" alt="YouTube" class="social-img-icon" />
+            </a>
+            
         </div>
-    </footer>
+        <p>© 2025 Asthro. Todos os direitos reservados.</p>
+    </div>
+</footer>
 
     <script>
         // Smooth scroll for nav links
