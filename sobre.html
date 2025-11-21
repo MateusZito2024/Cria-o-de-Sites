@@ -349,31 +349,36 @@ footer .content-layer {
             animation: slideOut 0.8s ease-out forwards;
         }
 
-        .team-item, .value-item, .milestone-item {
+        /* Localização: Aproximadamente Linha 304 */
+.team-item, .value-item, .milestone-item {
     animation: pulse 3s infinite ease-in-out;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
     position: relative;
     z-index: 30;
-    /* Efeito de vidro: */
-    background: rgba(75, 85, 99, 0.3); /* Fundo semi-transparente (30% opacidade) */
-    backdrop-filter: blur(8px); /* Desfoque do fundo para criar o efeito de vidro */
-    -webkit-backdrop-filter: blur(8px); /* Compatibilidade com Safari */
     
-    border: 3px solid rgba(165, 180, 252, 0.5); /* Borda semi-transparente e mais suave */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+    /* COR DO CARD QUE VOCÊ GOSTOU */
+    background: #1a1a1a; 
+    border: 1px solid #6627ff; 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
+    
+    /* Remove a necessidade de overflow: hidden se não há pseudo-elemento */
+
     opacity: 1 !important;
-    border-radius: 1rem;
+    border-radius: 0.75rem; 
 }
 
-        .team-item:hover, .value-item:hover, .milestone-item:hover {
-    transform: translateY(-5px);
-    /* Manter o brilho neon no hover */
-    box-shadow: 0 10px 20px rgba(11, 244, 237, 0.6); /* Mais forte */
-    /* Aumentar um pouco a opacidade do fundo no hover */
-    background: rgba(45, 55, 72, 0.8);
-    animation: stretch 0.6s ease-in-out, pulse 3s infinite ease-in-out;
+.team-item:hover, .value-item:hover, .milestone-item:hover {
+    /* 🚀 Efeito: Elevação e Inclinação Leve para a Esquerda */
+    transform: translateY(-5px) rotate(-3deg); 
+    
+    /* Mantém o destaque visual e o brilho neon */
+    background: #111111; /* Fica mais escuro no hover */
+    border-color: #0bf4ed; /* Borda ciano forte */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.7), /* Sombra principal forte */
+                0 0 25px rgba(11, 244, 237, 0.8); /* Brilho ciano forte */
+    
+    animation: none;
 }
-
         .gradient-bg {
             background: transparent;
         }
