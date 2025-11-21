@@ -18,6 +18,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://i.imgur.com/sE44ypp.png">
     <style>
+        
         footer .content-layer {
     display: block !important; 
     pointer-events: auto !important;
@@ -659,47 +660,70 @@ footer .content-layer {
         /* Updated Styles for Nossos Serviços Section */
         /* REFAZENDO ESTILO DARK/NEON PARA CARDS E IMAGENS */
 
+/* --- LIMPEZA E NOVO EFEITO DE PROFUNDIDADE EM "L" --- */
+
+/* 1. Container Pai: Mantém o contexto 3D, mas sem a rotação explícita */
+.card-container-3d {
+    perspective: 1000px; 
+    transform-style: preserve-3d;
+    height: 100%; 
+    pointer-events: auto;
+    animation: none !important; 
+    
+    /* Move o container PARENT levemente para cima para o efeito de "arrasto" */
+    transition: transform 0.4s ease-out; 
+}
+
+/* 2. Card Principal: Onde aplicamos a sombra de profundidade */
 .service-card-main {
-    background: rgba(17, 17, 17, 0.7); /* Fundo escuro semi-transparente (Glassmorphism) */
+    background: rgba(17, 17, 17, 0.7); 
     backdrop-filter: blur(8px);
-    border: 1px solid transparent;
-    border-image: linear-gradient(135deg, #6627ff, #0bf4ed) 1; /* Borda gradiente */
-    box-shadow: 0 0 15px rgba(102, 39, 255, 0.4);
-    transition: all 0.5s ease;
+    border: 1px solid rgba(102, 39, 255, 0.4); /* Borda Roxo Sutil */
+    
+    /* CRÍTICO: Limpa todas as sombras antigas e aplica uma sombra sutil inicial */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); 
+    
+    /* CRÍTICO: Prepara o elemento para receber as transformações de movimento e sombra */
+    transform: translateZ(0);
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
+    
     overflow: hidden;
-    display: flex; /* Para centralizar conteúdo verticalmente */
+    display: flex; 
     flex-direction: column;
-    justify-content: space-between; /* Empurra o botão para baixo */
+    justify-content: space-between; 
+    height: 100%; 
 }
 
-.service-card-main:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6); /* Sombra mais sutil e escura */
-    border-image: linear-gradient(135deg, #0bf4ed, #6627ff) 1;
+/* 3. Efeito de Hover: Movimento Diagonal e Sombra "L" */
+
+/* O movimento sutil de "arrasto" (diagonal) no hover */
+.card-container-3d:hover {
+    /* Desloca o container PARENT para cima e para a esquerda/diagonal */
+    transform: translate(-5px, -10px); 
 }
 
-.service-card-main h3 {
-    font-family: 'Montserrat', sans-serif;
-    letter-spacing: 0.05em;
-    background: linear-gradient(135deg, #6627ff, #0bf4ed);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: 0 0 5px rgba(11, 244, 237, 0.5);
+.card-container-3d:hover .service-card-main {
+    /* Não rotacionamos mais o card em 3D. Apenas aplicamos a sombra "L". */
+    transform: translateZ(0); 
+
+    /* 🚨 EFEITO PROFUNDIDADE "L" (Sombra na lateral direita e na parte inferior) */
+    box-shadow: 
+        10px 10px 0 0 #0bf4ed, /* Linha Sólida Ciano na lateral inferior e direita */
+        12px 12px 0 0 #6627ff, /* Linha Sólida Roxa um pouco mais deslocada (profundidade dupla) */
+        15px 15px 20px rgba(0, 0, 0, 0.8); /* Sombra suave para a sensação de elevação */
+    
+    /* Borda de cima/esquerda ganha um destaque na cor ciano */
+    border-color: #0bf4ed;
 }
 
-.service-card-main p {
-    color: #edf1f7;
-    flex-grow: 1; /* Faz o parágrafo ocupar o espaço restante */
-}
-
-/* Estilo para ícones de serviço - tenta amenizar o fundo branco */
+/* 4. Ícone Aprimorado (MANTIDO) */
 .service-card-main img.service-icon {
-    background: rgba(255, 255, 255, 0.1); /* Um leve fundo translúcido para "misturar" */
-    border-radius: 50%; /* Se o ícone for quadrado, isso o tornará redondo */
-    padding: 10px;
+    /* Mantém o estilo de fundo de ícone para elegância */
+    background: linear-gradient(45deg, rgba(102, 39, 255, 0.2), rgba(11, 244, 237, 0.2));
+    border-radius: 50%; 
+    padding: 12px;
     box-shadow: 0 0 10px rgba(165, 180, 252, 0.3);
 }
-
 .testimonial-card-dark {
     background: rgba(17, 17, 17, 0.9);
     border-left: 5px solid #6627ff;
@@ -1120,66 +1144,74 @@ footer .content-layer {
     </section>
 
     <section id="services-grid" class="py-20 section-bg">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 content-layer">
-            <h2 class="text-3xl md:text-4xl font-bold gradient-text mb-16 text-center float">O Universo de Serviços Asthro</h2>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 content-layer">
+        <h2 class="text-3xl md:text-4xl font-bold gradient-text mb-16 text-center float">O Universo de Serviços Asthro</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-y-8 lg:gap-x-4 items-start">
             
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                
-                <div class="p-6 rounded-xl service-card-main float">
+            <div class="card-container-3d h-full">
+                <div class="p-6 rounded-xl service-card-main">
                     <div class="flex items-center justify-center mb-4">
                         <img src="https://i.imgur.com/d8jYxPc.png" alt="Design Icon" class="service-icon w-20 h-20 transition-transform">
                     </div>
                     <h3 class="text-xl font-semibold mb-3 text-center">Design Gráfico</h3>
-                    <p class="mb-4 text-center text-sm">
+                    <p class="mb-4 text-center text-sm h-12 flex items-center justify-center">
                         Identidade visual, posts e banners que geram conexão.
                     </p>
                     <div class="text-center">
                         <a href="https://www.behance.net/Asthro" target="_blank" class="cta-button py-2 px-6 rounded-full text-white">Ver Portfólio</a>
                     </div>
                 </div>
+            </div>
 
-                <div class="p-6 rounded-xl service-card-main float" style="animation-delay: 0.2s;">
+            <div class="card-container-3d h-full">
+                <div class="p-6 rounded-xl service-card-main">
                     <div class="flex items-center justify-center mb-4">
                         <img src="https://i.imgur.com/O0CMXrR.png" alt="Website Icon" class="service-icon w-20 h-20 transition-transform">
                     </div>
                     <h3 class="text-xl font-semibold mb-3 text-center">Desenvolvimento Web</h3>
-                    <p class="mb-4 text-center text-sm">
+                    <p class="mb-4 text-center text-sm h-12 flex items-center justify-center">
                         Sites rápidos, responsivos e otimizados para SEO.
                     </p>
                     <div class="text-center">
                         <a href="https://api.whatsapp.com/send/?phone=5511987637786" target="_blank" class="cta-button py-2 px-6 rounded-full text-white">Ver Preços</a>
                     </div>
                 </div>
+            </div>
 
-                <div class="p-6 rounded-xl service-card-main float" style="animation-delay: 0.4s;">
+            <div class="card-container-3d h-full">
+                <div class="p-6 rounded-xl service-card-main">
                     <div class="flex items-center justify-center mb-4">
                         <img src="https://i.imgur.com/MiizSTk.png" alt="Marketing Icon" class="service-icon w-20 h-20 transition-transform">
                     </div>
                     <h3 class="text-xl font-semibold mb-3 text-center">Marketing Digital</h3>
-                    <p class="mb-4 text-center text-sm">
+                    <p class="mb-4 text-center text-sm h-12 flex items-center justify-center">
                         Estratégias para redes sociais e e-mail marketing.
                     </p>
                     <div class="text-center">
                         <a href="https://api.whatsapp.com/send/?phone=5511987637786" target="_blank" class="cta-button py-2 px-6 rounded-full text-white">Consultoria</a>
                     </div>
                 </div>
+            </div>
 
-                <div class="p-6 rounded-xl service-card-main float" style="animation-delay: 0.6s;">
+            <div class="card-container-3d h-full">
+                <div class="p-6 rounded-xl service-card-main">
                     <div class="flex items-center justify-center mb-4">
                         <img src="https://i.imgur.com/Qmco6a2.png" alt="Support Icon" class="service-icon w-20 h-20 transition-transform">
                     </div>
                     <h3 class="text-xl font-semibold mb-3 text-center">Suporte & Manutenção</h3>
-                    <p class="mb-4 text-center text-sm">
+                    <p class="mb-4 text-center text-sm h-12 flex items-center justify-center">
                         Garantia de segurança, atualizações e performance.
                     </p>
                     <div class="text-center">
                         <a href="https://api.whatsapp.com/send/?phone=5511987637786" target="_blank" class="cta-button py-2 px-6 rounded-full text-white">Orçamento</a>
                     </div>
                 </div>
-
             </div>
+
         </div>
-    </section>
+    </div>
+</section>
     
     <section id="testimonials" class="py-20 section-bg">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 content-layer">
