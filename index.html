@@ -28,6 +28,12 @@
 .social-links-png {
     /* Container de layout */
     margin-top: 1rem;
+    
+    /* 🚨 NOVO: Propriedades Flexbox para alinhamento vertical */
+    display: flex; /* Transforma o container em Flexbox */
+    justify-content: center; /* Mantém o alinhamento horizontal centralizado */
+    align-items: center; /* Alinha os itens (links) verticalmente ao centro */
+    height: 50px; /* Defina uma altura mínima para o container se necessário, ou remova se a altura for suficiente */
 }
 
 .social-img-icon {
@@ -47,8 +53,25 @@
 .social-links-png a:hover .social-img-icon {
     transform: scale(1.15) rotate(2deg); 
     filter: brightness(100%); /* Força o ícone a ter brilho total no hover */
+    width: 35px; 
+    height: 35px;
+}
+.social-links-png a:nth-child(1) .social-img-icon {
+    width: 30px !important; 
+    height: 30px !important;
 }
 
+/* 2. TikTok: 50px */
+.social-links-png a:nth-child(2) .social-img-icon {
+    width: 45px !important; 
+    height: 45px !important;
+}
+
+/* 3. YouTube: 30px */
+.social-links-png a:nth-child(3) .social-img-icon {
+    width: 45px !important; 
+    height: 45px !important;
+}
 /* --- BRILHOS INDIVIDUAIS (NEON GLOW) --- */
 
 /* 1. Instagram: Brilho Rosa/Magenta */
@@ -71,6 +94,7 @@
     filter: drop-shadow(0 0 10px #FF0000) brightness(100%);
     transform: scale(1.15) translateY(-2px); 
 }
+
 
 /* CORREÇÃO CRÍTICA: GARANTE QUE O CONTEÚDO DO RODAPÉ SEJA VISÍVEL NO DESKTOP */
 footer .content-layer {
@@ -1579,15 +1603,15 @@ footer .content-layer {
         <div class="social-links-png flex justify-center space-x-6 mb-4">
             
             <a href="https://www.instagram.com/agencia_asthro/" target="_blank" aria-label="Instagram">
-                <img src="https://i.imgur.com/OPiG8xz.png" alt="Instagram" class="social-img-icon" />
+                <img src="https://i.imgur.com/ztvOJV3.png" alt="Instagram" class="social-img-icon" />
             </a>
             
             <a href="https://www.tiktok.com/@asthroensina" target="_blank" aria-label="TikTok">
-                <img src="https://i.imgur.com/xnCkLVF.png" alt="TikTok" class="social-img-icon" />
+                <img src="https://i.imgur.com/yrBBMaJ.png" alt="TikTok" class="social-img-icon" />
             </a>
             
             <a href="SUA_URL_YOUTUBE" target="_blank" aria-label="YouTube">
-                <img src="https://i.imgur.com/RyvrExk.png" alt="YouTube" class="social-img-icon" />
+                <img src="https://i.imgur.com/0vJwT4o.png" alt="YouTube" class="social-img-icon" />
             </a>
             
         </div>
