@@ -374,55 +374,27 @@ p, span, a {
         }
 
         .puzzle-section {
-            position: relative;
-            background: rgba(17, 17, 17, 0.6);
-            border-radius: 1rem;
-            padding: 2rem;
-            margin: 2rem auto;
-            max-width: 800px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-            border: 2px solid #6627ff;
-            animation: squish 30s infinite ease-in-out;
-            transition: background 0.3s ease, box-shadow 0.3s ease;
-        }
+    position: relative;
+    /* NOVO: Fundo com Glassmorphism e Sombra Elegante */
+    background: rgba(17, 17, 17, 0.85); /* Fundo mais opaco para legibilidade */
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 2rem; /* Mais arredondado */
+    padding: 3rem 2rem;
+    margin: 4rem auto; /* Mais margem no topo para o cabeçalho */
+    max-width: 900px; /* Maior largura */
+    /* Sombra elegante com as cores primárias */
+    box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.5), 0 0 20px rgba(102, 39, 255, 0.4);
+    border: 1px solid rgba(11, 244, 237, 0.5); /* Borda ciano/prisma sutil */
+    animation: float 8s infinite ease-in-out; 
+    transition: all 0.5s ease;
+}
 
-        .puzzle-section:hover {
-            background: rgba(17, 17, 17, 0.8);
-            box-shadow: 0 10px 20px rgba(102, 39, 255, 0.4);
-        }
+.puzzle-section:hover {
+    background: rgba(17, 17, 17, 0.95); /* Levemente mais escuro */
+    box-shadow: 0 15px 50px rgba(102, 39, 255, 0.6); /* Sombra mais forte no hover */
+}
 
-        .puzzle-section::before {
-            content: '';
-            position: absolute;
-            top: -10px;
-            left: 50%;
-            width: 40px;
-            height: 20px;
-            background: #111111;
-            border: 2px solid #6627ff;
-            border-bottom: none;
-            border-radius: 50% 50% 0 0;
-            transform: translateX(-50%);
-        }
-
-        .puzzle-section::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            width: 40px;
-            height: 20px;
-            background: #111111;
-            border: 2px solid #6627ff;
-            border-top: none;
-            border-radius: 0 0 50% 50%;
-            transform: translateX(-50%);
-        }
-
-        .puzzle-section:hover::before,
-        .puzzle-section:hover::after {
-            background: #1e293b;
-        }
 
         @keyframes squish {
             0% { transform: scale(1, 1); }
@@ -433,39 +405,54 @@ p, span, a {
             100% { transform: scale(1, 1); }
         }
 
-        .whatsapp-button, .form-button, .schedule-button, .feedback-button, .testimonial-button {
-            display: inline-block;
-            color: white;
-            padding: 0.5rem 1.5rem;
-            border-radius: 2rem;
-            font-size: 0.9rem;
-            font-weight: bold;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: none;
-            cursor: pointer;
-        }
+        .whatsapp-button, 
+.form-button, 
+.schedule-button, 
+.feedback-button, 
+.testimonial-button,
+.download-button, /* NOVO: Adicione download-button aqui */
+.upload-button { /* NOVO: Adicione upload-button aqui */
+    display: inline-block;
+    color: white;
+    padding: 0.8rem 2rem; /* Aumente o padding para um botão mais elegante */
+    border-radius: 3rem; /* Estilo 'pill' */
+    font-size: 1rem;
+    font-weight: bold;
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s ease;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    /* Aplica a pulsação de cor nos botões primários */
+    animation: colorPulse 5s infinite ease-in-out; 
+}
 
-        .whatsapp-button { background: #25D366; }
-        .form-button { background: #6627ff; }
-        .schedule-button { background: #0bf4ed; }
-        .feedback-button { background: #30fca9; }
-        .testimonial-button { background: #6627ff; }
+/* Define a cor primária para Download/Form/Upload */
+.form-button, .download-button, .upload-button { 
+    background: #6627ff; /* Cor base Violeta Cósmico */
+}
 
-        .whatsapp-button:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(37, 211, 102, 0.5); }
-        .form-button:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(102, 39, 255, 0.6); }
-        .schedule-button:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(11, 244, 237, 0.6); }
-        .feedback-button:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(48, 252, 169, 0.6); }
-        .testimonial-button:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(102, 39, 255, 0.6); }
+.form-button:hover, .download-button:hover, .upload-button:hover { 
+    transform: scale(1.05) translateY(-3px); 
+    box-shadow: 0 8px 20px rgba(11, 244, 237, 0.6); /* Brilho ciano no hover */
+    animation: none; /* Desativa a pulsação no hover */
+}
 
-        /* Buttons inside puzzle-section: remove specific margins, use flex for spacing */
-        .puzzle-section .whatsapp-button,
-        .puzzle-section .form-button,
-        .puzzle-section .schedule-button,
-        .puzzle-section .feedback-button,
-        .puzzle-section .testimonial-button {
-            margin-right: 0;
-            margin-left: 0;
-        }
+/* Mantém as cores específicas para WhatsApp (se usadas) */
+.whatsapp-button { background: #25D366; animation: none !important; }
+.whatsapp-button:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(37, 211, 102, 0.5); }
+.schedule-button { background: #0bf4ed; animation: none !important;}
+.schedule-button:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(11, 244, 237, 0.6); }
+
+/* Remove as regras de 'puzzle-section' desnecessárias no HTML restaurado */
+.puzzle-section .whatsapp-button,
+.puzzle-section .form-button,
+.puzzle-section .schedule-button,
+.puzzle-section .feedback-button,
+.puzzle-section .testimonial-button {
+    margin-right: 0;
+    margin-left: 0;
+}
 
         .testimonial-carousel {
             position: relative;
@@ -811,53 +798,64 @@ p, span, a {
     50% { background-color: #0bf4ed; }      /* Meio: Azul Prisma */
     100% { background-color: #6627ff; }     /* Fim: Violeta Cósmico */
 }
-/* --- Novo Layout Futurista --- */
+/* --- Novo Layout Futurista (SOFISTICADO) --- */
 .contact-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    min-height: calc(100vh - 120px); /* Garante que ocupe a tela, descontando o rodapé */
+    min-height: calc(100vh - 120px); /* Garante que ocupe a tela, descontando o rodapé/cabeçalho */
     padding: 8rem 1rem 2rem 1rem; /* Padding superior para não ficar atrás do menu */
     box-sizing: border-box;
 }
 
 .contact-hub {
-    background: rgba(17, 17, 17, 0.8); /* Fundo de vidro semi-transparente */
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    border-radius: 1.5rem;
-    border: 1px solid rgba(102, 39, 255, 0.4);
-    padding: 2rem;
-    max-width: 950px;
-    width: 100%;
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37), 0 0 15px rgba(165, 180, 252, 0.2);
-    animation: float 6s infinite ease-in-out; /* Usa a animação 'float' já existente */
+    /* Efeito de vidro sofisticado */
+    background: rgba(17, 17, 17, 0.85); /* Mais opaco para legibilidade */
+    backdrop-filter: blur(20px); /* Blur mais forte */
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 2rem; /* Mais arredondado */
+    border: 1px solid rgba(11, 244, 237, 0.5); /* Borda ciano/prisma sutil */
+    padding: 2.5rem;
+    max-width: 1000px;
+    width: 95%;
+    /* Sombra elegante com as cores primárias */
+    box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.5), 0 0 20px rgba(102, 39, 255, 0.4);
+    animation: float 8s infinite ease-in-out; /* Usa a animação 'float' já existente */
     display: flex;
-    gap: 2rem;
-    flex-wrap: wrap; /* Permite quebrar em telas menores */
+    gap: 3rem;
+    flex-wrap: wrap; 
+}
+
+/* Garante que os títulos da seção funcionem */
+.contact-container h2, .contact-container p {
+    position: relative;
+    z-index: 60;
 }
 
 .main-contact-area {
-    flex: 2; /* Ocupa mais espaço */
-    min-width: 320px; /* Largura mínima para o chat */
+    flex: 2;
+    min-width: 350px;
     display: flex;
     flex-direction: column;
 }
 
 .secondary-options {
-    flex: 1; /* Ocupa menos espaço */
+    flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    min-width: 220px;
+    gap: 1.25rem;
+    min-width: 250px;
 }
 
 .secondary-options h4 {
-    font-size: 1.5rem;
-    font-weight: bold;
+    font-size: 1.75rem;
+    font-weight: 700;
     text-align: center;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
+    /* Linha sutil para separar o título das opções */
+    border-bottom: 2px solid rgba(102, 39, 255, 0.3);
+    padding-bottom: 0.5rem;
 }
 
 .contact-option-btn {
@@ -866,27 +864,73 @@ p, span, a {
     justify-content: center;
     gap: 0.75rem;
     width: 100%;
-    padding: 0.75rem 1rem;
-    border-radius: 0.75rem;
+    padding: 1rem 1.5rem;
+    border-radius: 3rem; /* Botões mais arredondados, no estilo 'pill' */
     font-weight: 600;
-    color: #f8f8f8;
+    font-size: 1.1rem;
+    color: #edf1f7;
     text-align: center;
-    border: 1px solid transparent;
-    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); /* Transição mais suave */
     cursor: pointer;
 }
 
 .contact-option-btn:hover {
-    transform: translateY(-4px) scale(1.03); /* Efeito de elevação mais pronunciado */
-    border-color: #0bf4ed;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4) !important; /* Sombra mais forte no hover */
+    transform: scale(1.05) translateY(-5px); /* Efeito de elevação mais premium */
+    border-color: #6627ff; /* Borda acesa no hover */
+    box-shadow: 0 12px 25px rgba(102, 39, 255, 0.5); /* Sombra mais forte e colorida */
 }
 
 /* Cores e sombras específicas para os botões de opção */
-.whatsapp-btn { background: #25D366; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3); }
-.schedule-btn { background: #1e3a8a; box-shadow: 0 4px 15px rgba(30, 58, 138, 0.3); }
-.feedback-btn { background: #6627ff; box-shadow: 0 4px 15px rgba(190, 24, 93, 0.3); }
-.testimonial-btn { background: #166534; box-shadow: 0 4px 15px rgba(22, 101, 52, 0.3); }
+/* Usamos cores mais escuras e saturadas para o fundo e brilho nos ícones */
+.whatsapp-btn { background: #128C7E; box-shadow: 0 4px 15px rgba(18, 140, 126, 0.4); }
+.schedule-btn { background: #0077b6; box-shadow: 0 4px 15px rgba(0, 119, 182, 0.4); }
+.feedback-btn { background: #ff7f50; box-shadow: 0 4px 15px rgba(255, 127, 80, 0.4); }
+.testimonial-btn { background: #3c096c; box-shadow: 0 4px 15px rgba(60, 9, 108, 0.4); }
+/* Hover para as cores base: Desativa a sombra individual e usa a sombra geral elegante */
+.whatsapp-btn:hover { background: #075E54; }
+.schedule-btn:hover { background: #03045e; }
+.feedback-btn:hover { background: #ff6347; }
+.testimonial-btn:hover { background: #10069f; }
+
+
+/* Estilos para ícones dentro dos botões (adicionam um brilho sutil) */
+.contact-option-btn i {
+    filter: drop-shadow(0 0 5px #edf1f7);
+    transition: filter 0.4s ease;
+}
+
+.contact-option-btn:hover i {
+    filter: drop-shadow(0 0 8px #0bf4ed); /* Brilho ciano no hover */
+}
+
+/* Ajuste Mobile para a nova estrutura de contato */
+@media (max-width: 768px) {
+    .contact-hub {
+        flex-direction: column;
+        gap: 2rem;
+        padding: 2rem;
+        border-radius: 1.5rem;
+        width: 100%;
+        max-width: none;
+    }
+    .main-contact-area, .secondary-options {
+        min-width: unset;
+        width: 100%;
+    }
+    .secondary-options h4 {
+        margin-top: 1rem;
+        font-size: 1.5rem;
+    }
+    .contact-option-btn {
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+        border-radius: 0.75rem; /* Menos arredondado no mobile */
+    }
+    .contact-option-btn:hover {
+        transform: scale(1.02); /* Efeito de elevação mais sutil no mobile */
+    }
+}
 /* --- Fim do Novo Layout --- */
         /* --- Mobile Responsiveness --- */
 
@@ -1367,41 +1411,95 @@ p, span, a {
         </div>
     </nav>
 
-   <div class="max-w-4xl mx-auto pt-32 px-4 relative z-0 min-h-screen">
+  <main class="max-w-4xl mx-auto pt-32 px-4 relative z-0 min-h-screen">
+    <div class="content-layer puzzle-section main-app-container">
+        <h2 class="text-3xl lg:text-4xl font-extrabold mb-8 animated-gradient-text text-center">
+            Removedor de Fundo Cósmico ✨
+        </h2>
+        <p class="text-center mb-6 text-gray-300">
+            A ferramenta mais rápida e detalhada para obter imagens com fundo transparente.
+        </p>
         
-        <div class="content-layer">
-            <p class="text-center mb-4">A ferramenta mais rápida e detalhada para obter imagens com fundo transparente.</p>
+        <input type="file" id="imageUpload" accept="image/*" class="hidden">
+        
+        <div id="dropArea" class="max-w-lg mx-auto p-10 border-2 border-dashed text-center rounded-2xl drop-area-style">
+            <i class="fas fa-cloud-upload-alt text-5xl mb-4 gradient-text"></i>
+            <p class="text-xl font-bold mb-2"><strong>Arraste e Solte</strong> sua imagem aqui</p>
+            <p class="text-sm text-gray-400 mb-6">ou clique para selecionar (PNG, JPG, HEIC)</p>
             
-            <input type="file" id="imageUpload" accept="image/*" class="mx-auto block my-4">
-            
-            <div id="dropArea" class="max-w-md mx-auto p-8 border-2 border-dashed border-indigo-400 text-center rounded-xl">
-                <i class="fas fa-cloud-upload-alt text-4xl mb-4"></i>
-                <p><strong>Arraste e Solte</strong> sua imagem aqui</p>
-                <span class="upload-button inline-block mt-4" onclick="document.getElementById('imageUpload').click()">
-                    <i class="fas fa-folder-open" style="margin-right: 8px;"></i> Selecionar Imagem
-                </span>
-            </div>
-            
-            <div class="loading-spinner mx-auto" id="loadingSpinner"></div>
-            <p id="status" class="text-center mt-4">Aguardando a seleção da imagem...</p>
+            <span class="upload-button form-button inline-block mt-4" onclick="document.getElementById('imageUpload').click()">
+                <i class="fas fa-folder-open" style="margin-right: 8px;"></i> Selecionar Imagem
+            </span>
         </div>
         
-        <div id="resultSection" class="mt-8">
-            <h2 class="text-center">Resultado Concluído! 🎉</h2>
-            <p class="text-center">Sua imagem sem fundo está pronta para download.</p>
+        <div id="processingArea" class="mt-8">
+            <div class="loading-spinner mx-auto hidden" id="loadingSpinner"></div>
+            <p id="status" class="text-center mt-4 text-lg font-semibold">Aguardando a seleção da imagem...</p>
+        </div>
+        
+        <div id="resultSection" class="mt-12 hidden">
+            <h3 class="text-2xl font-bold text-center mb-4 gradient-text">Resultado Concluído! 🎉</h3>
+            <p class="text-center mb-8 text-gray-400">Sua imagem sem fundo está pronta para download.</p>
             
-            <div class="result-box max-w-sm mx-auto my-8 p-4 border border-gray-600 rounded-lg text-center">
-                <img id="processedImage" src="" alt="Imagem Processada Sem Fundo" class="mx-auto block">
+            <div class="result-box max-w-sm mx-auto my-8 p-6 border-2 border-indigo-500 rounded-xl text-center bg-gray-900 shadow-xl">
+                <img id="processedImage" src="" alt="Imagem Processada Sem Fundo" class="mx-auto block w-full h-auto max-h-96 object-contain" style="background-image: linear-gradient(45deg, #1f2937 25%, transparent 25%), linear-gradient(-45deg, #1f2937 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #1f2937 75%), linear-gradient(-45deg, transparent 75%, #1f2937 75%); background-size: 20px 20px; background-position: 0 0, 0 10px, 10px -10px, -10px 0px;">
             </div>
 
-            <a id="downloadLink" href="#" download="imagem-sem-fundo.png" class="download-button block w-full max-w-xs mx-auto text-center p-3 rounded-full bg-indigo-600 hover:bg-indigo-700 transition">
-                <i class="fas fa-download"></i> Baixar Imagem PNG
-            </a>
-            
-            <button id="newImageButton" class="block w-full max-w-xs mx-auto mt-4 p-3 rounded-full bg-gray-600 hover:bg-gray-700 transition">
-                 <i class="fas fa-redo"></i> Enviar Nova Imagem
-            </button>
+            <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4 max-w-lg mx-auto">
+                <a id="downloadLink" href="#" download="imagem-sem-fundo.png" class="download-button form-button block w-full text-center">
+                    <i class="fas fa-download"></i> Baixar Imagem PNG
+                </a>
+                
+                <button id="newImageButton" class="block w-full text-center p-3 rounded-full bg-gray-700 hover:bg-gray-600 transition text-white font-bold" onclick="resetApp()">
+                    <i class="fas fa-redo"></i> Enviar Nova Imagem
+                </button>
+            </div>
         </div>
+
+    </div>
+</main>
+    
+            <div id="scheduleModal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="close-button" onclick="hideScheduleModal()">×</button>
+            <h3 class="text-2xl font-bold mb-4 gradient-text text-center">Agendar Chamada</h3>
+            <p class="text-sm text-center text-gray-400 mb-6">Escolha o melhor momento para conversarmos.</p>
+            <input type="text" id="scheduleName" placeholder="Seu Nome Completo" required>
+            <input type="email" id="scheduleEmail" placeholder="Seu Melhor E-mail" required>
+            <input type="date" id="scheduleDate" required>
+            <input type="time" id="scheduleTime" required>
+            <textarea id="scheduleMessage" placeholder="Brevemente sobre o que gostaria de conversar (opcional)"></textarea>
+            <button onclick="submitSchedule()" class="form-button">Solicitar Agendamento</button>
+            <div id="modalScheduleFeedback"></div>
+        </div>
+    </div>
+    
+        <div id="feedbackModal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="close-button" onclick="hideFeedbackModal()">×</button>
+            <h3 class="text-2xl font-bold mb-4 gradient-text text-center">Envie Seu Feedback</h3>
+            <p class="text-sm text-center text-gray-400 mb-6">Sua opinião ajuda a Asthro a evoluir.</p>
+            <input type="text" id="feedbackName" placeholder="Seu Nome" required>
+            <input type="email" id="feedbackEmail" placeholder="Seu E-mail" required>
+            <textarea id="feedbackText" placeholder="Seu feedback..." required></textarea>
+            <button onclick="submitFeedback()" class="form-button">Enviar Feedback</button>
+            <div id="modalFeedbackStatus"></div>
+        </div>
+    </div>
+
+        <div id="testimonialModal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="close-button" onclick="hideTestimonialModal()">×</button>
+            <h3 class="text-2xl font-bold mb-4 gradient-text text-center">Deixe Seu Depoimento</h3>
+            <p class="text-sm text-center text-gray-400 mb-6">Ajude outros a descobrir a qualidade Asthro.</p>
+            <input type="text" id="testimonialName" placeholder="Seu Nome" required>
+            <input type="text" id="testimonialProfession" placeholder="Sua Profissão/Cargo" required>
+            <input type="email" id="testimonialEmail" placeholder="Seu E-mail (Não será publicado)" required>
+            <textarea id="testimonialComment" placeholder="Seu depoimento..." required></textarea>
+            <button onclick="submitTestimonial()" class="form-button">Enviar Depoimento</button>
+            <div id="modalTestimonialStatus"></div>
+        </div>
+    </div>
 
     </div>
     <footer class="text-gray-200 py-8">
@@ -1514,239 +1612,149 @@ p, span, a {
     window.addEventListener('resize', createStars);
 
     // ===================================================================
-    // ================ LÓGICA DO CHATBOT AVANÇADO =======================
-    // ===================================================================
+// ================ LÓGICA DO REMOVEDOR DE FUNDO =====================
+// ===================================================================
 
-    // VARIÁVEIS DO CHAT
-    let chatMessages = document.getElementById('chatMessages');
-    let userInput = document.getElementById('userInput');
-    let micButton = document.getElementById('micButton');
-    let chatState = { step: 1, name: '', email: '', whatsapp: '', message: '', gender: null };
-    let isBotTyping = false;
-    let hasGreeted = false;
+const apiKey = "mb7MwY3JETE3keLNYCZdN6XC"; // SUA CHAVE FORNECIDA
+const imageUpload = document.getElementById('imageUpload');
+const dropArea = document.getElementById('dropArea');
+const loadingSpinner = document.getElementById('loadingSpinner');
+const statusText = document.getElementById('status');
+const resultSection = document.getElementById('resultSection');
+const processedImage = document.getElementById('processedImage');
+const downloadLink = document.getElementById('downloadLink');
 
-    // LÓGICA DE RECONHECIMENTO DE VOZ
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    let recognition = null;
-    if (SpeechRecognition && micButton) {
-        recognition = new SpeechRecognition();
-        recognition.lang = 'pt-BR';
-        recognition.interimResults = false;
-        recognition.onresult = (event) => {
-            userInput.value = event.results[0][0].transcript;
-            sendMessage();
-        };
-        recognition.onerror = (event) => { console.error('Speech recognition error:', event.error); stopRecording(); };
-        recognition.onend = () => stopRecording();
-    } else {
-        if (micButton) micButton.style.display = 'none';
-    }
-    function startRecording(event) {
-        event.preventDefault();
-        if (!recognition || isBotTyping) return;
-        recognition.start();
-        micButton.classList.add('recording');
-        userInput.placeholder = "Ouvindo...";
-    }
-    function stopRecording() {
-        if (!recognition || !micButton.classList.contains('recording')) return;
-        recognition.stop();
-        micButton.classList.remove('recording');
-        userInput.placeholder = "Digite sua resposta...";
-    }
+const URL_REMOVE_BG = "https://api.remove.bg/v1.0/removebg";
 
-    // FUNÇÕES DE VALIDAÇÃO E EXTRAÇÃO
-    function isValidName(name) { return /^[a-zA-ZÀ-ÿ\s-]{2,50}$/.test(name.trim()); }
-    function isValidEmail(email) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); }
-    function isValidPhoneNumber(phone) { return /^\+?[\d\s()-]{8,}$/.test(phone); }
-    function inferGender(name) {
-        const firstName = name.toLowerCase().trim().split(' ')[0];
-        if (['a', 'e', 'y', 'i'].includes(firstName.slice(-1))) return 'feminine';
-        return 'masculine';
-    }
-    // Encontre a função extractName atual e SUBSTITUA por esta versão correta:
-function extractName(message) {
-    let name = message.trim();
-    // Lista completa de frases e saudações para remover
-    const phrasesToRemove = [
-        'meu nome é', 'meu nome e', 'sou', 'sou a', 'sou o',
-        'chamo-me', 'me chamo', 'é', 'e', 'oi', 'olá', 'ola',
-        'bom dia', 'boa tarde', 'boa noite', 'tudo bem', 'tudo bom',
-        'como vai', 'e aí', 'e ai', 'eai', 'oiê', 'oie', 'oiee',
-        'oláá', 'olaa', 'oláa', 'eu'
-    ];
-
-    // Remove as frases da lista (ignorando maiúsculas/minúsculas)
-    phrasesToRemove.forEach(phrase => {
-        const regex = new RegExp(`\\b${phrase}\\b`, 'gi');
-        name = name.replace(regex, '').trim();
-    });
-
-    // Remove pontuações e espaços extras
-    name = name.replace(/[.,!?]/g, '').trim();
-
-    // Capitaliza a primeira letra de cada palavra que sobrou
-    if (name) {
-        name = name.toLowerCase().split(' ').map(word =>
-            word.charAt(0).toUpperCase() + word.slice(1)
-        ).join(' ');
-    } else {
-        return ""; // Retorna string vazia se não sobrar nada
-    }
-
-    // --- LÓGICA CRÍTICA RESTAURADA DO SEU CÓDIGO ORIGINAL ---
-    // Após limpar, se sobrar mais de uma palavra (ex: "gostaria de falar com o João Silva"),
-    // ele pega APENAS a última palavra ("Silva"). Isso resolve o problema de mesclagem.
-    const words = name.split(/\s+/);
-    if (words.length > 1) {
-        name = words[words.length - 1];
-    }
+// Função para exibir/ocultar elementos
+function toggleElements(uploadVisible, loadingVisible, resultVisible, statusMessage = '') {
+    if (dropArea) dropArea.classList.toggle('hidden', !uploadVisible);
+    if (loadingSpinner) loadingSpinner.classList.toggle('hidden', !loadingVisible);
+    if (resultSection) resultSection.classList.toggle('hidden', !resultVisible);
+    if (statusText && statusMessage) statusText.textContent = statusMessage;
+    else if (statusText) statusText.classList.toggle('hidden', loadingVisible || resultVisible);
     
-    return name;
+    // Ajusta o estilo do contêiner principal para melhor visualização
+    const mainContainer = document.querySelector('.main-app-container');
+    if (mainContainer) {
+        if (loadingVisible || resultVisible) {
+            mainContainer.style.padding = '2rem 1rem';
+            mainContainer.style.maxWidth = '1000px';
+        } else {
+            mainContainer.style.padding = '3rem 2rem';
+            mainContainer.style.maxWidth = '900px';
+        }
+    }
 }
 
-    // FUNÇÕES DE INTERFACE DO CHAT
-    function addMessage(text, type) {
-        if (!chatMessages) return;
-        const messageElement = document.createElement('div');
-        messageElement.classList.add('message', `${type}-message`);
-        messageElement.textContent = text;
-        chatMessages.appendChild(messageElement);
-        scrollToBottom();
-    }
-    function showTypingIndicator() {
-        if (isBotTyping || !chatMessages) return;
-        isBotTyping = true;
-        const typingElement = document.createElement('div');
-        typingElement.id = 'typingIndicator';
-        typingElement.classList.add('typing-indicator');
-        typingElement.innerHTML = '<span></span><span></span><span></span>';
-        chatMessages.appendChild(typingElement);
-        scrollToBottom();
-    }
-    function removeTypingIndicator() {
-        const typingElement = document.getElementById('typingIndicator');
-        if (typingElement) typingElement.remove();
-        isBotTyping = false;
-    }
-    function scrollToBottom() {
-        if (chatMessages) chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
+// 1. Função principal de processamento
+async function processImage(file) {
+    if (!file) return;
 
-    // FLUXO PRINCIPAL DA CONVERSA
-    function sendMessage() {
-        if (isBotTyping || !userInput) return;
-        const userText = userInput.value.trim();
-        if (!userText) return;
-        addMessage(userText, 'user');
-        userInput.value = '';
-        processBotResponse(userText);
-    }
+    toggleElements(false, true, false, "Iniciando processamento...");
 
-    function processBotResponse(userText) {
-        showTypingIndicator();
-        setTimeout(() => {
-            removeTypingIndicator();
-            switch (chatState.step) {
-                case 1:
-                    const potentialName = extractName(userText);
-                    if (potentialName && isValidName(potentialName)) {
-                        chatState.name = potentialName;
-                        chatState.gender = inferGender(potentialName);
-                        chatState.step = 2;
-                        const greeting = chatState.gender === 'feminine' ? `Prazer em conhecê-la, ${chatState.name}!` : `Prazer em conhecê-lo, ${chatState.name}!`;
-                        addMessage(`${greeting} Qual é o seu e-mail de contato?`, 'bot');
-                    } else {
-                        addMessage("Não consegui identificar seu nome. 😅 Como gostaria de ser chamado?", 'bot');
-                    }
-                    break;
-                case 2:
-                    if (isValidEmail(userText)) {
-                        chatState.email = userText;
-                        chatState.step = 3;
-                        addMessage("Ótimo! E qual o seu número de WhatsApp?", 'bot');
-                    } else {
-                        addMessage("Este e-mail não parece válido. Por favor, tente outro (ex: seuemail@dominio.com).", 'bot');
-                    }
-                    break;
-                case 3:
-                    if (isValidPhoneNumber(userText)) {
-                        chatState.whatsapp = userText;
-                        chatState.step = 4;
-                        if(userInput) userInput.rows = 3;
-                        addMessage("Perfeito! Agora, qual a sua mensagem ou dúvida?", 'bot');
-                    } else {
-                        addMessage("Este número não parece válido. Poderia verificar?", 'bot');
-                    }
-                    break;
-                case 4:
-                    chatState.message = userText;
-                    chatState.step = 5;
-                    addMessage("Obrigado pelas informações! Enviando sua mensagem...", 'bot');
-                    sendToFormspree();
-                    break;
-            }
-        }, 1500);
-    }
-
-    function sendToFormspree() {
+    try {
         const formData = new FormData();
-        formData.append('Nome', chatState.name);
-        formData.append('Email', chatState.email);
-        formData.append('WhatsApp', chatState.whatsapp);
-        formData.append('Mensagem', chatState.message);
-        formData.append('Gênero Inferido', chatState.gender);
+        formData.append('image_file', file);
+        formData.append('size', 'auto');
+        formData.append('output_format', 'png');
 
-        fetch('https://formspree.io/f/mgvolbyv', {
+        const response = await fetch(URL_REMOVE_BG, {
             method: 'POST',
+            headers: {
+                'X-Api-Key': apiKey,
+                'Accept': 'application/json' // Aceita JSON para verificar erros
+            },
             body: formData,
-            headers: { 'Accept': 'application/json' }
-        })
-        .then(response => {
-            if (response.ok) {
-                const mainContactArea = document.querySelector('.main-contact-area');
-                if(mainContactArea) mainContactArea.innerHTML = `<div class="success-message-container flex items-center justify-center h-full"><div class="sparkle-text">Mensagem Enviada! ✨</div></div>`;
-            } else {
-                addMessage("Ops, algo deu errado no envio. Por favor, tente novamente mais tarde.", 'bot');
-            }
-        }).catch(error => {
-            addMessage("Erro de conexão. Verifique sua internet e tente novamente.", 'bot');
         });
-    }
-    
-    // INICIALIZAÇÃO E SAUDAÇÃO AUTOMÁTICA
-    const contactObserver = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting && !hasGreeted) {
-                hasGreeted = true;
-                showTypingIndicator();
-                setTimeout(() => {
-                    removeTypingIndicator();
-                    addMessage("Olá! Sou o assistente da Asthro. 😊 Para começarmos, qual é o seu nome?", 'bot');
-                }, 2000);
-                contactObserver.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.5 });
 
-    document.addEventListener('DOMContentLoaded', () => {
-        const contactHub = document.querySelector('.contact-hub');
-        if (contactHub) contactObserver.observe(contactHub);
-        resetInactivityTimer();
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(`Erro da API: ${errorData.errors ? errorData.errors[0].title : response.statusText}`);
+        }
+
+        const data = await response.json();
+        
+        if (data.data && data.data.result_b64) {
+            const base64Image = data.data.result_b64;
+            const imageUrl = `data:image/png;base64,${base64Image}`;
+            
+            processedImage.src = imageUrl;
+            downloadLink.href = imageUrl;
+
+            toggleElements(false, false, true, "Resultado Concluído! 🎉");
+            statusText.classList.add('hidden'); // Oculta o statustext após o sucesso
+
+        } else {
+            throw new Error("Resposta da API inválida ou sem imagem de resultado.");
+        }
+
+    } catch (error) {
+        console.error("Erro no processamento:", error);
+        toggleElements(true, false, false, `Erro: ${error.message}. Tente novamente.`);
+    }
+}
+
+// 2. Eventos de Upload e Drag & Drop
+if (imageUpload) {
+    imageUpload.addEventListener('change', (e) => {
+        if (e.target.files.length > 0) {
+            processImage(e.target.files[0]);
+        }
+    });
+}
+
+if (dropArea) {
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        dropArea.addEventListener(eventName, preventDefaults, false);
     });
 
-    if (userInput) {
-        userInput.addEventListener('keypress', (event) => {
-            if (event.key === 'Enter' && !event.shiftKey) {
-                event.preventDefault();
-                sendMessage();
-            }
-        });
-    }
+    ['dragenter', 'dragover'].forEach(eventName => {
+        dropArea.addEventListener(eventName, highlight, false);
+    });
 
-    // ===================================================================
-    // ================ LÓGICA DOS MODAIS (INTACTA) ======================
-    // ===================================================================
+    ['dragleave', 'drop'].forEach(eventName => {
+        dropArea.addEventListener(eventName, unhighlight, false);
+    });
+
+    dropArea.addEventListener('drop', handleDrop, false);
+}
+
+function preventDefaults(e) {
+    e.preventDefault();
+    e.stopPropagation();
+}
+
+function highlight() {
+    dropArea.classList.add('border-indigo-600', 'bg-gray-800');
+    dropArea.classList.remove('border-indigo-400', 'bg-transparent');
+}
+
+function unhighlight() {
+    dropArea.classList.remove('border-indigo-600', 'bg-gray-800');
+    dropArea.classList.add('border-indigo-400', 'bg-transparent');
+}
+
+function handleDrop(e) {
+    const dt = e.dataTransfer;
+    const files = dt.files;
+
+    if (files.length > 0) {
+        processImage(files[0]);
+    }
+}
+
+// 3. Função de Reset
+window.resetApp = function() {
+    imageUpload.value = '';
+    toggleElements(true, false, false, "Aguardando a seleção da imagem...");
+    statusText.classList.remove('hidden');
+}
+
+// Inicializa o estado
+document.addEventListener('DOMContentLoaded', () => {
+    toggleElements(true, false, false, "Aguardando a seleção da imagem...");
+});
     function isValidDate(dateStr) {
         const inputDate = new Date(dateStr);
         const today = new Date();
