@@ -1704,6 +1704,33 @@ if (imageUpload) {
     });
 }
 
+// 🚨 NOVO: Correção para o Download Link
+if (downloadLink) {
+    downloadLink.addEventListener('click', function(e) {
+        // Verifica se a imagem Base64 foi realmente carregada no 'href'
+        if (this.href.startsWith('data:image')) {
+            // Se a imagem estiver presente, permita o comportamento padrão (download)
+            // Se necessário, você pode adicionar um `e.preventDefault();` e depois 
+            // `window.location.href = this.href;` para forçar o download em navegadores mais restritivos, 
+            // mas o atributo 'download' no HTML é geralmente suficiente.
+            // Para garantir que funcione, vamos prevenir o padrão e forçar:
+            e.preventDefault(); 
+            const link = document.createElement('a');
+            link.href = this.href;
+            link.download = this.download;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        } else {
+            // Se o href ainda for "#" ou vazio, impede qualquer ação.
+            e.preventDefault(); 
+            console.error('O link de download não está pronto.');
+            alert('Aguarde o processamento da imagem ou selecione uma imagem.');
+        }
+    });
+}
+
+
 if (dropArea) {
     ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
         dropArea.addEventListener(eventName, preventDefaults, false);
