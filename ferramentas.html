@@ -7,6 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700&family=Manrope:wght@400;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="https://i.imgur.com/ZeaGXHD.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ403npNsaNq12O1rP9tO5x9O+r+V+jX9+p9W+O2I1S9rI1v6L9xPz9Q9u9y5u+S9w+Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         footer .content-layer {
     display: block !important; 
@@ -1421,13 +1422,20 @@ p, span, a {
         <input type="file" id="imageUpload" accept="image/*" class="hidden">
         
         <div id="dropArea" class="max-w-lg mx-auto p-10 border-2 border-dashed text-center rounded-2xl drop-area-style">
-            <i class="fas fa-cloud-upload-alt text-5xl mb-4 gradient-text"></i>
+            <i class="fas fa-cloud-upload-alt text-5xl mb-4 text-white"></i>
             <p class="text-xl font-bold mb-2"><strong>Arraste e Solte</strong> sua imagem aqui</p>
             <p class="text-sm text-gray-400 mb-6">ou clique para selecionar (PNG, JPG, HEIC)</p>
             
-            <span class="upload-button form-button inline-block mt-4" onclick="document.getElementById('imageUpload').click()">
-                <i class="fas fa-folder-open" style="margin-right: 8px;"></i> Selecionar Imagem
-            </span>
+            <span class="upload-button inline-block mt-4 flex flex-col items-center justify-center 
+             py-1 px-1" /* <-- BOTÃO MENOR (py-1 = 0.5rem; px-6 = 1.5rem) */
+       onclick="document.getElementById('imageUpload').click()">
+    <span class="text-sm font-semibold mb-1">Selecionar Imagem</span>
+    
+    <img src="https://i.imgur.com/PGuAP2y.png" 
+         alt="Ícone de Pasta" 
+         class="w-10 h-10 mx-auto icon-filter-white"> 
+    
+</span>
         </div>
         
         <div id="processingArea" class="mt-8">
