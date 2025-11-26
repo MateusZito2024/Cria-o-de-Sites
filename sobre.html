@@ -890,6 +890,102 @@ footer .content-layer {
                 font-size: clamp(1.3rem, 5.5vw, 1.6rem);
             }
         }
+        /* Estilos Globais de Tipografia e Fundo (Essenciais para o visual) */
+        *, *::before, *::after { box-sizing: border-box; }
+        html, body {
+            font-family: 'Manrope', sans-serif;
+            background: linear-gradient(135deg, #111111, #111111);
+            background-size: 400% 400%;
+            animation: gradientTransition 20s ease-in-out infinite;
+            color: #edf1f7;
+            margin: 0; padding: 0; position: relative; overflow-x: hidden; width: 100vw;
+        }
+        @keyframes gradientTransition {
+            0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; }
+        }
+        .stars-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+        .star { position: absolute; width: 2px; height: 2px; background: #ffffff; border-radius: 50%; box-shadow: 0 0 5px 1px rgba(255, 255, 255, 0.5); opacity: 0.3; animation: floatStar 15s infinite ease-in-out; }
+        .star.purple { background: #6627ff; box-shadow: 0 0 5px 1px rgba(106, 13, 173, 0.5); }
+        .star.pink { background: #0bf4ed; box-shadow: 0 0 5px 1px rgba(232, 121, 249, 0.5); }
+        .star.white { background: #edf1f7; box-shadow: 0 0 5px 1px rgba(255, 255, 255, 0.5); }
+        @keyframes floatStar {
+            0% { opacity: 0.3; transform: translate(0, 0); } 50% { opacity: 0.6; transform: translate(var(--move-x), var(--move-y)); } 100% { opacity: 0.3; transform: translate(0, 0); }
+        }
+        .content-layer { position: relative; z-index: 2; }
+        .brand-name { font-family: 'Great Vibes', cursive; line-height: 2; padding: 1rem; display: block; overflow: visible; font-size: clamp(2rem, 6vw, 2.5rem); }
+        .nav-link { font-family: 'Manrope', sans-serif; position: relative; text-decoration: none; color: #edf1f7; transition: color 0.3s ease; font-size: clamp(1rem, 3vw, 1.125rem); }
+        .nav-link::after { content: ''; position: absolute; width: 0; height: 2px; bottom: -4px; left: 0; background: linear-gradient(135deg, #6627ff, #0bf4ed); transition: width 0.3s ease; }
+        .nav-link:hover::after { width: 100%; }
+        .nav-link:hover { color: #0bf4ed; }
+        .gradient-text { background: linear-gradient(135deg, #6627ff, #0bf4ed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        h1, h2, h3, p, a, input, textarea, button, img, svg { position: relative; z-index: 30; opacity: 1 !important; }
+
+        /* Estilos da Navbar Fixa */
+        nav { position: fixed; top: 0; width: 100%; z-index: 100; /* Z-index alto para ficar acima de tudo */ background: transparent; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); padding: 0 1rem; box-sizing: border-box; }
+        nav > div { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+        nav .flex.items-center.content-layer:first-child { margin-right: auto; }
+        nav .flex.items-center.content-layer:last-child { margin-left: auto; }
+
+        /* --- Dropdown de Ferramentas (PC) --- */
+        .dropdown-menu {
+            position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(10px); 
+            min-width: 180px; background: rgba(17, 17, 17, 0.95); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); 
+            border: 1px solid rgba(102, 39, 255, 0.5); border-radius: 0.5rem; padding: 0.5rem 0; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5); 
+            z-index: 50; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+        }
+        .dropdown.active .dropdown-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(5px); }
+        .dropdown-menu a { display: block; padding: 0.6rem 1rem; color: #edf1f7; font-size: 1rem; font-weight: 500; transition: all 0.2s ease; }
+        .dropdown-menu a:hover { background: linear-gradient(90deg, rgba(102, 39, 255, 0.3), rgba(11, 244, 237, 0.3)); color: #0bf4ed; }
+        .dropdown-arrow { display: inline-block; transition: transform 0.3s ease; }
+        .dropdown.active .dropdown-arrow { transform: rotate(180deg); }
+
+        /* --- Menu Hamburger (Mobile) --- */
+        .hamburger { display: none; flex-direction: column; justify-content: space-around; width: 2rem; height: 2rem; background: transparent; border: none; cursor: pointer; padding: 0; z-index: 40; }
+        .hamburger span { width: 100%; height: 3px; background: #edf1f7; transition: all 0.3s ease; }
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(7px, -7px); }
+        .nav-menu-mobile { 
+            position: fixed; top: 0; right: -100%; height: 100vh; width: 100%; max-width: 300px; 
+            background: rgba(17, 17, 17, 0.9); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); 
+            border-left: 1px solid rgba(102, 39, 255, 0.5); flex-direction: column; justify-content: flex-start; 
+            align-items: center; gap: 1.5rem; transition: right 0.3s ease; z-index: 30; display: flex; padding: 0 1rem; 
+            box-sizing: border-box; box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
+        }
+        .nav-menu-mobile.active { right: 0; }
+        .nav-menu-mobile .nav-link:first-child { margin-top: 6rem; }
+        .nav-menu-mobile .nav-link { 
+            display: block; width: 90%; padding: 0.8rem 1.5rem; border-radius: 0.75rem; 
+            background: rgba(102, 39, 255, 0.1); color: #f8f8f8; text-align: center; font-size: clamp(1.125rem, 4vw, 1.3rem); 
+            font-weight: 600; border: 1px solid rgba(255, 255, 255, 0.2); backdrop-filter: blur(5px); 
+            -webkit-backdrop-filter: blur(5px); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); transition: all 0.3s ease; 
+        }
+        .nav-menu-mobile .nav-link:hover { 
+            background: linear-gradient(135deg, rgba(102, 39, 255, 0.3), rgba(11, 244, 237, 0.3)); 
+            transform: translateY(-4px) scale(1.02); box-shadow: 0 8px 16px rgba(11, 244, 237, 0.6); border-color: #0bf4ed;
+        }
+        .nav-menu-mobile .nav-link::after { display: none; }
+        .mobile-menu-logo { display: none; width: 80%; max-width: 150px; height: auto; filter: drop-shadow(0 0 5px rgba(102, 39, 255, 0.4)); }
+
+        /* --- Modal Mobile de Ferramentas --- */
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .tools-modal { position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s ease; }
+        .tools-modal.open { display: flex; opacity: 1; }
+        .modal-content { background: #111111; border: 2px solid #6627ff; border-radius: 1rem; padding: 2rem 1.5rem; width: 90%; max-width: 400px; box-shadow: 0 0 30px rgba(102, 39, 255, 0.7); animation: fadeIn 0.3s ease-out; position: relative; text-align: center; }
+        .modal-close { position: absolute; top: 10px; right: 15px; color: #edf1f7; font-size: 2.5rem; font-weight: 300; line-height: 1; border: none; background: transparent; cursor: pointer; transition: color 0.2s; }
+        .modal-close:hover { color: #0bf4ed; transform: scale(1.1); }
+        .modal-link { display: block; background: rgba(102, 39, 255, 0.15); border: 1px solid rgba(102, 39, 255, 0.5); border-radius: 0.75rem; padding: 1rem; margin-bottom: 1rem; color: #edf1f7; font-size: 1.25rem; font-weight: 700; text-decoration: none; transition: all 0.3s ease; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); }
+        .modal-link-subtitle { display: block; font-size: 0.9rem; font-weight: 400; color: #bbb; margin-top: 0.25rem; }
+        .modal-link:hover { background: linear-gradient(90deg, rgba(102, 39, 255, 0.4), rgba(11, 244, 237, 0.4)); border-color: #0bf4ed; transform: translateY(-3px) scale(1.02); box-shadow: 0 8px 15px rgba(11, 244, 237, 0.5); }
+        
+        /* Media Queries CRÍTICAS para o Header */
+        @media (max-width: 768px) {
+            .dropdown { display: none !important; }
+            nav { background: rgba(17, 17, 17, 0.95); padding: 0.5rem 1rem; width: 100%; box-sizing: border-box; }
+            nav .flex.items-center.space-x-6 { display: none; }
+            .hamburger { display: flex; }
+            .mobile-menu-logo { display: block; margin-top: 0; }
+        }
     </style>
 </head>
 <body class="text-gray-100">
@@ -906,34 +1002,70 @@ footer .content-layer {
 
     <nav class="shadow-lg fixed w-full z-10">
         <div class="flex justify-between h-16 items-center">
+            
             <div class="flex items-center content-layer">
                 <img src="https://i.imgur.com/sE44ypp.png" alt="Logo da Asthro" class="h-40 md:h-40" />
             </div>
+            
             <button class="hamburger" aria-label="Toggle menu">
                 <span></span>
                 <span></span>
                 <span></span>
             </button>
+            
             <div class="flex items-center space-x-6 content-layer desktop-nav">
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/index.html" class="nav-link text-lg transition">Início</a>
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/servi%C3%A7os.html" class="nav-link text-lg transition">Serviços</a>
+                
+                <div class="dropdown relative h-full flex items-center" id="toolsDropdownContainer">
+                    <a href="#" id="toolsDropdownToggle" class="nav-link text-lg transition flex items-center gap-1" aria-expanded="false" aria-controls="toolsMenu">
+                        Ferramentas 
+                        <svg class="dropdown-arrow w-3 h-3 ml-1" id="toolsArrow" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </a>
+                    <div class="dropdown-menu absolute" id="toolsMenu">
+                        <a href="https://asthro.com.br/asthrospeed.html" class="nav-link block">AsthroSpeed (Análise de Sites)</a>
+                        <a href="https://asthro.com.br/zerogravity.html" class="nav-link block">ZeroGravity (Removedor de Fundo)</a>
+                    </div>
+                </div>
+                
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/sobre.html" class="nav-link text-lg transition">Sobre</a>
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/portf%C3%B3lio.html" class="nav-link text-lg transition">Portfólio</a>
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/contato.html" class="nav-link text-lg transition">Contato</a>
                 <a href="https://asthro.com.br/politicas.html" class="nav-link text-lg transition">Políticas</a>
             </div>
+            
             <div class="nav-menu-mobile content-layer">
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/index.html" class="nav-link text-lg transition block">Início</a>
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/servi%C3%A7os.html" class="nav-link text-lg transition block">Serviços</a>
+                <button id="mobileToolsButton" class="nav-link text-lg transition block w-full text-center" style="cursor: pointer;">
+                    Ferramentas
+                </button>
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/sobre.html" class="nav-link text-lg transition block">Sobre</a>
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/portf%C3%B3lio.html" class="nav-link text-lg transition block">Portfólio</a>
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/contato.html" class="nav-link text-lg transition block">Contato</a>
                 <a href="https://asthro.com.br/politicas.html" class="nav-link text-lg transition">Políticas</a>
                 <img src="https://i.imgur.com/sE44ypp.png" alt="Asthro" class="mobile-menu-logo" />
             </div>
+            
+            <div id="mobileToolsModal" class="tools-modal">
+                <div class="modal-content">
+                    <button class="modal-close">&times;</button>
+                    <h3 class="animated-gradient-text text-3xl font-bold mb-8">Nossas Ferramentas</h3>
+                    
+                    <a href="https://asthro.com.br/asthrospeed.html" class="modal-link">
+                        AsthroSpeed
+                        <span class="modal-link-subtitle">Analisador de Performance e SEO</span>
+                    </a>
+                    
+                    <a href="https://asthro.com.br/zerogravity.html" class="modal-link">
+                        ZeroGravity
+                        <span class="modal-link-subtitle">Removedor de Fundo de Imagens</span>
+                    </a>
+                    <p class="text-sm text-gray-400 mt-10">Clique fora para fechar</p>
+                </div>
+            </div>
         </div>
     </nav>
-
     <main>
         <section id="hero" class="relative min-h-screen flex items-center gradient-bg section-animate **justify-center**">
             <div class="content-layer absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-w-2xl w-full text-center">
@@ -1080,229 +1212,267 @@ footer .content-layer {
 </footer>
 
     <script>
-        // Smooth scroll for nav links
-        function smoothScrollTo(elementId) {
-    const targetElement = document.querySelector(elementId);
-    if (!targetElement) return;
+    // --- 0. VARIÁVEIS GLOBAIS CRÍTICAS ---
+    // Buscamos os elementos no DOM para que as funções globais possam acessá-los.
+    const hamburger = document.querySelector('.hamburger');
+    const navMenu = document.querySelector('.nav-menu-mobile');
+    const starsContainer = document.getElementById('stars-container');
+    
+    // Variáveis para o Dropdown Desktop
+    const toolsDropdownToggle = document.getElementById('toolsDropdownToggle');
+    const toolsDropdownContainer = document.getElementById('toolsDropdownContainer');
+    const toolsMenu = document.getElementById('toolsMenu');
+    
+    // Variáveis para o Modal Mobile
+    const mobileToolsButton = document.getElementById('mobileToolsButton');
+    const mobileToolsModal = document.getElementById('mobileToolsModal');
+    const modalCloseButton = document.querySelector('#mobileToolsModal .modal-close');
 
-    const startPosition = window.pageYOffset;
-    // O targetElement.getBoundingClientRect().top é relativo à viewport
-    const targetPosition = targetElement.getBoundingClientRect().top + startPosition;
-    const distance = targetPosition - startPosition;
-    const duration = 1500; // 1.5 SEGUNDOS. Aumente ou diminua este valor para controlar a velocidade.
-    let startTime = null;
+    // Variáveis para a Animação Parallax
+    const parallaxItems = document.querySelectorAll('.parallax-item');
+    
+    // Variáveis da Animação do Hero
+    const heroTexts = [
+        { title: 'Conheça a Asthro', description: 'Somos uma equipe apaixonada por transformar ideias em realidade.' },
+        { title: 'Criamos com propósito', description: 'Cada projeto é uma chance de contar uma nova história.' },
+        { title: 'Ideias que inspiram', description: 'Criamos soluções com propósito, beleza e estratégia.' },
+        { title: 'Conectando criatividade e emoção', description: 'Na Asthro, design e emoção andam juntos.' },
+        { title: 'Design com alma', description: 'Acreditamos no poder de uma boa ideia bem executada.' },
+        { title: 'Sua ideia, nossa energia', description: 'Aqui, criatividade e resultado andam lado a lado.' },
+        { title: 'Damos vida ao que você imagina', description: 'Trabalhamos para fazer sua marca ser lembrada.' },
+        { title: 'Experiências que marcam', description: 'Do conceito à entrega, tudo é feito com carinho e intenção.' }
+    ];
+    let currentTextIndex = 0;
 
-    function animation(currentTime) {
-        if (startTime === null) startTime = currentTime;
-        const timeElapsed = currentTime - startTime;
-        const run = ease(timeElapsed, startPosition, distance, duration);
-        window.scrollTo(0, run);
-        if (timeElapsed < duration) requestAnimationFrame(animation);
-    }
-
-    // Função de atenuação (easing) para um movimento mais natural
-    function ease(t, b, c, d) {
-        t /= d / 2;
-        if (t < 1) return c / 2 * t * t * t + b;
-        t -= 2;
-        return c / 2 * (t * t * t + 2) + b;
-    }
-
-    requestAnimationFrame(animation);
-}
-
-// Aplica a rolagem lenta a todos os links com href="#..."
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const href = this.getAttribute('href');
-        smoothScrollTo(href); // Chama a nova função de rolagem lenta
-
-        // Fecha o menu hambúrguer ao clicar em um link, apenas em telas menores
-        if (window.innerWidth <= 768) {
-            // Verifica se a função toggleMenu existe antes de chamar
-            if (typeof toggleMenu === 'function') {
-                toggleMenu();
-            }
-        }
-    });
-});
-
-        // Hamburger menu functionality
-        const hamburger = document.querySelector('.hamburger');
-        const mobileNavMenu = document.querySelector('.nav-menu-mobile');
-        //const desktopNavMenu = document.querySelector('.desktop-nav'); // Não é necessário aqui
-
-        function toggleMenu() {
+    // --- FUNÇÃO GLOBAL DO MENU HAMBURGER (CONTROLA A FUNCIONALIDADE) ---
+    function toggleMenu() {
+        if(hamburger && navMenu){
             hamburger.classList.toggle('active');
-            mobileNavMenu.classList.toggle('active');
-            document.body.style.overflowY = mobileNavMenu.classList.contains('active') ? 'hidden' : 'auto';
+            navMenu.classList.toggle('active');
+            document.body.style.overflowY = navMenu.classList.contains('active') ? 'hidden' : 'auto';
+        }
+    }
+
+    // --- FUNÇÕES DO MODAL MOBILE (POUP-UP FERRAMENTAS) ---
+    function openModal() {
+        mobileToolsModal.classList.add('open');
+        if (navMenu && navMenu.classList.contains('active')) {
+             toggleMenu(); 
+        }
+    }
+    function closeModal() {
+        mobileToolsModal.classList.remove('open');
+    }
+
+    // --- FUNÇÃO DE ROLAGEM LENTA (Smooth Scroll) ---
+    function smoothScrollTo(elementId) {
+        const targetElement = document.querySelector(elementId);
+        if (!targetElement) return;
+
+        const startPosition = window.pageYOffset;
+        const targetPosition = targetElement.getBoundingClientRect().top + startPosition;
+        const distance = targetPosition - startPosition;
+        const duration = 1500; 
+        let startTime = null;
+
+        function animation(currentTime) {
+            if (startTime === null) startTime = currentTime;
+            const timeElapsed = currentTime - startTime;
+            const run = ease(timeElapsed, startPosition, distance, duration);
+            window.scrollTo(0, run);
+            if (timeElapsed < duration) requestAnimationFrame(animation);
         }
 
-        hamburger.addEventListener('click', toggleMenu);
+        function ease(t, b, c, d) {
+            t /= d / 2;
+            if (t < 1) return c / 2 * t * t * t + b;
+            t -= 2;
+            return c / 2 * (t * t * t + 2) + b;
+        }
 
-        // Hide mobile menu on resize if it becomes desktop view
-        window.addEventListener('resize', () => {
-            if (window.innerWidth > 768 && mobileNavMenu.classList.contains('active')) {
-                toggleMenu();
-            }
+        requestAnimationFrame(animation);
+    }
+    
+    // --- FUNÇÃO DE ANIMAÇÃO DO TEXTO HERO ---
+    function updateHeroText() {
+        const heroTitle = document.getElementById('hero-title');
+        const heroDescription = document.getElementById('hero-description');
+        const heroButton = document.getElementById('hero-button');
+        if (!heroTitle) return;
+
+        // Apply fade-out animation smoothly
+        heroTitle.classList.add('fade-out');
+        heroDescription.classList.add('fade-out');
+        heroButton.classList.add('fade-out');
+
+        setTimeout(() => {
+            heroTitle.classList.remove('fade-out');
+            heroDescription.classList.remove('fade-out');
+            heroButton.classList.remove('fade-out');
+
+            // Update text
+            heroTitle.textContent = heroTexts[currentTextIndex].title;
+            heroDescription.textContent = heroTexts[currentTextIndex].description;
+
+            // Apply fade-in animation smoothly
+            heroTitle.classList.add('fade-in');
+            heroDescription.classList.add('fade-in');
+            heroButton.classList.add('fade-in');
+
+            setTimeout(() => {
+                heroTitle.classList.remove('fade-in');
+                heroDescription.classList.remove('fade-in');
+                heroButton.classList.remove('fade-in');
+            }, 1000);
+
+            currentTextIndex = (currentTextIndex + 1) % heroTexts.length;
+        }, 1000);
+    }
+
+    // --- FUNÇÃO ESTRELAS (PARA O FUNDO) ---
+    function createStars() {
+        if (!starsContainer) return;
+        starsContainer.innerHTML = '';
+        const colors = ['purple', 'pink', 'white'];
+        const numStars = 250;
+        const documentHeight = document.body.scrollHeight;
+        const viewportWidth = window.innerWidth;
+
+        for (let i = 0; i < numStars; i++) {
+            const star = document.createElement('span');
+            star.classList.add('star');
+            star.classList.add(colors[Math.floor(Math.random() * colors.length)]);
+            star.style.left = `${Math.random() * viewportWidth}px`;
+            star.style.top = `${Math.random() * documentHeight}px`;
+            const moveX = (Math.random() - 0.5) * 300;
+            const moveY = (Math.random() - 0.5) * 300;
+            star.style.setProperty('--move-x', `${moveX}px`);
+            star.style.setProperty('--move-y', `${moveY}px`);
+            star.style.animationDelay = `${Math.random() * 15}s`;
+            starsContainer.appendChild(star);
+        }
+    }
+    
+    // ----------------------------------------------------------------------
+    // ====================== INICIALIZAÇÃO E EVENTOS PRINCIPAIS ====================
+    // ----------------------------------------------------------------------
+
+    document.addEventListener('DOMContentLoaded', () => {
+
+        // --- INICIALIZAÇÃO DO CABEÇALHO (EVENT LISTENERS) ---
+        if (hamburger && navMenu) {
+            hamburger.addEventListener('click', toggleMenu);
+            
+            // Fechar menu ao clicar fora
+            document.addEventListener('click', (e) => {
+                if (window.innerWidth <= 768 && !hamburger.contains(e.target) && !navMenu.contains(e.target) && navMenu.classList.contains('active')) {
+                    toggleMenu();
+                }
+            });
+            // Fechar menu no resize para desktop
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 768 && navMenu.classList.contains('active')) {
+                    toggleMenu();
+                }
+            });
+        }
+        
+        // --- LÓGICA DO POP-UP (MODAL) MOBILE ---
+        if (mobileToolsButton && mobileToolsModal && modalCloseButton) {
+            mobileToolsButton.addEventListener('click', openModal);
+            modalCloseButton.addEventListener('click', closeModal);
+            window.addEventListener('click', (event) => {
+                if (event.target === mobileToolsModal) {
+                    closeModal();
+                }
+            });
+            mobileToolsModal.querySelectorAll('.modal-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    setTimeout(closeModal, 100);
+                });
+            });
+        }
+
+        // --- LÓGICA DO DROPDOWN (PC) ---
+        if (toolsDropdownToggle && toolsDropdownContainer && toolsMenu) {
+            toolsDropdownToggle.addEventListener('click', (event) => {
+                event.preventDefault(); event.stopPropagation(); 
+                toolsDropdownContainer.classList.toggle('active');
+                toolsDropdownToggle.setAttribute('aria-expanded', toolsDropdownContainer.classList.contains('active'));
+            });
+            document.addEventListener('click', (event) => {
+                if (!toolsDropdownContainer.contains(event.target)) {
+                    toolsDropdownContainer.classList.remove('active');
+                    toolsDropdownToggle.setAttribute('aria-expanded', 'false');
+                }
+            });
+            toolsMenu.querySelectorAll('a').forEach(link => {
+                 link.addEventListener('click', () => { setTimeout(() => { toolsDropdownContainer.classList.remove('active'); toolsDropdownToggle.setAttribute('aria-expanded', 'false'); }, 50); });
+            });
+        }
+
+        // --- ROLAGEM LENTA (LIGA O SMOOTH SCROLL) ---
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                smoothScrollTo(this.getAttribute('href'));
+                if (window.innerWidth <= 768) {
+                    toggleMenu(); 
+                }
+            });
         });
 
-        // Close mobile menu if clicked outside
-        document.addEventListener('click', (e) => {
-            if (window.innerWidth <= 768 && !hamburger.contains(e.target) && !mobileNavMenu.contains(e.target) && mobileNavMenu.classList.contains('active')) {
-                toggleMenu();
-            }
-        });
 
-        // Fade-in animation on scroll
+        // --- ANIMAÇÕES HERO (ROTATOR) ---
+        updateHeroText(); 
+        setInterval(updateHeroText, 7000); 
+
+        // --- OBSERVER PARA ANIMAÇÕES GERAIS ---
         const observer = new IntersectionObserver(entries => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.classList.add('fade-in');
+                    entry.target.classList.add('fade-in'); 
+                    entry.target.classList.add('visible'); // Para section-animate
                     observer.unobserve(entry.target);
                 }
             });
         }, { threshold: 0.1 });
-        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+        document.querySelectorAll('.fade-in, .section-animate').forEach(el => observer.observe(el));
+        
+        // --- PARALLAX REVERSO (PARA DESKTOP) ---
+        // A lógica do parallax deve estar no DOMContentLoaded para garantir que os itens existam
+        if (window.innerWidth > 1024) { 
+             document.addEventListener('mousemove', (e) => {
+                const centerX = window.innerWidth / 2;
+                const centerY = window.innerHeight / 2;
+                const deltaX = e.clientX - centerX;
+                const deltaY = e.clientY - centerY;
 
-        // Section slide-in/slide-out animation
-        const sectionObserver = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                } else {
-                    entry.target.classList.remove('visible');
-                }
+                parallaxItems.forEach((item, index) => {
+                    const strength = parseFloat(item.dataset.parallaxStrength) || 0.05;
+                    const moveX = deltaX * -strength;
+                    const moveY = deltaY * -strength;
+                    const delay = index * 60; 
+
+                    setTimeout(() => {
+                         item.style.transform = `translate(${moveX}px, ${moveY}px)`;
+                    }, delay);
+                });
             });
-        }, { threshold: 0.2 });
-        document.querySelectorAll('.section-animate').forEach(section => sectionObserver.observe(section));
-
-        // Stars background initialization and update
-        const starsContainer = document.getElementById('stars-container');
-        const colors = ['purple', 'pink', 'white'];
-        const numStars = 250; // Aumentado para mais estrelas
-
-        function createStars() {
-            starsContainer.innerHTML = ''; // Limpa estrelas existentes antes de recriar
-            const documentHeight = document.body.scrollHeight; // Altura total do documento (incluindo scroll)
-            const viewportWidth = window.innerWidth; // Largura da viewport
-
-            for (let i = 0; i < numStars; i++) {
-                const star = document.createElement('span');
-                star.classList.add('star');
-                star.classList.add(colors[Math.floor(Math.random() * colors.length)]);
-                
-                // Posição aleatória dentro da largura da viewport e da altura total do documento
-                star.style.left = `${Math.random() * viewportWidth}px`;
-                star.style.top = `${Math.random() * documentHeight}px`; // Usa documentHeight aqui
-                
-                const moveX = (Math.random() - 0.5) * 300;
-                const moveY = (Math.random() - 0.5) * 300;
-                star.style.setProperty('--move-x', `${moveX}px`);
-                star.style.setProperty('--move-y', `${moveY}px`);
-                star.style.animationDelay = `${Math.random() * 15}s`;
-                starsContainer.appendChild(star);
-            }
         }
 
-        // Cria estrelas no carregamento e ao redimensionar
-        createStars();
-        window.addEventListener('resize', createStars);
-
-
-        // Hero text and button rotation
-        const heroTexts = [
-            { title: 'Conheça a Asthro', description: 'Somos uma equipe apaixonada por transformar ideias em realidade.' },
-            { title: 'Criamos com propósito', description: 'Cada projeto é uma chance de contar uma nova história.' },
-            { title: 'Ideias que inspiram', description: 'Criamos soluções com propósito, beleza e estratégia.' },
-            { title: 'Conectando criatividade e emoção', description: 'Na Asthro, design e emoção andam juntos.' },
-            { title: 'Design com alma', description: 'Acreditamos no poder de uma boa ideia bem executada.' },
-            { title: 'Sua ideia, nossa energia', description: 'Aqui, criatividade e resultado andam lado a lado.' },
-            { title: 'Damos vida ao que você imagina', description: 'Trabalhamos para fazer sua marca ser lembrada.' },
-            { title: 'Experiências que marcam', description: 'Do conceito à entrega, tudo é feito com carinho e intenção.' }
-        ];
-
-        let currentTextIndex = 0;
-        const heroTitle = document.getElementById('hero-title');
-        const heroDescription = document.getElementById('hero-description');
-        const heroButton = document.getElementById('hero-button');
-
-        function updateHeroText() {
-            // Apply fade-out animation smoothly
-            heroTitle.classList.add('fade-out');
-            heroDescription.classList.add('fade-out');
-            heroButton.classList.add('fade-out');
-
-            setTimeout(() => {
-                // Reset state for smooth transition
-                heroTitle.style.opacity = '0';
-                heroDescription.style.opacity = '0';
-                heroButton.style.opacity = '0';
-                heroTitle.classList.remove('fade-out');
-                heroDescription.classList.remove('fade-out');
-                heroButton.classList.remove('fade-out');
-
-                // Update text
-                heroTitle.textContent = heroTexts[currentTextIndex].title;
-                heroDescription.textContent = heroTexts[currentTextIndex].description;
-
-                // Apply fade-in animation smoothly
-                heroTitle.classList.add('fade-in');
-                heroDescription.classList.add('fade-in');
-                heroButton.classList.add('fade-in');
-
-                // Clean up after animation
-                setTimeout(() => {
-                    heroTitle.classList.remove('fade-in');
-                    heroDescription.classList.remove('fade-in');
-                    heroButton.classList.remove('fade-in');
-                    heroTitle.style.opacity = '1';
-                    heroDescription.style.opacity = '1';
-                    heroButton.style.opacity = '1';
-                }, 1000); // Wait for fade-in animation to complete
-
-                currentTextIndex = (currentTextIndex + 1) % heroTexts.length;
-            }, 1000); // Wait for fade-out animation to complete
-        }
-
-        updateHeroText(); // Initial call
-        setInterval(updateHeroText, 7000); // Change every 7 seconds
+        // --- ANTI-DRAG / ANTI-CONTEXT MENU ---
         document.addEventListener('contextmenu', function(e) {
-    if (e.target.tagName === 'IMG') {
-        e.preventDefault();
-    }
-}, false);
+            if (e.target.tagName === 'IMG') {
+                e.preventDefault();
+            }
+        }, false);
 
-        /* -------------------------------------
-            NOVO CÓDIGO JS para EFEITO PARALLAX REVERSO (MÚLTIPLOS ITENS)
-        ------------------------------------- */
+    }); // FIM DO DOMContentLoaded
 
-        const parallaxItems = document.querySelectorAll('.parallax-item');
-        
-        document.addEventListener('mousemove', (e) => {
-            // Calcula o desvio do mouse em relação ao centro da viewport
-            const centerX = window.innerWidth / 2;
-            const centerY = window.innerHeight / 2;
-            const deltaX = e.clientX - centerX;
-            const deltaY = e.clientY - centerY;
-
-            parallaxItems.forEach((item, index) => {
-                // 1. Extrai a força e calcula o movimento
-                const strength = parseFloat(item.dataset.parallaxStrength) || 0.05;
-                const moveX = deltaX * -strength;
-                const moveY = deltaY * -strength;
-                
-                // 2. Define um delay escalonado em milissegundos
-                // O primeiro item tem 0ms, o segundo 20ms, o terceiro 40ms, etc.
-                const delay = index * 60; 
-
-                // 3. Aplica a transformação com um pequeno atraso
-                setTimeout(() => {
-                    item.style.transform = `translate(${moveX}px, ${moveY}px)`;
-                }, delay);
-            });
-        });
-    </script>
+    // --- FUNÇÃO ESTRELAS (CHAMADA GLOBALMENTE NO RESIZE) ---
+    createStars();
+    window.addEventListener('resize', createStars);
+</script>
 </body>
 </html>
