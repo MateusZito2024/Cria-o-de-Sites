@@ -4,452 +4,1421 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Asthro - Analisador de Performance Web</title>
-    <style>
-        /* Estilos CSS Básicos para a página */
-        body {
-            font-family: 'Inter', Arial, sans-serif;
-            margin: 20px;
-            background-color: #f4f4f9;
-            color: #333;
-        }
-        .container {
-            max-width: 900px; /* Aumentado para melhor visualização dos detalhes */
-            margin: auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            text-align: center;
-            color: #007bff;
-            margin-bottom: 20px;
-        }
-        h2 {
-            border-bottom: 3px solid #007bff;
-            padding-bottom: 10px;
-            margin-top: 30px;
-            color: #333;
-        }
-        h3 {
-            color: #007bff;
-            margin-top: 20px;
-        }
-        #input-area {
-            display: flex;
-            margin-bottom: 20px;
-        }
-        #urlInput {
-            flex-grow: 1;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 6px 0 0 6px;
-            font-size: 1em;
-        }
-        #analyzeButton {
-            padding: 12px 20px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            cursor: pointer;
-            border-radius: 0 6px 6px 0;
-            transition: background-color 0.3s;
-            font-size: 1em;
-        }
-        #analyzeButton:hover {
-            background-color: #0056b3;
-        }
-        #results {
-            margin-top: 20px;
-            padding-top: 20px;
-        }
-        .loading {
-            text-align: center;
-            font-size: 1.2em;
-            color: #007bff;
-            padding: 40px 0;
-        }
-        /* Grid de Pontuações Principais e CWV */
-        .metric-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
-        .metric-box {
-            background: #e9ecef;
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        }
-        .metric-score {
-            font-size: 1.8em;
-            font-weight: bold;
-            margin-top: 5px;
-        }
-        /* Cores de Pontuação */
-        .score-good { color: #28a745; }
-        .score-medium { color: #ffc107; }
-        .score-bad { color: #dc3545; }
+    <!-- Inclui Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script> 
+    <!-- Fontes do Asthro -->
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700&family=Manrope:wght@400;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="https://i.imgur.com/ZeaGXHD.png">
+    
+    <!-- Metatags para SEO (Adaptadas para a página Analisador) -->
+    <meta property="og:image" content="https://i.imgur.com/sE44ypp.png">
+    <meta property="og:url" content="https://asthro.com.br/analisador.html">
+    <meta property="og:title" content="Asthro | Analisador PageSpeed Insights Gratuito">
+    <meta property="og:description" content="Avalie a performance do seu site (Core Web Vitals, SEO, Acessibilidade) com a ferramenta gratuita da Asthro.">
+    <meta property="og:type" content="website">
 
-        /* Estilos para o Acordeão (Collapsible UI) */
-        .collapsible-header {
-            cursor: pointer;
-            padding: 15px;
-            margin-top: 20px;
-            border-radius: 8px;
-            transition: background-color 0.3s;
+    <style>
+        footer .content-layer {
+    display: block !important; 
+    pointer-events: auto !important;
+}
+        .social-links-png {
+    /* Container de layout */
+    margin-top: 1rem;
+    
+    /* 🚨 NOVO: Propriedades Flexbox para alinhamento vertical */
+    display: flex; /* Transforma o container em Flexbox */
+    justify-content: center; /* Mantém o alinhamento horizontal centralizado */
+    align-items: center; /* Alinha os itens (links) verticalmente ao centro */
+    height: 50px; /* Defina uma altura mínima para o container se necessário, ou remova se a altura for suficiente */
+}
+
+.social-img-icon {
+    width: 35px; 
+    height: 35px;
+    transition: transform 0.3s ease, filter 0.3s ease;
+    
+    /* Efeito para deixar a imagem um pouco mais escura (Dark Theme) */
+    filter: brightness(85%); 
+    
+    /* Garante que a imagem não possa ser arrastada/selecionada */
+    -webkit-user-drag: none;
+    user-select: none;
+}
+
+/* Efeito de Hover PADRÃO: (Elevação e Brilho 100%) */
+.social-links-png a:hover .social-img-icon {
+    transform: scale(1.15) rotate(2deg); 
+    filter: brightness(100%); /* Força o ícone a ter brilho total no hover */
+    width: 35px; 
+    height: 35px;
+}
+.social-links-png a:nth-child(1) .social-img-icon {
+    width: 30px !important; 
+    height: 30px !important;
+}
+
+/* 2. TikTok: 50px */
+.social-links-png a:nth-child(2) .social-img-icon {
+    width: 45px !important; 
+    height: 45px !important;
+}
+
+/* 3. YouTube: 30px */
+.social-links-png a:nth-child(3) .social-img-icon {
+    width: 45px !important; 
+    height: 45px !important;
+}
+/* --- BRILHOS INDIVIDUAIS (NEON GLOW) --- */
+
+/* 1. Instagram: Brilho Rosa/Magenta */
+.social-links-png a:nth-child(1):hover .social-img-icon {
+    /* A cor #E1306C é um tom de rosa/magenta que representa o Instagram */
+    filter: drop-shadow(0 0 10px #E1306C) brightness(100%);
+    transform: scale(1.15) rotate(5deg); 
+}
+
+/* 2. TikTok: Brilho Ciano (para combinar com o esquema do seu site) */
+.social-links-png a:nth-child(2):hover .social-img-icon {
+    /* A cor #0bf4ed é o ciano que você já usa no seu gradiente */
+    filter: drop-shadow(0 0 10px #0bf4ed) brightness(100%);
+    transform: scale(1.15); /* Sem rotação no TikTok, para variar */
+}
+
+/* 3. YouTube: Brilho Vermelho */
+.social-links-png a:nth-child(3):hover .social-img-icon {
+    /* A cor #FF0000 é o vermelho clássico do YouTube */
+    filter: drop-shadow(0 0 10px #FF0000) brightness(100%);
+    transform: scale(1.15) translateY(-2px); 
+}
+
+/* CORREÇÃO CRÍTICA: GARANTE QUE O CONTEÚDO DO RODAPÉ SEJA VISÍVEL NO DESKTOP */
+footer .content-layer {
+    display: block !important; 
+    pointer-events: auto !important;
+}
+        h2, h3, h4 {
+    font-family: 'Archivo', sans-serif;
+}
+
+/* Garante que o texto de corpo e parágrafos use Manrope (Herda de body) */
+.text-gray-300, .text-gray-400 {
+    font-family: 'Manrope', sans-serif;
+}
+        img {
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none;     /* IE 10+ */
+    user-select: none;
+    -webkit-user-drag: none;   /* Bloqueia o arrasto em Webkit (Chrome, Safari) */
+    pointer-events: auto;      /* Garante que o cursor do mouse funciona, mas bloqueia o toque longo */
+}
+        /* Reset para box-sizing global */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            font-family: 'Manrope', sans-serif;
+            background: linear-gradient(135deg, #111111, #111111);
+            background-size: 400% 400%;
+            animation: gradientTransition 20s ease-in-out infinite;
+            color: #edf1f7;
+            margin: 0;
+            padding: 0;
+            position: relative;
+            overflow-x: hidden; /* Apenas overflow-x: hidden aqui para controlar a barra horizontal geral */
+            overflow-y: auto; /* Permite rolagem vertical */
+            min-height: 100%;
+            width: 100vw; /* Garante que o body ocupe exatamente 100% da largura da viewport */
+        }
+
+        @keyframes gradientTransition {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .stars-container {
+            position: fixed; /* Mantenha fixed para cobrir a viewport */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%; /* Cobre 100% da viewport */
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden; /* Corta estrelas que "saem" da viewport ao flutuar */
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #ffffff;
+            border-radius: 50%;
+            box-shadow: 0 0 5px 1px rgba(255, 255, 255, 0.5);
+            opacity: 0.3;
+            animation: floatStar 15s infinite ease-in-out;
+        }
+
+        .star.purple {
+            background: #6627ff;
+            box-shadow: 0 0 5px 1px rgba(106, 13, 173, 0.5);
+        }
+
+        .star.pink {
+            background: #0bf4ed;
+            box-shadow: 0 0 5px 1px rgba(232, 121, 249, 0.5);
+        }
+
+        .star.white {
+            background: #ffffff;
+            box-shadow: 0 0 5px 1px rgba(255, 255, 255, 0.5);
+        }
+
+        @keyframes floatStar {
+            0% { opacity: 0.3; transform: translate(0, 0); }
+            50% { opacity: 0.6; transform: translate(var(--move-x), var(--move-y)); }
+            100% { opacity: 0.3; transform: translate(0, 0); }
+        }
+
+        /* -------------------------------------
+            Header Styles
+        ------------------------------------- */
+        .brand-name {
+            font-family: 'Great Vibes', cursive;
+            line-height: 2;
+            padding: 1rem;
+            display: block;
+            overflow: visible;
+            font-size: clamp(2rem, 6vw, 2.5rem); /* Ajuste com clamp para mobile */
+        }
+
+        .flex.items-center.content-layer {
+            overflow: visible;
+        }
+
+        .nav-link {
+            font-family: 'Manrope', sans-serif;
+            position: relative;
+            text-decoration: none;
+            color: #f8f8f8;
+            transition: color 0.3s ease;
+            font-size: clamp(1rem, 3vw, 1.125rem); /* Ajuste com clamp para mobile */
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background: linear-gradient(135deg, #6627ff, #0bf4ed);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-link:hover {
+            color: #0bf4ed;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #6627ff, #0bf4ed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 10;
+            background: transparent;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 0 1rem;
+            pointer-events: auto;
+        }
+
+        nav > div {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-weight: bold;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .collapsible-header:hover {
-            opacity: 0.9;
-        }
-        .collapsible-header::after {
-            content: '+';
-            font-size: 1.5em;
-            transition: transform 0.3s;
-        }
-        .collapsible-header.active::after {
-            content: '-';
-            transform: rotate(0deg); /* Exibe '-' quando ativo */
-        }
-        .collapsible-content {
-            padding: 10px 15px;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s ease-out;
-            background-color: #fcfcfc;
-            border: 1px solid #ddd;
-            border-top: none;
-            border-radius: 0 0 8px 8px;
+            width: 100%;
         }
 
-        /* Status Cores no Header */
-        .status-fail { background-color: #dc3545; color: white;} /* Vermelho */
-        .status-warn { background-color: #ffc107; color: #333;} /* Amarelo */
-        .status-pass { background-color: #28a745; color: white;} /* Verde */
-        
-        /* Estilos para o item de Auditoria */
-        .audit-item {
-            padding: 10px 0;
-            border-bottom: 1px dashed #e0e0e0;
-            display: flex;
+        nav .flex.items-center.content-layer:first-child {
+            margin-right: auto;
+        }
+
+        /* Removido margin-left: auto para mobile, será controlado por flexbox */
+        nav .flex.items-center.content-layer:last-child {
+            /* margin-left: auto; */
+        }
+
+        nav, section, footer {
+    position: relative;
+    z-index: 1;
+}
+
+/* Garante que tudo dentro de main/footer seja interativo */
+main *, footer * {
+    pointer-events: auto;
+}
+
+/* Define a hierarquia de camadas para o tema Asthro */
+.content-layer {
+    position: relative;
+    z-index: 2; /* Garante que o conteúdo fique acima das estrelas */
+}
+
+/* CORREÇÃO: Força o navbar a ser interativo e ter um z-index alto */
+nav {
+    pointer-events: auto;
+    z-index: 50; /* Z-index alto para garantir que fique no topo */
+}
+
+        h1, h2, h3, p, a, input, textarea, button, img, svg {
+            position: relative;
+            z-index: 30;
+        }
+
+        /* -------------------------------------
+            Remaining Styles
+        ------------------------------------- */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes slideOut {
+            from { opacity: 1; transform: translateX(0); }
+            to { opacity: 0; transform: translateX(50px); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes stretch {
+            0% { transform: scaleY(1); }
+            50% { transform: scaleY(1.1); }
+            100% { transform: scaleY(1); }
+        }
+
+        @keyframes pulseGlow {
+            0% { transform: scale(1); box-shadow: 0 0 0 rgba(99, 102, 241, 0); }
+            50% { transform: scale(1.1); box-shadow: 0 0 15px rgba(99, 102, 241, 0.7); }
+            100% { transform: scale(1); box-shadow: 0 0 0 rgba(99, 102, 241, 0); }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+
+        #hero-title.fade-in, #hero-description.fade-in, #hero-button.fade-in {
+            animation: fadeIn 1s ease-in-out forwards;
+        }
+
+        #hero-title.fade-out, #hero-description.fade-out, #hero-button.fade-out {
+            animation: fadeOut 1s ease-in-out forwards;
+        }
+
+        .section-animate {
+            opacity: 1 !important;
+        }
+
+        .section-animate.visible {
+            animation: slideIn 0.8s ease-out forwards;
+        }
+
+        .section-animate:not(.visible) {
+            animation: slideOut 0.8s ease-out forwards;
+        }
+
+        /* Localização: Aproximadamente Linha 304 */
+.team-item, .value-item, .milestone-item {
+    animation: pulse 3s infinite ease-in-out;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+    position: relative;
+    z-index: 30;
+    
+    /* COR DO CARD QUE VOCÊ GOSTOU */
+    background: #1a1a1a; 
+    border: 1px solid #6627ff; 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
+    
+    /* Remove a necessidade de overflow: hidden se não há pseudo-elemento */
+
+    opacity: 1 !important;
+    border-radius: 0.75rem; 
+}
+
+.team-item:hover, .value-item:hover, .milestone-item:hover {
+    /* 🚀 Efeito: Elevação e Inclinação Leve para a Esquerda */
+    transform: translateY(-5px) rotate(-3deg); 
+    
+    /* Mantém o destaque visual e o brilho neon */
+    background: #111111; /* Fica mais escuro no hover */
+    border-color: #0bf4ed; /* Borda ciano forte */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.7), /* Sombra principal forte */
+                0 0 25px rgba(11, 244, 237, 0.8); /* Brilho ciano forte */
+    
+    animation: none;
+}
+        .gradient-bg {
+            background: transparent;
+        }
+
+        .section-bg {
+            background: transparent;
+        }
+
+        .animated-gradient-text {
+            background: linear-gradient(135deg, #6627ff, #0bf4ed, #6627ff);
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 3s linear infinite;
+        }
+
+        .team-img {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .team-img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(11, 244, 237, 0.5);
+        }
+
+        .social-icon {
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+
+        .social-icon:hover {
+            transform: scale(1.2);
+            color: #0bf4ed;
+        }
+
+        /* Linha do tempo: ajustar o layout da linha e dos pontos para mobile */
+        #timeline .milestone-item {
+            padding-left: 40px; /* Espaço para a linha e o ponto */
+        }
+
+        #timeline .milestone-item::before {
+            left: 15px; /* Posição do círculo */
+        }
+
+        #timeline .milestone-item::after {
+            left: 20px; /* Posição da linha vertical */
+            height: calc(100% + 2rem); /* Aumentar a altura da linha para cobrir o gap */
+            top: 0;
+        }
+
+        #timeline .milestone-item:last-child::after {
+            height: 50%; /* A última linha deve ir só até o meio */
+        }
+
+        .value-icon {
+            width: 64px;
+            height: 70px;
+            margin-bottom: 1rem;
+        }
+
+        #hero-title, #hero-description, #hero-button {
+            transition: opacity 1s ease-in-out;
+            will-change: opacity;
+        }
+
+        #hero-button {
+            position: relative;
+            color: transparent; /* Hide original text */
+        }
+
+        #hero-button::before {
+            content: 'Saiba Mais';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            text-align: center;
+            color: white;
+            -webkit-text-fill-color: white;
+        }
+
+        .saiba-mais:hover {
+            box-shadow: 0 0 20px rgba(11, 244, 237, 0.5);
+        }
+
+        /* Adjust image positioning */
+        .office-img {
+            object-position: center bottom; /* Focus on the bottom part of the image */
+        }
+.parallax-item {
+    position: absolute;
+    pointer-events: none; /* Ignora cliques */
+    z-index: 20; /* Fica acima das estrelas, abaixo do texto principal */
+    transition: transform 0.1s ease-out; /* Transição suave */
+    will-change: transform; /* Otimiza a animação */
+}
+
+.parallax-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Garante que a imagem se ajuste */
+    
+}
+
+/* Tamanhos e Posições Iniciais para cada imagem (desktop) */
+.parallax-item-1 { /* Estrela azul */
+    width: 200px; height: 200px;
+    top: 20%; left: -60%;
+    /* No JS, iremos aplicar translate(-50%, -50%) para centralizar. */
+    /* Aqui, só defina top/left para o ponto de origem. */
+}
+.parallax-item-2 { /* Planeta roxo */
+    width: 90px; height: 90px;
+    top: 100%; left: -10%;
+}
+.parallax-item-3 { /* Satélite verde */
+    width: 60px; height: 60px;
+    top: 1%; right: -30%;
+}
+.parallax-item-4 { /* Estrela amarela */
+    width: 160px; height: 160px;
+    top: 80%; right: -65%;
+}
+.parallax-item-5 { /* Nave espacial vermelha */
+    width: 70px; height: 70px;
+    top: 40%; right: -60%;
+}
+.parallax-item-6 { /* Asteroide cinza */
+    width: 200px; height: 200px;
+    top: 70%; left: 65%;
+}
+.parallax-item-7 { /* Lua crescente */
+    width: 110px; height: 110px;
+    top: -25%; left: 25%;
+}
+
+
+/* --- Responsividade para Telas Menores (desktop) --- */
+@media (max-width: 1280px) {
+    .parallax-item-1 { top: 15%; left: 5%; width: 70px; height: 70px; }
+    .parallax-item-2 { top: 75%; left: 8%; width: 100px; height: 100px; }
+    .parallax-item-3 { top: 5%; right: 8%; width: 50px; height: 50px; }
+    .parallax-item-4 { top: 85%; right: 3%; width: 90px; height: 90px; }
+    .parallax-item-5 { top: 35%; right: 15%; width: 80px; height: 80px; }
+    .parallax-item-6 { top: 60%; left: 1%; width: 60px; height: 60px; }
+    .parallax-item-7 { top: 10%; left: 20%; width: 90px; height: 90px; }
+}
+
+@media (max-width: 1024px) {
+    .parallax-item {
+        display: none; /* Oculta todas as imagens parallax em tablets e celulares para evitar sobrecarga e manter o foco no conteúdo principal */
+    }
+}
+        /* --- Mobile Responsiveness --- */
+
+        /* Hamburger menu styles */
+        .hamburger {
+            display: none; /* Hidden by default, shown in media query */
             flex-direction: column;
+            justify-content: space-around;
+            width: 2rem;
+            height: 2rem;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            z-index: 40;
         }
-        .audit-item:last-child {
-            border-bottom: none;
-        }
-        .audit-item strong {
-            font-size: 1em;
-            margin-bottom: 5px;
-        }
-        .audit-item p {
-            margin: 5px 0 0 0;
-            font-size: 0.9em;
-            color: #6c757d;
+.nav-menu-mobile {
+    position: fixed;
+    top: 0;
+    right: -100%; /* Initially off-screen */
+    height: 100vh;
+    width: 100%;
+    max-width: 300px;
+    background: rgba(17, 17, 17, 0.9); /* Fundo semi-transparente para o glassmorphism */
+    backdrop-filter: blur(10px); /* Efeito de desfoque */
+    -webkit-backdrop-filter: blur(10px); /* Para compatibilidade com Safari */
+    border-left: 1px solid rgba(102, 39, 255, 0.5); /* Borda sutil */
+    
+    flex-direction: column;
+    
+    /* 🚀 CRÍTICO: Alinha ao topo para respeitar margens */
+    justify-content: flex-start; 
+    
+    align-items: center;
+    gap: 1.5rem; /* Espaçamento entre os itens */
+    transition: right 0.3s ease;
+    z-index: 999;
+    
+    /* 🚨 CRÍTICO: Aplica o padding completo para criar o respiro inferior */
+    padding: 0 1rem 3rem 1rem; /* 3rem de padding na parte inferior */
+    
+    /* display: flex; deve ser adicionado apenas em .active */
+    display: none; 
+    box-sizing: border-box;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3); /* Sombra para profundidade */
+}
+
+/* Regra de ativação (mantida) */
+.nav-menu-mobile.active {
+    right: 0; 
+    display: flex; 
+}
+
+    /* 🚀 NOVO: Aplica o espaçamento para baixo APENAS no primeiro link */
+    .nav-menu-mobile .nav-link:first-child {
+        /* Ajuste este valor (ex: 5rem, 6rem) para empurrar o primeiro link para baixo 
+           e evitar a colisão com o ícone X. */
+        margin-top: 6rem; 
+    }
+    
+    /* 🚀 NOVO: Adiciona a margem da logo (que foi removida acima) de volta ao topo da logo mobile */
+    .nav-menu-mobile .mobile-menu-logo {
+    margin-top: 0rem; /* Espaço entre o último link e a logo */
+    display: block; 
+}
+        .hamburger span {
+            width: 100%;
+            height: 3px;
+            background: #edf1f7;
+            transition: all 0.3s ease;
         }
 
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        /* Nav menu for mobile */
+        .nav-menu-mobile {
+            display: none; /* Hidden by default */
+        }
+
+        .mobile-menu-logo {
+    display: none; /* Oculta a imagem por padrão (desktop) */
+    width: 80%;
+    max-width: 150px;
+    height: auto;
+    filter: drop-shadow(0 0 5px rgba(102, 39, 255, 0.4));
+}
+
+@media (max-width: 768px) {
+    .mobile-menu-logo {
+        display: block;
+        
+        /* 2. Ajuste Fino para subir/descer mais */
+        transform: translateY(-20px); /* Move 20px para cima. Ajuste este valor. */
+        
+        /* Mantenha o seu estilo visual */
+        width: 80%; 
+        max-width: 150px;
+        height: auto;
+        filter: drop-shadow(0 0 5px rgba(102, 39, 255, 0.4));
+    }
+    /* Navbar adjustments */
+    nav {
+        /* CORREÇÃO: Fundo escuro para o cabeçalho no mobile */
+        background: rgba(17, 17, 17, 0.95);
+        padding: 0.5rem 1rem;
+    }
+
+    /* Hide desktop nav links */
+    nav .flex.items-center.space-x-6 {
+        display: none;
+    }
+
+    /* Show hamburger */
+    .hamburger {
+        display: flex;
+    }
+
+    /* Mobile nav menu com Glassmorphism */
+    .nav-menu-mobile {
+        position: fixed;
+        top: 0;
+        right: -100%; /* Initially off-screen */
+        height: 100vh;
+        width: 100%;
+        max-width: 300px; /* Limit width for larger tablets */
+        background: rgba(17, 17, 17, 0.9); /* Fundo semi-transparente para o glassmorphism */
+        backdrop-filter: blur(10px); /* Efeito de desfoque */
+        -webkit-backdrop-filter: blur(10px); /* Para compatibilidade com Safari */
+        border-left: 1px solid rgba(102, 39, 255, 0.5); /* Borda sutil */
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 1.5rem; /* Espaçamento entre os itens */
+        transition: right 0.3s ease;
+        z-index: 30;
+        display: flex; /* Show flex container */
+        box-sizing: border-box;
+        padding: 0 1rem;
+        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3); /* Sombra para profundidade */
+    }
+.nav-menu-mobile .mobile-menu-logo {
+        margin-top: 0rem; /* Espaço entre o último link e a logo */
+        display: block; 
+    }
+    .nav-menu-mobile.active {
+        right: 0; /* Slide in */
+    }
+    
+    /* Mostrar o logo e aplicar margem apenas no mobile */
+    .mobile-menu-logo {
+        display: block; 
+    }
+
+    /* Adjust brand name font size */
+    .brand-name {
+        font-size: clamp(1.75rem, 8vw, 2rem);
+        padding: 0.5rem;
+    }
+
+    /* Estilo dos links no menu mobile - Glassmorphism */
+    .nav-menu-mobile .nav-link {
+        display: block;
+        width: 90%; /* Ajuste a largura para um visual mais elegante */
+        padding: 0.8rem 1.5rem;
+        border-radius: 0.75rem; /* Mais arredondado */
+        background: rgba(102, 39, 255, 0.1); /* Fundo semi-transparente para o link */
+        color: #f8f8f8; /* Cor do texto clara */
+        text-align: center;
+        font-size: clamp(1.125rem, 4vw, 1.3rem); /* Fonte um pouco maior */
+        font-weight: 600; /* Mais negrito */
+        border: 1px solid rgba(255, 255, 255, 0.2); /* Borda sutil para o efeito de vidro */
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra suave */
+        transition: all 0.3s ease; /* Transições suaves */
+    }
+
+    .nav-menu-mobile .nav-link:hover {
+        background: linear-gradient(135deg, rgba(102, 39, 255, 0.3), rgba(11, 244, 237, 0.3)); /* Gradiente mais visível no hover */
+        transform: translateY(-4px) scale(1.02); /* Efeito de levantar e expandir levemente */
+        box-shadow: 0 8px 16px rgba(11, 244, 237, 0.6); /* Sombra mais intensa e colorida no hover */
+        border-color: #0bf4ed; /* Borda colorida no hover */
+    }
+
+    .nav-menu-mobile .nav-link::after {
+        display: none; /* Remove a linha inferior dos links no mobile */
+    }
+
+            /* Ajuste de padding para o conteúdo principal para não ficar sob a navbar */
+            main {
+                padding-top: 2rem; /* Mantém a distância da Navbar ao topo do Conteúdo */
+            }
+
+            /* Hero Section adjustments */
+            #hero {
+                min-height: 40vh; /* REDUZIDO: Diminui a altura total da seção para 50% da viewport */
+                padding-top: 1rem; /* REDUZIDO: Diminui o espaço interno do topo da seção */
+                align-items: flex-start;
+                justify-content: center;
+            }
+
+            #hero .content-layer {
+                position: static;
+                top: 50% !important;
+                transform: translate(-50%, -50%) !important;
+                text-align: center;
+                padding: 1rem 1rem; /* Reduzido o padding vertical de 2rem para 1rem */
+                max-width: 100%;
+                margin: 0 auto;
+            }
+/* NOVO: REGRAS PARA FORÇAR A CENTRALIZAÇÃO DO TEXTO LONGO E SUBTÍTULOS */
+    #sobre .fade-in,
+    #sobre .fade-in p,
+    #equipe .max-w-3xl, /* Container de texto da equipe */
+    #timeline .milestone-item,
+    #valores .value-item {
+        text-align: center !important; /* Centraliza todo o texto e blocos */
+    }
+    
+    /* Centraliza o parágrafo de introdução da seção Equipe */
+    #equipe p.text-xl {
+        text-align: center !important;
+    }
+
+    /* Garante que os cards em geral estejam centralizados (já estava na sua versão, mas é bom reforçar) */
+    .team-item, .value-item, .milestone-item {
+        padding: 1.5rem;
+        text-align: center;
+    }
+            #hero h2 {
+                font-size: clamp(2.5rem, 10vw, 3.5rem); /* Ajusta tamanho do título */
+                line-height: 1.2;
+            }
+
+            #hero p {
+                font-size: clamp(1rem, 4.5vw, 1.25rem); /* Ajusta tamanho do parágrafo */
+            }
+
+            #hero-button {
+                padding: 1rem 2.5rem; /* Ajusta padding do botão */
+                font-size: clamp(1rem, 4vw, 1.125rem);
+                width: fit-content; /* Ajusta a largura ao conteúdo */
+                margin: 2rem auto 0 auto; /* Centraliza o botão */
+            }
+
+            #hero .relative.min-h-\[400px\].md\:min-h-\[450px\] {
+                min-height: auto; /* Remove altura fixa para melhor fluidez */
+            }
+
+            /* Grid layout for sections */
+            #sobre .grid,
+            #equipe .grid,
+            #valores .grid {
+                grid-template-columns: 1fr; /* Stack columns */
+                gap: 2rem; /* Aumenta o espaçamento entre as seções */
+            }
+
+            /* Cards e Imagens */
+            .team-item, .value-item, .milestone-item {
+                padding: 1.5rem;
+                text-align: center; /* Centraliza o texto nos cards */
+            }
+
+            .team-img {
+                width: 100px;
+                height: 100px;
+            }
+
+            .office-img {
+                height: 250px; /* Altura fixa para a imagem do escritório em mobile */
+                width: 100%;
+                object-fit: cover;
+                object-position: center center; /* Centraliza a imagem */
+            }
+
+            /* Linha do Tempo (Timeline) */
+            #timeline .milestone-item {
+                padding-left: 30px; /* Reduz o padding para a linha */
+                margin-left: 20px; /* Move os itens mais para a direita para deixar espaço para a linha */
+            }
+
+            #timeline .milestone-item::before {
+                left: 0; /* Posição do círculo mais à esquerda */
+            }
+
+            #timeline .milestone-item::after {
+                left: 5px; /* Posição da linha vertical mais à esquerda */
+            }
+
+            /* General section padding */
+            section {
+                padding: 3rem 1rem; /* Ajusta padding geral das seções */
+            }
+
+            h2 {
+                font-size: clamp(2rem, 8vw, 2.5rem); /* Ajusta tamanho dos títulos das seções */
+            }
+
+            h3 {
+                font-size: clamp(1.5rem, 6vw, 1.75rem);
+            }
+
+            p {
+                font-size: clamp(0.9rem, 3.8vw, 1.1rem); /* Ajusta tamanho dos parágrafos */
+            }
+
+            .value-icon {
+                width: 56px;
+                height: 60px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            /* Further small adjustments for very small screens */
+            .brand-name {
+                font-size: clamp(1.5rem, 7vw, 1.75rem);
+            }
+
+            #hero h2 {
+                font-size: clamp(2rem, 9vw, 3rem);
+            }
+
+            #hero p {
+                font-size: clamp(0.85rem, 4vw, 1.1rem);
+            }
+
+            #hero-button {
+                padding: 0.8rem 2rem;
+                font-size: clamp(0.9rem, 3.5vw, 1rem);
+            }
+
+            .team-img {
+                width: 80px;
+                height: 80px;
+            }
+
+            .value-icon {
+                width: 58px;
+                height: 65px;
+            }
+
+            h2 {
+                font-size: clamp(1.8rem, 7vw, 2.25rem);
+            }
+
+            h3 {
+                font-size: clamp(1.3rem, 5.5vw, 1.6rem);
+            }
+        }
+        /* --- ESTILOS DO ANALISADOR DE PERFORMANCE --- */
+        
+.analyser-card {
+    background: #1a1a1a; /* Fundo escuro do cartão */
+    border: 1px solid #6627ff; /* Borda roxa do tema */
+    box-shadow: 0 4px 15px rgba(102, 39, 255, 0.3); /* Sombra roxa */
+    transition: all 0.3s;
+}
+.analyser-card:hover {
+     border-color: #0bf4ed; /* Borda ciano no hover */
+     box-shadow: 0 4px 20px rgba(11, 244, 237, 0.5); /* Brilho ciano */
+}
+
+/* Input e Botão */
+#urlInput {
+    border: 1px solid #6627ff;
+    background-color: #0b0b0b;
+    color: #edf1f7;
+}
+#analyzeButton {
+    /* Gradiente roxo/ciano para o botão */
+    background: linear-gradient(90deg, #6627ff, #0bf4ed); 
+    color: #111111;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+#analyzeButton:hover {
+    opacity: 0.9;
+    box-shadow: 0 0 10px rgba(11, 244, 237, 0.7);
+}
+
+/* Core Web Vitals / Metric Boxes */
+.metric-box {
+    background: #222222; /* Fundo mais escuro para as caixas de pontuação */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    border: 1px solid #333;
+}
+
+/* Cores de Pontuação - Adaptadas para fundo escuro */
+.score-good { color: #5cb85c; } /* Verde claro */
+.score-medium { color: #f0ad4e; } /* Laranja */
+.score-bad { color: #d9534f; } /* Vermelho escuro */
+
+/* --- ACORDEÃO (COLLAPSIBLE UI) --- */
+.collapsible-header {
+    cursor: pointer;
+    padding: 15px;
+    margin-top: 20px;
+    border-radius: 8px;
+    transition: background-color 0.3s;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+.collapsible-header:hover {
+    opacity: 0.9;
+}
+.collapsible-header::after {
+    content: '+';
+    font-size: 1.5em;
+    transition: transform 0.3s;
+}
+.collapsible-header.active::after {
+    content: '-';
+    transform: rotate(0deg); 
+}
+.collapsible-content {
+    padding: 10px 15px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-out;
+    background-color: #1c1c1c; /* Fundo escuro para o conteúdo */
+    border: 1px solid #333;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+}
+
+/* Status Cores no Header do Acordeão */
+.status-fail { background-color: #d9534f; color: white;} 
+.status-warn { background-color: #f0ad4e; color: #111;} /* Amarelo com texto escuro para contraste */
+.status-pass { background-color: #5cb85c; color: white;} 
+
+/* Detalhes internos do Acordeão */
+.audit-item {
+    padding: 10px 0;
+    border-bottom: 1px dashed #444; 
+}
+.audit-item strong { color: #0bf4ed; } /* Título da oportunidade em ciano neon */
+.audit-item p { color: #bbb; } /* Descrição mais clara */
     </style>
 </head>
-<body>
+<body class="text-gray-100">
+    <div class="stars-container" id="stars-container"></div>
 
-<div class="container">
-    <h1>🚀 Asthro - Analisador de Performance Web Detalhado</h1>
-    <p>Insira a URL do site (ex: https://www.asthro.com.br) para obter um diagnóstico completo e detalhado da performance e otimização.</p>
-    
-    <div id="input-area">
-        <input 
-            type="url" 
-            id="urlInput" 
-            placeholder="Exemplo: https://seudominio.com.br" 
-            required
-        >
-        <button id="analyzeButton" onclick="analyzeUrl()">Analisar Site</button>
-    </div>
+    <svg width="0" height="0">
+        <defs>
+            <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#a5b4fc;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#e879f9;stop-opacity:1" />
+            </linearGradient>
+        </defs>
+    </svg>
 
-    <div id="results">
-        <p style="text-align: center; color: #6c757d;">
-            Aguardando URL para iniciar a análise.
-        </p>
-    </div>
-</div>
+    <nav class="shadow-lg fixed w-full z-10">
+        <div class="flex justify-between h-16 items-center">
+            <div class="flex items-center content-layer">
+                <img src="https://i.imgur.com/sE44ypp.png" alt="Logo da Asthro" class="h-40 md:h-40" />
+            </div>
+            <button class="hamburger" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="flex items-center space-x-6 content-layer desktop-nav">
+                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/index.html" class="nav-link text-lg transition">Início</a>
+                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/servi%C3%A7os.html" class="nav-link text-lg transition">Serviços</a>
+                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/sobre.html" class="nav-link text-lg transition">Sobre</a>
+                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/portf%C3%B3lio.html" class="nav-link text-lg transition">Portfólio</a>
+                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/contato.html" class="nav-link text-lg transition">Contato</a>
+                <a href="https://asthro.com.br/politicas.html" class="nav-link text-lg transition">Políticas</a>
+            </div>
+            <div class="nav-menu-mobile content-layer">
+                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/index.html" class="nav-link text-lg transition block">Início</a>
+                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/servi%C3%A7os.html" class="nav-link text-lg transition block">Serviços</a>
+                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/sobre.html" class="nav-link text-lg transition block">Sobre</a>
+                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/portf%C3%B3lio.html" class="nav-link text-lg transition block">Portfólio</a>
+                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/contato.html" class="nav-link text-lg transition block">Contato</a>
+                <a href="https://asthro.com.br/politicas.html" class="nav-link text-lg transition">Políticas</a>
+                <img src="https://i.imgur.com/sE44ypp.png" alt="Asthro" class="mobile-menu-logo" />
+            </div>
+        </div>
+    </nav>
 
-<script>
-    // ** Sua Chave de API **
-    const API_KEY = "AIzaSyCVI4jsvpC5L2UY2c99cVgwR-gc2VLV_XE"; 
-    const API_ENDPOINT = "https://www.googleapis.com/pagespeedonline/v5/runPagespeed";
-    const RESULTS_DIV = document.getElementById('results');
-    const ANALYZE_BUTTON = document.getElementById('analyzeButton');
+    <main class="pt-24 pb-20 min-h-screen relative z-10">
+        <section id="analyser" class="section-bg">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 content-layer">
+                
+                <h2 class="text-4xl font-bold text-center mb-6 gradient-text" style="border-bottom: none;">
+                    Ferramenta de Análise PageSpeed Insights
+                </h2>
+                <p class="text-center text-xl text-gray-300 mb-10">
+                    Avalie gratuitamente a performance, acessibilidade e SEO do seu site.
+                </p>
 
-    function classifyScore(score) {
-        if (score >= 90) return 'score-good';
-        if (score >= 50) return 'score-medium';
-        return 'score-bad';
-    }
+                <div id="analyser-container" class="analyser-card p-6 md:p-10 rounded-xl">
 
-    // Função para obter a classe de cor com base no valor da métrica (tempo)
-    function classifyMetricValue(metricId, value) {
-        // Classificação baseada nas regras do Lighthouse para Core Web Vitals (em ms)
-        if (metricId === 'largest-contentful-paint' || metricId === 'first-contentful-paint' || metricId === 'total-blocking-time') {
-            // Conversão de valores de tempo para números para comparação
-            const match = value.match(/([\d\.]+)/);
-            const ms = match ? parseFloat(match[1]) * (value.includes('s') ? 1000 : 1) : 0;
+                    <div id="input-area" class="flex flex-col md:flex-row gap-4 mb-8">
+                        <input 
+                            type="url" 
+                            id="urlInput" 
+                            placeholder="Exemplo: https://seudominio.com.br" 
+                            required
+                            class="flex-grow p-3 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-[#0bf4ed] transition"
+                        >
+                        <button id="analyzeButton" onclick="analyzeUrl()" class="p-3 rounded-lg text-lg transition-all">
+                            Analisar Site
+                        </button>
+                    </div>
+
+                    <div id="results">
+                        <p class="text-center text-gray-400">
+                            Digite uma URL válida para começar. Lembre-se de incluir o **https://**.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- RODAPÉ - EXATAMENTE IGUAL AO SEU TEMPLATE -->
+    <footer class="text-gray-200 py-8 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center content-layer">
             
-            if (ms <= 2500) return 'score-good'; // Bom
-            if (ms <= 4000) return 'score-medium'; // Precisa de melhoria
-            return 'score-bad'; // Ruim
+            <div class="social-links-png flex justify-center space-x-6 mb-4">
+                
+                <a href="https://www.instagram.com/agencia_asthro/" target="_blank" aria-label="Instagram">
+                    <img src="https://i.imgur.com/ztvOJV3.png" alt="Instagram" class="social-img-icon" />
+                </a>
+                
+                <a href="https://www.tiktok.com/@asthroensina" target="_blank" aria-label="TikTok">
+                    <img src="https://i.imgur.com/yrBBMaJ.png" alt="TikTok" class="social-img-icon" />
+                </a>
+                
+                <a href="SUA_URL_YOUTUBE" target="_blank" aria-label="YouTube">
+                    <img src="https://i.imgur.com/0vJwT4o.png" alt="YouTube" class="social-img-icon" />
+                </a>
+                
+            </div>
+            <p>© 2025 Asthro. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- Lógica de Acordeão ---
+function setupCollapsibles() {
+    const headers = document.querySelectorAll('.collapsible-header');
+
+    headers.forEach(header => {
+        header.addEventListener('click', function() {
+            this.classList.toggle('active');
+            const content = this.nextElementSibling;
+            
+            if (content.style.maxHeight) {
+                // Se estiver aberto, fecha
+                content.style.maxHeight = null;
+            } else {
+                // Se estiver fechado, abre. Usamos scrollHeight para calcular a altura exata do conteúdo.
+                content.style.maxHeight = content.scrollHeight + "px";
+            } 
+        });
+    });
+}
+        // --- JS GERAL DO TEMA ASTHRO ---
+
+        // Configuração de Parallax/Estrelas
+        const starsContainer = document.getElementById('stars-container');
+        const colors = ['purple', 'pink', 'white'];
+        const numStars = 250; 
+        
+        function createStars() {
+            starsContainer.innerHTML = '';
+            const documentHeight = document.body.scrollHeight;
+            const viewportWidth = window.innerWidth;
+
+            for (let i = 0; i < numStars; i++) {
+                const star = document.createElement('span');
+                star.classList.add('star');
+                star.classList.add(colors[Math.floor(Math.random() * colors.length)]);
+                star.style.left = `${Math.random() * viewportWidth}px`;
+                star.style.top = `${Math.random() * documentHeight}px`;
+                const moveX = (Math.random() - 0.5) * 300;
+                const moveY = (Math.random() - 0.5) * 300;
+                star.style.setProperty('--move-x', `${moveX}px`);
+                star.style.setProperty('--move-y', `${moveY}px`);
+                star.style.animationDelay = `${Math.random() * 15}s`;
+                starsContainer.appendChild(star);
+            }
         }
-        // Para CLS, que é um score decimal (ex: 0.05)
-        if (metricId === 'cumulative-layout-shift') {
-            const score = parseFloat(value);
-            if (score <= 0.1) return 'score-good';
-            if (score <= 0.25) return 'score-medium';
+        createStars();
+        window.addEventListener('resize', createStars);
+
+        // Funcionalidade do Menu Hambúrguer
+        const hamburger = document.querySelector('.hamburger');
+        const mobileNavMenu = document.querySelector('.nav-menu-mobile');
+
+        function toggleMenu() {
+            hamburger.classList.toggle('active');
+            mobileNavMenu.classList.toggle('active');
+            document.body.style.overflowY = mobileNavMenu.classList.contains('active') ? 'hidden' : 'auto';
+        }
+        hamburger.addEventListener('click', toggleMenu);
+
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768 && mobileNavMenu.classList.contains('active')) {
+                toggleMenu();
+            }
+        });
+
+        // --- JS DO ANALISADOR DE PERFORMANCE (FUNÇÕES MANTIDAS E ADAPTADAS) ---
+
+        const API_KEY = "AIzaSyCVI4jsvpC5L2UY2c99cVgwR-gc2VLV_XE"; 
+        const API_ENDPOINT = "https://www.googleapis.com/pagespeedonline/v5/runPagespeed";
+        const RESULTS_DIV = document.getElementById('results');
+        const ANALYZE_BUTTON = document.getElementById('analyzeButton');
+
+        function classifyScore(score) {
+            if (score >= 90) return 'score-good';
+            if (score >= 50) return 'score-medium';
             return 'score-bad';
         }
-        return '';
-    }
 
-    function analyzeUrl() {
-        let url = document.getElementById('urlInput').value.trim();
-
-        if (!url) {
-            RESULTS_DIV.innerHTML = '<p class="score-bad">Por favor, insira uma URL válida.</p>';
-            return;
+        function classifyMetricValue(metricId, value) {
+            if (metricId === 'largest-contentful-paint' || metricId === 'first-contentful-paint' || metricId === 'total-blocking-time') {
+                const match = value.match(/([\d\.]+)/);
+                const ms = match ? parseFloat(match[1]) * (value.includes('s') ? 1000 : 1) : 0;
+                
+                if (ms <= 2500) return 'score-good'; 
+                if (ms <= 4000) return 'score-medium'; 
+                return 'score-bad';
+            }
+            if (metricId === 'cumulative-layout-shift') {
+                const score = parseFloat(value);
+                if (score <= 0.1) return 'score-good';
+                if (score <= 0.25) return 'score-medium';
+                return 'score-bad';
+            }
+            return '';
         }
 
-        // Adiciona https:// se o usuário esqueceu o protocolo
-        if (!url.startsWith('http://') && !url.startsWith('https://')) {
-            url = 'https://' + url;
-            document.getElementById('urlInput').value = url; 
+        function analyzeUrl() {
+            let url = document.getElementById('urlInput').value.trim();
+
+            if (!url) {
+                RESULTS_DIV.innerHTML = '<p class="score-bad text-center py-4">Por favor, insira uma URL válida.</p>';
+                return;
+            }
+
+            // Adiciona https:// se o usuário esqueceu o protocolo
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                url = 'https://' + url;
+                document.getElementById('urlInput').value = url; 
+            }
+            
+            // Exibir carregamento
+            RESULTS_DIV.innerHTML = '<div class="loading">Analisando... Por favor, aguarde cerca de 30 segundos.</div>';
+            ANALYZE_BUTTON.disabled = true;
+
+            // Construir o URL da API
+            const requestUrl = `${API_ENDPOINT}?url=${encodeURIComponent(url)}&key=${API_KEY}&strategy=desktop&category=PERFORMANCE&category=ACCESSIBILITY&category=BEST_PRACTICES&category=SEO`;
+
+            fetch(requestUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Erro HTTP! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    displayResults(data);
+                    setupCollapsibles(); // Chama a função do acordeão após renderizar
+                    createStars(); // Recria as estrelas para cobrir a nova altura de conteúdo
+                })
+                .catch(error => {
+                    RESULTS_DIV.innerHTML = `<p class="score-bad text-center py-4">❌ Erro na análise: ${error.message}. Verifique a URL e a chave da API.</p>`;
+                    console.error("Erro ao buscar API:", error);
+                })
+                .finally(() => {
+                    ANALYZE_BUTTON.disabled = false;
+                });
         }
-        
-        // Exibir carregamento
-        RESULTS_DIV.innerHTML = '<div class="loading">Analisando... Por favor, aguarde cerca de 30 segundos.</div>';
-        ANALYZE_BUTTON.disabled = true;
 
-        // Construir o URL da API (Solicitando todas as categorias)
-        const requestUrl = `${API_ENDPOINT}?url=${encodeURIComponent(url)}&key=${API_KEY}&strategy=desktop&category=PERFORMANCE&category=ACCESSIBILITY&category=BEST_PRACTICES&category=SEO`;
+        function displayResults(data) {
+            if (!data || !data.lighthouseResult) {
+                RESULTS_DIV.innerHTML = '<p class="score-bad text-center py-4">Não foi possível obter dados para esta URL.</p>';
+                return;
+            }
 
-        fetch(requestUrl)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`Erro HTTP! Status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                displayResults(data);
-                setupCollapsibles(); // Chama a função do acordeão após renderizar
-            })
-            .catch(error => {
-                RESULTS_DIV.innerHTML = `<p class="score-bad">❌ Erro na análise: ${error.message}. Verifique a URL e a chave da API.</p>`;
-                console.error("Erro ao buscar API:", error);
-            })
-            .finally(() => {
-                ANALYZE_BUTTON.disabled = false;
-            });
-    }
-
-    function displayResults(data) {
-        if (!data || !data.lighthouseResult) {
-            RESULTS_DIV.innerHTML = '<p class="score-bad">Não foi possível obter dados para esta URL.</p>';
-            return;
-        }
-
-        const lhr = data.lighthouseResult;
-        const audits = lhr.audits;
-        
-        let htmlContent = `
-            <h2>✨ Relatório Detalhado Asthro</h2>
-            <p>Análise da URL: <strong>${lhr.finalUrl}</strong> (Versão Desktop)</p>
-            <p><small>Gerado em: ${new Date(lhr.fetchTime).toLocaleDateString()} às ${new Date(lhr.fetchTime).toLocaleTimeString()}</small></p>
+            const lhr = data.lighthouseResult;
+            const audits = lhr.audits;
             
-            <h3>1. Pontuações Gerais</h3>
-            <div class="metric-grid">
-                <!-- Pontuação Principal (Performance) -->
-                ${renderCategoryScore('performance', 'Performance', lhr.categories, classifyScore)}
-                ${renderCategoryScore('accessibility', 'Acessibilidade', lhr.categories, classifyScore)}
-                ${renderCategoryScore('best-practices', 'Melhores Práticas', lhr.categories, classifyScore)}
-                ${renderCategoryScore('seo', 'SEO', lhr.categories, classifyScore)}
-            </div>
-            
-            ${renderCoreWebVitals(audits)}
-            
-            <h3>3. Diagnóstico Detalhado por Categoria (Clique para Expandir)</h3>
-            ${renderAuditDetails(lhr)}
-            
-            <div style="margin-top: 40px; padding: 20px; background-color: #e6f0ff; border-radius: 8px; text-align: center;">
-                <h3>Próximos Passos com a Asthro</h3>
-                <p>Para resolver os pontos de melhoria e levar seu site à pontuação máxima, entre em contato. Somos especialistas em otimização PageSpeed!</p>
-                <strong style="color: #007bff;">Seu sucesso é a nossa missão!</strong>
-            </div>
-        `;
-        
-        RESULTS_DIV.innerHTML = htmlContent;
-    }
-
-    // --- Funções Auxiliares para Renderização Detalhada ---
-
-    function renderCategoryScore(key, label, categories, classifier) {
-        const category = categories[key];
-        if (!category) return '';
-        
-        const score = Math.round(category.score * 100);
-        const cls = classifier(score);
-        return `
-            <div class="metric-box">
-                <strong>${label}</strong>
-                <div class="metric-score ${cls}">${score}%</div>
-            </div>
-        `;
-    }
-
-    function renderCoreWebVitals(audits) {
-        const metrics = [
-            { id: 'largest-contentful-paint', label: 'LCP (Maior Conteúdo)' },
-            { id: 'first-contentful-paint', label: 'FCP (Primeiro Conteúdo)' },
-            { id: 'total-blocking-time', label: 'TBT (Tempo de Bloqueio)' },
-            { id: 'cumulative-layout-shift', label: 'CLS (Estabilidade Visual)' }
-        ];
-
-        let metricsHtml = metrics.map(m => {
-            const audit = audits[m.id];
-            if (!audit || !audit.displayValue) return '';
-
-            const valueClass = classifyMetricValue(m.id, audit.displayValue);
-
-            return `
-                <div class="metric-box">
-                    <strong>${m.label}</strong>
-                    <div class="metric-score ${valueClass}" style="font-size: 1.4em;">${audit.displayValue}</div>
+            let htmlContent = `
+                <h3 class="text-2xl font-bold mb-4 gradient-text" style="border-bottom: 2px solid #6627ff; padding-bottom: 8px;">
+                    Resumo da Análise
+                </h3>
+                <p class="text-gray-400 mb-2">Análise da URL: <strong>${lhr.finalUrl}</strong> (Versão Desktop)</p>
+                <p class="text-gray-400 mb-6"><small>Gerado em: ${new Date(lhr.fetchTime).toLocaleDateString()} às ${new Date(lhr.fetchTime).toLocaleTimeString()}</small></p>
+                
+                <h4 class="text-xl font-semibold mb-3 text-gray-200">Pontuações Gerais</h4>
+                <div class="metric-grid">
+                    ${renderCategoryScore('performance', 'Performance', lhr.categories, classifyScore)}
+                    ${renderCategoryScore('accessibility', 'Acessibilidade', lhr.categories, classifyScore)}
+                    ${renderCategoryScore('best-practices', 'Melhores Práticas', lhr.categories, classifyScore)}
+                    ${renderCategoryScore('seo', 'SEO', lhr.categories, classifyScore)}
+                </div>
+                
+                ${renderCoreWebVitals(audits)}
+                
+                <h4 class="text-xl font-semibold mt-8 mb-4 text-gray-200">Diagnóstico Detalhado (Clique para ver os testes)</h4>
+                ${renderAuditDetails(lhr)}
+                
+                <div class="mt-10 p-5 rounded-lg text-center" style="background-color: #0b0b0b; border: 1px solid #6627ff;">
+                    <h3 class="text-2xl font-bold mb-3 gradient-text">Próximos Passos com a Asthro</h3>
+                    <p class="text-gray-300">
+                        Para implementar as melhorias sugeridas e alcançar a pontuação máxima, entre em contato. Somos especialistas em otimização PageSpeed!
+                    </p>
                 </div>
             `;
-        }).join('');
-
-        return `
-            <h3>2. Core Web Vitals (Métricas de Velocidade)</h3>
-            <div class="metric-grid">${metricsHtml}</div>
-        `;
-    }
-
-    function renderAuditDetails(lhr) {
-        const categories = {
-            'performance': 'Performance',
-            'accessibility': 'Acessibilidade',
-            'best-practices': 'Melhores Práticas',
-            'seo': 'SEO (Otimização de Buscas)'
-        };
-
-        let detailsHtml = '';
-
-        for (const [key, categoryName] of Object.entries(categories)) {
-            const auditRefs = lhr.categories[key].auditRefs;
             
-            // 1. Falhas / Oportunidades (Score < 0.9)
-            const failedAudits = auditRefs.filter(ref => lhr.audits[ref.id].score < 0.9 && lhr.audits[ref.id].score !== null);
-            // 2. Aprovados (Score = 1)
-            const passedAudits = auditRefs.filter(ref => lhr.audits[ref.id].score === 1);
-            // 3. Informações ou Avisos (Score entre 0.9 e 1 ou sem score)
-            const informationalAudits = auditRefs.filter(ref => 
-                (lhr.audits[ref.id].score >= 0.9 && lhr.audits[ref.id].score < 1) || 
-                (lhr.audits[ref.id].score === null && lhr.audits[ref.id].scoreDisplayMode === 'not applicable')
-            );
-
-
-            // --- Renderizar Falhas (Erros) - Seção Collapsible ---
-            if (failedAudits.length > 0) {
-                detailsHtml += `
-                    <div class="report-section">
-                        <div class="collapsible-header status-fail">
-                            ❌ ${categoryName}: Falhas e Oportunidades (${failedAudits.length})
-                        </div>
-                        <div class="collapsible-content">
-                            ${failedAudits.map(ref => renderAuditItem(lhr.audits[ref.id])).join('')}
-                        </div>
-                    </div>
-                `;
-            }
-
-            // --- Renderizar Avisos / Informações (Atenção) - Seção Collapsible ---
-             if (informationalAudits.length > 0) {
-                detailsHtml += `
-                    <div class="report-section">
-                        <div class="collapsible-header status-warn">
-                            ⚠️ ${categoryName}: Diagnósticos e Avisos (${informationalAudits.length})
-                        </div>
-                        <div class="collapsible-content">
-                            ${informationalAudits.map(ref => renderAuditItem(lhr.audits[ref.id])).join('')}
-                        </div>
-                    </div>
-                `;
-            }
-
-            // --- Renderizar Aprovados (Acertos) - Seção Collapsible ---
-            if (passedAudits.length > 0) {
-                detailsHtml += `
-                    <div class="report-section">
-                        <div class="collapsible-header status-pass">
-                            ✅ ${categoryName}: Testes Aprovados (${passedAudits.length})
-                        </div>
-                        <div class="collapsible-content">
-                            ${passedAudits.map(ref => renderAuditItem(lhr.audits[ref.id])).join('')}
-                        </div>
-                    </div>
-                `;
-            }
+            RESULTS_DIV.innerHTML = htmlContent;
         }
-        return detailsHtml;
-    }
 
-    function renderAuditItem(audit) {
-        // Remove links Markdown da descrição para simplificar a visualização (e mantém em português)
-        const descriptionClean = audit.description ? audit.description.replace(/\[.*\]\(.*\)/g, '').trim() : 'Nenhuma descrição disponível.';
+        // --- Funções Auxiliares para Renderização Detalhada ---
 
-        // Adiciona informações de economia de tempo se disponíveis (para Performance)
-        let savingsInfo = '';
-        if (audit.details && audit.details.overallSavingsMs > 0) {
-            // Conversão de milissegundos para segundos
-            const savingsSeconds = (audit.details.overallSavingsMs / 1000).toFixed(2);
-            savingsInfo = ` (Economia Estimada: ${savingsSeconds}s)`;
+        function renderCategoryScore(key, label, categories, classifier) {
+            const category = categories[key];
+            if (!category) return '';
+            
+            const score = Math.round(category.score * 100);
+            const cls = classifier(score);
+            return `
+                <div class="metric-box">
+                    <strong>${label}</strong>
+                    <div class="metric-score ${cls}">${score}%</div>
+                </div>
+            `;
         }
-        
-        return `
-            <div class="audit-item">
-                <strong>${audit.title} ${savingsInfo}</strong>
-                <p>${descriptionClean}</p>
-            </div>
-        `;
-    }
 
-    // --- Nova Função para Lógica de Acordeão ---
-    function setupCollapsibles() {
-        const headers = document.querySelectorAll('.collapsible-header');
+        function renderCoreWebVitals(audits) {
+            const metrics = [
+                { id: 'largest-contentful-paint', label: 'LCP (Maior Conteúdo)' },
+                { id: 'first-contentful-paint', label: 'FCP (Primeiro Conteúdo)' },
+                { id: 'total-blocking-time', label: 'TBT (Tempo de Bloqueio)' },
+                { id: 'cumulative-layout-shift', label: 'CLS (Estabilidade Visual)' }
+            ];
 
-        headers.forEach(header => {
-            header.addEventListener('click', function() {
-                this.classList.toggle('active');
-                const content = this.nextElementSibling;
+            let metricsHtml = metrics.map(m => {
+                const audit = audits[m.id];
+                if (!audit || !audit.displayValue) return '';
+
+                const valueClass = classifyMetricValue(m.id, audit.displayValue);
+
+                return `
+                    <div class="metric-box">
+                        <strong>${m.label}</strong>
+                        <div class="metric-score ${valueClass}" style="font-size: 1.4em;">${audit.displayValue}</div>
+                    </div>
+                `;
+            }).join('');
+
+            return `
+                <h4 class="text-xl font-semibold mt-8 mb-3 text-gray-200">Métricas Core Web Vitals</h4>
+                <div class="metric-grid">${metricsHtml}</div>
+            `;
+        }
+
+        function renderAuditDetails(lhr) {
+            const categories = {
+                'performance': 'Performance',
+                'accessibility': 'Acessibilidade',
+                'best-practices': 'Melhores Práticas',
+                'seo': 'SEO (Otimização de Buscas)'
+            };
+
+            let detailsHtml = '';
+
+            for (const [key, categoryName] of Object.entries(categories)) {
+                const auditRefs = lhr.categories[key].auditRefs;
                 
-                if (content.style.maxHeight) {
-                    content.style.maxHeight = null;
-                } else {
-                    // Define a altura máxima para o scrollHeight (altura necessária para exibir todo o conteúdo)
-                    content.style.maxHeight = content.scrollHeight + "px";
-                } 
+                // Falhas / Oportunidades (Score < 0.9)
+                const failedAudits = auditRefs.filter(ref => lhr.audits[ref.id].score < 0.9 && lhr.audits[ref.id].score !== null);
+                // Aprovados (Score = 1)
+                const passedAudits = auditRefs.filter(ref => lhr.audits[ref.id].score === 1);
+                // Informações ou Avisos (Score entre 0.9 e 1 ou sem score)
+                const informationalAudits = auditRefs.filter(ref => 
+                    (lhr.audits[ref.id].score >= 0.9 && lhr.audits[ref.id].score < 1) || 
+                    (lhr.audits[ref.id].score === null && lhr.audits[ref.id].scoreDisplayMode === 'not applicable')
+                );
+
+
+                // --- Falhas (Vermelho) ---
+                if (failedAudits.length > 0) {
+                    detailsHtml += `
+                        <div class="report-section">
+                            <div class="collapsible-header status-fail">
+                                ❌ ${categoryName}: Falhas e Oportunidades (${failedAudits.length})
+                            </div>
+                            <div class="collapsible-content">
+                                ${failedAudits.map(ref => renderAuditItem(lhr.audits[ref.id])).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // --- Avisos / Diagnósticos (Amarelo) ---
+                 if (informationalAudits.length > 0) {
+                    detailsHtml += `
+                        <div class="report-section">
+                            <div class="collapsible-header status-warn">
+                                ⚠️ ${categoryName}: Diagnósticos e Avisos (${informationalAudits.length})
+                            </div>
+                            <div class="collapsible-content">
+                                ${informationalAudits.map(ref => renderAuditItem(lhr.audits[ref.id])).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // --- Aprovados (Verde) ---
+                if (passedAudits.length > 0) {
+                    detailsHtml += `
+                        <div class="report-section">
+                            <div class="collapsible-header status-pass">
+                                ✅ ${categoryName}: Testes Aprovados (${passedAudits.length})
+                            </div>
+                            <div class="collapsible-content">
+                                ${passedAudits.map(ref => renderAuditItem(lhr.audits[ref.id])).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+            return detailsHtml;
+        }
+
+        function renderAuditItem(audit) {
+            // Remove links Markdown da descrição para simplificar a visualização
+            const descriptionClean = audit.description ? audit.description.replace(/\[.*\]\(.*\)/g, '').trim() : 'Nenhuma descrição disponível.';
+
+            let savingsInfo = '';
+            if (audit.details && audit.details.overallSavingsMs > 0) {
+                const savingsSeconds = (audit.details.overallSavingsMs / 1000).toFixed(2);
+                savingsInfo = ` (Economia Estimada: ${savingsSeconds}s)`;
+            }
+            
+            return `
+                <div class="audit-item">
+                    <strong>${audit.title} ${savingsInfo}</strong>
+                    <p>${descriptionClean}</p>
+                </div>
+            `;
+        }
+
+        // --- Lógica de Acordeão ---
+        function setupCollapsibles() {
+            const headers = document.querySelectorAll('.collapsible-header');
+
+            headers.forEach(header => {
+                header.addEventListener('click', function() {
+                    this.classList.toggle('active');
+                    const content = this.nextElementSibling;
+                    
+                    if (content.style.maxHeight) {
+                        content.style.maxHeight = null;
+                    } else {
+                        content.style.maxHeight = content.scrollHeight + "px";
+                    } 
+                });
             });
-        });
-    }
-
-    // Inicializa a lógica de carregamento inicial (se a página for atualizada)
-    document.addEventListener('DOMContentLoaded', () => {
-        // Nada a fazer no DOMContentLoaded, a função setupCollapsibles é chamada em displayResults
-    });
-</script>
-
+        }
+    </script>
 </body>
 </html>
