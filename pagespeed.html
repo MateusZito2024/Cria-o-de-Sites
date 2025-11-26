@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asthro - Analisador de Performance Web</title>
+    <style>
+        /* Estilos CSS Básicos para a página */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #007bff;
+        }
+        #input-area {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        #urlInput {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px 0 0 4px;
+        }
+        #analyzeButton {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 0 4px 4px 0;
+            transition: background-color 0.3s;
+        }
+        #analyzeButton:hover {
+            background-color: #0056b3;
+        }
+        #results {
+            margin-top: 20px;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+        .loading {
+            text-align: center;
+            font-size: 1.2em;
+            color: #007bff;
+        }
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .metric-box {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 6px;
+            text-align: center;
+        }
+        .metric-score {
+            font-size: 1.8em;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+        .score-good { color: #28a745; } /* Verde */
+        .score-medium { color: #ffc107; } /* Amarelo */
+        .score-bad { color: #dc3545; } /* Vermelho */
+        .opportunities h3 {
+            color: #007bff;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 5px;
+            margin-top: 30px;
+        }
+        .opportunity-item {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🚀 Asthro - Analisador de Performance Web</h1>
+    <p>Insira a URL do site (ex: https://www.google.com) para obter uma análise de desempenho PageSpeed Insights.</p>
+    
+    <div id="input-area">
+        <input type="url" id="urlInput" placeholder="Digite a URL aqui..." required>
+        <button id="analyzeButton" onclick="analyzeUrl()">Analisar Site</button>
+    </div>
+
+    <div id="results">
+        </div>
+</div>
+
+<script>
+    // ** ⚠️ ATENÇÃO: SUBSTITUA PELA SUA CHAVE DE API REAL ⚠️ **
+    const API_KEY = "AIzaSyCVI4jsvpC5L2UY2c99cVgwR-gc2VLV_XE"; 
+    const API_ENDPOINT = "https://www.googleapis.com/pagespeedonline/v5/runPagespeed";
+    const RESULTS_DIV = document.getElementById('results');
+    const ANALYZE_BUTTON = document.getElementById('analyzeButton');
+
+    function classifyScore(score) {
+        if (score >= 90) return 'score-good';
+        if (score >= 50) return 'score-medium';
+        return 'score-bad';
+    }
+
+    function analyzeUrl() {
+        const url = document.getElementById('urlInput').value;
+
+        if (!url) {
+            RESULTS_DIV.innerHTML = '<p class="score-bad">Por favor, insira uma URL válida.</p>';
+            return;
+        }
+        
+        // Exibir carregamento
+        RESULTS_DIV.innerHTML = '<div class="loading">Analisando... Por favor, aguarde cerca de 30 segundos.</div>';
+        ANALYZE_BUTTON.disabled = true;
+
+        // Construir o URL da API
+        // Estamos buscando as categorias de Performance, Acessibilidade, etc. (CATEGORIES) e o Core Web Vitals (lighthouse-result)
+        const requestUrl = `${API_ENDPOINT}?url=${encodeURIComponent(url)}&key=${API_KEY}&strategy=desktop&category=PERFORMANCE&category=ACCESSIBILITY&category=BEST_PRACTICES&category=SEO`;
+
+        fetch(requestUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Erro HTTP! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                displayResults(data);
+            })
+            .catch(error => {
+                RESULTS_DIV.innerHTML = `<p class="score-bad">❌ Erro na análise: ${error.message}. Verifique a URL e a chave da API.</p>`;
+                console.error("Erro ao buscar API:", error);
+            })
+            .finally(() => {
+                ANALYZE_BUTTON.disabled = false;
+            });
+    }
+
+    function displayResults(data) {
+        if (!data || !data.lighthouseResult) {
+            RESULTS_DIV.innerHTML = '<p class="score-bad">Não foi possível obter dados para esta URL.</p>';
+            return;
+        }
+
+        const lhr = data.lighthouseResult;
+        
+        // 1. Pontuação Principal de Performance
+        const performanceScore = Math.round(lhr.categories.performance.score * 100);
+        const scoreClass = classifyScore(performanceScore);
+        
+        let htmlContent = `
+            <h2>✨ Resultado da Análise para: ${lhr.finalUrl}</h2>
+            <p>Análise gerada em: ${new Date(lhr.fetchTime).toLocaleDateString()} às ${new Date(lhr.fetchTime).toLocaleTimeString()}</p>
+            
+            <div class="metric-grid">
+                <div class="metric-box">
+                    <strong>Pontuação Principal</strong>
+                    <div class="metric-score ${scoreClass}">${performanceScore}%</div>
+                </div>
+            `;
+
+        // 2. Outras Pontuações (Acessibilidade, etc.)
+        const categoryMap = {
+            'accessibility': 'Acessibilidade',
+            'best-practices': 'Melhores Práticas',
+            'seo': 'SEO (Otimização de Buscas)'
+        };
+
+        for (const [key, label] of Object.entries(categoryMap)) {
+            const category = lhr.categories[key];
+            if (category) {
+                const score = Math.round(category.score * 100);
+                const cls = classifyScore(score);
+                htmlContent += `
+                    <div class="metric-box">
+                        <strong>${label}</strong>
+                        <div class="metric-score ${cls}">${score}%</div>
+                    </div>
+                `;
+            }
+        }
+        
+        htmlContent += `</div>`;
+        
+        // 3. Oportunidades de Melhoria (Sugestões)
+        const audits = lhr.audits;
+        const opportunities = lhr.categories.performance.auditRefs
+            .filter(ref => ref.group === 'metrics' || ref.group === 'load-opportunities')
+            .map(ref => audits[ref.id])
+            .filter(audit => audit.score !== 1 && audit.details && audit.details.overallSavingsMs > 0);
+
+        if (opportunities.length > 0) {
+            htmlContent += `
+                <div class="opportunities">
+                    <h3>💡 Oportunidades de Otimização</h3>
+                    <p>As seguintes sugestões podem melhorar a performance do seu site:</p>
+                    ${opportunities.slice(0, 5).map(audit => `
+                        <div class="opportunity-item">
+                            <strong>${audit.title}</strong>
+                            <p>Economia Estimada: ${Math.round(audit.details.overallSavingsMs / 1000)}s</p>
+                            <p>${audit.description.replace(/\[.*\]\(.*\)/g, '')}</p>
+                        </div>
+                    `).join('')}
+                    <p>Entre em contato com a **Asthro** para resolvermos estas questões!</p>
+                </div>
+            `;
+        } else {
+            htmlContent += '<p style="text-align: center; margin-top: 20px; color: #28a745;">🎉 Seu site está super otimizado! Excelente trabalho!</p>';
+        }
+
+        RESULTS_DIV.innerHTML = htmlContent;
+    }
+</script>
+
+</body>
+</html>
