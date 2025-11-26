@@ -11,6 +11,7 @@
             --primary-color: #007bff;
             --primary-hover: #0056b3;
             --secondary-color: #6c757d;
+            --success-color: #28a745;
             --bg-color: #f8f9fa;
             --card-bg: #ffffff;
             --shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
@@ -61,6 +62,16 @@
             transform: translateY(-5px);
         }
 
+        /* Seção Inicial de Upload */
+        #uploadSection {
+            /* Visível por padrão */
+        }
+
+        /* Seção de Resultado (Oculta inicialmente) */
+        #resultSection {
+            display: none;
+        }
+        
         /* Área de Arrastar e Soltar */
         #dropArea {
             border: 3px dashed #ced4da;
@@ -126,26 +137,35 @@
         }
         
         .result-box {
-            margin-top: 30px;
-            padding: 20px;
-            background-color: #f1f3f5;
+            margin-top: 20px;
+            padding: 20px 0;
             border-radius: var(--border-radius);
-            display: none; /* Inicia oculto */
+            /* Adicionado: Um tamanho fixo ou max-height para o contêiner da imagem */
+            min-height: 200px; /* Altura mínima para o contêiner */
+            display: flex; /* Para centralizar a imagem verticalmente */
+            justify-content: center;
+            align-items: center;
         }
 
         #processedImage {
             max-width: 100%;
-            height: auto;
+            /* max-height: 350px; /* Limita a altura máxima para evitar imagens gigantes */
+            height: auto; /* Mantém a proporção */
             border: 2px dashed #adb5bd;
             border-radius: var(--border-radius);
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 25px;
+            
+            /* -------- CORREÇÃO AQUI: IMPEDE O CORTE E MANTÉM PROPORÇÃO -------- */
+            object-fit: contain; /* Garante que a imagem se ajuste dentro do seu contêiner sem ser cortada */
+            /* ----------------------------------------------------------------- */
         }
 
         #downloadLink {
-            display: none;
-            margin-top: 25px;
+            display: inline-block;
+            margin-top: 15px;
             padding: 12px 30px;
-            background: linear-gradient(90deg, #28a745, #218838);
+            background: linear-gradient(90deg, var(--success-color), #218838);
             color: white;
             text-decoration: none;
             border-radius: 50px;
@@ -158,6 +178,25 @@
         #downloadLink:hover {
             background: linear-gradient(90deg, #218838, #1e7e34);
             transform: scale(1.05);
+        }
+        
+        /* Botão de Enviar Nova Imagem */
+        #newImageButton {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 25px;
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+        
+        #newImageButton:hover {
+            background-color: #5a6268;
+            transform: translateY(-2px);
         }
         
         .loading-spinner {
@@ -193,29 +232,42 @@
     </div>
 
     <div class="container">
-        <h2>Remoção Automática com AI 🤖</h2>
-        <p>A ferramenta mais rápida e detalhada para obter imagens com fundo transparente.</p>
-
-        <input type="file" id="imageUpload" accept="image/*">
         
-        <div id="dropArea">
-            <i class="fas fa-cloud-upload-alt"></i>
-            <p><strong>Arraste e Solte</strong> sua imagem aqui</p>
-            <span class="upload-button" onclick="document.getElementById('imageUpload').click()">
-                <i class="fas fa-folder-open"></i> Selecionar Imagem
-            </span>
+        <div id="uploadSection">
+            <h2>Remoção Automática com AI 🤖</h2>
+            <p>A ferramenta mais rápida e detalhada para obter imagens com fundo transparente.</p>
+
+            <input type="file" id="imageUpload" accept="image/*">
+            
+            <div id="dropArea">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <p><strong>Arraste e Solte</strong> sua imagem aqui</p>
+                <span class="upload-button" onclick="document.getElementById('imageUpload').click()">
+                    <i class="fas fa-folder-open"></i> Selecionar Imagem
+                </span>
+            </div>
+            
+            <div class="loading-spinner" id="loadingSpinner"></div>
+            <p id="status">Aguardando a seleção da imagem...</p>
         </div>
         
-        <div class="loading-spinner" id="loadingSpinner"></div>
-        <p id="status">Aguardando a seleção da imagem...</p>
-        
-        <div class="result-box" id="resultBox">
-            <h3>Resultado da Remoção:</h3>
-            <img id="processedImage" src="" alt="Imagem Processada Sem Fundo">
+        <div id="resultSection">
+            <h2>Resultado Concluído! 🎉</h2>
+            <p>Sua imagem sem fundo está pronta para download.</p>
+            
+            <div class="result-box">
+                <img id="processedImage" src="" alt="Imagem Processada Sem Fundo">
+            </div>
+
             <a id="downloadLink" href="#" download="imagem-sem-fundo.png">
                 <i class="fas fa-download"></i> Baixar Imagem PNG
             </a>
+            
+            <button id="newImageButton">
+                 <i class="fas fa-redo"></i> Enviar Nova Imagem
+            </button>
         </div>
+
     </div>
     
     <div style="text-align: center; color: var(--secondary-color); font-size: 0.8rem; margin-bottom: 20px;">
@@ -226,21 +278,29 @@
         // *** IMPORTANTE: SUBSTITUA PELA SUA CHAVE API DO REMOVE.BG ***
         const API_KEY = "vPsag4BtqywPgAzmoV1MarYS"; 
         
+        // Elementos HTML
+        const uploadSection = document.getElementById('uploadSection');
+        const resultSection = document.getElementById('resultSection');
         const imageUpload = document.getElementById('imageUpload');
         const statusElement = document.getElementById('status');
         const processedImage = document.getElementById('processedImage');
         const downloadLink = document.getElementById('downloadLink');
-        const resultBox = document.getElementById('resultBox');
         const dropArea = document.getElementById('dropArea');
         const loadingSpinner = document.getElementById('loadingSpinner');
+        const newImageButton = document.getElementById('newImageButton');
+        const resultBox = document.querySelector('.result-box'); // Obter o contêiner da imagem
+        let currentBlobUrl = null; // Armazena a URL do Blob para limpeza
 
-        // 1. Evento de seleção de arquivo
+        // 1. Configuração de Eventos
         imageUpload.addEventListener('change', (event) => {
              const file = event.target.files[0];
              if (file) handleFile(file);
         });
+        
+        // Evento do botão "Enviar Nova Imagem"
+        newImageButton.addEventListener('click', resetApp);
 
-        // 2. Eventos de Drag and Drop
+        // Eventos de Drag and Drop
         ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
             dropArea.addEventListener(eventName, preventDefaults, false);
         });
@@ -276,7 +336,7 @@
             }
         }
         
-        // 3. Função Principal de Tratamento e Upload
+        // 2. Função Principal de Tratamento e Upload
         async function handleFile(file) {
             
             if (!file.type.startsWith('image/')) {
@@ -284,14 +344,14 @@
                 return;
             }
             
-            // Limpa o resultado anterior
-            resultBox.style.display = 'none';
-            downloadLink.style.display = 'none';
-            processedImage.src = '';
+            // Limpa URLs temporárias antigas
+            revokeBlobUrl();
             
-            statusElement.textContent = "Processando imagem...";
+            // 2.1 Mudar estado para processamento (na tela de upload)
+            statusElement.textContent = "Processando imagem... (Isso pode levar alguns segundos)";
             loadingSpinner.style.display = 'block';
-
+            dropArea.style.pointerEvents = 'none'; // Desativa a área durante o processamento
+            
             try {
                 const formData = new FormData();
                 formData.append("image_file", file);
@@ -305,45 +365,69 @@
                     body: formData
                 });
 
+                // 2.2 Reverter estados de processamento
                 loadingSpinner.style.display = 'none';
+                dropArea.style.pointerEvents = 'auto'; // Reativa
 
                 if (response.ok) {
                     const imageBlob = await response.blob();
                     
-                    // Cria a URL local para exibição e download
-                    const url = URL.createObjectURL(imageBlob);
+                    // Cria e armazena a URL local
+                    currentBlobUrl = URL.createObjectURL(imageBlob);
                     
-                    processedImage.src = url;
-                    resultBox.style.display = 'block';
+                    // 2.3 Exibir o resultado (mudar para a tela de resultado)
+                    processedImage.src = currentBlobUrl;
+                    downloadLink.href = currentBlobUrl;
                     
-                    // *** CORREÇÃO DO BOTÃO DE BAIXAR: ATRIBUIÇÃO DA URL LOCAL ***
-                    downloadLink.href = url;
-                    downloadLink.style.display = 'inline-block';
+                    uploadSection.style.display = 'none'; // Oculta a tela de upload
+                    resultSection.style.display = 'block'; // Mostra a tela de resultado
                     
-                    statusElement.textContent = "✅ Fundo removido com sucesso!";
+                    // Limpa o status de carregamento
+                    statusElement.textContent = "Aguardando a seleção da imagem...";
                     
                 } else {
-                    // Trata erros da API (ex: chave inválida, falta de créditos)
+                    // Trata erros da API
                     const errorData = await response.json();
-                    const errorMessage = errorData.errors ? errorData.errors[0].title : 'Erro desconhecido na API. Verifique a chave ou créditos.';
-                    statusElement.textContent = `❌ Erro: ${errorMessage}`;
+                    const errorMessage = errorData.errors ? errorData.errors[0].title : 'Erro desconhecido na API.';
+                    statusElement.textContent = `❌ Erro: ${errorMessage}. Tente novamente.`;
                 }
 
             } catch (error) {
                 loadingSpinner.style.display = 'none';
+                dropArea.style.pointerEvents = 'auto';
                 // Trata erros de rede
-                statusElement.textContent = `🚨 Ocorreu um erro de conexão: ${error.message}.`;
+                statusElement.textContent = `🚨 Ocorreu um erro de conexão: ${error.message}. Verifique sua conexão.`;
                 console.error('Erro de requisição:', error);
             }
         }
         
+        // 3. Função de Reset/Recomeçar
+        function resetApp() {
+            // Limpa URLs temporárias antigas
+            revokeBlobUrl();
+            
+            // Reinicia os inputs e status
+            imageUpload.value = null; // Limpa o arquivo selecionado
+            statusElement.textContent = "Aguardando a seleção da imagem...";
+            
+            // Alterna as telas
+            resultSection.style.display = 'none'; // Oculta a tela de resultado
+            uploadSection.style.display = 'block'; // Mostra a tela de upload
+            
+            // Também limpa a imagem exibida, caso a pessoa faça reset rápido
+            processedImage.src = "";
+        }
+        
         // 4. Limpeza de Blob URLs (Boa Prática)
-        // Libera a memória quando a imagem não for mais necessária.
-        window.addEventListener('beforeunload', () => {
-            if (processedImage.src && processedImage.src.startsWith('blob:')) {
-                URL.revokeObjectURL(processedImage.src);
+        function revokeBlobUrl() {
+            if (currentBlobUrl) {
+                URL.revokeObjectURL(currentBlobUrl);
+                currentBlobUrl = null;
             }
-        });
+        }
+        
+        // Libera a memória quando o usuário fechar/sair da página
+        window.addEventListener('beforeunload', revokeBlobUrl);
         
     </script>
 </body>
