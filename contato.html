@@ -8,6 +8,152 @@
     <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700&family=Manrope:wght@400;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="https://i.imgur.com/ZeaGXHD.png">
     <style>
+        /* --- NOVOS ESTILOS PARA O DROPDOWN DE FERRAMENTAS --- */
+.dropdown-menu {
+    position: absolute; 
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px); /* Inicialmente deslocado para baixo */
+    min-width: 180px;
+    background: rgba(17, 17, 17, 0.95);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(102, 39, 255, 0.5);
+    border-radius: 0.5rem;
+    padding: 0.5rem 0;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+    z-index: 50;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+}
+
+/* CLASSE ATIVADA VIA JAVASCRIPT: Mostra o menu */
+.dropdown.active .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(5px); /* Efeito de subida suave */
+}
+
+/* Estilos para os links internos do dropdown */
+.dropdown-menu a {
+    display: block;
+    padding: 0.6rem 1rem;
+    color: #edf1f7;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.dropdown-menu a:hover {
+    background: linear-gradient(90deg, rgba(102, 39, 255, 0.3), rgba(11, 244, 237, 0.3));
+    color: #0bf4ed;
+}
+
+/* Alinhamento do ícone de seta */
+.dropdown-arrow {
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+/* Rotaciona a seta quando o menu está ativo (via JS) */
+.dropdown.active .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+/* Oculta o dropdown no mobile para usar o menu hamburguer padrão */
+@media (max-width: 768px) {
+    .dropdown {
+        display: none !important;
+    }
+}
+        /* --- NOVOS ESTILOS PARA O POP-UP (MODAL) MOBILE --- */
+
+/* Oculta o modal por padrão */
+.tools-modal {
+    position: fixed;
+    z-index: 2000; /* CRÍTICO: Deve ser mais alto que o menu hambúrguer (1000) */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95); /* Fundo escuro com transparência */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: none; /* Inicia Oculto */
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* Mostra o modal */
+.tools-modal.open {
+    display: flex;
+    opacity: 1;
+}
+
+.modal-content {
+    background: #111111;
+    border: 2px solid #6627ff;
+    border-radius: 1rem;
+    padding: 2rem 1.5rem;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 0 30px rgba(102, 39, 255, 0.7);
+    animation: fadeIn 0.3s ease-out;
+    position: relative;
+    text-align: center;
+}
+
+.modal-close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    color: #edf1f7;
+    font-size: 2.5rem;
+    font-weight: 300;
+    line-height: 1;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.modal-close:hover {
+    color: #0bf4ed;
+    transform: scale(1.1);
+}
+
+/* Estilo dos links de ferramentas no modal */
+.modal-link {
+    display: block;
+    background: rgba(102, 39, 255, 0.15); /* Fundo roxo suave */
+    border: 1px solid rgba(102, 39, 255, 0.5);
+    border-radius: 0.75rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    color: #edf1f7;
+    font-size: 1.25rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.modal-link-subtitle {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: #bbb;
+    margin-top: 0.25rem;
+}
+
+.modal-link:hover {
+    background: linear-gradient(90deg, rgba(102, 39, 255, 0.4), rgba(11, 244, 237, 0.4));
+    border-color: #0bf4ed;
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 8px 15px rgba(11, 244, 237, 0.5);
+}
         footer .content-layer {
     display: block !important; 
     pointer-events: auto !important;
@@ -1336,6 +1482,16 @@ p, span, a {
 </head>
 <body class="text-gray-100">
     <div class="stars-container" id="stars-container"></div>
+
+    <svg width="0" height="0">
+        <defs>
+            <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#a5b4fc;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#e879f9;stop-opacity:1" />
+            </linearGradient>
+        </defs>
+    </svg>
+
     <nav class="shadow-lg fixed w-full z-10">
         <div class="flex justify-between h-16 items-center">
             <div class="flex items-center content-layer">
@@ -1349,6 +1505,18 @@ p, span, a {
             <div class="flex items-center space-x-6 content-layer desktop-nav">
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/index.html" class="nav-link text-lg transition">Início</a>
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/servi%C3%A7os.html" class="nav-link text-lg transition">Serviços</a>
+                <div class="dropdown relative h-full flex items-center" id="toolsDropdownContainer">
+                    
+                    <a href="#" id="toolsDropdownToggle" class="nav-link text-lg transition flex items-center gap-1" aria-expanded="false" aria-controls="toolsMenu">
+                        Ferramentas 
+                        <svg class="dropdown-arrow w-3 h-3 ml-1" id="toolsArrow" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </a>
+                    
+                    <div class="dropdown-menu absolute" id="toolsMenu">
+                        <a href="https://asthro.com.br/asthrospeed.html" class="nav-link block">AsthroSpeed (Análise de Sites)</a>
+                        <a href="https://asthro.com.br/zerogravity.html" class="nav-link block">ZeroGravity (Removedor de Fundo)</a>
+                    </div>
+                </div>
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/sobre.html" class="nav-link text-lg transition">Sobre</a>
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/portf%C3%B3lio.html" class="nav-link text-lg transition">Portfólio</a>
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/contato.html" class="nav-link text-lg transition">Contato</a>
@@ -1357,12 +1525,32 @@ p, span, a {
             <div class="nav-menu-mobile content-layer">
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/index.html" class="nav-link text-lg transition block">Início</a>
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/servi%C3%A7os.html" class="nav-link text-lg transition block">Serviços</a>
+                <button id="mobileToolsButton" class="nav-link text-lg transition block w-full text-center" style="cursor: pointer;">
+        Ferramentas
+    </button>
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/sobre.html" class="nav-link text-lg transition block">Sobre</a>
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/portf%C3%B3lio.html" class="nav-link text-lg transition block">Portfólio</a>
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/contato.html" class="nav-link text-lg transition block">Contato</a>
                 <a href="https://asthro.com.br/politicas.html" class="nav-link text-lg transition">Políticas</a>
                 <img src="https://i.imgur.com/sE44ypp.png" alt="Asthro" class="mobile-menu-logo" />
             </div>
+            <div id="mobileToolsModal" class="tools-modal">
+    <div class="modal-content">
+        <button class="modal-close">&times;</button>
+        <h3 class="animated-gradient-text text-3xl font-bold mb-8">Nossas Ferramentas</h3>
+        
+        <a href="https://asthro.com.br/asthrospeed.html" class="modal-link">
+            AsthroSpeed
+            <span class="modal-link-subtitle">Analisador de Performance e SEO</span>
+        </a>
+        
+        <a href="https://asthro.com.br/zerogravity.html" class="modal-link">
+            ZeroGravity
+            <span class="modal-link-subtitle">Removedor de Fundo de Imagens</span>
+        </a>
+        
+        <p class="text-sm text-gray-400 mt-10">Clique fora para fechar</p>
+    </div>
         </div>
     </nav>
     <main>
@@ -1487,6 +1675,44 @@ p, span, a {
     </div>
 </footer>
     <script>
+        // --- NOVO: LÓGICA DO POP-UP (MODAL) MOBILE ---
+const mobileToolsButton = document.getElementById('mobileToolsButton');
+const mobileToolsModal = document.getElementById('mobileToolsModal');
+const modalCloseButton = document.querySelector('.modal-close');
+
+function openModal() {
+    mobileToolsModal.classList.add('open');
+    // Não precisa fechar o menu hambúrguer, o modal fica por cima.
+    // document.body.style.overflow = 'hidden'; // Opcional: Para bloquear a rolagem do corpo
+}
+
+function closeModal() {
+    mobileToolsModal.classList.remove('open');
+    // document.body.style.overflow = mobileNavMenu.classList.contains('active') ? 'hidden' : 'auto';
+}
+
+if (mobileToolsButton && mobileToolsModal) {
+    // Abre o modal ao clicar no botão "Ferramentas" dentro do menu hambúrguer
+    mobileToolsButton.addEventListener('click', openModal);
+
+    // Fecha o modal ao clicar no 'X'
+    modalCloseButton.addEventListener('click', closeModal);
+
+    // Fecha o modal ao clicar fora dele
+    window.addEventListener('click', (event) => {
+        if (event.target === mobileToolsModal) {
+            closeModal();
+        }
+    });
+
+    // Fecha o modal ao clicar em qualquer link de ferramenta
+    mobileToolsModal.querySelectorAll('.modal-link').forEach(link => {
+        link.addEventListener('click', () => {
+            // Um pequeno atraso garante que a navegação comece antes do modal ser fechado visualmente.
+            setTimeout(closeModal, 100);
+        });
+    });
+}
     // SMOOTH SCROLL & MENU
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
@@ -1802,7 +2028,54 @@ function extractName(message) {
             }
         });
     }
+// ===================================================================
+// ================== LÓGICA DO DROPDOWN (CLICÁVEL) ==================
+// ===================================================================
 
+document.addEventListener('DOMContentLoaded', () => {
+    // ... [Seu código de inicialização já está aqui] ...
+
+    const toolsDropdownToggle = document.getElementById('toolsDropdownToggle');
+    const toolsDropdownContainer = document.getElementById('toolsDropdownContainer');
+    const toolsMenu = document.getElementById('toolsMenu');
+    const toolsArrow = document.getElementById('toolsArrow');
+
+    if (toolsDropdownToggle && toolsDropdownContainer && toolsMenu) {
+        
+        // 1. Alterna a visibilidade no clique
+        toolsDropdownToggle.addEventListener('click', (event) => {
+            event.preventDefault(); // Evita que o link # mude a URL
+            event.stopPropagation(); // Impede que o clique seja capturado pelo listener global abaixo
+            
+            // Alterna a classe 'active'
+            toolsDropdownContainer.classList.toggle('active');
+            
+            // Atualiza o estado da seta e do atributo ARIA
+            const isExpanded = toolsDropdownContainer.classList.contains('active');
+            toolsDropdownToggle.setAttribute('aria-expanded', isExpanded);
+        });
+
+        // 2. Fecha o menu se clicar em qualquer lugar fora dele
+        document.addEventListener('click', (event) => {
+            // Verifica se o clique não ocorreu dentro do container do dropdown
+            if (!toolsDropdownContainer.contains(event.target)) {
+                toolsDropdownContainer.classList.remove('active');
+                toolsDropdownToggle.setAttribute('aria-expanded', 'false');
+            }
+        });
+        
+        // 3. Fecha o menu se um link dentro dele for clicado
+        toolsMenu.querySelectorAll('a').forEach(link => {
+             link.addEventListener('click', () => {
+                // Pequeno atraso para que a navegação aconteça antes de fechar
+                 setTimeout(() => {
+                    toolsDropdownContainer.classList.remove('active');
+                    toolsDropdownToggle.setAttribute('aria-expanded', 'false');
+                 }, 50);
+             });
+        });
+    }
+});
     // ===================================================================
     // ================ LÓGICA DOS MODAIS (INTACTA) ======================
     // ===================================================================
