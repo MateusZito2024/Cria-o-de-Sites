@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Remover Fundo de Imagem (remove.bg API)</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+        .container {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+        }
+        input[type="file"] {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: calc(100% - 22px);
+            cursor: pointer;
+        }
+        #status {
+            margin-top: 15px;
+            font-weight: bold;
+            color: #333;
+        }
+        #resultado img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 20px;
+            border: 1px dashed #ccc;
+        }
+        #downloadLink {
+            display: none;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Removedor de Fundo de Imagem</h1>
+        <p>Selecione uma imagem para remover o fundo usando a API do remove.bg.</p>
+
+        <input type="file" id="imageUpload" accept="image/*">
+        
+        <p id="status">Aguardando a seleção da imagem...</p>
+        
+        <div id="resultado">
+            <img id="processedImage" src="" alt="Imagem Processada" style="display: none;">
+        </div>
+        
+        <a id="downloadLink" href="#" download="imagem-sem-fundo.png">Baixar Imagem</a>
+    </div>
+
+    <script>
+        // *** IMPORTANTE: SUBSTITUA PELA SUA CHAVE API DO REMOVE.BG ***
+        const API_KEY = "vPsag4BtqywPgAzmoV1MarYS"; 
+        
+        const imageUpload = document.getElementById('imageUpload');
+        const statusElement = document.getElementById('status');
+        const processedImage = document.getElementById('processedImage');
+        const downloadLink = document.getElementById('downloadLink');
+
+        imageUpload.addEventListener('change', handleImageUpload);
+
+        async function handleImageUpload(event) {
+            const file = event.target.files[0];
+            
+            if (!file) return;
+
+            // Limpa o resultado anterior
+            processedImage.style.display = 'none';
+            downloadLink.style.display = 'none';
+            processedImage.src = '';
+            
+            statusElement.textContent = "Processando... Isso pode levar alguns segundos.";
+
+            try {
+                const formData = new FormData();
+                formData.append("image_file", file);
+                formData.append("size", "auto"); // Define o tamanho para que a IA processe automaticamente
+                
+                const response = await fetch("https://api.remove.bg/v1.0/removebg", {
+                    method: 'POST',
+                    headers: {
+                        // A chave API deve ser enviada no cabeçalho X-Api-Key
+                        'X-Api-Key': API_KEY,
+                    },
+                    body: formData
+                });
+
+                if (response.ok) {
+                    // Se a resposta for bem-sucedida (código 200), ela retorna o arquivo PNG
+                    const imageBlob = await response.blob();
+                    
+                    // Converte o blob para uma URL local que o navegador pode exibir
+                    const url = URL.createObjectURL(imageBlob);
+                    
+                    processedImage.src = url;
+                    processedImage.style.display = 'block';
+                    
+                    downloadLink.href = url;
+                    downloadLink.style.display = 'block';
+                    
+                    statusElement.textContent = "Fundo removido com sucesso!";
+                } else {
+                    // Trata erros da API
+                    const errorData = await response.json();
+                    const errorMessage = errorData.errors ? errorData.errors[0].title : 'Erro desconhecido na API.';
+                    statusElement.textContent = `Erro: ${errorMessage}`;
+                }
+
+            } catch (error) {
+                // Trata erros de rede ou outros problemas
+                statusElement.textContent = `Ocorreu um erro: ${error.message}. Verifique sua chave API e conexão.`;
+                console.error('Erro de requisição:', error);
+            }
+        }
+    </script>
+</body>
+</html>
