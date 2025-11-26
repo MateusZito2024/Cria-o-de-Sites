@@ -7,22 +7,33 @@
     <style>
         /* Estilos CSS Básicos para a página */
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Inter', Arial, sans-serif;
             margin: 20px;
             background-color: #f4f4f9;
             color: #333;
         }
         .container {
-            max-width: 800px;
+            max-width: 900px; /* Aumentado para melhor visualização dos detalhes */
             margin: auto;
             background: #fff;
             padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
         }
         h1 {
             text-align: center;
             color: #007bff;
+            margin-bottom: 20px;
+        }
+        h2 {
+            border-bottom: 3px solid #007bff;
+            padding-bottom: 10px;
+            margin-top: 30px;
+            color: #333;
+        }
+        h3 {
+            color: #007bff;
+            margin-top: 20px;
         }
         #input-area {
             display: flex;
@@ -30,84 +41,146 @@
         }
         #urlInput {
             flex-grow: 1;
-            padding: 10px;
+            padding: 12px;
             border: 1px solid #ccc;
-            border-radius: 4px 0 0 4px;
+            border-radius: 6px 0 0 6px;
+            font-size: 1em;
         }
         #analyzeButton {
-            padding: 10px 15px;
+            padding: 12px 20px;
             background-color: #007bff;
             color: white;
             border: none;
             cursor: pointer;
-            border-radius: 0 4px 4px 0;
+            border-radius: 0 6px 6px 0;
             transition: background-color 0.3s;
+            font-size: 1em;
         }
         #analyzeButton:hover {
             background-color: #0056b3;
         }
         #results {
             margin-top: 20px;
-            border-top: 1px solid #eee;
             padding-top: 20px;
         }
         .loading {
             text-align: center;
             font-size: 1.2em;
             color: #007bff;
+            padding: 40px 0;
         }
+        /* Grid de Pontuações Principais e CWV */
         .metric-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 15px;
             margin-top: 20px;
         }
         .metric-box {
             background: #e9ecef;
             padding: 15px;
-            border-radius: 6px;
+            border-radius: 8px;
             text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         }
         .metric-score {
             font-size: 1.8em;
             font-weight: bold;
             margin-top: 5px;
         }
-        .score-good { color: #28a745; } /* Verde */
-        .score-medium { color: #ffc107; } /* Amarelo */
-        .score-bad { color: #dc3545; } /* Vermelho */
-        .opportunities h3 {
-            color: #007bff;
-            border-bottom: 2px solid #007bff;
-            padding-bottom: 5px;
-            margin-top: 30px;
+        /* Cores de Pontuação */
+        .score-good { color: #28a745; }
+        .score-medium { color: #ffc107; }
+        .score-bad { color: #dc3545; }
+
+        /* Estilos para o Acordeão (Collapsible UI) */
+        .collapsible-header {
+            cursor: pointer;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-        .opportunity-item {
-            background: #f8f9fa;
-            border: 1px solid #dee2e6;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 4px;
+        .collapsible-header:hover {
+            opacity: 0.9;
         }
+        .collapsible-header::after {
+            content: '+';
+            font-size: 1.5em;
+            transition: transform 0.3s;
+        }
+        .collapsible-header.active::after {
+            content: '-';
+            transform: rotate(0deg); /* Exibe '-' quando ativo */
+        }
+        .collapsible-content {
+            padding: 10px 15px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+            background-color: #fcfcfc;
+            border: 1px solid #ddd;
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+        }
+
+        /* Status Cores no Header */
+        .status-fail { background-color: #dc3545; color: white;} /* Vermelho */
+        .status-warn { background-color: #ffc107; color: #333;} /* Amarelo */
+        .status-pass { background-color: #28a745; color: white;} /* Verde */
+        
+        /* Estilos para o item de Auditoria */
+        .audit-item {
+            padding: 10px 0;
+            border-bottom: 1px dashed #e0e0e0;
+            display: flex;
+            flex-direction: column;
+        }
+        .audit-item:last-child {
+            border-bottom: none;
+        }
+        .audit-item strong {
+            font-size: 1em;
+            margin-bottom: 5px;
+        }
+        .audit-item p {
+            margin: 5px 0 0 0;
+            font-size: 0.9em;
+            color: #6c757d;
+        }
+
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>🚀 Asthro - Analisador de Performance Web</h1>
-    <p>Insira a URL do site (ex: https://www.asthro.com.br) para obter uma análise de desempenho.</p>
+    <h1>🚀 Asthro - Analisador de Performance Web Detalhado</h1>
+    <p>Insira a URL do site (ex: https://www.asthro.com.br) para obter um diagnóstico completo e detalhado da performance e otimização.</p>
     
     <div id="input-area">
-        <input type="url" id="urlInput" placeholder="https://seudominio.com.br" required>
+        <input 
+            type="url" 
+            id="urlInput" 
+            placeholder="Exemplo: https://seudominio.com.br" 
+            required
+        >
         <button id="analyzeButton" onclick="analyzeUrl()">Analisar Site</button>
     </div>
 
     <div id="results">
-        </div>
+        <p style="text-align: center; color: #6c757d;">
+            Aguardando URL para iniciar a análise.
+        </p>
+    </div>
 </div>
 
 <script>
-    // ** ⚠️ ATENÇÃO: SUBSTITUA PELA SUA CHAVE DE API REAL ⚠️ **
+    // ** Sua Chave de API **
     const API_KEY = "AIzaSyCVI4jsvpC5L2UY2c99cVgwR-gc2VLV_XE"; 
     const API_ENDPOINT = "https://www.googleapis.com/pagespeedonline/v5/runPagespeed";
     const RESULTS_DIV = document.getElementById('results');
@@ -119,50 +192,68 @@
         return 'score-bad';
     }
 
+    // Função para obter a classe de cor com base no valor da métrica (tempo)
+    function classifyMetricValue(metricId, value) {
+        // Classificação baseada nas regras do Lighthouse para Core Web Vitals (em ms)
+        if (metricId === 'largest-contentful-paint' || metricId === 'first-contentful-paint' || metricId === 'total-blocking-time') {
+            // Conversão de valores de tempo para números para comparação
+            const match = value.match(/([\d\.]+)/);
+            const ms = match ? parseFloat(match[1]) * (value.includes('s') ? 1000 : 1) : 0;
+            
+            if (ms <= 2500) return 'score-good'; // Bom
+            if (ms <= 4000) return 'score-medium'; // Precisa de melhoria
+            return 'score-bad'; // Ruim
+        }
+        // Para CLS, que é um score decimal (ex: 0.05)
+        if (metricId === 'cumulative-layout-shift') {
+            const score = parseFloat(value);
+            if (score <= 0.1) return 'score-good';
+            if (score <= 0.25) return 'score-medium';
+            return 'score-bad';
+        }
+        return '';
+    }
+
     function analyzeUrl() {
-    let url = document.getElementById('urlInput').value.trim(); // Use 'let' para poder alterar o valor
+        let url = document.getElementById('urlInput').value.trim();
 
-    if (!url) {
-        RESULTS_DIV.innerHTML = '<p class="score-bad">Por favor, insira uma URL válida.</p>';
-        return;
+        if (!url) {
+            RESULTS_DIV.innerHTML = '<p class="score-bad">Por favor, insira uma URL válida.</p>';
+            return;
+        }
+
+        // Adiciona https:// se o usuário esqueceu o protocolo
+        if (!url.startsWith('http://') && !url.startsWith('https://')) {
+            url = 'https://' + url;
+            document.getElementById('urlInput').value = url; 
+        }
+        
+        // Exibir carregamento
+        RESULTS_DIV.innerHTML = '<div class="loading">Analisando... Por favor, aguarde cerca de 30 segundos.</div>';
+        ANALYZE_BUTTON.disabled = true;
+
+        // Construir o URL da API (Solicitando todas as categorias)
+        const requestUrl = `${API_ENDPOINT}?url=${encodeURIComponent(url)}&key=${API_KEY}&strategy=desktop&category=PERFORMANCE&category=ACCESSIBILITY&category=BEST_PRACTICES&category=SEO`;
+
+        fetch(requestUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Erro HTTP! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                displayResults(data);
+                setupCollapsibles(); // Chama a função do acordeão após renderizar
+            })
+            .catch(error => {
+                RESULTS_DIV.innerHTML = `<p class="score-bad">❌ Erro na análise: ${error.message}. Verifique a URL e a chave da API.</p>`;
+                console.error("Erro ao buscar API:", error);
+            })
+            .finally(() => {
+                ANALYZE_BUTTON.disabled = false;
+            });
     }
-
-    // ⭐ NOVO: Adiciona https:// se o usuário esqueceu o protocolo ⭐
-    if (!url.startsWith('http://') && !url.startsWith('https://')) {
-        url = 'https://' + url;
-        // Opcional: Atualizar o campo de input para mostrar ao usuário o formato correto
-        document.getElementById('urlInput').value = url; 
-    }
-    // ⭐ FIM NOVO CÓDIGO ⭐
-    
-    // Exibir carregamento
-    RESULTS_DIV.innerHTML = '<div class="loading">Analisando... Por favor, aguarde cerca de 30 segundos.</div>';
-    ANALYZE_BUTTON.disabled = true;
-
-    // Construir o URL da API
-    const API_KEY = "AIzaSyCVI4jsvpC5L2UY2c99cVgwR-gc2VLV_XE";
-    const requestUrl = `${API_ENDPOINT}?url=${encodeURIComponent(url)}&key=${API_KEY}&strategy=desktop&category=PERFORMANCE&category=ACCESSIBILITY&category=BEST_PRACTICES&category=SEO`;
-
-    fetch(requestUrl)
-        // ... (o restante do código continua o mesmo)
-        .then(response => {
-            if (!response.ok) {
-                // Aqui o erro 400 seria pego se o problema for outro
-                throw new Error(`Erro HTTP! Status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            displayResults(data);
-        })
-        .catch(error => {
-            RESULTS_DIV.innerHTML = `<p class="score-bad">❌ Erro na análise: ${error.message}. Verifique a URL e a chave da API.</p>`;
-            console.error("Erro ao buscar API:", error);
-        })
-        .finally(() => {
-            ANALYZE_BUTTON.disabled = false;
-        });
-}
 
     function displayResults(data) {
         if (!data || !data.lighthouseResult) {
@@ -171,73 +262,193 @@
         }
 
         const lhr = data.lighthouseResult;
-        
-        // 1. Pontuação Principal de Performance
-        const performanceScore = Math.round(lhr.categories.performance.score * 100);
-        const scoreClass = classifyScore(performanceScore);
+        const audits = lhr.audits;
         
         let htmlContent = `
-            <h2>✨ Resultado da Análise para: ${lhr.finalUrl}</h2>
-            <p>Análise gerada em: ${new Date(lhr.fetchTime).toLocaleDateString()} às ${new Date(lhr.fetchTime).toLocaleTimeString()}</p>
+            <h2>✨ Relatório Detalhado Asthro</h2>
+            <p>Análise da URL: <strong>${lhr.finalUrl}</strong> (Versão Desktop)</p>
+            <p><small>Gerado em: ${new Date(lhr.fetchTime).toLocaleDateString()} às ${new Date(lhr.fetchTime).toLocaleTimeString()}</small></p>
             
+            <h3>1. Pontuações Gerais</h3>
             <div class="metric-grid">
+                <!-- Pontuação Principal (Performance) -->
+                ${renderCategoryScore('performance', 'Performance', lhr.categories, classifyScore)}
+                ${renderCategoryScore('accessibility', 'Acessibilidade', lhr.categories, classifyScore)}
+                ${renderCategoryScore('best-practices', 'Melhores Práticas', lhr.categories, classifyScore)}
+                ${renderCategoryScore('seo', 'SEO', lhr.categories, classifyScore)}
+            </div>
+            
+            ${renderCoreWebVitals(audits)}
+            
+            <h3>3. Diagnóstico Detalhado por Categoria (Clique para Expandir)</h3>
+            ${renderAuditDetails(lhr)}
+            
+            <div style="margin-top: 40px; padding: 20px; background-color: #e6f0ff; border-radius: 8px; text-align: center;">
+                <h3>Próximos Passos com a Asthro</h3>
+                <p>Para resolver os pontos de melhoria e levar seu site à pontuação máxima, entre em contato. Somos especialistas em otimização PageSpeed!</p>
+                <strong style="color: #007bff;">Seu sucesso é a nossa missão!</strong>
+            </div>
+        `;
+        
+        RESULTS_DIV.innerHTML = htmlContent;
+    }
+
+    // --- Funções Auxiliares para Renderização Detalhada ---
+
+    function renderCategoryScore(key, label, categories, classifier) {
+        const category = categories[key];
+        if (!category) return '';
+        
+        const score = Math.round(category.score * 100);
+        const cls = classifier(score);
+        return `
+            <div class="metric-box">
+                <strong>${label}</strong>
+                <div class="metric-score ${cls}">${score}%</div>
+            </div>
+        `;
+    }
+
+    function renderCoreWebVitals(audits) {
+        const metrics = [
+            { id: 'largest-contentful-paint', label: 'LCP (Maior Conteúdo)' },
+            { id: 'first-contentful-paint', label: 'FCP (Primeiro Conteúdo)' },
+            { id: 'total-blocking-time', label: 'TBT (Tempo de Bloqueio)' },
+            { id: 'cumulative-layout-shift', label: 'CLS (Estabilidade Visual)' }
+        ];
+
+        let metricsHtml = metrics.map(m => {
+            const audit = audits[m.id];
+            if (!audit || !audit.displayValue) return '';
+
+            const valueClass = classifyMetricValue(m.id, audit.displayValue);
+
+            return `
                 <div class="metric-box">
-                    <strong>Pontuação Principal</strong>
-                    <div class="metric-score ${scoreClass}">${performanceScore}%</div>
+                    <strong>${m.label}</strong>
+                    <div class="metric-score ${valueClass}" style="font-size: 1.4em;">${audit.displayValue}</div>
                 </div>
             `;
+        }).join('');
 
-        // 2. Outras Pontuações (Acessibilidade, etc.)
-        const categoryMap = {
+        return `
+            <h3>2. Core Web Vitals (Métricas de Velocidade)</h3>
+            <div class="metric-grid">${metricsHtml}</div>
+        `;
+    }
+
+    function renderAuditDetails(lhr) {
+        const categories = {
+            'performance': 'Performance',
             'accessibility': 'Acessibilidade',
             'best-practices': 'Melhores Práticas',
             'seo': 'SEO (Otimização de Buscas)'
         };
 
-        for (const [key, label] of Object.entries(categoryMap)) {
-            const category = lhr.categories[key];
-            if (category) {
-                const score = Math.round(category.score * 100);
-                const cls = classifyScore(score);
-                htmlContent += `
-                    <div class="metric-box">
-                        <strong>${label}</strong>
-                        <div class="metric-score ${cls}">${score}%</div>
+        let detailsHtml = '';
+
+        for (const [key, categoryName] of Object.entries(categories)) {
+            const auditRefs = lhr.categories[key].auditRefs;
+            
+            // 1. Falhas / Oportunidades (Score < 0.9)
+            const failedAudits = auditRefs.filter(ref => lhr.audits[ref.id].score < 0.9 && lhr.audits[ref.id].score !== null);
+            // 2. Aprovados (Score = 1)
+            const passedAudits = auditRefs.filter(ref => lhr.audits[ref.id].score === 1);
+            // 3. Informações ou Avisos (Score entre 0.9 e 1 ou sem score)
+            const informationalAudits = auditRefs.filter(ref => 
+                (lhr.audits[ref.id].score >= 0.9 && lhr.audits[ref.id].score < 1) || 
+                (lhr.audits[ref.id].score === null && lhr.audits[ref.id].scoreDisplayMode === 'not applicable')
+            );
+
+
+            // --- Renderizar Falhas (Erros) - Seção Collapsible ---
+            if (failedAudits.length > 0) {
+                detailsHtml += `
+                    <div class="report-section">
+                        <div class="collapsible-header status-fail">
+                            ❌ ${categoryName}: Falhas e Oportunidades (${failedAudits.length})
+                        </div>
+                        <div class="collapsible-content">
+                            ${failedAudits.map(ref => renderAuditItem(lhr.audits[ref.id])).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            // --- Renderizar Avisos / Informações (Atenção) - Seção Collapsible ---
+             if (informationalAudits.length > 0) {
+                detailsHtml += `
+                    <div class="report-section">
+                        <div class="collapsible-header status-warn">
+                            ⚠️ ${categoryName}: Diagnósticos e Avisos (${informationalAudits.length})
+                        </div>
+                        <div class="collapsible-content">
+                            ${informationalAudits.map(ref => renderAuditItem(lhr.audits[ref.id])).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            // --- Renderizar Aprovados (Acertos) - Seção Collapsible ---
+            if (passedAudits.length > 0) {
+                detailsHtml += `
+                    <div class="report-section">
+                        <div class="collapsible-header status-pass">
+                            ✅ ${categoryName}: Testes Aprovados (${passedAudits.length})
+                        </div>
+                        <div class="collapsible-content">
+                            ${passedAudits.map(ref => renderAuditItem(lhr.audits[ref.id])).join('')}
+                        </div>
                     </div>
                 `;
             }
         }
-        
-        htmlContent += `</div>`;
-        
-        // 3. Oportunidades de Melhoria (Sugestões)
-        const audits = lhr.audits;
-        const opportunities = lhr.categories.performance.auditRefs
-            .filter(ref => ref.group === 'metrics' || ref.group === 'load-opportunities')
-            .map(ref => audits[ref.id])
-            .filter(audit => audit.score !== 1 && audit.details && audit.details.overallSavingsMs > 0);
-
-        if (opportunities.length > 0) {
-            htmlContent += `
-                <div class="opportunities">
-                    <h3>💡 Oportunidades de Otimização</h3>
-                    <p>As seguintes sugestões podem melhorar a performance do seu site:</p>
-                    ${opportunities.slice(0, 5).map(audit => `
-                        <div class="opportunity-item">
-                            <strong>${audit.title}</strong>
-                            <p>Economia Estimada: ${Math.round(audit.details.overallSavingsMs / 1000)}s</p>
-                            <p>${audit.description.replace(/\[.*\]\(.*\)/g, '')}</p>
-                        </div>
-                    `).join('')}
-                    <p>Entre em contato com a **Asthro** para resolvermos estas questões!</p>
-                </div>
-            `;
-        } else {
-            htmlContent += '<p style="text-align: center; margin-top: 20px; color: #28a745;">🎉 Seu site está super otimizado! Excelente trabalho!</p>';
-        }
-
-        RESULTS_DIV.innerHTML = htmlContent;
+        return detailsHtml;
     }
+
+    function renderAuditItem(audit) {
+        // Remove links Markdown da descrição para simplificar a visualização (e mantém em português)
+        const descriptionClean = audit.description ? audit.description.replace(/\[.*\]\(.*\)/g, '').trim() : 'Nenhuma descrição disponível.';
+
+        // Adiciona informações de economia de tempo se disponíveis (para Performance)
+        let savingsInfo = '';
+        if (audit.details && audit.details.overallSavingsMs > 0) {
+            // Conversão de milissegundos para segundos
+            const savingsSeconds = (audit.details.overallSavingsMs / 1000).toFixed(2);
+            savingsInfo = ` (Economia Estimada: ${savingsSeconds}s)`;
+        }
+        
+        return `
+            <div class="audit-item">
+                <strong>${audit.title} ${savingsInfo}</strong>
+                <p>${descriptionClean}</p>
+            </div>
+        `;
+    }
+
+    // --- Nova Função para Lógica de Acordeão ---
+    function setupCollapsibles() {
+        const headers = document.querySelectorAll('.collapsible-header');
+
+        headers.forEach(header => {
+            header.addEventListener('click', function() {
+                this.classList.toggle('active');
+                const content = this.nextElementSibling;
+                
+                if (content.style.maxHeight) {
+                    content.style.maxHeight = null;
+                } else {
+                    // Define a altura máxima para o scrollHeight (altura necessária para exibir todo o conteúdo)
+                    content.style.maxHeight = content.scrollHeight + "px";
+                } 
+            });
+        });
+    }
+
+    // Inicializa a lógica de carregamento inicial (se a página for atualizada)
+    document.addEventListener('DOMContentLoaded', () => {
+        // Nada a fazer no DOMContentLoaded, a função setupCollapsibles é chamada em displayResults
+    });
 </script>
 
 </body>
