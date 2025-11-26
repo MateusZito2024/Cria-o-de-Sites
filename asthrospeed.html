@@ -18,6 +18,162 @@
     <meta property="og:type" content="website">
 
     <style>
+        /* --- NOVOS ESTILOS PARA O POP-UP (MODAL) MOBILE --- */
+
+/* Oculta o modal por padrão */
+.tools-modal {
+    position: fixed;
+    z-index: 2000; /* CRÍTICO: Deve ser mais alto que o menu hambúrguer (1000) */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95); /* Fundo escuro com transparência */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: none; /* Inicia Oculto */
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* Mostra o modal */
+.tools-modal.open {
+    display: flex;
+    opacity: 1;
+}
+
+.modal-content {
+    background: #111111;
+    border: 2px solid #6627ff;
+    border-radius: 1rem;
+    padding: 2rem 1.5rem;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 0 30px rgba(102, 39, 255, 0.7);
+    animation: fadeIn 0.3s ease-out;
+    position: relative;
+    text-align: center;
+}
+
+.modal-close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    color: #edf1f7;
+    font-size: 2.5rem;
+    font-weight: 300;
+    line-height: 1;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.modal-close:hover {
+    color: #0bf4ed;
+    transform: scale(1.1);
+}
+
+/* Estilo dos links de ferramentas no modal */
+.modal-link {
+    display: block;
+    background: rgba(102, 39, 255, 0.15); /* Fundo roxo suave */
+    border: 1px solid rgba(102, 39, 255, 0.5);
+    border-radius: 0.75rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    color: #edf1f7;
+    font-size: 1.25rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.modal-link-subtitle {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: #bbb;
+    margin-top: 0.25rem;
+}
+
+.modal-link:hover {
+    background: linear-gradient(90deg, rgba(102, 39, 255, 0.4), rgba(11, 244, 237, 0.4));
+    border-color: #0bf4ed;
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 8px 15px rgba(11, 244, 237, 0.5);
+}
+        /* --- NOVOS ESTILOS PARA O DROPDOWN MOBILE (POP-UP) --- */
+.mobile-dropdown-tools {
+    width: 90%; /* Ajuste para a largura do link pai */
+    position: relative;
+    /* Usa a mesma cor de fundo para se integrar ao menu deslizante */
+    background: rgba(102, 39, 255, 0.1); 
+    border-radius: 0.75rem; 
+    overflow: hidden; /* CRÍTICO: Esconde o menu filho */
+}
+
+/* O botão principal "Ferramentas" */
+.mobile-dropdown-toggle {
+    /* Reinicia estilos para parecer um nav-link */
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    margin: 0 !important; /* Remove margem extra */
+    border: none !important; /* Remove borda extra */
+    padding: 0.8rem 1.5rem; 
+    background: transparent !important; /* Deixa o fundo transparente para usar o do pai (.mobile-dropdown-tools) */
+    box-shadow: none !important;
+}
+
+/* Container dos links do pop-up (inicialmente fechado) */
+.mobile-dropdown-menu {
+    max-height: 0;
+    transition: max-height 0.3s ease-out;
+    overflow: hidden;
+    background-color: rgba(17, 17, 17, 0.5); /* Fundo sutil para os sublinks */
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Classe ativa: Abre o menu */
+.mobile-dropdown-tools.active .mobile-dropdown-menu {
+    /* max-height será definido via JavaScript no clique */
+}
+
+/* Estilo dos links internos (sublinks) */
+.mobile-dropdown-link {
+    padding: 0.6rem 2.5rem; /* Ajuste para um bom espaçamento */
+    font-size: 1rem;
+    color: #edf1f7;
+    font-weight: 400; /* Mais leve que o link principal */
+    transition: background 0.2s ease, color 0.2s ease;
+    text-align: center;
+}
+
+.mobile-dropdown-link:hover {
+    background: rgba(11, 244, 237, 0.3);
+    color: #0bf4ed;
+}
+
+/* Seta de expansão (seta do lado do nome "Ferramentas") */
+.dropdown-arrow-mobile {
+    transition: transform 0.3s ease;
+}
+
+/* Rotaciona a seta quando o menu está ativo (via JS) */
+.mobile-dropdown-tools.active .dropdown-arrow-mobile {
+    transform: rotate(180deg);
+}
+
+/* 🛑 NOVO AJUSTE: Otimiza a primeira margem de link no menu mobile 🛑 */
+/* Reduza a margem inicial para compensar o tamanho do novo elemento */
+.nav-menu-mobile .nav-link:first-child {
+    /* 🛑 ATUALIZE ESTE VALOR 🛑 */
+    margin-top: 3rem !important; /* De '6rem' para '3rem' (ou outro valor que centralize bem) */
+}
         /* --- NOVOS ESTILOS PARA O DROPDOWN DE FERRAMENTAS --- */
 .dropdown-menu {
     position: absolute; 
@@ -1085,15 +1241,32 @@ nav {
             <div class="nav-menu-mobile content-layer">
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/index.html" class="nav-link text-lg transition block">Início</a>
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/servi%C3%A7os.html" class="nav-link text-lg transition block">Serviços</a>
-                <span class="nav-link text-lg transition block font-bold" style="margin-bottom: -1rem;">Ferramentas</span>
-                <a href="https://asthro.com.br/asthrospeed.html" class="nav-link text-lg transition block" style="margin-top: 1.5rem; opacity: 0.7; font-size: 1rem; padding-top: 0.4rem; padding-bottom: 0.4rem;">- AsthroSpeed (Análise)</a>
-                <a href="https://asthro.com.br/zerogravity.html" class="nav-link text-lg transition block" style="margin-top: -1rem; opacity: 0.7; font-size: 1rem; padding-top: 0.4rem; padding-bottom: 0.4rem;">- ZeroGravity (Removedor)</a>
+                <button id="mobileToolsButton" class="nav-link text-lg transition block w-full text-center" style="cursor: pointer;">
+        Ferramentas
+    </button>
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/sobre.html" class="nav-link text-lg transition block">Sobre</a>
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/portf%C3%B3lio.html" class="nav-link text-lg transition block">Portfólio</a>
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/contato.html" class="nav-link text-lg transition block">Contato</a>
                 <a href="https://asthro.com.br/politicas.html" class="nav-link text-lg transition">Políticas</a>
                 <img src="https://i.imgur.com/sE44ypp.png" alt="Asthro" class="mobile-menu-logo" />
             </div>
+            <div id="mobileToolsModal" class="tools-modal">
+    <div class="modal-content">
+        <button class="modal-close">&times;</button>
+        <h3 class="animated-gradient-text text-3xl font-bold mb-8">Nossas Ferramentas</h3>
+        
+        <a href="https://asthro.com.br/asthrospeed.html" class="modal-link">
+            AsthroSpeed
+            <span class="modal-link-subtitle">Analisador de Performance e SEO</span>
+        </a>
+        
+        <a href="https://asthro.com.br/zerogravity.html" class="modal-link">
+            ZeroGravity
+            <span class="modal-link-subtitle">Removedor de Fundo de Imagens</span>
+        </a>
+        
+        <p class="text-sm text-gray-400 mt-10">Clique fora para fechar</p>
+    </div>
         </div>
     </nav>
 
@@ -1158,6 +1331,44 @@ nav {
     </footer>
 
     <script>
+        // --- NOVO: LÓGICA DO POP-UP (MODAL) MOBILE ---
+const mobileToolsButton = document.getElementById('mobileToolsButton');
+const mobileToolsModal = document.getElementById('mobileToolsModal');
+const modalCloseButton = document.querySelector('.modal-close');
+
+function openModal() {
+    mobileToolsModal.classList.add('open');
+    // Não precisa fechar o menu hambúrguer, o modal fica por cima.
+    // document.body.style.overflow = 'hidden'; // Opcional: Para bloquear a rolagem do corpo
+}
+
+function closeModal() {
+    mobileToolsModal.classList.remove('open');
+    // document.body.style.overflow = mobileNavMenu.classList.contains('active') ? 'hidden' : 'auto';
+}
+
+if (mobileToolsButton && mobileToolsModal) {
+    // Abre o modal ao clicar no botão "Ferramentas" dentro do menu hambúrguer
+    mobileToolsButton.addEventListener('click', openModal);
+
+    // Fecha o modal ao clicar no 'X'
+    modalCloseButton.addEventListener('click', closeModal);
+
+    // Fecha o modal ao clicar fora dele
+    window.addEventListener('click', (event) => {
+        if (event.target === mobileToolsModal) {
+            closeModal();
+        }
+    });
+
+    // Fecha o modal ao clicar em qualquer link de ferramenta
+    mobileToolsModal.querySelectorAll('.modal-link').forEach(link => {
+        link.addEventListener('click', () => {
+            // Um pequeno atraso garante que a navegação comece antes do modal ser fechado visualmente.
+            setTimeout(closeModal, 100);
+        });
+    });
+}
         // --- Lógica de Acordeão ---
 function setupCollapsibles() {
     const headers = document.querySelectorAll('.collapsible-header');
@@ -1532,6 +1743,43 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+        // --- Lógica do Dropdown Mobile de Ferramentas (Pop-up) ---
+const mobileDropdownToggle = document.querySelector('.mobile-dropdown-toggle');
+const mobileDropdownMenu = document.querySelector('.mobile-dropdown-menu');
+const mobileDropdownContainer = document.querySelector('.mobile-dropdown-tools');
+
+if (mobileDropdownToggle && mobileDropdownMenu) {
+    mobileDropdownToggle.addEventListener('click', function(event) {
+        event.preventDefault();
+        event.stopPropagation(); // Evita fechar o menu hambúrguer se ele estivesse fechando
+
+        // Alterna a classe 'active' no container
+        mobileDropdownContainer.classList.toggle('active');
+
+        // Alterna o estado de expansão
+        const isExpanded = mobileDropdownContainer.classList.contains('active');
+        this.setAttribute('aria-expanded', isExpanded);
+
+        // Ajusta a altura máxima para abrir/fechar suavemente
+        if (isExpanded) {
+            // Abre o pop-up: usa scrollHeight para a altura exata do conteúdo
+            mobileDropdownMenu.style.maxHeight = mobileDropdownMenu.scrollHeight + "px";
+        } else {
+            // Fecha o pop-up
+            mobileDropdownMenu.style.maxHeight = null;
+        }
+    });
+
+    // Opcional: Fecha o dropdown após clicar em um link
+    mobileDropdownMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            mobileDropdownContainer.classList.remove('active');
+            mobileDropdownToggle.setAttribute('aria-expanded', 'false');
+            mobileDropdownMenu.style.maxHeight = null;
+            // O menu hambúrguer continua aberto, mas o sub-menu fecha.
+        });
+    });
+}
     </script>
 </body>
 </html>
