@@ -232,16 +232,9 @@ footer .content-layer {
         }
 
         nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 10;
-            background: transparent;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 0 1rem;
-            pointer-events: auto;
-        }
-
+    pointer-events: auto;
+    z-index: 100; /* ESTE É O SEGUNDO VALOR ATUAL - MELHOR, MAS AINDA PODE SER SUPERADO! */
+}
         nav > div {
             display: flex;
             justify-content: space-between;
@@ -277,13 +270,13 @@ main *, footer * {
 /* CORREÇÃO: Força o navbar a ser interativo e ter um z-index alto */
 nav {
     pointer-events: auto;
-    z-index: 50; /* Z-index alto para garantir que fique no topo */
+    z-index: 1000 !important; /* MUDANÇA CRÍTICA: Defina para um valor muito alto */
 }
 
-        h1, h2, h3, p, a, input, textarea, button, img, svg {
-            position: relative;
-            z-index: 30;
-        }
+       h1, h2, h3, p, a, input, textarea, button, img, svg {
+    position: relative;
+    z-index: 30; /* Isso já está abaixo de 1000, e é bom para o conteúdo principal */
+}
 
         /* -------------------------------------
             Remaining Styles
@@ -649,11 +642,10 @@ nav {
         filter: drop-shadow(0 0 5px rgba(102, 39, 255, 0.4));
     }
     /* Navbar adjustments */
-    nav {
-        /* CORREÇÃO: Fundo escuro para o cabeçalho no mobile */
-        background: rgba(17, 17, 17, 0.95);
-        padding: 0.5rem 1rem;
-    }
+   nav {
+    pointer-events: auto;
+    z-index: 1000; /* Defina para 1000 */
+}
 
     /* Hide desktop nav links */
     nav .flex.items-center.space-x-6 {
@@ -1037,7 +1029,7 @@ nav {
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 content-layer">
                 
                 <h2 class="text-4xl font-bold text-center mb-6 gradient-text" style="border-bottom: none;">
-                    Ferramenta de Análise PageSpeed Insights
+                    Ferramenta de Análise AsthroSpeed
                 </h2>
                 <p class="text-center text-xl text-gray-300 mb-10">
                     Avalie gratuitamente a performance, acessibilidade e SEO do seu site.
@@ -1049,7 +1041,7 @@ nav {
                         <input 
                             type="url" 
                             id="urlInput" 
-                            placeholder="Exemplo: https://seudominio.com.br" 
+                            placeholder="Exemplo: seudominio.com.br" 
                             required
                             class="flex-grow p-3 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-[#0bf4ed] transition"
                         >
@@ -1060,7 +1052,7 @@ nav {
 
                     <div id="results">
                         <p class="text-center text-gray-400">
-                            Digite uma URL válida para começar. Lembre-se de incluir o **https://**.
+                            Digite uma URL válida no campo acima para começar.
                         </p>
                     </div>
 
