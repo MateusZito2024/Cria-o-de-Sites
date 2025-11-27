@@ -1660,175 +1660,115 @@ function setupCollapsibles() {
             return detailsHtml;
         }
 
-        // ==================== DICIONÁRIO DE TRADUÇÃO COMPLETO (PORTUGUÊS BR) ====================
-        const translations = {
-            // Core Web Vitals
-            'largest-contentful-paint': 'LCP - Maior Exibição de Conteúdo',
-            'first-contentful-paint': 'FCP - Primeira Exibição de Conteúdo',
-            'total-blocking-time': 'TBT - Tempo Total de Bloqueio',
-            'cumulative-layout-shift': 'CLS - Mudança Cumulativa de Layout',
-            'interaction-to-next-paint': 'INP - Próxima Pintura Interativa',
-
-            // Performance comum
-            'uses-long-cache-ttl': 'Usa cache de longa duração',
-            'uses-optimized-images': 'Imagens otimizadas',
-            'uses-webp-images': 'Usa imagens no formato WebP',
-            'uses-responsive-images': 'Imagens responsivas (atributo srcset)',
-            'offscreen-images': 'Imagens fora da tela (lazy-load recomendado)',
-            'unminified-css': 'CSS não minificado',
-            'unminified-javascript': 'JavaScript não minificado',
-            'unused-css-rules': 'Regras CSS não utilizadas',
-            'unused-javascript': 'JavaScript não utilizado',
-            'render-blocking-resources': 'Recursos que bloqueiam a renderização',
-            'efficient-animated-content': 'Conteúdo animado eficiente',
-            'uses-text-compression': 'Usa compressão de texto (Gzip/Brotli)',
-            'preload-key-requests': 'Pré-carregamento de requisições importantes',
-            'font-display': 'Uso correto de font-display: swap',
-            'critical-request-chains': 'Cadeias críticas de requisições',
-            'redirects': 'Redirecionamentos desnecessários',
-            'server-response-time': 'Tempo de resposta do servidor (TTFB)',
-            'mainthread-work-breakdown': 'Trabalho excessivo na thread principal',
-
-            // Acessibilidade
-            'accesskeys': 'Atributo accesskey usado corretamente',
-            'aria-allowed-attr': 'Atributos ARIA permitidos',
-            'aria-command-name': 'Comandos ARIA com nome',
-            'aria-hidden-body': 'body não oculto por aria-hidden',
-            'aria-hidden-focus': 'Foco em elementos ocultos por ARIA',
-            'aria-input-field-name': 'Campos de entrada com nome acessível',
-            'aria-meter-name': 'Elementos meter com nome',
-            'aria-progressbar-name': 'Progressbar com nome',
-            'aria-required-attr': 'Atributos ARIA obrigatórios',
-            'aria-required-children': 'Filhos ARIA obrigatórios',
-            'aria-required-parent': 'Elemento pai ARIA obrigatório',
-            'aria-roles': 'Roles ARIA válidas',
-            'aria-toggle-field-name': 'Campos toggle com nome',
-            'aria-tooltip-name': 'Tooltips com nome',
-            'aria-treeitem-name': 'Itens de árvore com nome',
-            'aria-valid-attr-value': 'Valores de atributos ARIA válidos',
-            'aria-valid-attr': 'Atributos ARIA válidos',
-            'button-name': 'Botões com texto acessível',
-            'bypass': 'Mecanismo para pular blocos de conteúdo',
-            'color-contrast': 'Contraste de cor suficiente',
-            'definition-list': 'Listas de definição corretas',
-            'dlitem': 'Itens de definição corretos',
-            'document-title': 'Título da página definido',
-            'duplicate-id-active': 'IDs duplicados em elementos focáveis',
-            'duplicate-id-aria': 'IDs duplicados em ARIA',
-            'form-field-multiple-labels': 'Campos com múltiplos rótulos',
-            'frame-title': 'Frames com título',
-            'heading-order': 'Ordem correta de cabeçalhos (h1 → h6)',
-            'html-has-lang': 'Tag html com atributo lang',
-            'html-lang-valid': 'Atributo lang válido (ex: pt-BR)',
-            'image-alt': 'Imagens com atributo alt descritivo',
-            'input-image-alt': 'Inputs de imagem com alt',
-            'label': 'Campos de formulário com label',
-            'layout-table': 'Tabelas usadas apenas para layout',
-            'link-name': 'Links com texto descritivo',
-            'list': 'Listas corretamente estruturadas',
-            'listitem': 'Itens de lista corretos',
-            'meta-refresh': 'Meta refresh (evitar)',
-            'meta-viewport': 'Viewport configurado corretamente',
-            'object-alt': 'Objetos com texto alternativo',
-            'tabindex': 'Uso correto de tabindex',
-            'td-headers-attr': 'Células de tabela com headers',
-            'th-has-data-cells': 'Cabeçalhos de tabela associados às células',
-            'valid-lang': 'Atributos lang válidos nos elementos',
-            'video-caption': 'Vídeos com legendas',
-            'video-description': 'Vídeos com descrição',
-
-            // SEO
-            'document-has-title': 'Documento possui título',
-            'meta-description': 'Meta description presente',
-            'http-status-code': 'Código HTTP correto (200)',
-            'is-crawlable': 'Página é rastreável pelos robôs',
-            'robots-txt': 'robots.txt válido',
-            'hreflang': 'Tags hreflang corretas',
-            'canonical': 'Link canonical presente',
-            'plugins': 'Evita plugins (Flash, etc)',
-            'tap-targets': 'Alvos de toque com tamanho adequado',
-            'structured-data': 'Dados estruturados válidos',
-
-            // Best Practices
-            'no-vulnerable-libraries': 'Bibliotecas vulneráveis',
-            'no-unload-listeners': 'Evita listeners de unload',
-            'external-anchors-use-rel-noopener': 'Links externos com rel="noopener"',
-            'geolocation-on-start': 'Geolocalização só com permissão',
-            'notification-on-start': 'Notificações só com permissão',
-            'password-inputs-can-be-pasted-into': 'Permite colar em campos de senha',
-            'image-size-responsive': 'Imagens com tamanhos responsivos',
-            'doctype': 'Declaração DOCTYPE presente',
-            'charset': 'Charset definido corretamente',
-            'no-document-write': 'Evita document.write()',
-            'uses-http2': 'Usa HTTP/2 ou HTTP/3'
+                // ==================== DICIONÁRIO DE TRADUÇÃO (fallback rápido) ====================
+        const auditTranslations = {
+            'largest-contentful-paint': { title: 'LCP - Maior Exibição de Conteúdo', desc: 'Tempo para o maior elemento visível aparecer. Ideal: abaixo de 2,5 segundos.' },
+            'first-contentful-paint': { title: 'FCP - Primeira Exibição de Conteúdo', desc: 'Tempo até o primeiro conteúdo aparecer. Ideal: abaixo de 1,8 segundos.' },
+            'total-blocking-time': { title: 'TBT - Tempo Total de Bloqueio', desc: 'Soma dos bloqueios longos da thread principal.' },
+            'cumulative-layout-shift': { title: 'CLS - Estabilidade Visual', desc: 'Medida de quanto o layout “pula”. Ideal: abaixo de 0,1.' },
+            'uses-optimized-images': { title: 'Imagens não otimizadas', desc: 'Comprima e use WebP/AVIF para economizar largura de banda.' },
+            'offscreen-images': { title: 'Imagens fora da tela', desc: 'Use loading="lazy" para carregar só quando o usuário rolar.' },
+            'unminified-css': { title: 'CSS não minificado', desc: 'Remova espaços e comentários para reduzir tamanho.' },
+            'unminified-javascript': { title: 'JavaScript não minificado', desc: 'Minifique seus arquivos JS.' },
+            'render-blocking-resources': { title: 'Recursos bloqueando renderização', desc: 'Use async/defer ou CSS crítico inline.' },
+            'image-alt': { title: 'Imagens sem texto alternativo', desc: 'Todo <img> precisa de alt descritivo ou alt="".' },
+            'color-contrast': { title: 'Contraste insuficiente', desc: 'Texto e fundo precisam de contraste mínimo de 4.5:1.' },
+            'meta-description': { title: 'Falta meta description', desc: 'Adicione uma descrição de até 155 caracteres.' },
+            // ... adicione quantos quiser aqui (os mais comuns já estão)
         };
 
-        // Função atualizada com tradução 100% em português
+        // ==================== FUNÇÃO DE TRADUÇÃO AUTOMÁTICA (LibreTranslate – sem chave) ====================
+        async function traduzirTexto(texto) {
+    try {
+        const encodedText = encodeURIComponent(texto);
+        const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=pt&dt=t&q=${encodedText}`;
+        const response = await fetch(url);
+        const data = await response.json();
+        // Extrai a tradução do array de resposta
+        const translated = data[0][0][0];
+        return translated || texto;
+    } catch (err) {
+        console.warn('Erro na tradução:', err);
+        return texto + ' (falha na tradução)';
+    }
+}
+
+        // ==================== renderAuditItem COM BOTÃO DE TRADUÇÃO ====================
         function renderAuditItem(audit) {
-            if (!audit || !audit.title) return '';
+            if (!audit || !audit.id) return '';
 
-            // Traduz o título se existir no dicionário
-            const translatedTitle = translations[audit.id] || audit.title;
+            const traducaoManual = auditTranslations[audit.id];
 
-            // Traduz a descrição (substitui trechos comuns em inglês)
-            let description = audit.description || '';
-            description = description
-                .replace(/\[Learn more\].*/g, '') // Remove links do Google
-                .replace(/https?:\/\/[^\s\)]+/g, '') // Remove URLs
+            // Título e descrição (primeiro tenta manual, senão usa o original em inglês)
+            let title = traducaoManual?.title || audit.title;
+            let description = traducaoManual?.desc || audit.description
+                .replace(/\[Learn more\].*/gi, '')
+                .replace(/https?:\/\/[^\s\)]+/g, '')
                 .replace(/\n/g, ' ')
                 .replace(/  +/g, ' ')
                 .trim();
 
-            // Traduções específicas comuns na descrição
-            const descTranslations = {
-                'Learn more': 'Saiba mais',
-                'Consider': 'Considere',
-                'Avoid': 'Evite',
-                'The': 'O',
-                'This': 'Isto',
-                'Your page': 'Sua página',
-                'Ensures': 'Garante',
-                'Images': 'Imagens',
-                'Reduce': 'Reduza',
-                'Serve': 'Sirva',
-                'Use': 'Use',
-                'Minify': 'Minifique',
-                'Remove': 'Remova',
-                'Large': 'Grande',
-                'layout shifts': 'mudanças de layout',
-                'blocking the main thread': 'bloqueando a thread principal',
-                'unused': 'não utilizado',
-                'render-blocking': 'bloqueia a renderização',
-                'offscreen': 'fora da tela',
-                'lazy-load': 'carregamento tardio (lazy-load)',
-                'third-party': 'terceiros',
-                'preconnect': 'pré-conectar',
-                'prefetch': 'pré-buscar',
-                'preload': 'pré-carregar'
-            };
-
-            Object.entries(descTranslations).forEach(([en, pt]) => {
-                const regex = new RegExp('\\b' + en + '\\b', 'gi');
-                description = description.replace(regex, pt);
-            });
-
-            // Economia de tempo
+            // Economia de tempo/bytes
             let savingsInfo = '';
-            if (audit.details && audit.details.overallSavingsMs > 0) {
-                const savingsSeconds = (audit.details.overallSavingsMs / 1000).toFixed(1);
-                savingsInfo = ` <span class="text-cyan-400">(Economia estimada: ~${savingsSeconds}s)</span>`;
-            } else if (audit.details && audit.details.overallSavingsBytes > 0) {
-                const kb = (audit.details.overallSavingsBytes / 1024).toFixed(0);
-                savingsInfo = ` <span class="text-cyan-400">(Economia estimada: ~${kb} KB)</span>`;
+            if (audit.details?.overallSavingsMs > 0) {
+                const s = (audit.details.overallSavingsMs / 1000).toFixed(1);
+                savingsInfo = ` <span class="text-cyan-400">(~${s}s de economia)</span>`;
+            } else if (audit.details?.overallSavingsBytes > 0) {
+                const kb = Math.round(audit.details.overallSavingsBytes / 1024);
+                savingsInfo = ` <span class="text-cyan-400">(~${kb} KB de economia)</span>`;
             }
 
+            // Flag para saber se já foi traduzido automaticamente
+            const itemId = `audit-${audit.id}`;
+
             return `
-                <div class="audit-item">
-                    <strong class="text-cyan-300">${translatedTitle}${savingsInfo}</strong>
-                    <p class="text-gray-300 mt-1">${description || 'Sem descrição detalhada disponível.'}</p>
+                <div class="audit-item" id="${itemId}">
+                    <div class="flex justify-between items-start gap-3">
+                        <div class="flex-1">
+                            <strong class="text-cyan-300">${title}${savingsInfo}</strong>
+                            <p class="text-gray-300 mt-1 text-sm leading-relaxed traduzivel">
+                                ${description}
+                            </p>
+                        </div>
+                        ${!traducaoManual ? `
+                        <button onclick="traduzirItem('${itemId}', '${audit.title.replace(/'/g, "\\'")}', \`${description.replace(/`/g, '\\`').replace(/'/g, "\\'")}\`)" 
+                                class="traduzir-btn text-xs bg-purple-600 hover:bg-purple-500 text-white px-3 py-1 rounded transition">
+                            Traduzir
+                        </button>
+                        ` : ''}
+                    </div>
                 </div>
             `;
         }
+
+        // ==================== FUNÇÃO QUE TRADUZ UM ITEM ESPECÍFICO AO CLICAR ====================
+        window.traduzirItem = async function(itemId, tituloEn, descricaoEn) {
+            const container = document.getElementById(itemId);
+            const btn = container.querySelector('.traduzir-btn');
+            const p = container.querySelector('.traduzivel');
+
+            if (!btn || !p) return;
+
+            btn.disabled = true;
+            btn.textContent = 'Traduzindo...';
+
+            try {
+                const [tituloPt, descPt] = await Promise.all([
+                    traduzirTexto(tituloEn),
+                    traduzirTexto(descricaoEn)
+                ]);
+
+                // Atualiza o conteúdo
+                container.querySelector('strong').textContent = tituloPt + container.querySelector('strong').textContent.replace(tituloEn, '');
+                p.textContent = descPt;
+
+                // Remove o botão (já está traduzido)
+                btn.remove();
+            } catch (err) {
+                btn.textContent = 'Erro';
+                console.error(err);
+            }
+        };
 
         // --- Lógica de Acordeão ---
         function setupCollapsibles() {
