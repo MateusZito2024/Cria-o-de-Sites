@@ -19,27 +19,87 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://i.imgur.com/sE44ypp.png">
     <style>
-        .nav-link.active-page::after {
-    width: 100%; /* Ativa a linha gradiente de 100% */
+        footer .content-layer {
+    display: block !important; 
+    pointer-events: auto !important;
 }
 
-.nav-link.active-page {
-    color: #0bf4ed; /* Mantém a cor do texto destacada */
+/* --- ESTILOS PARA REDES SOCIAIS (ICONES PNG) --- */
+.social-links-png {
+    /* Container de layout */
+    margin-top: 1rem;
+    
+    /* 🚨 NOVO: Propriedades Flexbox para alinhamento vertical */
+    display: flex; /* Transforma o container em Flexbox */
+    justify-content: center; /* Mantém o alinhamento horizontal centralizado */
+    align-items: center; /* Alinha os itens (links) verticalmente ao centro */
+    height: 50px; /* Defina uma altura mínima para o container se necessário, ou remova se a altura for suficiente */
 }
 
-/* Para garantir que o hover do link ativo não mude a cor se houver conflito */
-.nav-link.active-page:hover {
-    color: #0bf4ed;
+.social-img-icon {
+    width: 35px; 
+    height: 35px;
+    transition: transform 0.3s ease, filter 0.3s ease;
+    
+    /* Efeito para deixar a imagem um pouco mais escura (Dark Theme) */
+    filter: brightness(85%); 
+    
+    /* Garante que a imagem não possa ser arrastada/selecionada */
+    -webkit-user-drag: none;
+    user-select: none;
 }
 
-/* Novo estilo para mobile: remove o fundo gradiente e a transformação do link ativo */
-@media (max-width: 768px) {
-    .nav-menu-mobile .nav-link.active-page {
-        background: linear-gradient(135deg, #6627ff, #0bf4ed); /* Fundo com gradiente no link ativo */
-        color: white;
-        transform: none; /* Remove a pequena elevação */
-        box-shadow: 0 0 15px rgba(102, 39, 255, 0.8);
-    }
+/* Efeito de Hover PADRÃO: (Elevação e Brilho 100%) */
+.social-links-png a:hover .social-img-icon {
+    transform: scale(1.15) rotate(2deg); 
+    filter: brightness(100%); /* Força o ícone a ter brilho total no hover */
+    width: 35px; 
+    height: 35px;
+}
+.social-links-png a:nth-child(1) .social-img-icon {
+    width: 30px !important; 
+    height: 30px !important;
+}
+
+/* 2. TikTok: 50px */
+.social-links-png a:nth-child(2) .social-img-icon {
+    width: 45px !important; 
+    height: 45px !important;
+}
+
+/* 3. YouTube: 30px */
+.social-links-png a:nth-child(3) .social-img-icon {
+    width: 45px !important; 
+    height: 45px !important;
+}
+/* --- BRILHOS INDIVIDUAIS (NEON GLOW) --- */
+
+/* 1. Instagram: Brilho Rosa/Magenta */
+.social-links-png a:nth-child(1):hover .social-img-icon {
+    /* A cor #E1306C é um tom de rosa/magenta que representa o Instagram */
+    filter: drop-shadow(0 0 10px #E1306C) brightness(100%);
+    transform: scale(1.15) rotate(5deg); 
+}
+
+/* 2. TikTok: Brilho Ciano (para combinar com o esquema do seu site) */
+.social-links-png a:nth-child(2):hover .social-img-icon {
+    /* A cor #0bf4ed é o ciano que você já usa no seu gradiente */
+    filter: drop-shadow(0 0 10px #0bf4ed) brightness(100%);
+    transform: scale(1.15); /* Sem rotação no TikTok, para variar */
+}
+
+/* 3. YouTube: Brilho Vermelho */
+.social-links-png a:nth-child(3):hover .social-img-icon {
+    /* A cor #FF0000 é o vermelho clássico do YouTube */
+    filter: drop-shadow(0 0 10px #FF0000) brightness(100%);
+    transform: scale(1.15) translateY(-2px); 
+}
+
+
+/* CORREÇÃO CRÍTICA: GARANTE QUE O CONTEÚDO DO RODAPÉ SEJA VISÍVEL NO DESKTOP */
+footer .content-layer {
+    display: block !important; 
+    pointer-events: auto !important;
 }
         h2, h3 {
     font-family: 'Archivo', sans-serif;
@@ -1537,11 +1597,27 @@
             </div>
         </div>
     </section>
-    <footer class="text-gray-200 py-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center content-layer">
-            <p>© 2025 Asthro. Todos os direitos reservados.</p>
+   <footer class="text-gray-200 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center content-layer">
+        
+        <div class="social-links-png flex justify-center space-x-6 mb-4">
+            
+            <a href="https://www.instagram.com/agencia_asthro/" target="_blank" aria-label="Instagram">
+                <img src="https://i.imgur.com/ztvOJV3.png" alt="Instagram" class="social-img-icon" />
+            </a>
+            
+            <a href="https://www.tiktok.com/@asthroensina" target="_blank" aria-label="TikTok">
+                <img src="https://i.imgur.com/yrBBMaJ.png" alt="TikTok" class="social-img-icon" />
+            </a>
+            
+            <a href="SUA_URL_YOUTUBE" target="_blank" aria-label="YouTube">
+                <img src="https://i.imgur.com/0vJwT4o.png" alt="YouTube" class="social-img-icon" />
+            </a>
+            
         </div>
-    </footer>
+        <p>© 2025 Asthro. Todos os direitos reservados.</p>
+    </div>
+</footer>
     <div class="inactivity-card" id="inactivityCard">
         <button class="close-btn" onclick="hideInactivityCard()">×</button>
         <h3 class="gradient-text">Seu Site Ideal Começa Aqui</h3>
@@ -1549,41 +1625,6 @@
         <a href="#contact" onclick="hideInactivityCard();"><button class="cta-pulse">Fale Conosco</button></a>
     </div>
     <script>
-        function highlightActivePage() {
-    // Obtém o caminho (pathname) do URL atual (ex: /Cria-o-de-Sites/servi%C3%A7os.html)
-    const currentPath = window.location.href;
-
-    // Seleciona todos os links de navegação (desktop e mobile)
-    const navLinks = document.querySelectorAll('.nav-link');
-
-    navLinks.forEach(link => {
-        const linkHref = link.href;
-
-        // 1. Lógica principal: Verifica se o href do link está contido no URL atual.
-        // Isso funciona bem para páginas como 'index.html' vs. 'index.html#secao'.
-        // Usamos uma verificação mais robusta (endsWith) para evitar erros de substring.
-        if (currentPath.endsWith(linkHref)) {
-            link.classList.add('active-page');
-            
-            // Lógica para links que são URLs raiz, como 'https://mateuszito2024.github.io/Cria-o-de-Sites/index.html'
-            // O caminho raiz ('/') é normalmente 'index.html' para evitar duplicidade na home.
-            // Se o link for 'Início' e a URL for exatamente o caminho principal, ative-o.
-        } else if (link.textContent.trim() === 'Início' && 
-                   (currentPath.endsWith('/Cria-o-de-Sites/') || currentPath.endsWith('index.html'))) {
-            link.classList.add('active-page');
-        } else {
-            // Remove a classe se não for a página atual
-            link.classList.remove('active-page');
-        }
-    });
-}
-
-// Chama a função após o DOM ser carregado para aplicar o destaque
-document.addEventListener('DOMContentLoaded', () => {
-    // ... [Seu código existente] ...
-    setupFlipCards();
-    highlightActivePage(); // 👈 CHAMADA ADICIONADA AQUI
-});
         function smoothScrollTo(elementId) {
     const targetElement = document.querySelector(elementId);
     if (!targetElement) return;
