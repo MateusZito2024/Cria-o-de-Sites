@@ -889,6 +889,60 @@ footer .content-layer {
 .portfolio-item .overlay {
     /* Mantido: você pode remover esta regra se não quiser o overlay */
 }
+        .nav-menu-mobile { 
+    position: fixed; top: 0; right: -100%; height: 100vh; width: 100%; max-width: 300px; 
+    background: rgba(17, 17, 17, 0.9); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); 
+    border-left: 1px solid rgba(102, 39, 255, 0.5); flex-direction: column; justify-content: flex-start; 
+    align-items: center; gap: 1.5rem; transition: right 0.3s ease; z-index: 30; display: flex; padding: 0 1rem; 
+    box-sizing: border-box; box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
+}
+.nav-menu-mobile.active { right: 0; }
+.nav-menu-mobile .nav-link:first-child { margin-top: 6rem; }
+.nav-menu-mobile .nav-link { 
+    display: block; width: 90%; padding: 0.8rem 1.5rem; border-radius: 0.75rem; 
+    background: rgba(102, 39, 255, 0.1); color: #f8f8f8; text-align: center; font-size: clamp(1.125rem, 4vw, 1.3rem); 
+    font-weight: 600; border: 1px solid rgba(255, 255, 255, 0.2); backdrop-filter: blur(5px); 
+    -webkit-backdrop-filter: blur(5px); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); transition: all 0.3s ease; 
+}
+.nav-menu-mobile .nav-link:hover { 
+    background: linear-gradient(135deg, rgba(102, 39, 255, 0.3), rgba(11, 244, 237, 0.3)); 
+    transform: translateY(-4px) scale(1.02); box-shadow: 0 8px 16px rgba(11, 244, 237, 0.6); border-color: #0bf4ed;
+}
+.nav-menu-mobile .nav-link::after { display: none; }
+.mobile-menu-logo { display: none; width: 80%; max-width: 150px; height: auto; filter: drop-shadow(0 0 5px rgba(102, 39, 255, 0.4)); }
+
+/* --- Modal Mobile de Ferramentas (CRÍTICO) --- */
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.tools-modal { 
+    position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; 
+    background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); 
+    display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s ease; 
+}
+.tools-modal.open { display: flex; opacity: 1; }
+.modal-content { 
+    background: #111111; border: 2px solid #6627ff; border-radius: 1rem; 
+    padding: 2rem 1.5rem; width: 90%; max-width: 400px; 
+    box-shadow: 0 0 30px rgba(102, 39, 255, 0.7); animation: fadeIn 0.3s ease-out; 
+    position: relative; text-align: center; 
+}
+.modal-close { 
+    position: absolute; top: 10px; right: 15px; color: #edf1f7; font-size: 2.5rem; 
+    font-weight: 300; line-height: 1; border: none; background: transparent; 
+    cursor: pointer; transition: color 0.2s; 
+}
+.modal-close:hover { color: #0bf4ed; transform: scale(1.1); }
+.modal-link { 
+    display: block; background: rgba(102, 39, 255, 0.15); border: 1px solid rgba(102, 39, 255, 0.5); 
+    border-radius: 0.75rem; padding: 1rem; margin-bottom: 1rem; color: #edf1f7; 
+    font-size: 1.25rem; font-weight: 700; text-decoration: none; transition: all 0.3s ease; 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); 
+}
+.modal-link-subtitle { display: block; font-size: 0.9rem; font-weight: 400; color: #bbb; margin-top: 0.25rem; }
+.modal-link:hover { 
+    background: linear-gradient(90deg, rgba(102, 39, 255, 0.4), rgba(11, 244, 237, 0.4)); 
+    border-color: #0bf4ed; transform: translateY(-3px) scale(1.02); 
+    box-shadow: 0 8px 15px rgba(11, 244, 237, 0.5); 
+}
         /* --- MEDIA QUERIES PARA MOBILE (max-width: 768px) --- */
         .nav-menu-mobile {
     display: none; 
@@ -901,6 +955,83 @@ footer .content-layer {
 
 /* --- ESTILO DROPDOWN PERSONALIZADO (APENAS PC) --- */
 @media (min-width: 769px) {
+    @keyframes fadeInModal { from { opacity: 0; } to { opacity: 1; } }
+.tools-modal { 
+    position: fixed; 
+    z-index: 2000; 
+    left: 0; 
+    top: 0; 
+    width: 100%; 
+    height: 100%; 
+    background: rgba(0, 0, 0, 0.95); 
+    backdrop-filter: blur(8px); 
+    -webkit-backdrop-filter: blur(8px); 
+    display: none; 
+    justify-content: center; 
+    align-items: center; 
+    opacity: 0; 
+    transition: opacity 0.3s ease; 
+}
+.tools-modal.open { 
+    display: flex; 
+    opacity: 1; 
+}
+.modal-content { 
+    background: #111111; 
+    border: 2px solid #6627ff; 
+    border-radius: 1rem; 
+    padding: 2rem 1.5rem; 
+    width: 90%; 
+    max-width: 400px; 
+    box-shadow: 0 0 30px rgba(102, 39, 255, 0.7); 
+    animation: fadeInModal 0.3s ease-out; 
+    position: relative; 
+    text-align: center; 
+}
+.modal-close { 
+    position: absolute; 
+    top: 10px; 
+    right: 15px; 
+    color: #edf1f7; 
+    font-size: 2.5rem; 
+    font-weight: 300; 
+    line-height: 1; 
+    border: none; 
+    background: transparent; 
+    cursor: pointer; 
+    transition: color 0.2s, transform 0.2s; 
+}
+.modal-close:hover { 
+    color: #0bf4ed; 
+    transform: scale(1.1); 
+}
+.modal-link { 
+    display: block; 
+    background: rgba(102, 39, 255, 0.15); 
+    border: 1px solid rgba(102, 39, 255, 0.5); 
+    border-radius: 0.75rem; 
+    padding: 1rem; 
+    margin-bottom: 1rem; 
+    color: #edf1f7; 
+    font-size: 1.25rem; 
+    font-weight: 700; 
+    text-decoration: none; 
+    transition: all 0.3s ease; 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); 
+}
+.modal-link-subtitle { 
+    display: block; 
+    font-size: 0.9rem; 
+    font-weight: 400; 
+    color: #bbb; 
+    margin-top: 0.25rem; 
+}
+.modal-link:hover { 
+    background: linear-gradient(90deg, rgba(102, 39, 255, 0.4), rgba(11, 244, 237, 0.4)); 
+    border-color: #0bf4ed; 
+    transform: translateY(-3px) scale(1.02); 
+    box-shadow: 0 8px 15px rgba(11, 244, 237, 0.5); 
+}
     /* O SELETOR É .dropdown-menu */
     .dropdown-menu {
         position: absolute; 
@@ -1223,29 +1354,40 @@ footer .content-layer {
             /* Oculta o sub-menu por padrão para Mobile (Usaremos JS para exibir) */
             .dropdown-menu-mobile {
                 display: none;
+                /* NOVO: Estilo de card para o container do submenu no mobile */
+                background: rgba(31, 41, 55, 0.7); /* Fundo escuro sutil */
+                border: 1px solid rgba(102, 39, 255, 0.5); /* Borda roxa */
+                border-radius: 0.75rem;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+                padding: 0.5rem; /* Padding interno para o card */
+                margin-left: 5%; /* Centraliza o card sob o botão */
+                width: 90%; /* Limita a largura para parecer um card */
+                box-sizing: border-box;
             }
             
             /* Estilo dos itens no sub-menu do mobile */
             #mobileToolsMenu .dropdown-link {
-                margin: 0.25rem auto;
-                padding: 0.5rem 1rem;
-                /* Estilo Glassmorphism reduzido para sub-links */
-                background: rgba(102, 39, 255, 0.1); 
-                color: #f8f8f8;
-                border-radius: 0.75rem;
-                border: 1px solid rgba(255, 255, 255, 0.1);
-                backdrop-filter: blur(5px);
-                -webkit-backdrop-filter: blur(5px);
-                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-                font-size: clamp(1rem, 3.5vw, 1.125rem);
-                font-weight: 400;
-                transform: none; /* Remove a elevação padrão de .nav-link:hover */
-                position: relative; /* CRÍTICO: Para posicionar o ::after */
+                /* Remove margens e ajusta o padding para preencher o card */
+                margin: 0 !important; 
+                padding: 0.8rem 1rem !important;
+                
+                /* Fundo limpo e ajuste de hover */
+                background: transparent !important; 
+                border: none !important;
+                box-shadow: none !important;
+                
+                /* Garante que o texto fique bem visível */
+                color: #edf1f7 !important;
+                font-weight: 500 !important;
+                
+                /* Borda-arredondada no hover */
+                border-radius: 0.5rem;
             }
             
             #mobileToolsMenu .dropdown-link:hover {
-                background: linear-gradient(135deg, rgba(102, 39, 255, 0.2), rgba(11, 244, 237, 0.2));
-                border-color: #0bf4ed;
+                /* Mantém o hover gradiente sutil */
+                background: linear-gradient(135deg, rgba(102, 39, 255, 0.2), rgba(11, 244, 237, 0.2)) !important;
+                border-color: transparent !important;
             }
         }
         @media (max-width: 480px) {
@@ -1360,11 +1502,8 @@ footer .content-layer {
 }
 /* Novo Estilo para Mobile: Ajustar a exibição da seta para desktop/mobile */
 @media (max-width: 768px) {
-    .dropdown-menu-mobile {
-        display: none;
-    }
-    
-    /* Estilo dos itens no sub-menu do mobile */
+    /* Mantenha apenas o display:none original para a classe base se for usá-la. */
+    /* A classe .dropdown-menu-mobile já foi ajustada acima */
     #nav-ferramentas .dropdown-link {
         margin: 0.25rem auto;
         padding: 0.5rem 1rem;
@@ -1436,34 +1575,35 @@ footer .content-layer {
     <a href="https://asthro.com.br/politicas.html" class="nav-link text-lg transition">Políticas</a>
 </div>
 <div class="nav-menu-mobile content-layer">
-    <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/index.html" class="nav-link text-lg transition block">Início</a>
-    <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/servi%C3%A7os.html" class="nav-link text-lg transition block">Serviços</a>
-    
-    <div class="relative w-full" id="mobileToolsDropdownContainer">
-        <button id="mobileToolsToggle" class="nav-link text-lg transition block w-full text-center flex justify-center items-center gap-2" style="cursor: pointer;" aria-expanded="false">
-            Ferramentas
-            <svg id="mobileToolsArrow" class="dropdown-arrow w-4 h-4 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-            </svg>
-        </button>
-        <div id="mobileToolsMenu" class="dropdown-menu-mobile w-full mt-2 space-y-2" style="display: none; flex-direction: column;">
-            <a href="https://asthro.com.br/asthrospeed.html" 
-               class="dropdown-link text-lg transition block w-full text-center">
-               AsthroSpeed (Análise de Sites)
-            </a>
-            <a href="https://asthro.com.br/zerogravity.html" 
-               class="dropdown-link text-lg transition block w-full text-center">
-               ZeroGravity (Removedor de Fundo)
-            </a>
-        </div>
-    </div>
-
-    <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/sobre.html" class="nav-link text-lg transition block">Sobre</a>
-    <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/portf%C3%B3lio.html" class="nav-link text-lg transition block">Portfólio</a>
-    <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/contato.html" class="nav-link text-lg transition block">Contato</a>
-    <a href="https://asthro.com.br/politicas.html" class="nav-link text-lg transition">Políticas</a>
-    <img src="https://i.imgur.com/sE44ypp.png" alt="Asthro" class="mobile-menu-logo" />
-</div>
+                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/index.html" class="nav-link text-lg transition block">Início</a>
+                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/servi%C3%A7os.html" class="nav-link text-lg transition block">Serviços</a>
+                <button id="mobileToolsButton" class="nav-link text-lg transition block w-full text-center" style="cursor: pointer;">
+                    Ferramentas
+                </button>
+                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/sobre.html" class="nav-link text-lg transition block">Sobre</a>
+                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/portf%C3%B3lio.html" class="nav-link text-lg transition block">Portfólio</a>
+                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/contato.html" class="nav-link text-lg transition block">Contato</a>
+                <a href="https://asthro.com.br/politicas.html" class="nav-link text-lg transition">Políticas</a>
+                <img src="https://i.imgur.com/sE44ypp.png" alt="Asthro" class="mobile-menu-logo" />
+            </div>
+            
+            <div id="mobileToolsModal" class="tools-modal">
+                <div class="modal-content">
+                    <button class="modal-close">&times;</button>
+                    <h3 class="animated-gradient-text text-3xl font-bold mb-8">Nossas Ferramentas</h3>
+                    
+                    <a href="https://asthro.com.br/asthrospeed.html" class="modal-link">
+                        AsthroSpeed
+                        <span class="modal-link-subtitle">Analisador de Performance e SEO</span>
+                    </a>
+                    
+                    <a href="https://asthro.com.br/zerogravity.html" class="modal-link">
+                        ZeroGravity
+                        <span class="modal-link-subtitle">Removedor de Fundo de Imagens</span>
+                    </a>
+                    <p class="text-sm text-gray-400 mt-10">Clique fora para fechar</p>
+                </div>
+            </div>
         </div>
     </nav>
     <section id="home" class="min-h-screen flex items-center gradient-bg section-animate">
@@ -1672,6 +1812,18 @@ footer .content-layer {
         <a href="#contact" onclick="hideInactivityCard();"><button class="cta-pulse">Fale Conosco</button></a>
     </div>
     <script>
+        function openModal() {
+    mobileToolsModal.classList.add('open');
+    if (navMenu && navMenu.classList.contains('active')) {
+          toggleMenu(); // Fecha o menu hamburger se estiver aberto
+    }
+}
+function closeModal() {
+    mobileToolsModal.classList.remove('open');
+}
+        const mobileToolsButton = document.getElementById('mobileToolsButton');
+const mobileToolsModal = document.getElementById('mobileToolsModal');
+const modalCloseButton = document.querySelector('#mobileToolsModal .modal-close');
         // DROPDOWN FERRAMENTAS - SOMENTE CLIQUE (DESKTOP)
 const toolsDropdownContainer = document.getElementById('toolsDropdownContainer'); // NOVO: Pega o container pai
 const toolsToggle = document.getElementById('toolsDropdownToggle');
@@ -2562,6 +2714,20 @@ function setupFlipCards() {
             };
         }
         document.addEventListener('DOMContentLoaded', () => {
+            if (mobileToolsButton && mobileToolsModal && modalCloseButton) {
+            mobileToolsButton.addEventListener('click', openModal);
+            modalCloseButton.addEventListener('click', closeModal);
+            window.addEventListener('click', (event) => {
+                if (event.target === mobileToolsModal) {
+                    closeModal();
+                }
+            });
+            mobileToolsModal.querySelectorAll('.modal-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    setTimeout(closeModal, 100);
+                });
+            });
+        }
     // Adiciona a observação para o Chatbot
     const contactSection = document.querySelector('#contact');
     if (contactSection) {
