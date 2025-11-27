@@ -9,13 +9,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700&family=Manrope:wght@400;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="https://i.imgur.com/ZeaGXHD.png">
     <link rel="icon" type="image/png" href="https://i.imgur.com/ZeaGXHD.png">
-
 <meta property="og:image" content="https://i.imgur.com/sE44ypp.png">
 <meta property="og:url" content="https://asthro.com.br/index.html">
 <meta property="og:title" content="Asthro | Design & Desenvolvimento Web Profissional">
 <meta property="og:description" content="Soluções criativas, branding e desenvolvimento de sites de alta performance para impulsionar sua marca no digital.">
 <meta property="og:type" content="website">
-
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://i.imgur.com/sE44ypp.png">
     <style>
@@ -23,7 +21,6 @@
     display: block !important; 
     pointer-events: auto !important;
 }
-
 /* --- ESTILOS PARA REDES SOCIAIS (ICONES PNG) --- */
 .social-links-png {
     /* Container de layout */
@@ -35,7 +32,6 @@
     align-items: center; /* Alinha os itens (links) verticalmente ao centro */
     height: 50px; /* Defina uma altura mínima para o container se necessário, ou remova se a altura for suficiente */
 }
-
 .social-img-icon {
     width: 35px; 
     height: 35px;
@@ -48,7 +44,6 @@
     -webkit-user-drag: none;
     user-select: none;
 }
-
 /* Efeito de Hover PADRÃO: (Elevação e Brilho 100%) */
 .social-links-png a:hover .social-img-icon {
     transform: scale(1.15) rotate(2deg); 
@@ -60,42 +55,35 @@
     width: 30px !important; 
     height: 30px !important;
 }
-
 /* 2. TikTok: 50px */
 .social-links-png a:nth-child(2) .social-img-icon {
     width: 45px !important; 
     height: 45px !important;
 }
-
 /* 3. YouTube: 30px */
 .social-links-png a:nth-child(3) .social-img-icon {
     width: 45px !important; 
     height: 45px !important;
 }
 /* --- BRILHOS INDIVIDUAIS (NEON GLOW) --- */
-
 /* 1. Instagram: Brilho Rosa/Magenta */
 .social-links-png a:nth-child(1):hover .social-img-icon {
     /* A cor #E1306C é um tom de rosa/magenta que representa o Instagram */
     filter: drop-shadow(0 0 10px #E1306C) brightness(100%);
     transform: scale(1.15) rotate(5deg); 
 }
-
 /* 2. TikTok: Brilho Ciano (para combinar com o esquema do seu site) */
 .social-links-png a:nth-child(2):hover .social-img-icon {
     /* A cor #0bf4ed é o ciano que você já usa no seu gradiente */
     filter: drop-shadow(0 0 10px #0bf4ed) brightness(100%);
     transform: scale(1.15); /* Sem rotação no TikTok, para variar */
 }
-
 /* 3. YouTube: Brilho Vermelho */
 .social-links-png a:nth-child(3):hover .social-img-icon {
     /* A cor #FF0000 é o vermelho clássico do YouTube */
     filter: drop-shadow(0 0 10px #FF0000) brightness(100%);
     transform: scale(1.15) translateY(-2px); 
 }
-
-
 /* CORREÇÃO CRÍTICA: GARANTE QUE O CONTEÚDO DO RODAPÉ SEJA VISÍVEL NO DESKTOP */
 footer .content-layer {
     display: block !important; 
@@ -114,7 +102,6 @@ footer .content-layer {
         *, *::before, *::after {
             box-sizing: border-box;
         }
-
         body {
             font-family: 'Manrope', sans-serif;
             position: relative;
@@ -124,7 +111,6 @@ footer .content-layer {
             margin: 0;
             padding: 0;
         }
-
         .brand-name {
             font-family: 'Great Vibes', cursive;
             line-height: 2;
@@ -133,11 +119,9 @@ footer .content-layer {
             overflow: visible;
             font-size: clamp(2rem, 6vw, 2.5rem);
         }
-
         .flex.items-center.content-layer {
             overflow: visible;
         }
-
         .nav-link {
             font-family: 'Manrope', sans-serif;
             position: relative;
@@ -146,7 +130,6 @@ footer .content-layer {
             transition: color 0.3s ease;
             font-size: clamp(1rem, 3vw, 1.125rem);
         }
-
         .nav-link::after {
             content: '';
             position: absolute;
@@ -157,21 +140,17 @@ footer .content-layer {
             background: linear-gradient(135deg, #6627ff, #0bf4ed);
             transition: width 0.3s ease;
         }
-
         .nav-link:hover::after {
             width: 100%;
         }
-
         .nav-link:hover {
             color: #0bf4ed;
         }
-
         .gradient-text {
             background: linear-gradient(135deg, #6627ff, #0bf4ed);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-
         nav {
             position: fixed;
             top: 0;
@@ -182,43 +161,35 @@ footer .content-layer {
             padding: 0 1rem;
             box-sizing: border-box;
         }
-
         nav > div {
             display: flex;
             justify-content: space-between;
             align-items: center;
             width: 100%;
         }
-
         nav .flex.items-center.content-layer:first-child {
             margin-right: auto;
         }
-
         nav .flex.items-center.content-layer:last-child {
             margin-left: auto;
         }
-
         nav, section, footer {
             position: relative;
             z-index: 1;
             pointer-events: none;
         }
-
         nav *, section *, footer * {
             pointer-events: auto;
         }
-
         .content-layer {
             position: relative;
             z-index: 2;
         }
-
         h1, h2, h3, p, a, input, textarea, button, img, svg {
             position: relative;
             z-index: 30;
             opacity: 1 !important;
         }
-
         .hamburger {
             display: none;
             flex-direction: column;
@@ -231,64 +202,52 @@ footer .content-layer {
             padding: 0;
             z-index: 40;
         }
-
         .hamburger span {
             width: 100%;
             height: 3px;
             background: #edf1f7;
             transition: all 0.3s ease;
         }
-
         .hamburger.active span:nth-child(1) {
             transform: rotate(45deg) translate(5px, 5px);
         }
-
         .hamburger.active span:nth-child(2) {
             opacity: 0;
         }
-
         .hamburger.active span:nth-child(3) {
             transform: rotate(-45deg) translate(7px, -7px);
         }
-
         .nav-menu {
             display: flex;
             align-items: center;
             transition: all 0.3s ease;
         }
-
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
         @keyframes slideIn {
             from { opacity: 0; transform: translateX(-50px); }
             to { opacity: 1; transform: translateX(0); }
         }
-
         @keyframes slideOut {
             from { opacity: 1; transform: translateX(0); }
             to { opacity: 0; transform: translateX(50px); }
         }
-
         @keyframes pulse {
             0% { transform: scale(1); }
             50% { transform: scale(1.02); }
             100% { transform: scale(1); }
         }
-
         @keyframes stretch {
             0% { transform: scaleY(1); }
             50% { transform: scaleY(1.1); }
             100% { transform: scaleY(1); }
         }
-
         @keyframes fadeInTooltip {
             from { opacity: 0; transform: translateY(5px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
         @keyframes fadeOutTooltip {
             from { opacity: 1; transform: translateY(0); }
             to { opacity: 0; transform: translateY(5px); }
@@ -307,7 +266,6 @@ footer .content-layer {
         transform: translateX(-50%); 
     }
 }
-
 @keyframes scroll-right {
     from {
         transform: translateX(-50%); /* Começa no meio */
@@ -317,7 +275,6 @@ footer .content-layer {
         transform: translateX(0);
     }
 }
-
 /* 2. Container Externo (Máscara) */
 .logo-carousel-container {
     overflow: hidden; /* Oculta as duplicatas e as logos que estão fora da tela */
@@ -326,7 +283,6 @@ footer .content-layer {
     /* box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5); */
     /* background: rgba(0, 0, 0, 0.2); */
 }
-
 /* 3. A Faixa do Carrossel (Onde a Mágica Acontece) */
 .logo-carousel {
     display: flex;
@@ -336,12 +292,10 @@ footer .content-layer {
     box-sizing: border-box;
     align-items: center;
 }
-
 /* 4. Carrossel 2 (Direção Inversa) */
 .logo-carousel-2 {
     animation: scroll-right 40s linear infinite; /* Inverte a direção */
 }
-
 /* 5. Estilo de Cada Logo */
 .logo-item {
     /* Largura fixa para cada logo (8 logos * 12.5% = 100%) */
@@ -353,29 +307,23 @@ footer .content-layer {
     filter: grayscale(100%) opacity(70%); /* Deixa a logo em escala de cinza e semitransparente */
     transition: filter 0.3s ease;
 }
-
 /* 6. Efeito de Hover/Destaque */
 .logo-item:hover {
     filter: grayscale(0%) opacity(100%) drop-shadow(0 0 10px #0bf4ed); /* Cores originais + brilho neon no hover */
 }
-
         .fade-in {
             opacity: 1 !important;
             animation: fadeInUp 1s ease-out forwards;
         }
-
         .section-animate {
             opacity: 1 !important;
         }
-
         .section-animate.visible {
             animation: slideIn 0.8s ease-out forwards;
         }
-
         .section-animate:not(.visible) {
             animation: slideOut 0.8s ease-out forwards;
         }
-
         .service-item, .portfolio-item {
     animation: pulse 3s infinite ease-in-out;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -386,7 +334,6 @@ footer .content-layer {
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
     opacity: 1 !important;
 }
-
 .service-item:hover, .portfolio-item:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 20px rgba(168, 85, 247, 0.5);
@@ -400,26 +347,21 @@ footer .content-layer {
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
     animation: none !important; /* Remove a animação 'pulse' longa do item */
 }
-
         .portfolio-item .overlay {
             transition: opacity 0.3s ease, background 0.3s ease;
             z-index: 30;
             opacity: 0;
         }
-
         .portfolio-item:hover .overlay {
             opacity: 1;
             background: linear-gradient(135deg, rgba(165, 180, 252, 0.3), rgba(232, 121, 249, 0.3));
         }
-
         .gradient-bg {
             background: transparent;
         }
-
         .section-bg {
             background: rgba(17, 17, 17, 0.8);
         }
-
         #particles-js {
             position: fixed;
             top: 0;
@@ -430,14 +372,12 @@ footer .content-layer {
             background: #111111;
             overflow: hidden;
         }
-
         .service-icon {
             fill: url(#gradient);
             width: clamp(40px, 10vw, 48px);
             height: clamp(40px, 10vw, 48px);
             margin-bottom: 1rem;
         }
-
         /* Ajustes para o pop-up de inatividade (PC) */
         .inactivity-card {
             position: fixed;
@@ -460,14 +400,12 @@ footer .content-layer {
             max-width: 500px; /* Limita a largura em telas grandes (PC) */
             box-sizing: border-box;
         }
-
         .inactivity-card h3 {
             font-size: clamp(1.25rem, 4vw, 1.5rem);
             font-weight: bold;
             color: #0bf4ed;
             margin-bottom: 1rem;
         }
-
         .inactivity-card p {
     /* CORREÇÃO: Remove o fundo e garante cor de texto branca */
     color: #edf1f7; /* Cinza Gelo, mais claro que o #e2e8f0 que estava */
@@ -477,7 +415,6 @@ footer .content-layer {
     border-radius: 0;
     font-size: clamp(0.875rem, 3vw, 1rem);
 }
-
         .inactivity-card .cta-pulse {
     /* Cor de fundo base para quando a animação não estiver rodando (fallback) */
     background: #6627ff;
@@ -492,14 +429,12 @@ footer .content-layer {
     cursor: pointer;
     transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
 }
-
 .inactivity-card .cta-pulse:hover {
     transform: translateY(-3px);
     box-shadow: 0 5px 15px rgba(11, 244, 237, 0.5); /* Sombra Azul Prisma no hover */
     /* Desativa a pulsação no hover */
     animation: none;
 }
-
 /* Garante que o botão de fechar (close-btn) mantenha seu estilo discreto */
 .inactivity-card .close-btn {
     position: absolute;
@@ -527,7 +462,6 @@ footer .content-layer {
     align-items: center;
     justify-content: center;
 }
-
 /* Garante que o hover também seja circular */
 .inactivity-card .close-btn:hover {
     color: #0bf4ed;
@@ -535,7 +469,6 @@ footer .content-layer {
     /* Garante que o fundo do hover seja exibido em formato circular */
     border-radius: 50%; 
 }
-
         /* Ajustes para o chatbot (PC) */
         .chat-container {
             /* Propriedades ajustadas para PC */
@@ -554,7 +487,6 @@ footer .content-layer {
             box-sizing: border-box;
             border: 1px solid rgba(102, 39, 255, 0.3); /* Borda sutil */
         }
-
         .chat-container.success {
             background: transparent;
             padding: 0;
@@ -562,7 +494,6 @@ footer .content-layer {
             box-shadow: none;
             border: none; /* Remove a borda quando em modo de sucesso */
         }
-
         .chat-messages {
             flex: 1;
             overflow-y: auto;
@@ -571,7 +502,6 @@ footer .content-layer {
             flex-direction: column;
             gap: 0.75rem;
         }
-
         .message {
             max-width: 80%;
             padding: 0.5rem;
@@ -579,28 +509,24 @@ footer .content-layer {
             line-height: 1.5;
             font-size: clamp(0.875rem, 2.5vw, 1rem);
         }
-
         .bot-message {
             background: #374151;
             color: #e2e8f0;
             align-self: flex-start;
             border-bottom-left-radius: 0;
         }
-
         .user-message {
             background: #6627ff;
             color: #edf1f7;
             align-self: flex-end;
             border-bottom-right-radius: 0;
         }
-
         .typing-indicator {
             display: flex;
             gap: 0.3rem;
             align-self: flex-start;
             padding: 0.5rem;
         }
-
         .typing-indicator span {
             width: 6px;
             height: 6px;
@@ -608,20 +534,16 @@ footer .content-layer {
             border-radius: 50%;
             animation: bounce 0.6s infinite alternate;
         }
-
         .typing-indicator span:nth-child(2) {
             animation-delay: 0.2s;
         }
-
         .typing-indicator span:nth-child(3) {
             animation-delay: 0.4s;
         }
-
         @keyframes bounce {
             from { transform: translateY(0); }
             to { transform: translateY(-5px); }
         }
-
         .chat-input {
             display: flex;
             gap: 0.5rem;
@@ -631,7 +553,6 @@ footer .content-layer {
             position: relative;
             flex-wrap: nowrap;
         }
-
         .chat-input textarea {
             flex: 1;
             padding: 0.5rem;
@@ -645,14 +566,12 @@ footer .content-layer {
             font-size: clamp(0.875rem, 2.5vw, 1rem);
             min-width: 0;
         }
-
        .chat-input button {
     /* Cor de fundo base para quando a animação não estiver rodando (fallback) */
     background: #0bf4ed;
     
     /* Aplicação da pulsação de cor. Mais lento: 5 segundos. */
     animation: colorPulse 5s infinite ease-in-out; 
-
     color: white;
     padding: 0.5rem 1rem;
     border-radius: 0.5rem;
@@ -661,21 +580,18 @@ footer .content-layer {
     transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
     font-size: clamp(0.875rem, 2.5vw, 1rem);
 }
-
 .chat-input button:hover {
     transform: translateY(-3px);
     box-shadow: 0 5px 15px rgba(11, 244, 237, 0.6);
     /* Desativa a pulsação no hover para o efeito de elevação */
     animation: none;
 }
-
         .mic-button {
     /* Cor de fundo base para quando a animação não estiver rodando (fallback) */
     background: #6627ff; 
     
     /* Aplicação da pulsação de cor */
     animation: colorPulse 3s infinite ease-in-out; 
-
     color: white;
     padding: 0.5rem;
     border-radius: 0.5rem;
@@ -687,7 +603,6 @@ footer .content-layer {
     position: relative;
     flex-shrink: 0;
 }
-
 .mic-button.recording {
     /* Estado de gravação: cor fixa e escala maior */
     background: #0bf4ed; 
@@ -695,26 +610,22 @@ footer .content-layer {
     /* Desativa a pulsação para indicar que está gravando */
     animation: none; 
 }
-
 .mic-button:hover {
     transform: translateY(-3px);
     box-shadow: 0 5px 15px rgba(11, 244, 237, 0.5);
     /* Desativa a pulsação no hover para o efeito de elevação */
     animation: none; 
 }
-
         .mic-button:disabled {
             background: #6b7280;
             cursor: not-allowed;
             transform: none;
             box-shadow: none;
         }
-
         .mic-button svg {
             width: 20px;
             height: 20px;
         }
-
         .mic-tooltip {
             position: absolute;
             bottom: 100%;
@@ -730,15 +641,12 @@ footer .content-layer {
             z-index: 40;
             animation: fadeInTooltip 0.3s ease-in-out forwards;
         }
-
         .mic-tooltip.fade-out {
             animation: fadeOutTooltip 0.3s ease-in-out forwards;
         }
-
         .mic-tooltip .gradient-text {
             font-weight: bold;
         }
-
         .sparkle-text {
             font-size: clamp(1.25rem, 4vw, 1.5rem);
             font-weight: bold;
@@ -755,24 +663,20 @@ footer .content-layer {
             transform: translate(-50%, -50%);
             width: 100%;
         }
-
         @keyframes sparkle {
             0% { background-position: 0%; }
             50% { background-position: 200%; }
             100% { background-position: 0%; }
         }
-
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
         }
-
         img {
             max-width: 100%;
             height: auto;
             display: block;
         }
-
         .max-w-7xl {
             width: 100%;
             max-width: 100vw;
@@ -784,7 +688,6 @@ footer .content-layer {
         #workflow.section-bg {
     background: transparent !important;
 }
-
 .flip-card-container {
     perspective: 1000px;
     height: 350px; /* 💥 AUMENTADO: De 300px para 350px para dar mais margem ao giro */
@@ -796,7 +699,6 @@ footer .content-layer {
     overflow: visible; 
     padding: 0; /* Limpamos o padding extra que adicionamos antes */
 }
-
 .flip-card {
     position: relative;
     width: 100%;
@@ -806,11 +708,9 @@ footer .content-layer {
     transform-style: preserve-3d;
     transform: rotateY(180deg); /* Inicia virado */
 }
-
 .flip-card.flipped {
     transform: rotateY(0deg); 
 }
-
 /* Efeito de Hover Sutil no Container */
 .flip-card-container:hover {
     transform: scale(1.02);
@@ -818,7 +718,6 @@ footer .content-layer {
     /* Sombra de brilho aplicada ao HOVER do CONTAINER */
     box-shadow: 0 0 20px rgba(102, 39, 255, 0.6), 0 0 5px rgba(11, 244, 237, 0.6);
 }
-
 .card-face {
     position: absolute;
     width: 100%;
@@ -848,7 +747,6 @@ footer .content-layer {
     z-index: 2;
     transform: rotateY(180deg); /* Inicia escondida */
 }
-
 /* O lado que estará visível inicialmente (detalhe do processo) - ROXO */
 .card-back {
     background: #374151; 
@@ -857,7 +755,6 @@ footer .content-layer {
     box-shadow: 0 0 10px rgba(102, 39, 255, 0.3);
     transform: rotateY(0deg); /* Inicia visível */
 }
-
 /* Garante que o service-item não interfira no flip */
 .service-item {
     background: transparent !important;
@@ -866,24 +763,20 @@ footer .content-layer {
     animation: none !important;
     transform: none !important;
 }
-
 /* Ajustes para os ícones dentro do flip-card-container */
 #workflow .service-icon {
     width: 130px; 
     height: 130px;
     filter: drop-shadow(0 0 8px #0bf4ed); 
 }
-
 /* Reduz o tamanho do texto interno para evitar overflow no giro */
 .card-back p {
     font-size: 0.95rem; 
 }
-
 /* Reduz o tamanho do texto interno para evitar overflow no giro */
 .card-front p {
     font-size: 0.95rem; 
 }
-
 /* Garante que o service-item não interfira no flip */
 .service-item {
     background: transparent !important;
@@ -892,14 +785,12 @@ footer .content-layer {
     animation: none !important;
     transform: none !important;
 }
-
 /* Ajustes para os ícones dentro do flip-card-container */
 #workflow .service-icon {
     width: 130px; 
     height: 130px;
     filter: drop-shadow(0 0 8px #0bf4ed); 
 }
-
 /* 💥 Novo: Reduz o tamanho do texto interno para evitar overflow no giro */
 .card-back p {
     font-size: 0.95rem; 
@@ -910,7 +801,6 @@ footer .content-layer {
     box-shadow: 0 0 10px rgba(232, 121, 249, 0.5);
     transition: all 0.3s ease;
 }
-
 .cta-button:hover {
     transform: translateY(-3px) scale(1.05);
     box-shadow: 0 0 20px rgba(232, 121, 249, 0.8), 0 0 10px rgba(165, 180, 252, 0.6);
@@ -926,14 +816,12 @@ footer .content-layer {
     /* Garante que o hover funcione */
     transition: all 0.3s ease;
 }
-
 .main-cta:hover {
     /* Efeito de elevação e pulsação no hover */
     transform: translateY(-3px) scale(1.02);
     /* Efeito de sombra mais forte e ciano */
     box-shadow: 0 0 20px rgba(11, 244, 237, 0.8), 0 0 10px rgba(102, 39, 255, 0.6);
 }
-
 /* Melhorar a estética dos cards de Serviço (Menos "blocão") */
 .service-item {
     /* Manter a cor de fundo transparente/escura do tema */
@@ -944,13 +832,11 @@ footer .content-layer {
     animation: none !important; /* Remove a animação 'pulse' longa do item */
     transition: all 0.3s ease;
 }
-
 .service-item:hover {
     background: rgba(45, 55, 72, 0.8) !important;
     transform: scale(1.05);
     box-shadow: 0 0 20px rgba(11, 244, 237, 0.8);
 }
-
 .service-item .service-icon {
     /* Melhorar o ícone para dark theme */
     background: rgba(255, 255, 255, 0.1);
@@ -958,7 +844,6 @@ footer .content-layer {
     padding: 0.5rem;
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
 }
-
 /* Estilo elegante para o Portfólio */
 .portfolio-item {
     background: #1f2937 !important; /* Fundo mais sólido e escuro */
@@ -966,22 +851,18 @@ footer .content-layer {
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
     animation: none !important; /* Remove a animação 'pulse' longa do item */
 }
-
 .portfolio-item:hover .overlay {
     /* Deixa o overlay mais sutil */
     opacity: 0.9;
     background: linear-gradient(135deg, rgba(102, 39, 255, 0.1), rgba(11, 244, 237, 0.1));
 }
-
 .portfolio-item img {
     filter: brightness(0.8) saturate(1.1); /* Dá um toque mais dramático à imagem */
     transition: filter 0.3s ease;
 }
-
 .portfolio-item:hover img {
     filter: brightness(1) saturate(1.2);
 }
-
 /* --- FIM DOS NOVOS ESTILOS --- */
         /* NOVO ESTILO para Portfólio (Remover Bloco) */
 /* Resetamos os estilos de card para que pareçam apenas imagens */
@@ -994,19 +875,16 @@ footer .content-layer {
     overflow: visible !important; /* Garante que nada seja cortado */
     transition: transform 0.3s ease;
 }
-
 /* Aplicamos a animação/estilo de hover na imagem interna (se houver) */
 .portfolio-item img {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     border-radius: 0.5rem; /* Mantemos um leve arredondamento na imagem, se desejar */
 }
-
 /* Adicionamos um efeito sutil de hover na imagem, se ela for o principal foco */
 .portfolio-item:hover img {
     transform: scale(1.03);
     box-shadow: 0 5px 15px rgba(11, 244, 237, 0.4); /* Brilho neon sutil */
 }
-
 /* O overlay ainda pode ser usado, mas é melhor removê-lo se o objetivo é a imagem pura */
 .portfolio-item .overlay {
     /* Mantido: você pode remover esta regra se não quiser o overlay */
@@ -1020,6 +898,66 @@ footer .content-layer {
         display: none;
         margin-top: 3rem; /* Espaço entre o último link e o logo */
     }
+
+/* --- ESTILO DROPDOWN PERSONALIZADO (APENAS PC) --- */
+@media (min-width: 769px) {
+    /* O SELETOR É .dropdown-menu */
+    .dropdown-menu {
+        position: absolute; 
+        top: 100%; 
+        left: 50%; 
+        transform: translateX(-50%) translateY(10px);
+        
+        /* 🚨 LARGURA AJUSTADA */
+        min-width: 260px;
+        
+        /* 🚨 ESTILO GLASSMORPHISM */
+        background: rgba(255, 255, 255, 0); 
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        
+        /* 🚨 BORDA E COR */
+        border: 2px solid #6627ff; 
+        border-radius: 1rem;
+        padding: 0.75rem;
+        
+        z-index: 50; 
+        opacity: 0; 
+        visibility: hidden; 
+        transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+    }
+
+    /* O SELETOR DE ATIVAÇÃO É .dropdown.active .dropdown-menu */
+    .dropdown.active .dropdown-menu { 
+        opacity: 1; 
+        visibility: visible; 
+        transform: translateX(-50%) translateY(5px); 
+    }
+
+    /* 🚨 ESTILO DOS LINKS INDIVIDUAIS DO SUBMENU */
+    .dropdown-menu a.dropdown-link { 
+        display: block; 
+        padding: 0.8rem 1rem; 
+        color: #edf1f7; 
+        font-size: 1rem; 
+        font-weight: 500; 
+        text-decoration: none;
+        border-radius: 0.5rem; 
+        transition: all 0.3s ease; 
+    }
+
+    .dropdown-menu a.dropdown-link:hover { 
+        /* Gradiente sutil e cor de texto ciano no hover */
+        background: linear-gradient(90deg, rgba(102, 39, 255, 0.2), rgba(11, 244, 237, 0.2)); 
+        color: #0bf4ed; 
+        transform: translateX(5px); 
+    }
+    
+    /* Garante que a seta funcione com o dropdown customizado */
+    .dropdown-arrow { transition: transform 0.3s ease; }
+    .dropdown.active .dropdown-arrow { transform: rotate(180deg); }
+}
+
         @media (max-width: 768px) {
     /* Desativa Animações no Mobile para Performance e Consistência */
     .section-animate, .fade-in, .section-animate.visible, .section-animate:not(.visible) {
@@ -1047,18 +985,14 @@ footer .content-layer {
         background: rgba(17, 17, 17, 0.95);
         padding: 0.5rem 1rem;
     }
-
     /* Esconde os links do Desktop */
     nav .flex.items-center.content-layer.desktop-nav {
         display: none;
     }
-
     /* Exibe o Hambúrguer */
     .hamburger {
         display: flex;
     }
-
-
     /* Estilo do Menu Mobile (Sanduíche) - CRÍTICO */
     .nav-menu-mobile {
         position: fixed;
@@ -1096,7 +1030,6 @@ footer .content-layer {
     .nav-menu-mobile .nav-link:first-child {
         margin-top: 6rem; /* Empurra o primeiro link para baixo */
     }
-
     /* Estilo de Botão para Links Mobile (Glassmorphism) */
     .nav-menu-mobile .nav-link {
         display: block;
@@ -1114,24 +1047,20 @@ footer .content-layer {
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         transition: all 0.3s ease;
     }
-
     .nav-menu-mobile .nav-link:hover {
         background: linear-gradient(135deg, rgba(102, 39, 255, 0.3), rgba(11, 244, 237, 0.3));
         transform: translateY(-4px) scale(1.02);
         box-shadow: 0 8px 16px rgba(11, 244, 237, 0.6);
         border-color: #0bf4ed;
     }
-
     .nav-menu-mobile .nav-link::after {
         display: none; /* Remove a linha inferior dos links no mobile */
     }
-
     /* Outros Ajustes de Estilo e Layout */
     .brand-name {
         font-size: clamp(1.75rem, 8vw, 2rem);
         padding: 0.5rem;
     }
-
             /* Estilo dos links no menu mobile - Glassmorphism */
             .nav-menu .nav-link {
                 display: block;
@@ -1149,26 +1078,21 @@ footer .content-layer {
                 box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra suave */
                 transition: all 0.3s ease; /* Transições suaves */
             }
-
             .nav-menu .nav-link:hover {
                 background: linear-gradient(135deg, rgba(102, 39, 255, 0.3), rgba(11, 244, 237, 0.3)); /* Gradiente mais visível no hover */
                 transform: translateY(-4px) scale(1.02); /* Efeito de levantar e expandir levemente */
                 box-shadow: 0 8px 16px rgba(11, 244, 237, 0.6); /* Sombra mais intensa e colorida no hover */
                 border-color: #0bf4ed; /* Borda colorida no hover */
             }
-
             .nav-menu .nav-link::after {
                 display: none; /* Remove a linha inferior dos links no mobile */
             }
-
             #home h2 {
                 font-size: clamp(2rem, 8vw, 3rem);
             }
-
             #home p {
                 font-size: clamp(1rem, 4vw, 1.25rem);
             }
-
             .grid {
                 grid-template-columns: 1fr;
             }
@@ -1176,7 +1100,6 @@ footer .content-layer {
     grid-template-columns: 1fr 1fr; 
     gap: 0.75rem; 
 }
-
 /* 💥 CORREÇÃO CRÍTICA: Removendo altura fixa para deixar o conteúdo definir a altura */
 #workflow .flip-card-container {
     /* 💥 NOVO: Retorna a altura para auto. O min-height garantirá a altura mínima */
@@ -1184,7 +1107,6 @@ footer .content-layer {
     min-height: 250px; /* Garante que mesmo cards curtos tenham um mínimo de altura */
     padding-bottom: 0; 
 }
-
 /* 💥 CORREÇÃO DE ALINHAMENTO DO CONTEÚDO DENTRO DA FACE */
 #workflow .card-face {
     padding: 1rem 0.5rem; 
@@ -1194,14 +1116,12 @@ footer .content-layer {
     word-wrap: break-word; 
     text-align: center;
 }
-
 /* 💥 CORREÇÃO DE TÍTULO: Reduzimos o min-height e o tamanho da fonte */
 #workflow .card-face h3 {
     font-size: 1.0rem; /* 💥 REDUZIDO: Título bem pequeno */
     min-height: 30px; /* 💥 REDUZIDO: Menos altura mínima no título */
     margin-bottom: 0.5rem;
 }
-
 /* 💥 CORREÇÃO DE CORPO DE TEXTO: Menos fonte e menos altura mínima */
 #workflow .card-back p,
 #workflow .card-front p {
@@ -1209,24 +1129,20 @@ footer .content-layer {
     min-height: 0; /* Remove a altura mínima para o corpo de texto poder fluir livremente */
     flex-grow: 1; /* Permite que o texto preencha o espaço sem ser cortado */
 }
-
 /* 💥 Ajuste final do ícone (mantido de 50px) */
 #workflow .service-icon {
     width: 40px; /* Reduzimos um pouco mais o ícone */
     height: 40px;
     margin-bottom: 0.5rem;
 }
-
             .service-item, .portfolio-item {
                 padding: 1rem;
             }
-
             .portfolio-item img {
                 /* Removido: height: 200px; */
                 /* Removido: object-fit: cover; */
                 /* As imagens agora usarão a altura automática (height: auto) e o max-width: 100% que você já tem no CSS global */
             }
-
             /* Ajustes para chatbot e pop-up de inatividade no mobile */
             .chat-container {
                 height: 350px;
@@ -1238,77 +1154,93 @@ footer .content-layer {
                 background: linear-gradient(160deg, #374151, #1f2937); /* Mantém o fundo gradiente */
                 border: 1px solid rgba(165, 180, 252, 0.2); /* Mantém a borda sutil */
             }
-
             .chat-input {
                 flex-direction: row;
                 gap: 0.5rem;
                 flex-wrap: nowrap;
             }
-
             .chat-input textarea {
                 width: 100%;
                 flex: 1;
                 font-size: clamp(0.875rem, 3vw, 1rem);
             }
-
             .chat-input button, .mic-button {
                 padding: 0.5rem;
                 font-size: clamp(0.875rem, 3vw, 1rem);
             }
-
             .mic-button svg {
                 width: 20px;
                 height: 20px;
             }
-
             .inactivity-card {
                 padding: 1rem;
                 max-width: 90vw; /* Ajusta para 90% da largura da viewport */
                 width: 95%; /* Usar porcentagem em mobile para flexibilidade */
                 box-sizing: border-box;
             }
-
             .inactivity-card img {
                 max-width: 100%;
                 height: auto;
             }
-
             section {
                 padding: 3rem 0;
             }
-
             h2 {
                 font-size: clamp(1.75rem, 6vw, 2.5rem);
             }
-
             p {
                 font-size: clamp(0.875rem, 3.5vw, 1rem);
             }
-
             .max-w-7xl {
                 padding-left: 0.5rem;
                 padding-right: 0.5rem;
             }
-        }
+            /* CRÍTICO: Ajusta o contêiner dos links para ter o padding do menu principal */
+            .nav-menu-mobile {
+                padding: 0 1rem; /* Adicionado para centralizar os links */
+            }
 
+            /* Oculta o sub-menu por padrão para Mobile (Usaremos JS para exibir) */
+            .dropdown-menu-mobile {
+                display: none;
+            }
+            
+            /* Estilo dos itens no sub-menu do mobile */
+            #mobileToolsMenu .dropdown-link {
+                margin: 0.25rem auto;
+                padding: 0.5rem 1rem;
+                /* Estilo Glassmorphism reduzido para sub-links */
+                background: rgba(102, 39, 255, 0.1); 
+                color: #f8f8f8;
+                border-radius: 0.75rem;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(5px);
+                -webkit-backdrop-filter: blur(5px);
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                font-size: clamp(1rem, 3.5vw, 1.125rem);
+                font-weight: 400;
+                transform: none; /* Remove a elevação padrão de .nav-link:hover */
+            }
+            
+            #mobileToolsMenu .dropdown-link:hover {
+                background: linear-gradient(135deg, rgba(102, 39, 255, 0.2), rgba(11, 244, 237, 0.2));
+                border-color: #0bf4ed;
+            }
+        }
         @media (max-width: 480px) {
             .brand-name {
                 font-size: clamp(1.5rem, 7vw, 1.75rem);
             }
-
             #home h2 {
                 font-size: clamp(1.75rem, 7vw, 2.5rem);
             }
-
             #home p {
                 font-size: clamp(0.875rem, 3.5vw, 1rem);
             }
-
             .service-icon {
                 width: 36px;
                 height: 36px;
             }
-
             .chat-container {
                 height: 300px;
                 padding: 0.5rem;
@@ -1316,29 +1248,23 @@ footer .content-layer {
                 max-width: 320px; /* Reduz o limite para telas muito pequenas */
                 box-sizing: border-box;
             }
-
             .chat-input textarea {
                 font-size: 0.875rem;
             }
-
             .chat-input button {
                 font-size: 0.875rem;
                 padding: 0.5rem 0.75rem;
             }
-
             .mic-button svg {
                 width: 18px;
                 height: 18px;
             }
-
             .inactivity-card h3 {
                 font-size: 1.25rem;
             }
-
             .inactivity-card p {
                 font-size: 0.875rem;
             }
-
             .portfolio-item img {
                 /* Removido: height: 180px; */
                 /* As imagens agora usarão a altura automática (height: auto) */
@@ -1351,7 +1277,6 @@ footer .content-layer {
     height: auto;
     filter: drop-shadow(0 0 5px rgba(102, 39, 255, 0.4));
 }
-
 @media (max-width: 768px) {
     /* Exibir a imagem e adicionar margem apenas no mobile */
     .mobile-menu-logo {
@@ -1381,12 +1306,8 @@ footer .content-layer {
     position: relative;
     padding: 0 0.75rem;
 }
-
 /* Oculta o sub-menu por padrão para Desktop */
-
-
 /* Exibe o sub-menu no hover (apenas para desktop) */
-
 /* Estilo dos itens do sub-menu */
 #nav-ferramentas .dropdown-link {
     display: block;
@@ -1395,13 +1316,11 @@ footer .content-layer {
     text-decoration: none;
     transition: background 0.3s ease, color 0.3s ease;
 }
-
 #nav-ferramentas .dropdown-link:hover {
     background: linear-gradient(90deg, #6627ff44, #0bf4ed44); /* Gradiente sutil no hover */
     color: #0bf4ed;
     border-radius: 0.3rem;
 }
-
 /* Estilo do ícone de seta (opcional, para indicar que é um dropdown) */
 #nav-ferramentas .arrow-down {
     display: inline-block;
@@ -1414,12 +1333,10 @@ footer .content-layer {
     border-left: 4px solid transparent;
     transition: transform 0.3s ease;
 }
-
 #nav-ferramentas:hover .arrow-down {
     transform: rotate(180deg);
     border-top-color: #0bf4ed;
 }
-
 /* Novo Estilo para Mobile: Ajustar a exibição da seta para desktop/mobile */
 @media (max-width: 768px) {
     .dropdown-menu-mobile {
@@ -1472,7 +1389,7 @@ footer .content-layer {
     <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/index.html" class="nav-link text-lg transition">Início</a>
     <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/servi%C3%A7os.html" class="nav-link text-lg transition">Serviços</a>
     
-    <div class="relative" id="toolsDropdownContainer">
+    <div class="relative dropdown" id="toolsDropdownContainer">
     <a href="#" id="toolsDropdownToggle" class="nav-link text-lg transition flex items-center gap-1 cursor-pointer select-none"
        aria-expanded="false">
         Ferramentas
@@ -1480,19 +1397,13 @@ footer .content-layer {
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
         </svg>
     </a>
-
-    <!-- Menu que abre com JS -->
-    <div id="toolsMenu" class="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-64
-            opacity-0 invisible pointer-events-none
-            transition-all duration-300 z-50
-            bg-gray-900/98 backdrop-blur-xl border border-purple-600 rounded-xl shadow-2xl
-            [&.active]:opacity-100 [&.active]:visible [&.active]:pointer-events-auto">
+    <div id="toolsMenu" class="dropdown-menu">
         <a href="https://asthro.com.br/asthrospeed.html" 
-           class="block px-6 py-4 text-white hover:text-cyan-400 hover:bg-white/10 transition first:rounded-t-xl">
+           class="dropdown-link">
            AsthroSpeed (Análise de Sites)
         </a>
         <a href="https://asthro.com.br/zerogravity.html" 
-           class="block px-6 py-4 text-white hover:text-cyan-400 hover:bg-white/10 transition last:rounded-b-xl">
+           class="dropdown-link">
            ZeroGravity (Removedor de Fundo)
         </a>
     </div>
@@ -1506,9 +1417,26 @@ footer .content-layer {
 <div class="nav-menu-mobile content-layer">
     <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/index.html" class="nav-link text-lg transition block">Início</a>
     <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/servi%C3%A7os.html" class="nav-link text-lg transition block">Serviços</a>
-    <button id="mobileToolsButton" class="nav-link text-lg transition block w-full text-center" style="cursor: pointer;">
-        Ferramentas
-    </button>
+    
+    <div class="relative w-full" id="mobileToolsDropdownContainer">
+        <button id="mobileToolsToggle" class="nav-link text-lg transition block w-full text-center flex justify-center items-center gap-2" style="cursor: pointer;" aria-expanded="false">
+            Ferramentas
+            <svg id="mobileToolsArrow" class="dropdown-arrow w-4 h-4 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+        </button>
+        <div id="mobileToolsMenu" class="dropdown-menu-mobile w-full mt-2 space-y-2" style="display: none; flex-direction: column;">
+            <a href="https://asthro.com.br/asthrospeed.html" 
+               class="dropdown-link text-lg transition block w-full text-center">
+               AsthroSpeed (Análise de Sites)
+            </a>
+            <a href="https://asthro.com.br/zerogravity.html" 
+               class="dropdown-link text-lg transition block w-full text-center">
+               ZeroGravity (Removedor de Fundo)
+            </a>
+        </div>
+    </div>
+
     <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/sobre.html" class="nav-link text-lg transition block">Sobre</a>
     <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/portf%C3%B3lio.html" class="nav-link text-lg transition block">Portfólio</a>
     <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/contato.html" class="nav-link text-lg transition block">Contato</a>
@@ -1528,7 +1456,6 @@ footer .content-layer {
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 content-layer">
         <h2 class="text-4xl font-bold text-center gradient-text mb-4">Nosso Processo de Criação</h2>
         <p class="text-xl text-gray-300 max-w-3xl mx-auto mb-12 text-center fade-in">Transformamos sua ideia em realidade digital através de 4 etapas estratégicas e transparentes.</p>
-
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
             
             <div class="flip-card-container fade-in" data-delay="0.1s">
@@ -1614,7 +1541,6 @@ footer .content-layer {
             <img src="https://i.imgur.com/w11uioG.png" alt="Logo After Effects" title="After Effects" class="logo-item" />
             <img src="https://i.imgur.com/wE2x5a9.png" alt="Logo Capcut" title="Capcut" class="logo-item" />
             <img src="https://i.imgur.com/vANqOCY.png" alt="Logo Elementor" title="Elementor" class="logo-item" />
-
             <img src="https://i.imgur.com/nZCoFYU.png" alt="Logo Adobe Photoshop" title="Adobe Photoshop" class="logo-item" />
             <img src="https://i.imgur.com/6Ymyv2A.png" alt="Logo Adobe Illustrator" title="Adobe Illustrator" class="logo-item" />
             <img src="https://i.imgur.com/XqkapiC.png" alt="Logo GitHub" title="GitHub" class="logo-item" />
@@ -1726,56 +1652,79 @@ footer .content-layer {
     </div>
     <script>
         // DROPDOWN FERRAMENTAS - SOMENTE CLIQUE (DESKTOP)
+const toolsDropdownContainer = document.getElementById('toolsDropdownContainer'); // NOVO: Pega o container pai
 const toolsToggle = document.getElementById('toolsDropdownToggle');
 const toolsMenu   = document.getElementById('toolsMenu');
 const toolsArrow  = toolsToggle.querySelector('svg');
 
 toolsToggle.addEventListener('click', function(e) {
     e.preventDefault();
-    e.stopPropagation(); // evita fechar imediatamente
-
-    const isOpen = toolsMenu.classList.contains('active');
-
-    // Fecha qualquer outro dropdown que esteja aberto (caso tenha mais no futuro)
-    document.querySelectorAll('.dropdown-menu').forEach(menu => {
-        menu.classList.remove('active');
-    });
-    document.querySelectorAll('.dropdown-arrow').forEach(arr => {
-        arr.style.transform = '';
+    e.stopPropagation(); 
+    // AGORA VERIFICAMOS SE O CONTAINER TEM A CLASSE 'active'
+    const isOpen = toolsDropdownContainer.classList.contains('active'); 
+    
+    // Fecha outros menus se houver (opcional, mas bom para menus únicos)
+    document.querySelectorAll('.dropdown').forEach(container => {
+        if (container.id !== 'toolsDropdownContainer' && container.classList.contains('active')) {
+            container.classList.remove('active');
+            // Você pode precisar adicionar lógica para girar outras setas aqui se elas existirem
+        }
     });
 
     if (!isOpen) {
-        toolsMenu.classList.add('active');
+        // ADICIONA A CLASSE 'active' AO CONTAINER PAI (.dropdown)
+        toolsDropdownContainer.classList.add('active'); 
         toolsArrow.style.transform = 'rotate(180deg)';
         toolsToggle.setAttribute('aria-expanded', 'true');
     } else {
-        toolsMenu.classList.remove('active');
+        // REMOVE A CLASSE 'active' DO CONTAINER PAI (.dropdown)
+        toolsDropdownContainer.classList.remove('active'); 
         toolsArrow.style.transform = '';
         toolsToggle.setAttribute('aria-expanded', 'false');
     }
 });
-
 // Fecha ao clicar fora do menu
 document.addEventListener('click', function() {
-    if (toolsMenu.classList.contains('active')) {
-        toolsMenu.classList.remove('active');
+    if (toolsDropdownContainer.classList.contains('active')) {
+        toolsDropdownContainer.classList.remove('active');
         toolsArrow.style.transform = '';
         toolsToggle.setAttribute('aria-expanded', 'false');
     }
 });
-
 // Impede que o clique dentro do menu feche ele
 toolsMenu.addEventListener('click', function(e) {
     e.stopPropagation();
 });
+
+// DROPDOWN FERRAMENTAS - MOBILE (MANTIDO)
+const mobileToolsToggle = document.getElementById('mobileToolsToggle');
+const mobileToolsMenu = document.getElementById('mobileToolsMenu');
+const mobileToolsArrow = document.getElementById('mobileToolsArrow');
+
+if (mobileToolsToggle) {
+    mobileToolsToggle.addEventListener('click', function() {
+        const isOpen = mobileToolsMenu.style.display === 'flex';
+        
+        // Fecha o menu se estiver aberto
+        if (isOpen) {
+            mobileToolsMenu.style.display = 'none';
+            mobileToolsArrow.style.transform = 'rotate(0deg)';
+            mobileToolsToggle.setAttribute('aria-expanded', 'false');
+        } else {
+            // Abre o menu
+            mobileToolsMenu.style.display = 'flex';
+            mobileToolsArrow.style.transform = 'rotate(180deg)';
+            mobileToolsToggle.setAttribute('aria-expanded', 'true');
+        }
+    });
+}
+
         function toggleMobileDropdown(event, menuId, arrowId) {
     event.preventDefault(); // Impede o link de navegar (padrão)
     event.stopPropagation(); // Impede que o clique feche o menu principal
-
     const dropdownMenu = document.getElementById(menuId);
     const arrow = document.getElementById(arrowId);
     const isMobileMenu = dropdownMenu.classList.contains('dropdown-menu-mobile');
-
     // Se o menu está ativo, desativa
     if (dropdownMenu.style.display === 'flex') {
         dropdownMenu.style.display = 'none';
@@ -1794,17 +1743,18 @@ toolsMenu.addEventListener('click', function(e) {
                 }
             });
         }
-
         // Ativa o menu clicado
         dropdownMenu.style.display = 'flex'; // Usamos 'flex' porque é o display padrão no CSS para .nav-menu-mobile > div
         if (arrow) arrow.style.transform = 'rotate(180deg)';
     }
 }
-
 // 🚨 CORREÇÃO: Listener para fechar o menu mobile ao clicar fora dele
 document.addEventListener('click', (e) => {
+    const navMenu = document.querySelector('.nav-menu-mobile');
+    if (!navMenu) return; // Garante que o elemento exista
+    
     // Verifica se o clique não foi dentro do menu mobile principal ou em qualquer link
-    const isClickInsideMobileMenu = document.querySelector('.nav-menu-mobile').contains(e.target);
+    const isClickInsideMobileMenu = navMenu.contains(e.target);
     const isHamburger = document.querySelector('.hamburger').contains(e.target);
     
     // Se o menu mobile estiver aberto (a classe 'active' está no navMenu)
@@ -1816,11 +1766,11 @@ document.addEventListener('click', (e) => {
         }
         
         // Fecha qualquer submenu dropdown interno se o clique for fora dele
-        const mobileDropdown = document.getElementById('nav-ferramentas-mobile');
+        const mobileDropdown = document.getElementById('mobileToolsDropdownContainer');
         if (mobileDropdown && !mobileDropdown.contains(e.target)) {
             const menu = document.getElementById('mobileToolsMenu');
             const arrow = document.getElementById('mobileToolsArrow');
-            if (menu && menu.style.display === 'block') {
+            if (menu && menu.style.display === 'flex') {
                 menu.style.display = 'none';
                 arrow.style.transform = 'rotate(0deg)';
             }
@@ -1830,13 +1780,11 @@ document.addEventListener('click', (e) => {
         function smoothScrollTo(elementId) {
     const targetElement = document.querySelector(elementId);
     if (!targetElement) return;
-
     const startPosition = window.pageYOffset;
     const targetPosition = targetElement.getBoundingClientRect().top + startPosition;
     const distance = targetPosition - startPosition;
     const duration = 1500; // Duração em milissegundos (1500ms = 1.5 segundos). Altere este valor para controlar a velocidade.
     let startTime = null;
-
     function animation(currentTime) {
         if (startTime === null) startTime = currentTime;
         const timeElapsed = currentTime - startTime;
@@ -1844,7 +1792,6 @@ document.addEventListener('click', (e) => {
         window.scrollTo(0, run);
         if (timeElapsed < duration) requestAnimationFrame(animation);
     }
-
     // Função de atenuação (easing) para um movimento mais natural
     function ease(t, b, c, d) {
         t /= d / 2;
@@ -1852,25 +1799,24 @@ document.addEventListener('click', (e) => {
         t -= 2;
         return c / 2 * (t * t * t + 2) + b;
     }
-
     requestAnimationFrame(animation);
 }
-
 // Aplica a rolagem lenta a todos os links com href="#..."
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
         const href = this.getAttribute('href');
         smoothScrollTo(href); // Chama a nova função de rolagem lenta
-
         if (window.innerWidth <= 768) {
-            toggleMenu();
+            const navMenu = document.querySelector('.nav-menu-mobile');
+            if (navMenu && navMenu.classList.contains('active')) {
+                toggleMenu();
+            }
         }
     });
 });
 function setupFlipCards() {
     const cardContainers = document.querySelectorAll('#workflow .flip-card-container');
-
     // 1. Inicia/Reseta o Flip dos Cards quando a Seção Fica Visível/Invisível
     const workflowObserver = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
@@ -1900,7 +1846,6 @@ function setupFlipCards() {
             }
         });
     }, { threshold: 0.1 }); // Aciona com 10% da seção visível
-
     const workflowSection = document.getElementById('workflow');
     if (workflowSection) {
         workflowObserver.observe(workflowSection);
@@ -1917,21 +1862,25 @@ function setupFlipCards() {
 }
         const hamburger = document.querySelector('.hamburger');
         const navMenu = document.querySelector('.nav-menu-mobile');
-
         function toggleMenu() {
             hamburger.classList.toggle('active');
             navMenu.classList.toggle('active');
             document.body.style.overflowY = navMenu.classList.contains('active') ? 'hidden' : 'auto';
+            
+            // 🚨 NOVO: Fecha o submenu de ferramentas mobile se ele estiver aberto ao fechar o menu principal
+            const mobileToolsMenu = document.getElementById('mobileToolsMenu');
+            const mobileToolsArrow = document.getElementById('mobileToolsArrow');
+            if (mobileToolsMenu && mobileToolsMenu.style.display === 'flex') {
+                mobileToolsMenu.style.display = 'none';
+                mobileToolsArrow.style.transform = 'rotate(0deg)';
+            }
         }
-
         hamburger.addEventListener('click', toggleMenu);
-
         document.addEventListener('click', (e) => {
             if (!hamburger.contains(e.target) && !navMenu.contains(e.target) && navMenu.classList.contains('active')) {
                 toggleMenu();
             }
         });
-
         const observer = new IntersectionObserver(entries => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -1941,7 +1890,6 @@ function setupFlipCards() {
             });
         }, { threshold: 0.1 });
         document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-
         const sectionObserver = new IntersectionObserver(entries => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -1952,7 +1900,6 @@ function setupFlipCards() {
             });
         }, { threshold: 0.2 });
         document.querySelectorAll('.section-animate').forEach(section => sectionObserver.observe(section));
-
         particlesJS('particles-js', {
             particles: {
                 number: { value: window.innerWidth <= 768 ? 100 : 250, density: { enable: true, value_area: 800 } }, /* Increased for PC */
@@ -1991,36 +1938,29 @@ function setupFlipCards() {
             },
             retina_detect: true
         });
-
         const inactivityCard = document.getElementById('inactivityCard');
         let inactivityTimeout;
         let hasShown = false;
-
         function showInactivityCard() {
             if (!hasShown) {
                 inactivityCard.style.display = 'block';
                 hasShown = true;
             }
         }
-
         function hideInactivityCard() {
             inactivityCard.style.display = 'none';
             clearTimeout(inactivityTimeout);
         }
-
         function resetInactivityTimer() {
             if (!hasShown) {
                 clearTimeout(inactivityTimeout);
                 inactivityTimeout = setTimeout(showInactivityCard, 5000);
             }
         }
-
         resetInactivityTimer();
-
         ['mousemove', 'keydown', 'scroll', 'click', 'touchstart'].forEach(event => {
             document.addEventListener(event, resetInactivityTimer);
         });
-
         let chatMessages = document.getElementById('chatMessages');
         let userInput = document.getElementById('userInput');
         let chatState = {
@@ -2035,24 +1975,20 @@ function setupFlipCards() {
         let hasGreeted = false;
         let isCorrecting = false;
         let fieldToCorrect = null;
-
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         let recognition = null;
         let isRecording = false;
         let pressStartTime = null;
-
         if (SpeechRecognition) {
             recognition = new SpeechRecognition();
             recognition.lang = 'pt-BR';
             recognition.interimResults = false;
             recognition.maxAlternatives = 1;
-
             recognition.onresult = function(event) {
                 const transcript = event.results[0][0].transcript;
                 userInput.value = transcript;
                 sendMessage();
             };
-
             recognition.onerror = function(event) {
                 console.error('Speech recognition error:', event.error);
                 const micButton = document.getElementById('micButton');
@@ -2064,7 +2000,6 @@ function setupFlipCards() {
                     micButton.title = "Microfone não disponível";
                 }
             };
-
             recognition.onend = function() {
                 const micButton = document.getElementById('micButton');
                 micButton.classList.remove('recording');
@@ -2076,17 +2011,14 @@ function setupFlipCards() {
             micButton.disabled = true;
             micButton.title = "Reconhecimento de voz não suportado neste navegador";
         }
-
         function showMicTooltip() {
             const micButton = document.getElementById('micButton');
             const existingTooltip = micButton.querySelector('.mic-tooltip');
             if (existingTooltip) return;
-
             const tooltip = document.createElement('div');
             tooltip.classList.add('mic-tooltip');
             tooltip.innerHTML = '<span class="gradient-text">Segure para gravar</span>';
             micButton.appendChild(tooltip);
-
             setTimeout(() => {
                 tooltip.classList.add('fade-out');
                 setTimeout(() => {
@@ -2094,7 +2026,6 @@ function setupFlipCards() {
                 }, 300);
             }, 2000);
         }
-
         function startRecording(event) {
             event.preventDefault();
             if (!recognition || isRecording || isBotTyping) return;
@@ -2114,7 +2045,6 @@ function setupFlipCards() {
                 showMicTooltip();
             }
         }
-
         function stopRecording() {
             if (!recognition || !isRecording) return;
             const pressDuration = Date.now() - pressStartTime;
@@ -2122,7 +2052,6 @@ function setupFlipCards() {
             isRecording = false;
             micButton.classList.remove('recording');
             userInput.placeholder = chatState.step === 4 ? "Digite sua mensagem..." : "Digite sua resposta...";
-
             if (pressDuration < 300) {
                 recognition.abort();
                 showMicTooltip();
@@ -2130,7 +2059,6 @@ function setupFlipCards() {
                 recognition.stop();
             }
         }
-
         const commonGreetings = [
             'oi', 'olá', 'ola', 'bom dia', 'boa tarde', 'boa noite',
             'tudo bem', 'tudo bom', 'como vai', 'e aí', 'e ai', 'eai',
@@ -2139,14 +2067,12 @@ function setupFlipCards() {
             'como você ta', 'como você tá', 'e você', 'e tu', 'e voce',
             'opa'
         ];
-
         const botGreetings = [
             'Que bom te ver! 😊',
             'Seja bem-vindo! 😊',
             'É um prazer te conhecer! 😊',
             'Fico feliz em te ajudar hoje! 😊'
         ];
-
         const correctionKeywords = [
             'errei', 'ops', 'opa', 'eita', 'está errado', 'esta errado',
             'está errada', 'esta errada', 'corrigir', 'alterar', 'trocar',
@@ -2155,7 +2081,6 @@ function setupFlipCards() {
             'meu nome está digitado errado', 'o nome está errado', 'digitei errado',
             'opa o nome tá errado'
         ];
-
         const genderCorrectionKeywords = {
             feminine: [
                 'sou mulher', 'meu pronome é feminino', 'pode falar no feminino',
@@ -2170,13 +2095,11 @@ function setupFlipCards() {
                 'prazer em conhecê-lo', 'tratado no masculino'
             ]
         };
-
         const fieldKeywords = {
             name: ['nome', 'meu nome'],
             email: ['email', 'e-mail', 'mail'],
             whatsapp: ['whatsapp', 'whats', 'telefone', 'número', 'numero']
         };
-
         function isGreeting(message) {
             const normalizedMessage = message.toLowerCase().trim();
             return commonGreetings.some(greeting => 
@@ -2186,7 +2109,6 @@ function setupFlipCards() {
                 normalizedMessage.includes(' ' + greeting + ' ')
             );
         }
-
         function isValidName(name) {
             const normalizedName = name.trim();
             const nameRegex = /^[a-zA-ZÀ-ÿ\s-]+$/;
@@ -2198,7 +2120,6 @@ function setupFlipCards() {
                 !normalizedName.includes('!')
             );
         }
-
         function inferGender(name) {
             const normalizedName = name.toLowerCase().trim();
             const feminineEndings = ['a', 'e', 'i', 'y'];
@@ -2211,7 +2132,6 @@ function setupFlipCards() {
             }
             return 'masculine';
         }
-
         function extractName(message) {
             let name = message.trim();
             const phrasesToRemove = [
@@ -2235,7 +2155,6 @@ function setupFlipCards() {
             }
             return name;
         }
-
         function selectBotGreeting(userGreeting) {
             const normalizedUserGreeting = userGreeting.toLowerCase().trim();
             let availableGreetings = botGreetings;
@@ -2249,7 +2168,6 @@ function setupFlipCards() {
             }
             return availableGreetings[Math.floor(Math.random() * availableGreetings.length)];
         }
-
         function detectCorrectionRequest(message) {
             const normalizedMessage = message.toLowerCase().trim();
             const isCorrection = correctionKeywords.some(keyword => 
@@ -2269,7 +2187,6 @@ function setupFlipCards() {
             }
             return null;
         }
-
         function detectGenderCorrection(message) {
             const normalizedMessage = message.toLowerCase().trim();
             for (const [gender, keywords] of Object.entries(genderCorrectionKeywords)) {
@@ -2279,7 +2196,6 @@ function setupFlipCards() {
             }
             return null;
         }
-
         function askForCorrectedData(field) {
             let question;
             switch (field) {
@@ -2301,7 +2217,6 @@ function setupFlipCards() {
                 addBotMessage(question);
             }, 2000);
         }
-
         function continueFlow() {
             showTypingIndicator();
             setTimeout(() => {
@@ -2323,7 +2238,6 @@ function setupFlipCards() {
                 saveChatState();
             }, 2000);
         }
-
         window.onload = function() {
             localStorage.removeItem('chatState');
             chatState = {
@@ -2363,11 +2277,9 @@ function setupFlipCards() {
                 contactSectionObserver.observe(contactSection);
             }
         };
-
         function saveChatState() {
             localStorage.setItem('chatState', JSON.stringify(chatState));
         }
-
         function addBotMessage(message) {
             const messageElement = document.createElement('div');
             messageElement.classList.add('message', 'bot-message');
@@ -2375,7 +2287,6 @@ function setupFlipCards() {
             chatMessages.appendChild(messageElement);
             scrollToBottom();
         }
-
         function addUserMessage(message) {
             const messageElement = document.createElement('div');
             messageElement.classList.add('message', 'user-message');
@@ -2383,7 +2294,6 @@ function setupFlipCards() {
             chatMessages.appendChild(messageElement);
             scrollToBottom();
         }
-
         function showTypingIndicator() {
             const typingElement = document.createElement('div');
             typingElement.classList.add('typing-indicator');
@@ -2393,7 +2303,6 @@ function setupFlipCards() {
             scrollToBottom();
             isBotTyping = true;
         }
-
         function removeTypingIndicator() {
             const typingElement = document.getElementById('typingIndicator');
             if (typingElement) {
@@ -2401,21 +2310,17 @@ function setupFlipCards() {
             }
             isBotTyping = false;
         }
-
         function scrollToBottom() {
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
-
         function isValidEmail(email) {
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             return emailRegex.test(email);
         }
-
         function isValidPhoneNumber(phone) {
             const phoneRegex = /^\+?[\d\s()-]{7,}$/;
             return phoneRegex.test(phone);
         }
-
         const contactSectionObserver = new IntersectionObserver(entries => {
             entries.forEach(entry => {
                 if (entry.isIntersecting && !hasGreeted && chatState.step === 1 && !chatState.name) {
@@ -2429,7 +2334,6 @@ function setupFlipCards() {
                 }
             });
         }, { threshold: 0.3 });
-
         function sendMessage() {
             if (isBotTyping) return;
             const userText = userInput.value.trim();
@@ -2585,14 +2489,12 @@ function setupFlipCards() {
             userInput.value = '';
             saveChatState();
         }
-
         function handleKeyPress(event) {
             if (event.key === 'Enter' && !event.shiftKey) {
                 event.preventDefault();
                 sendMessage();
             }
         }
-
         function sendToFormspree() {
             const formData = new FormData();
             formData.append('name', chatState.name);
@@ -2617,7 +2519,6 @@ function setupFlipCards() {
                 addBotMessage("Desculpe, houve um erro ao enviar sua mensagem. Tente novamente mais tarde.");
             });
         }
-
         function showSuccessMessage() {
             chatMessages.innerHTML = '';
             const chatContainer = document.querySelector('.chat-container');
@@ -2639,7 +2540,6 @@ function setupFlipCards() {
                 gender: null
             };
         }
-
         document.addEventListener('DOMContentLoaded', () => {
     // Adiciona a observação para o Chatbot
     const contactSection = document.querySelector('#contact');
