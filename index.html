@@ -1376,6 +1376,76 @@ footer .content-layer {
     filter: drop-shadow(0 0 5px #0bf4ed); /* Adiciona um brilho sutil para destacar */
     margin-bottom: 1rem;
 }
+    /* Estilo para o link principal do dropdown (Ferramentas) */
+#nav-ferramentas {
+    position: relative;
+    padding: 0 0.75rem;
+}
+
+/* Oculta o sub-menu por padrão para Desktop */
+
+
+/* Exibe o sub-menu no hover (apenas para desktop) */
+
+/* Estilo dos itens do sub-menu */
+#nav-ferramentas .dropdown-link {
+    display: block;
+    padding: 0.5rem 1rem;
+    color: #edf1f7;
+    text-decoration: none;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+#nav-ferramentas .dropdown-link:hover {
+    background: linear-gradient(90deg, #6627ff44, #0bf4ed44); /* Gradiente sutil no hover */
+    color: #0bf4ed;
+    border-radius: 0.3rem;
+}
+
+/* Estilo do ícone de seta (opcional, para indicar que é um dropdown) */
+#nav-ferramentas .arrow-down {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin-left: 0.5rem;
+    vertical-align: middle;
+    border-top: 4px solid #edf1f7;
+    border-right: 4px solid transparent;
+    border-left: 4px solid transparent;
+    transition: transform 0.3s ease;
+}
+
+#nav-ferramentas:hover .arrow-down {
+    transform: rotate(180deg);
+    border-top-color: #0bf4ed;
+}
+
+/* Novo Estilo para Mobile: Ajustar a exibição da seta para desktop/mobile */
+@media (max-width: 768px) {
+    .dropdown-menu-mobile {
+        display: none;
+    }
+    
+    /* Estilo dos itens no sub-menu do mobile */
+    #nav-ferramentas .dropdown-link {
+        margin: 0.25rem auto;
+        padding: 0.5rem 1rem;
+        background: rgba(102, 39, 255, 0.05); /* Um fundo mais suave para o sub-item */
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+    
+    #nav-ferramentas .dropdown-link:hover {
+        transform: none; /* Remove a transformação de elevação para sub-links no mobile */
+        box-shadow: none;
+        background: rgba(102, 39, 255, 0.1);
+    }
+    
+    /* Mostrar/Ocultar a seta do dropdown no mobile */
+    #nav-ferramentas .arrow-down {
+        display: inline-block;
+        border-top: 4px solid #edf1f7;
+    }
+}
     </style>
 </head>
 <body class="text-gray-100">
@@ -1401,6 +1471,33 @@ footer .content-layer {
             <div class="flex items-center space-x-6 content-layer desktop-nav">
     <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/index.html" class="nav-link text-lg transition">Início</a>
     <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/servi%C3%A7os.html" class="nav-link text-lg transition">Serviços</a>
+    
+    <div class="relative" id="toolsDropdownContainer">
+    <a href="#" id="toolsDropdownToggle" class="nav-link text-lg transition flex items-center gap-1 cursor-pointer select-none"
+       aria-expanded="false">
+        Ferramentas
+        <svg class="dropdown-arrow w-4 h-4 ml-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+        </svg>
+    </a>
+
+    <!-- Menu que abre com JS -->
+    <div id="toolsMenu" class="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-64
+            opacity-0 invisible pointer-events-none
+            transition-all duration-300 z-50
+            bg-gray-900/98 backdrop-blur-xl border border-purple-600 rounded-xl shadow-2xl
+            [&.active]:opacity-100 [&.active]:visible [&.active]:pointer-events-auto">
+        <a href="https://asthro.com.br/asthrospeed.html" 
+           class="block px-6 py-4 text-white hover:text-cyan-400 hover:bg-white/10 transition first:rounded-t-xl">
+           AsthroSpeed (Análise de Sites)
+        </a>
+        <a href="https://asthro.com.br/zerogravity.html" 
+           class="block px-6 py-4 text-white hover:text-cyan-400 hover:bg-white/10 transition last:rounded-b-xl">
+           ZeroGravity (Removedor de Fundo)
+        </a>
+    </div>
+    </div>
+    
     <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/sobre.html" class="nav-link text-lg transition">Sobre</a>
     <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/portf%C3%B3lio.html" class="nav-link text-lg transition">Portfólio</a>
     <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/contato.html" class="nav-link text-lg transition">Contato</a>
@@ -1409,6 +1506,9 @@ footer .content-layer {
 <div class="nav-menu-mobile content-layer">
     <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/index.html" class="nav-link text-lg transition block">Início</a>
     <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/servi%C3%A7os.html" class="nav-link text-lg transition block">Serviços</a>
+    <button id="mobileToolsButton" class="nav-link text-lg transition block w-full text-center" style="cursor: pointer;">
+        Ferramentas
+    </button>
     <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/sobre.html" class="nav-link text-lg transition block">Sobre</a>
     <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/portf%C3%B3lio.html" class="nav-link text-lg transition block">Portfólio</a>
     <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/contato.html" class="nav-link text-lg transition block">Contato</a>
@@ -1625,6 +1725,108 @@ footer .content-layer {
         <a href="#contact" onclick="hideInactivityCard();"><button class="cta-pulse">Fale Conosco</button></a>
     </div>
     <script>
+        // DROPDOWN FERRAMENTAS - SOMENTE CLIQUE (DESKTOP)
+const toolsToggle = document.getElementById('toolsDropdownToggle');
+const toolsMenu   = document.getElementById('toolsMenu');
+const toolsArrow  = toolsToggle.querySelector('svg');
+
+toolsToggle.addEventListener('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation(); // evita fechar imediatamente
+
+    const isOpen = toolsMenu.classList.contains('active');
+
+    // Fecha qualquer outro dropdown que esteja aberto (caso tenha mais no futuro)
+    document.querySelectorAll('.dropdown-menu').forEach(menu => {
+        menu.classList.remove('active');
+    });
+    document.querySelectorAll('.dropdown-arrow').forEach(arr => {
+        arr.style.transform = '';
+    });
+
+    if (!isOpen) {
+        toolsMenu.classList.add('active');
+        toolsArrow.style.transform = 'rotate(180deg)';
+        toolsToggle.setAttribute('aria-expanded', 'true');
+    } else {
+        toolsMenu.classList.remove('active');
+        toolsArrow.style.transform = '';
+        toolsToggle.setAttribute('aria-expanded', 'false');
+    }
+});
+
+// Fecha ao clicar fora do menu
+document.addEventListener('click', function() {
+    if (toolsMenu.classList.contains('active')) {
+        toolsMenu.classList.remove('active');
+        toolsArrow.style.transform = '';
+        toolsToggle.setAttribute('aria-expanded', 'false');
+    }
+});
+
+// Impede que o clique dentro do menu feche ele
+toolsMenu.addEventListener('click', function(e) {
+    e.stopPropagation();
+});
+        function toggleMobileDropdown(event, menuId, arrowId) {
+    event.preventDefault(); // Impede o link de navegar (padrão)
+    event.stopPropagation(); // Impede que o clique feche o menu principal
+
+    const dropdownMenu = document.getElementById(menuId);
+    const arrow = document.getElementById(arrowId);
+    const isMobileMenu = dropdownMenu.classList.contains('dropdown-menu-mobile');
+
+    // Se o menu está ativo, desativa
+    if (dropdownMenu.style.display === 'flex') {
+        dropdownMenu.style.display = 'none';
+        if (arrow) arrow.style.transform = 'rotate(0deg)';
+    } else {
+        // Se for o menu mobile, primeiro fecha todos os outros
+        if (isMobileMenu) {
+            document.querySelectorAll('.dropdown-menu-mobile').forEach(menu => {
+                if (menu.id !== menuId && menu.style.display === 'flex') {
+                    menu.style.display = 'none';
+                }
+            });
+            document.querySelectorAll('#nav-ferramentas-mobile .dropdown-arrow').forEach(arr => {
+                if (arr.id !== arrowId) {
+                    arr.style.transform = 'rotate(0deg)';
+                }
+            });
+        }
+
+        // Ativa o menu clicado
+        dropdownMenu.style.display = 'flex'; // Usamos 'flex' porque é o display padrão no CSS para .nav-menu-mobile > div
+        if (arrow) arrow.style.transform = 'rotate(180deg)';
+    }
+}
+
+// 🚨 CORREÇÃO: Listener para fechar o menu mobile ao clicar fora dele
+document.addEventListener('click', (e) => {
+    // Verifica se o clique não foi dentro do menu mobile principal ou em qualquer link
+    const isClickInsideMobileMenu = document.querySelector('.nav-menu-mobile').contains(e.target);
+    const isHamburger = document.querySelector('.hamburger').contains(e.target);
+    
+    // Se o menu mobile estiver aberto (a classe 'active' está no navMenu)
+    if (navMenu.classList.contains('active')) {
+        // Se o clique foi fora do menu e não foi no ícone hamburger
+        if (!isClickInsideMobileMenu && !isHamburger) {
+            // Fecha o menu principal
+            toggleMenu(); 
+        }
+        
+        // Fecha qualquer submenu dropdown interno se o clique for fora dele
+        const mobileDropdown = document.getElementById('nav-ferramentas-mobile');
+        if (mobileDropdown && !mobileDropdown.contains(e.target)) {
+            const menu = document.getElementById('mobileToolsMenu');
+            const arrow = document.getElementById('mobileToolsArrow');
+            if (menu && menu.style.display === 'block') {
+                menu.style.display = 'none';
+                arrow.style.transform = 'rotate(0deg)';
+            }
+        }
+    }
+});
         function smoothScrollTo(elementId) {
     const targetElement = document.querySelector(elementId);
     if (!targetElement) return;
