@@ -748,16 +748,60 @@ footer .content-layer {
 
         /* --- Dropdown de Ferramentas (PC) --- */
         .dropdown-menu {
-            position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(10px); 
-            min-width: 180px; background: rgba(17, 17, 17, 0.95); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); 
-            border: 1px solid rgba(102, 39, 255, 0.5); border-radius: 0.5rem; padding: 0.5rem 0; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5); 
-            z-index: 50; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
-        }
-        .dropdown.active .dropdown-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(5px); }
-        .dropdown-menu a { display: block; padding: 0.6rem 1rem; color: #edf1f7; font-size: 1rem; font-weight: 500; transition: all 0.2s ease; }
-        .dropdown-menu a:hover { background: linear-gradient(90deg, rgba(102, 39, 255, 0.3), rgba(11, 244, 237, 0.3)); color: #0bf4ed; }
-        .dropdown-arrow { display: inline-block; transition: transform 0.3s ease; }
-        .dropdown.active .dropdown-arrow { transform: rotate(180deg); }
+    position: absolute; 
+    top: 100%; 
+    left: 50%; 
+    transform: translateX(-50%) translateY(10px);
+    
+    /* 🚨 LARGURA AJUSTADA: Um pouco menor que a anterior */
+    min-width: 260px; /* Ajustado para ser ligeiramente menor */
+    
+    /* 🚨 FUNDO TRANSPARENTE PURO COM BORRADO (SEM CINZA) */
+    background: rgba(255, 255, 255, 0); /* Fundo completamente transparente, sem cor base */
+    backdrop-filter: blur(25px); /* Mantém o alto desfoque para o efeito de vidro */
+    -webkit-backdrop-filter: blur(25px); /* Para compatibilidade com navegadores Webkit */
+    
+    /* 🚨 BORDA ROXA PURA (SEM SOMBRA DE FORA) */
+    border: 2px solid #6627ff; /* Borda roxa sólida e definida */
+    border-radius: 1rem; /* Borda arredondada */
+    padding: 0.75rem; /* Padding interno para o conteúdo */
+    
+    /* ❌ REMOVIDO: box-shadow que causava o efeito "passando da janelinha" */
+    /* box-shadow: 0 8px 32px 0 rgba(102, 39, 255, 0.37); */ 
+    
+    z-index: 50; 
+    opacity: 0; 
+    visibility: hidden; 
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease; /* Transições sem a sombra */
+}
+
+.dropdown.active .dropdown-menu { 
+    opacity: 1; 
+    visibility: visible; 
+    transform: translateX(-50%) translateY(5px); 
+}
+
+/* 🚨 ESTILO DOS LINKS INDIVIDUAIS DO SUBMENU */
+.dropdown-menu a { 
+    display: block; 
+    padding: 0.8rem 1rem; 
+    color: #edf1f7; 
+    font-size: 1rem; 
+    font-weight: 500; 
+    text-decoration: none;
+    border-radius: 0.5rem; 
+    transition: all 0.3s ease; 
+}
+
+.dropdown-menu a:hover { 
+    /* Gradiente sutil e cor de texto ciano no hover */
+    background: linear-gradient(90deg, rgba(102, 39, 255, 0.2), rgba(11, 244, 237, 0.2)); 
+    color: #0bf4ed; 
+    transform: translateX(5px); 
+}
+
+.dropdown-arrow { display: inline-block; transition: transform 0.3s ease; }
+.dropdown.active .dropdown-arrow { transform: rotate(180deg); }
 
         /* --- Menu Hamburger (Mobile) --- */
         .hamburger { display: none; flex-direction: column; justify-content: space-around; width: 2rem; height: 2rem; background: transparent; border: none; cursor: pointer; padding: 0; z-index: 40; }
