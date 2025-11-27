@@ -944,6 +944,26 @@ footer .content-layer {
         text-decoration: none;
         border-radius: 0.5rem; 
         transition: all 0.3s ease; 
+        position: relative; /* CRÍTICO: Para posicionar o ::after */
+    }
+    
+    /* NOVO: Estilo da listrinha (sublinhado) */
+    .dropdown-menu a.dropdown-link::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 1px; /* Linha um pouco mais fina */
+        bottom: 0px; 
+        left: 1rem; /* Alinha com o padding esquerdo */
+        background: linear-gradient(135deg, #6627ff, #0bf4ed);
+        transition: width 0.3s ease;
+        /* Restringe a largura máxima para não ultrapassar a borda direita */
+        max-width: calc(100% - 2rem); 
+    }
+
+    /* NOVO: Animação da listrinha (sublinhado) no hover */
+    .dropdown-menu a.dropdown-link:hover::after {
+        width: calc(100% - 2rem); /* Expande para o tamanho total do conteúdo */
     }
 
     .dropdown-menu a.dropdown-link:hover { 
@@ -1220,6 +1240,7 @@ footer .content-layer {
                 font-size: clamp(1rem, 3.5vw, 1.125rem);
                 font-weight: 400;
                 transform: none; /* Remove a elevação padrão de .nav-link:hover */
+                position: relative; /* CRÍTICO: Para posicionar o ::after */
             }
             
             #mobileToolsMenu .dropdown-link:hover {
