@@ -1732,10 +1732,19 @@ p, span, a {
     </div>
 </footer>
     <script>
+        function openModal() {
+    mobileToolsModal.classList.add('open');
+    if (navMenu && navMenu.classList.contains('active')) {
+          toggleMenu(); // Fecha o menu hamburger se estiver aberto
+    }
+}
+function closeModal() {
+    mobileToolsModal.classList.remove('open');
+}
         // --- NOVO: LÓGICA DO POP-UP (MODAL) MOBILE ---
 const mobileToolsButton = document.getElementById('mobileToolsButton');
 const mobileToolsModal = document.getElementById('mobileToolsModal');
-const modalCloseButton = document.querySelector('.modal-close');
+const modalCloseButton = document.querySelector('#mobileToolsModal .modal-close');
 
 function openModal() {
     mobileToolsModal.classList.add('open');
@@ -1748,24 +1757,18 @@ function closeModal() {
     // document.body.style.overflow = mobileNavMenu.classList.contains('active') ? 'hidden' : 'auto';
 }
 
-if (mobileToolsButton && mobileToolsModal) {
-    // Abre o modal ao clicar no botão "Ferramentas" dentro do menu hambúrguer
+if (mobileToolsButton && mobileToolsModal && modalCloseButton) {
     mobileToolsButton.addEventListener('click', openModal);
-
-    // Fecha o modal ao clicar no 'X'
     modalCloseButton.addEventListener('click', closeModal);
-
-    // Fecha o modal ao clicar fora dele
+    // Fechar ao clicar no fundo
     window.addEventListener('click', (event) => {
         if (event.target === mobileToolsModal) {
             closeModal();
         }
     });
-
-    // Fecha o modal ao clicar em qualquer link de ferramenta
+    // Fechar ao clicar em um link
     mobileToolsModal.querySelectorAll('.modal-link').forEach(link => {
         link.addEventListener('click', () => {
-            // Um pequeno atraso garante que a navegação comece antes do modal ser fechado visualmente.
             setTimeout(closeModal, 100);
         });
     });
