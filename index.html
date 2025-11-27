@@ -19,155 +19,145 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://i.imgur.com/sE44ypp.png">
     <style>
-        footer .content-layer {
-    display: block !important; 
-    pointer-events: auto !important;
+        .nav-link.active-page::after {
+    width: 100%; /* Ativa a linha gradiente de 100% */
 }
 
-/* --- ESTILOS PARA REDES SOCIAIS (SEM ALTERAÇÃO) --- */
-.social-links-png {
-    margin-top: 1rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 50px;
+.nav-link.active-page {
+    color: #0bf4ed; /* Mantém a cor do texto destacada */
 }
-.social-img-icon {
-    width: 35px; 
-    height: 35px;
-    transition: transform 0.3s ease, filter 0.3s ease;
-    filter: brightness(85%); 
-    -webkit-user-drag: none;
-    user-select: none;
-}
-.social-links-png a:hover .social-img-icon {
-    transform: scale(1.15) rotate(2deg); 
-    filter: brightness(100%);
-    width: 35px; 
-    height: 35px;
-}
-.social-links-png a:nth-child(1) .social-img-icon {
-    width: 30px !important; 
-    height: 30px !important;
-}
-.social-links-png a:nth-child(2) .social-img-icon {
-    width: 45px !important; 
-    height: 45px !important;
-}
-.social-links-png a:nth-child(3) .social-img-icon {
-    width: 45px !important; 
-    height: 45px !important;
-}
-.social-links-png a:nth-child(1):hover .social-img-icon {
-    filter: drop-shadow(0 0 10px #E1306C) brightness(100%);
-    transform: scale(1.15) rotate(5deg); 
-}
-.social-links-png a:nth-child(2):hover .social-img-icon {
-    filter: drop-shadow(0 0 10px #0bf4ed) brightness(100%);
-    transform: scale(1.15);
-}
-.social-links-png a:nth-child(3):hover .social-img-icon {
-    filter: drop-shadow(0 0 10px #FF0000) brightness(100%);
-    transform: scale(1.15) translateY(-2px); 
-}
-footer .content-layer {
-    display: block !important; 
-    pointer-events: auto !important;
-}
-h2, h3 {
-    font-family: 'Archivo', sans-serif;
-}
-img {
-    -webkit-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    -webkit-user-drag: none;
-    pointer-events: auto;
-}
-*, *::before, *::after {
-    box-sizing: border-box;
-}
-body {
-    font-family: 'Manrope', sans-serif;
-    position: relative;
-    overflow-x: hidden;
-    background: transparent;
-    width: 100%;
-    margin: 0;
-    padding: 0;
-}
-.brand-name {
-    font-family: 'Great Vibes', cursive;
-    line-height: 2;
-    padding: 1rem;
-    display: block;
-    overflow: visible;
-    font-size: clamp(2rem, 6vw, 2.5rem);
-}
-.flex.items-center.content-layer {
-    overflow: visible;
-}
-.nav-link {
-    font-family: 'Manrope', sans-serif;
-    position: relative;
-    text-decoration: none;
-    color: #edf1f7;
-    transition: color 0.3s ease;
-    font-size: clamp(1rem, 3vw, 1.125rem);
-}
-.nav-link::after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 2px;
-    bottom: -4px;
-    left: 0;
-    background: linear-gradient(135deg, #6627ff, #0bf4ed);
-    transition: width 0.3s ease;
-}
-.nav-link:hover::after {
-    width: 100%;
-}
-.nav-link:hover {
+
+/* Para garantir que o hover do link ativo não mude a cor se houver conflito */
+.nav-link.active-page:hover {
     color: #0bf4ed;
 }
-.gradient-text {
-    background: linear-gradient(135deg, #6627ff, #0bf4ed);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+
+/* Novo estilo para mobile: remove o fundo gradiente e a transformação do link ativo */
+@media (max-width: 768px) {
+    .nav-menu-mobile .nav-link.active-page {
+        background: linear-gradient(135deg, #6627ff, #0bf4ed); /* Fundo com gradiente no link ativo */
+        color: white;
+        transform: none; /* Remove a pequena elevação */
+        box-shadow: 0 0 15px rgba(102, 39, 255, 0.8);
+    }
 }
-nav {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 100;
-    background: transparent;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 0 1rem;
-    box-sizing: border-box;
+        h2, h3 {
+    font-family: 'Archivo', sans-serif;
 }
-nav > div {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
+        img {
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none;     /* IE 10+ */
+    user-select: none;
+    -webkit-user-drag: none;   /* Bloqueia o arrasto em Webkit (Chrome, Safari) */
+    pointer-events: auto;      /* Garante que o cursor do mouse funciona, mas bloqueia o toque longo */
 }
-nav, section, footer {
-    position: relative;
-    z-index: 1;
-}
-nav *, section *, footer * {
-    pointer-events: auto;
-}
-.content-layer {
-    position: relative;
-    z-index: 2;
-}
-h1, h2, h3, p, a, input, textarea, button, img, svg {
-    position: relative;
-    z-index: 30;
-    opacity: 1 !important;
-}
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            position: relative;
+            overflow-x: hidden;
+            background: transparent;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .brand-name {
+            font-family: 'Great Vibes', cursive;
+            line-height: 2;
+            padding: 1rem;
+            display: block;
+            overflow: visible;
+            font-size: clamp(2rem, 6vw, 2.5rem);
+        }
+
+        .flex.items-center.content-layer {
+            overflow: visible;
+        }
+
+        .nav-link {
+            font-family: 'Manrope', sans-serif;
+            position: relative;
+            text-decoration: none;
+            color: #edf1f7;
+            transition: color 0.3s ease;
+            font-size: clamp(1rem, 3vw, 1.125rem);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background: linear-gradient(135deg, #6627ff, #0bf4ed);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-link:hover {
+            color: #0bf4ed;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #6627ff, #0bf4ed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 10;
+            background: transparent;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 0 1rem;
+            box-sizing: border-box;
+        }
+
+        nav > div {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        nav .flex.items-center.content-layer:first-child {
+            margin-right: auto;
+        }
+
+        nav .flex.items-center.content-layer:last-child {
+            margin-left: auto;
+        }
+
+        nav, section, footer {
+            position: relative;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        nav *, section *, footer * {
+            pointer-events: auto;
+        }
+
+        .content-layer {
+            position: relative;
+            z-index: 2;
+        }
+
+        h1, h2, h3, p, a, input, textarea, button, img, svg {
+            position: relative;
+            z-index: 30;
+            opacity: 1 !important;
+        }
 
         .hamburger {
             display: none;
@@ -1326,289 +1316,6 @@ h1, h2, h3, p, a, input, textarea, button, img, svg {
     filter: drop-shadow(0 0 5px #0bf4ed); /* Adiciona um brilho sutil para destacar */
     margin-bottom: 1rem;
 }
-    /* Estilos Globais de Tipografia e Fundo (Essenciais para o visual) */
-        *, *::before, *::after { box-sizing: border-box; }
-        html, body {
-            font-family: 'Manrope', sans-serif;
-            background: linear-gradient(135deg, #111111, #111111);
-            background-size: 400% 400%;
-            animation: gradientTransition 20s ease-in-out infinite;
-            color: #edf1f7;
-            margin: 0; padding: 0; position: relative; overflow-x: hidden; width: 100vw;
-        }
-        @keyframes gradientTransition {
-            0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; }
-        }
-        .stars-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
-        .star { position: absolute; width: 2px; height: 2px; background: #ffffff; border-radius: 50%; box-shadow: 0 0 5px 1px rgba(255, 255, 255, 0.5); opacity: 0.3; animation: floatStar 15s infinite ease-in-out; }
-        .star.purple { background: #6627ff; box-shadow: 0 0 5px 1px rgba(106, 13, 173, 0.5); }
-        .star.pink { background: #0bf4ed; box-shadow: 0 0 5px 1px rgba(232, 121, 249, 0.5); }
-        .star.white { background: #edf1f7; box-shadow: 0 0 5px 1px rgba(255, 255, 255, 0.5); }
-        @keyframes floatStar {
-            0% { opacity: 0.3; transform: translate(0, 0); } 50% { opacity: 0.6; transform: translate(var(--move-x), var(--move-y)); } 100% { opacity: 0.3; transform: translate(0, 0); }
-        }
-        .content-layer { position: relative; z-index: 2; }
-        .brand-name { font-family: 'Great Vibes', cursive; line-height: 2; padding: 1rem; display: block; overflow: visible; font-size: clamp(2rem, 6vw, 2.5rem); }
-        .nav-link { font-family: 'Manrope', sans-serif; position: relative; text-decoration: none; color: #edf1f7; transition: color 0.3s ease; font-size: clamp(1rem, 3vw, 1.125rem); }
-        .nav-link::after { content: ''; position: absolute; width: 0; height: 2px; bottom: -4px; left: 0; background: linear-gradient(135deg, #6627ff, #0bf4ed); transition: width 0.3s ease; }
-        .nav-link:hover::after { width: 100%; }
-        .nav-link:hover { color: #0bf4ed; }
-        .gradient-text { background: linear-gradient(135deg, #6627ff, #0bf4ed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        h1, h2, h3, p, a, input, textarea, button, img, svg { position: relative; z-index: 30; opacity: 1 !important; }
-
-        /* Estilos da Navbar Fixa */
-        nav { position: fixed; top: 0; width: 100%; z-index: 100; /* Z-index alto para ficar acima de tudo */ background: transparent; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); padding: 0 1rem; box-sizing: border-box; }
-        nav > div { display: flex; justify-content: space-between; align-items: center; width: 100%; }
-
-        /* --- Dropdown de Ferramentas (PC) --- */
-        .dropdown.active .dropdown-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(5px); }
-        .dropdown-menu a { display: block; padding: 0.6rem 1rem; color: #edf1f7; font-size: 1rem; font-weight: 500; transition: all 0.2s ease; }
-        .dropdown-menu a:hover { background: linear-gradient(90deg, rgba(102, 39, 255, 0.3), rgba(11, 244, 237, 0.3)); color: #0bf4ed; }
-        .dropdown-arrow { display: inline-block; transition: transform 0.3s ease; }
-        .dropdown.active .dropdown-arrow { transform: rotate(180deg); }
-
-        /* --- Menu Hamburger (Mobile) --- */
-        .hamburger { display: none; flex-direction: column; justify-content: space-around; width: 2rem; height: 2rem; background: transparent; border: none; cursor: pointer; padding: 0; z-index: 40; }
-        .hamburger span { width: 100%; height: 3px; background: #edf1f7; transition: all 0.3s ease; }
-        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
-        .hamburger.active span:nth-child(2) { opacity: 0; }
-        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(7px, -7px); }
-        .nav-menu-mobile { 
-            position: fixed; top: 0; right: -100%; height: 100vh; width: 100%; max-width: 300px; 
-            background: rgba(17, 17, 17, 0.9); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); 
-            border-left: 1px solid rgba(102, 39, 255, 0.5); flex-direction: column; justify-content: flex-start; 
-            align-items: center; gap: 1.5rem; transition: right 0.3s ease; z-index: 30; display: flex; padding: 0 1rem; 
-            box-sizing: border-box; box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
-        }
-        .nav-menu-mobile.active { right: 0; }
-        .nav-menu-mobile .nav-link:first-child { margin-top: 6rem; }
-        .nav-menu-mobile .nav-link { 
-            display: block; width: 90%; padding: 0.8rem 1.5rem; border-radius: 0.75rem; 
-            background: rgba(102, 39, 255, 0.1); color: #f8f8f8; text-align: center; font-size: clamp(1.125rem, 4vw, 1.3rem); 
-            font-weight: 600; border: 1px solid rgba(255, 255, 255, 0.2); backdrop-filter: blur(5px); 
-            -webkit-backdrop-filter: blur(5px); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); transition: all 0.3s ease; 
-        }
-        .nav-menu-mobile .nav-link:hover { 
-            background: linear-gradient(135deg, rgba(102, 39, 255, 0.3), rgba(11, 244, 237, 0.3)); 
-            transform: translateY(-4px) scale(1.02); box-shadow: 0 8px 16px rgba(11, 244, 237, 0.6); border-color: #0bf4ed;
-        }
-        .nav-menu-mobile .nav-link::after { display: none; }
-        .mobile-menu-logo { display: none; width: 80%; max-width: 150px; height: auto; filter: drop-shadow(0 0 5px rgba(102, 39, 255, 0.4)); }
-
-        /* --- Modal Mobile de Ferramentas --- */
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .tools-modal.open { display: flex; opacity: 1; }
-        .modal-content { background: #111111; border: 2px solid #6627ff; border-radius: 1rem; padding: 2rem 1.5rem; width: 90%; max-width: 400px; box-shadow: 0 0 30px rgba(102, 39, 255, 0.7); animation: fadeIn 0.3s ease-out; position: relative; text-align: center; }
-        .modal-close { position: absolute; top: 10px; right: 15px; color: #edf1f7; font-size: 2.5rem; font-weight: 300; line-height: 1; border: none; background: transparent; cursor: pointer; transition: color 0.2s; }
-        .modal-close:hover { color: #0bf4ed; transform: scale(1.1); }
-        .modal-link { display: block; background: rgba(102, 39, 255, 0.15); border: 1px solid rgba(102, 39, 255, 0.5); border-radius: 0.75rem; padding: 1rem; margin-bottom: 1rem; color: #edf1f7; font-size: 1.25rem; font-weight: 700; text-decoration: none; transition: all 0.3s ease; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); }
-        .modal-link-subtitle { display: block; font-size: 0.9rem; font-weight: 400; color: #bbb; margin-top: 0.25rem; }
-        .modal-link:hover { background: linear-gradient(90deg, rgba(102, 39, 255, 0.4), rgba(11, 244, 237, 0.4)); border-color: #0bf4ed; transform: translateY(-3px) scale(1.02); box-shadow: 0 8px 15px rgba(11, 244, 237, 0.5); }
-        
-        /* Media Queries CRÍTICAS para o Header */
-        @media (max-width: 768px) {
-            .dropdown { display: none !important; }
-            nav { background: rgba(17, 17, 17, 0.95); padding: 0.5rem 1rem; width: 100%; box-sizing: border-box; }
-            nav .flex.items-center.space-x-6 { display: none; }
-            .hamburger { display: flex; }
-            .mobile-menu-logo { display: block; margin-top: 0; }
-        }
-    /* Dropdown de Ferramentas (PC) */
-.dropdown-menu {
-    position: absolute; 
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%) translateY(10px);
-    min-width: 180px;
-    background: rgba(17, 17, 17, 0.95);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border: 1px solid rgba(102, 39, 255, 0.5);
-    border-radius: 0.5rem;
-    padding: 0.5rem 0;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
-    z-index: 999; /* Garante que fique acima da nav */
-    opacity: 0;
-    /* 🚨 CORREÇÃO CRÍTICA 1: Forçar a invisibilidade inicial */
-    visibility: hidden;  /* <-- LINHA JÁ EXISTENTE */
-    display: none;
-    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
-}
-
-.dropdown.active .dropdown-menu {
-    opacity: 1;
-    visibility: visible; /* Remover o !important */
-    **display: block;** /* 👈 ADICIONE ESTA LINHA (ou flex, dependendo do layout desejado, mas 'block' funciona bem para menus suspensos) */
-    transform: translateX(-50%) translateY(5px);
-}
-
-.dropdown-menu a {
-    display: block;
-    padding: 0.6rem 1rem;
-    color: #edf1f7;
-    font-size: 1rem;
-    font-weight: 500;
-    transition: all 0.2s ease;
-}
-.dropdown-menu a:hover {
-    background: linear-gradient(90deg, rgba(102, 39, 255, 0.3), rgba(11, 244, 237, 0.3));
-    color: #0bf4ed;
-}
-.dropdown-arrow {
-    display: inline-block;
-    transition: transform 0.3s ease;
-}
-.dropdown.active .dropdown-arrow {
-    transform: rotate(180deg);
-}
-
-/* 2. Modal de Ferramentas (Mobile) */
-.tools-modal {
-    position: fixed;
-    z-index: 2000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.95);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    /* 🚨 ESSA REGRA É CRÍTICA E ESTÁ CORRETA AQUI, mas o 'hidden' no HTML (já adicionado) garante o fallback: */
-    display: none; 
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.tools-modal.open {
-    display: flex;
-    opacity: 1;
-}
-
-.modal-content {
-    background: #111111;
-    border: 2px solid #6627ff;
-    border-radius: 1rem;
-    padding: 2rem 1.5rem;
-    width: 90%;
-    max-width: 400px;
-    box-shadow: 0 0 30px rgba(102, 39, 255, 0.7);
-    animation: fadeIn 0.3s ease-out;
-    position: relative;
-    text-align: center;
-}
-
-.modal-close {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    color: #edf1f7;
-    font-size: 2.5rem;
-    font-weight: 300;
-    line-height: 1;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    transition: color 0.2s;
-}
-
-.modal-close:hover {
-    color: #0bf4ed;
-    transform: scale(1.1);
-}
-
-.modal-link {
-    display: block;
-    background: rgba(102, 39, 255, 0.15);
-    border: 1px solid rgba(102, 39, 255, 0.5);
-    border-radius: 0.75rem;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    color: #edf1f7;
-    font-size: 1.25rem;
-    font-weight: 700;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-}
-
-.modal-link-subtitle {
-    display: block;
-    font-size: 0.9rem;
-    font-weight: 400;
-    color: #bbb;
-    margin-top: 0.25rem;
-}
-
-.modal-link:hover {
-    background: linear-gradient(90deg, rgba(102, 39, 255, 0.4), rgba(11, 244, 237, 0.4));
-    border-color: #0bf4ed;
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 8px 15px rgba(11, 244, 237, 0.5);
-}
-
-/* Animação que estava faltando (ou mal localizada) */
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-    #toolsDropdownContainer {
-    position: relative;
-    display: inline-block;
-}
-
-#toolsMenu {
-    position: absolute;
-    top: calc(100% + 8px);
-    left: 50%;
-    transform: translateX(-50%);
-    min-width: 220px;
-    background: rgba(17, 17, 17, 0.97);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(102, 39, 255, 0.6);
-    border-radius: 0.75rem;
-    padding: 0.75rem 0;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
-    z-index: 999;
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;           /* importante: impede interação quando escondido */
-    transition: all 0.3s ease;
-}
-
-#toolsDropdownContainer.active #toolsMenu {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-    transform: translateX(-50%) translateY(4px);
-}
-
-/* Hover nos itens do menu */
-#toolsMenu a {
-    display: block;
-    padding: 0.75rem 1.5rem;
-    color: #edf1f7;
-    font-weight: 500;
-    transition: all 0.2s ease;
-    white-space: nowrap;
-}
-
-#toolsMenu a:hover {
-    background: rgba(102, 39, 255, 0.4);
-    color: #0bf4ed;
-    padding-left: 2rem;
-}
-
-/* Seta que gira*/
-.dropdown-arrow {
-    display: inline-block;
-    transition: transform 0.35s ease;
-}
-#toolsDropdownContainer.active .dropdown-arrow {
-    transform: rotate(180deg);
-}
     </style>
 </head>
 <body class="text-gray-100">
@@ -1621,13 +1328,10 @@ h1, h2, h3, p, a, input, textarea, button, img, svg {
             </linearGradient>
         </defs>
     </svg>
-    <nav class="shadow-lg fixed w-full **z-[100]**">
-        
+    <nav class="shadow-lg fixed w-full z-10">
         <div class="flex justify-between h-16 items-center">
-            <div class="content-layer">
-                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/index.html" class="flex items-center" aria-label="Página Inicial Asthro">
-                    <img src="https://i.imgur.com/sE44ypp.png" alt="Logo da Asthro" class="h-40 md:h-40" />
-                </a>
+            <div class="flex items-center content-layer">
+                <img src="https://i.imgur.com/sE44ypp.png" alt="Logo da Asthro" class="h-40 md:h-40" />
             </div>
             <button class="hamburger" aria-label="Toggle menu">
                 <span></span>
@@ -1637,18 +1341,6 @@ h1, h2, h3, p, a, input, textarea, button, img, svg {
             <div class="flex items-center space-x-6 content-layer desktop-nav">
     <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/index.html" class="nav-link text-lg transition">Início</a>
     <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/servi%C3%A7os.html" class="nav-link text-lg transition">Serviços</a>
-                <div class="dropdown relative h-full flex items-center" id="toolsDropdownContainer">
-                    
-                    <a href="#" id="toolsDropdownToggle" class="nav-link text-lg transition flex items-center gap-1" aria-expanded="false" aria-controls="toolsMenu">
-                        Ferramentas 
-                        <svg class="dropdown-arrow w-3 h-3 ml-1" id="toolsArrow" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                    </a>
-                    
-                    <div class="dropdown-menu absolute" id="toolsMenu">
-                        <a href="https://asthro.com.br/asthrospeed.html" class="nav-link block">AsthroSpeed (Análise de Sites)</a>
-                        <a href="https://asthro.com.br/zerogravity.html" class="nav-link block">ZeroGravity (Removedor de Fundo)</a>
-                    </div>
-                </div>
     <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/sobre.html" class="nav-link text-lg transition">Sobre</a>
     <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/portf%C3%B3lio.html" class="nav-link text-lg transition">Portfólio</a>
     <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/contato.html" class="nav-link text-lg transition">Contato</a>
@@ -1657,9 +1349,6 @@ h1, h2, h3, p, a, input, textarea, button, img, svg {
 <div class="nav-menu-mobile content-layer">
     <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/index.html" class="nav-link text-lg transition block">Início</a>
     <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/servi%C3%A7os.html" class="nav-link text-lg transition block">Serviços</a>
-    <button id="mobileToolsButton" class="nav-link text-lg transition block w-full text-center" style="cursor: pointer;">
-        Ferramentas
-    </button>
     <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/sobre.html" class="nav-link text-lg transition block">Sobre</a>
     <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/portf%C3%B3lio.html" class="nav-link text-lg transition block">Portfólio</a>
     <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/contato.html" class="nav-link text-lg transition block">Contato</a>
@@ -1668,24 +1357,6 @@ h1, h2, h3, p, a, input, textarea, button, img, svg {
 </div>
         </div>
     </nav>
-    <div id="mobileToolsModal" class="tools-modal hidden">
-        <div class="modal-content">
-            <button class="modal-close">&times;</button>
-            <h3 class="animated-gradient-text text-3xl font-bold mb-8">Nossas Ferramentas</h3>
-            
-            <a href="https://asthro.com.br/asthrospeed.html" class="modal-link">
-                AsthroSpeed
-                <span class="modal-link-subtitle">Analisador de Performance e SEO</span>
-            </a>
-            
-            <a href="https://asthro.com.br/zerogravity.html" class="modal-link">
-                ZeroGravity
-                <span class="modal-link-subtitle">Removedor de Fundo de Imagens</span>
-            </a>
-            
-            <p class="text-sm text-gray-400 mt-10">Clique fora para fechar</p>
-        </div>
-    </div>
     <section id="home" class="min-h-screen flex items-center gradient-bg section-animate">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-in content-layer">
             <h2 class="text-5xl md:text-7xl font-bold gradient-text">Eleve Sua Marca</h2>
@@ -1866,27 +1537,11 @@ h1, h2, h3, p, a, input, textarea, button, img, svg {
             </div>
         </div>
     </section>
-   <footer class="text-gray-200 py-8">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center content-layer">
-        
-        <div class="social-links-png flex justify-center space-x-6 mb-4">
-            
-            <a href="https://www.instagram.com/agencia_asthro/" target="_blank" aria-label="Instagram">
-                <img src="https://i.imgur.com/ztvOJV3.png" alt="Instagram" class="social-img-icon" />
-            </a>
-            
-            <a href="https://www.tiktok.com/@asthroensina" target="_blank" aria-label="TikTok">
-                <img src="https://i.imgur.com/yrBBMaJ.png" alt="TikTok" class="social-img-icon" />
-            </a>
-            
-            <a href="SUA_URL_YOUTUBE" target="_blank" aria-label="YouTube">
-                <img src="https://i.imgur.com/0vJwT4o.png" alt="YouTube" class="social-img-icon" />
-            </a>
-            
+    <footer class="text-gray-200 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center content-layer">
+            <p>© 2025 Asthro. Todos os direitos reservados.</p>
         </div>
-        <p>© 2025 Asthro. Todos os direitos reservados.</p>
-    </div>
-</footer>
+    </footer>
     <div class="inactivity-card" id="inactivityCard">
         <button class="close-btn" onclick="hideInactivityCard()">×</button>
         <h3 class="gradient-text">Seu Site Ideal Começa Aqui</h3>
@@ -1894,99 +1549,40 @@ h1, h2, h3, p, a, input, textarea, button, img, svg {
         <a href="#contact" onclick="hideInactivityCard();"><button class="cta-pulse">Fale Conosco</button></a>
     </div>
     <script>
-        // --- LÓGICA DO DROP-DOWN (PC) E MODAL (MOBILE) ---
-document.addEventListener('DOMContentLoaded', () => {
-    
-    // VARIÁVEIS DO DROP-DOWN (PC)
-    const toolsDropdownToggle = document.getElementById('toolsDropdownToggle');
-const toolsDropdownContainer = document.getElementById('toolsDropdownContainer');
-const toolsMenu = document.getElementById('toolsMenu');
+        function highlightActivePage() {
+    // Obtém o caminho (pathname) do URL atual (ex: /Cria-o-de-Sites/servi%C3%A7os.html)
+    const currentPath = window.location.href;
 
-if (toolsDropdownToggle && toolsDropdownContainer && toolsMenu) {
-    
-    // 1. Alterna a visibilidade no clique
-    toolsDropdownToggle.addEventListener('click', (event) => {
-        event.preventDefault(); // Evita que o link # mude a URL
-        event.stopPropagation(); // Impede que o clique seja capturado pelo listener global abaixo
-        
-        // Alterna a classe 'active'
-        toolsDropdownContainer.classList.toggle('active');
-        
-        // Atualiza o estado da seta e do atributo ARIA
-        const isExpanded = toolsDropdownContainer.classList.contains('active');
-        toolsDropdownToggle.setAttribute('aria-expanded', isExpanded);
-    });
+    // Seleciona todos os links de navegação (desktop e mobile)
+    const navLinks = document.querySelectorAll('.nav-link');
 
-    // 2. Fecha o menu se clicar em qualquer lugar fora dele (Desktop/Global)
-    document.addEventListener('click', (event) => {
-        // 🚨 CRÍTICO: Adicionar verificação de tamanho de tela para não interferir no mobile
-        if (window.innerWidth > 768 && !toolsDropdownContainer.contains(event.target)) {
-            toolsDropdownContainer.classList.remove('active');
-            toolsDropdownToggle.setAttribute('aria-expanded', 'false');
+    navLinks.forEach(link => {
+        const linkHref = link.href;
+
+        // 1. Lógica principal: Verifica se o href do link está contido no URL atual.
+        // Isso funciona bem para páginas como 'index.html' vs. 'index.html#secao'.
+        // Usamos uma verificação mais robusta (endsWith) para evitar erros de substring.
+        if (currentPath.endsWith(linkHref)) {
+            link.classList.add('active-page');
+            
+            // Lógica para links que são URLs raiz, como 'https://mateuszito2024.github.io/Cria-o-de-Sites/index.html'
+            // O caminho raiz ('/') é normalmente 'index.html' para evitar duplicidade na home.
+            // Se o link for 'Início' e a URL for exatamente o caminho principal, ative-o.
+        } else if (link.textContent.trim() === 'Início' && 
+                   (currentPath.endsWith('/Cria-o-de-Sites/') || currentPath.endsWith('index.html'))) {
+            link.classList.add('active-page');
+        } else {
+            // Remove a classe se não for a página atual
+            link.classList.remove('active-page');
         }
-    });
-    
-    // 3. Fecha o menu se um link for clicado
-    toolsMenu.querySelectorAll('a').forEach(link => {
-         link.addEventListener('click', () => {
-             // Um pequeno atraso para permitir a navegação antes de fechar
-             setTimeout(() => {
-                toolsDropdownContainer.classList.remove('active');
-                toolsDropdownToggle.setAttribute('aria-expanded', 'false');
-             }, 50);
-         });
     });
 }
 
-    // VARIÁVEIS DO MODAL (MOBILE)
-    const mobileToolsButton = document.getElementById('mobileToolsButton');
-    const mobileToolsModal = document.getElementById('mobileToolsModal');
-    // Nota: O modal-close só existe se o modal estiver no HTML, conforme a etapa 2
-    const modalCloseButton = mobileToolsModal ? mobileToolsModal.querySelector('.modal-close') : null; 
-
-    function openModal() {
-        if (mobileToolsModal) {
-            mobileToolsModal.classList.add('open');
-            // Opcional: Fechar o menu mobile automaticamente ao abrir o modal
-            if (navMenu && navMenu.classList.contains('active')) {
-                 toggleMenu(); // Reutiliza a função de toggle do hambúrguer
-            }
-        }
-    }
-
-    function closeModal() {
-        if (mobileToolsModal) {
-            mobileToolsModal.classList.remove('open');
-        }
-    }
-
-    // LÓGICA DO MODAL (MOBILE)
-    if (mobileToolsButton && mobileToolsModal) {
-        // Abre o modal ao clicar no botão "Ferramentas" dentro do menu hambúrguer
-        mobileToolsButton.addEventListener('click', openModal);
-
-        // Fecha o modal ao clicar no 'X'
-        if (modalCloseButton) {
-            modalCloseButton.addEventListener('click', closeModal);
-        }
-
-        // Fecha o modal ao clicar fora dele
-        window.addEventListener('click', (event) => {
-            if (event.target === mobileToolsModal) {
-                closeModal();
-            }
-        });
-
-        // Fecha o modal ao clicar em qualquer link de ferramenta
-        mobileToolsModal.querySelectorAll('.modal-link').forEach(link => {
-            link.addEventListener('click', () => {
-                setTimeout(closeModal, 100);
-            });
-        });
-    }
-    
-    // IMPORTANTE: Sua função setupFlipCards() já está chamando document.addEventListener('DOMContentLoaded', ...)
-    // Deixe os blocos acima ANTES da sua função setupFlipCards() ou remova a chamada DOMContentLoaded duplicada.
+// Chama a função após o DOM ser carregado para aplicar o destaque
+document.addEventListener('DOMContentLoaded', () => {
+    // ... [Seu código existente] ...
+    setupFlipCards();
+    highlightActivePage(); // 👈 CHAMADA ADICIONADA AQUI
 });
         function smoothScrollTo(elementId) {
     const targetElement = document.querySelector(elementId);
