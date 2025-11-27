@@ -1660,20 +1660,172 @@ function setupCollapsibles() {
             return detailsHtml;
         }
 
-        function renderAuditItem(audit) {
-            // Remove links Markdown da descrição para simplificar a visualização
-            const descriptionClean = audit.description ? audit.description.replace(/\[.*\]\(.*\)/g, '').trim() : 'Nenhuma descrição disponível.';
+        // ==================== DICIONÁRIO DE TRADUÇÃO COMPLETO (PORTUGUÊS BR) ====================
+        const translations = {
+            // Core Web Vitals
+            'largest-contentful-paint': 'LCP - Maior Exibição de Conteúdo',
+            'first-contentful-paint': 'FCP - Primeira Exibição de Conteúdo',
+            'total-blocking-time': 'TBT - Tempo Total de Bloqueio',
+            'cumulative-layout-shift': 'CLS - Mudança Cumulativa de Layout',
+            'interaction-to-next-paint': 'INP - Próxima Pintura Interativa',
 
+            // Performance comum
+            'uses-long-cache-ttl': 'Usa cache de longa duração',
+            'uses-optimized-images': 'Imagens otimizadas',
+            'uses-webp-images': 'Usa imagens no formato WebP',
+            'uses-responsive-images': 'Imagens responsivas (atributo srcset)',
+            'offscreen-images': 'Imagens fora da tela (lazy-load recomendado)',
+            'unminified-css': 'CSS não minificado',
+            'unminified-javascript': 'JavaScript não minificado',
+            'unused-css-rules': 'Regras CSS não utilizadas',
+            'unused-javascript': 'JavaScript não utilizado',
+            'render-blocking-resources': 'Recursos que bloqueiam a renderização',
+            'efficient-animated-content': 'Conteúdo animado eficiente',
+            'uses-text-compression': 'Usa compressão de texto (Gzip/Brotli)',
+            'preload-key-requests': 'Pré-carregamento de requisições importantes',
+            'font-display': 'Uso correto de font-display: swap',
+            'critical-request-chains': 'Cadeias críticas de requisições',
+            'redirects': 'Redirecionamentos desnecessários',
+            'server-response-time': 'Tempo de resposta do servidor (TTFB)',
+            'mainthread-work-breakdown': 'Trabalho excessivo na thread principal',
+
+            // Acessibilidade
+            'accesskeys': 'Atributo accesskey usado corretamente',
+            'aria-allowed-attr': 'Atributos ARIA permitidos',
+            'aria-command-name': 'Comandos ARIA com nome',
+            'aria-hidden-body': 'body não oculto por aria-hidden',
+            'aria-hidden-focus': 'Foco em elementos ocultos por ARIA',
+            'aria-input-field-name': 'Campos de entrada com nome acessível',
+            'aria-meter-name': 'Elementos meter com nome',
+            'aria-progressbar-name': 'Progressbar com nome',
+            'aria-required-attr': 'Atributos ARIA obrigatórios',
+            'aria-required-children': 'Filhos ARIA obrigatórios',
+            'aria-required-parent': 'Elemento pai ARIA obrigatório',
+            'aria-roles': 'Roles ARIA válidas',
+            'aria-toggle-field-name': 'Campos toggle com nome',
+            'aria-tooltip-name': 'Tooltips com nome',
+            'aria-treeitem-name': 'Itens de árvore com nome',
+            'aria-valid-attr-value': 'Valores de atributos ARIA válidos',
+            'aria-valid-attr': 'Atributos ARIA válidos',
+            'button-name': 'Botões com texto acessível',
+            'bypass': 'Mecanismo para pular blocos de conteúdo',
+            'color-contrast': 'Contraste de cor suficiente',
+            'definition-list': 'Listas de definição corretas',
+            'dlitem': 'Itens de definição corretos',
+            'document-title': 'Título da página definido',
+            'duplicate-id-active': 'IDs duplicados em elementos focáveis',
+            'duplicate-id-aria': 'IDs duplicados em ARIA',
+            'form-field-multiple-labels': 'Campos com múltiplos rótulos',
+            'frame-title': 'Frames com título',
+            'heading-order': 'Ordem correta de cabeçalhos (h1 → h6)',
+            'html-has-lang': 'Tag html com atributo lang',
+            'html-lang-valid': 'Atributo lang válido (ex: pt-BR)',
+            'image-alt': 'Imagens com atributo alt descritivo',
+            'input-image-alt': 'Inputs de imagem com alt',
+            'label': 'Campos de formulário com label',
+            'layout-table': 'Tabelas usadas apenas para layout',
+            'link-name': 'Links com texto descritivo',
+            'list': 'Listas corretamente estruturadas',
+            'listitem': 'Itens de lista corretos',
+            'meta-refresh': 'Meta refresh (evitar)',
+            'meta-viewport': 'Viewport configurado corretamente',
+            'object-alt': 'Objetos com texto alternativo',
+            'tabindex': 'Uso correto de tabindex',
+            'td-headers-attr': 'Células de tabela com headers',
+            'th-has-data-cells': 'Cabeçalhos de tabela associados às células',
+            'valid-lang': 'Atributos lang válidos nos elementos',
+            'video-caption': 'Vídeos com legendas',
+            'video-description': 'Vídeos com descrição',
+
+            // SEO
+            'document-has-title': 'Documento possui título',
+            'meta-description': 'Meta description presente',
+            'http-status-code': 'Código HTTP correto (200)',
+            'is-crawlable': 'Página é rastreável pelos robôs',
+            'robots-txt': 'robots.txt válido',
+            'hreflang': 'Tags hreflang corretas',
+            'canonical': 'Link canonical presente',
+            'plugins': 'Evita plugins (Flash, etc)',
+            'tap-targets': 'Alvos de toque com tamanho adequado',
+            'structured-data': 'Dados estruturados válidos',
+
+            // Best Practices
+            'no-vulnerable-libraries': 'Bibliotecas vulneráveis',
+            'no-unload-listeners': 'Evita listeners de unload',
+            'external-anchors-use-rel-noopener': 'Links externos com rel="noopener"',
+            'geolocation-on-start': 'Geolocalização só com permissão',
+            'notification-on-start': 'Notificações só com permissão',
+            'password-inputs-can-be-pasted-into': 'Permite colar em campos de senha',
+            'image-size-responsive': 'Imagens com tamanhos responsivos',
+            'doctype': 'Declaração DOCTYPE presente',
+            'charset': 'Charset definido corretamente',
+            'no-document-write': 'Evita document.write()',
+            'uses-http2': 'Usa HTTP/2 ou HTTP/3'
+        };
+
+        // Função atualizada com tradução 100% em português
+        function renderAuditItem(audit) {
+            if (!audit || !audit.title) return '';
+
+            // Traduz o título se existir no dicionário
+            const translatedTitle = translations[audit.id] || audit.title;
+
+            // Traduz a descrição (substitui trechos comuns em inglês)
+            let description = audit.description || '';
+            description = description
+                .replace(/\[Learn more\].*/g, '') // Remove links do Google
+                .replace(/https?:\/\/[^\s\)]+/g, '') // Remove URLs
+                .replace(/\n/g, ' ')
+                .replace(/  +/g, ' ')
+                .trim();
+
+            // Traduções específicas comuns na descrição
+            const descTranslations = {
+                'Learn more': 'Saiba mais',
+                'Consider': 'Considere',
+                'Avoid': 'Evite',
+                'The': 'O',
+                'This': 'Isto',
+                'Your page': 'Sua página',
+                'Ensures': 'Garante',
+                'Images': 'Imagens',
+                'Reduce': 'Reduza',
+                'Serve': 'Sirva',
+                'Use': 'Use',
+                'Minify': 'Minifique',
+                'Remove': 'Remova',
+                'Large': 'Grande',
+                'layout shifts': 'mudanças de layout',
+                'blocking the main thread': 'bloqueando a thread principal',
+                'unused': 'não utilizado',
+                'render-blocking': 'bloqueia a renderização',
+                'offscreen': 'fora da tela',
+                'lazy-load': 'carregamento tardio (lazy-load)',
+                'third-party': 'terceiros',
+                'preconnect': 'pré-conectar',
+                'prefetch': 'pré-buscar',
+                'preload': 'pré-carregar'
+            };
+
+            Object.entries(descTranslations).forEach(([en, pt]) => {
+                const regex = new RegExp('\\b' + en + '\\b', 'gi');
+                description = description.replace(regex, pt);
+            });
+
+            // Economia de tempo
             let savingsInfo = '';
             if (audit.details && audit.details.overallSavingsMs > 0) {
-                const savingsSeconds = (audit.details.overallSavingsMs / 1000).toFixed(2);
-                savingsInfo = ` (Economia Estimada: ${savingsSeconds}s)`;
+                const savingsSeconds = (audit.details.overallSavingsMs / 1000).toFixed(1);
+                savingsInfo = ` <span class="text-cyan-400">(Economia estimada: ~${savingsSeconds}s)</span>`;
+            } else if (audit.details && audit.details.overallSavingsBytes > 0) {
+                const kb = (audit.details.overallSavingsBytes / 1024).toFixed(0);
+                savingsInfo = ` <span class="text-cyan-400">(Economia estimada: ~${kb} KB)</span>`;
             }
-            
+
             return `
                 <div class="audit-item">
-                    <strong>${audit.title} ${savingsInfo}</strong>
-                    <p>${descriptionClean}</p>
+                    <strong class="text-cyan-300">${translatedTitle}${savingsInfo}</strong>
+                    <p class="text-gray-300 mt-1">${description || 'Sem descrição detalhada disponível.'}</p>
                 </div>
             `;
         }
