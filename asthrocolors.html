@@ -3,11 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Asthros Paleta Pro – Cosmic Edition</title>
+  <title>Asthros Colors – Cosmic Edition</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700;900&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <style>
+    html, body {
+    height: auto !important;
+    min-height: 100vh;
+  }
+  .relative.z-10 {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
     /* ALTERADO: overflow-y: scroll para permitir rolagem */
     body { font-family: 'Inter', sans-serif; margin:0; background:#000; color:white; overflow-y:scroll; }
     .vortex-bg { position:fixed; inset:0; z-index:-2; background:radial-gradient(circle at center,#0f0f1e 0%,#000 100%); }
@@ -27,51 +36,51 @@
 <body>
   <div class="vortex-bg"></div>
   <div class="aurora" id="aurora"></div>
-  <div class="relative z-10 flex flex-col items-center justify-center px-6 py-20">
-    <div id="quiz" class="w-full max-w-2xl text-center pb-40"> 
-      <h1 class="text-5xl md:text-7xl font-black mb-6 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400">
-        Asthros Paleta Pro<br><span class="text-3xl">Cosmic Edition</span>
-      </h1>
-      <p class="text-xl text-gray-300 mb-12">Toque nas respostas e veja o universo montar sua paleta</p>
-      <div id="card-wrapper" class="card-container my-12"></div>
-      <div class="flex justify-center gap-4 flex-wrap">
-        <button id="backBtn" class="px-8 py-4 text-lg font-bold rounded-full bg-gray-800/80 hover:bg-gray-700 ripple-btn">Voltar</button>
-        <button id="skipBtn" class="px-8 py-4 text-lg font-bold rounded-full bg-gradient-to-r from-gray-600 to-gray-800 ripple-btn">Pular esta</button>
-        <button id="nextBtn" class="px-12 py-5 text-xl font-bold rounded-full bg-gradient-to-r from-purple-600 to-pink-600 hover:scale-105 ripple-btn">PRÓXIMA</button>
-        <button id="generateBtn" class="hidden px-16 py-7 text-3xl font-bold rounded-full bg-gradient-to-r from-cyan-500 to-purple-600 hover:scale-110 shadow-2xl ripple-btn">
-          GERAR PALETA CÓSMICA
-        </button>
-      </div>
-    </div>
-    <div id="loading" class="hidden fixed inset-0 flex items-center justify-center bg-black/95 z-50">
-      <div class="text-center">
-        <div class="w-40 h-40 border-8 border-t-purple-500 border-r-pink-500 border-b-cyan-500 border-l-transparent rounded-full animate-spin mb-10"></div>
-        <p class="text-4xl font-black bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-400">Montando sua paleta no cosmos…</p>
-      </div>
-    </div>
+  <div class="relative z-10 flex flex-col items-center px-6 py-12">
     <div id="result" class="hidden w-full max-w-6xl text-center px-6">
-      <h2 class="text-6xl font-black mb-16 bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400">
-        Sua Paleta Cósmica Está Pronta
-      </h2>
-      <div id="palette" class="grid grid-cols-2 md:grid-cols-5 gap-8 mb-16"></div>
-      <div class="grid md:grid-cols-2 gap-10 max-w-4xl mx-auto">
-        <div class="bg-gray-900/60 p-10 rounded-3xl backdrop-blur border border-purple-500/20">
-          <h3 class="text-3xl font-bold mb-6 text-purple-400">Análise Cósmica</h3>
-          <p id="analysis" class="text-lg text-gray-200"></p>
-        </div>
-        <div class="bg-gray-900/60 p-10 rounded-3xl backdrop-blur border border-pink-500/20">
-          <h3 class="text-3xl font-bold mb-6 text-pink-400">Códigos HEX</h3>
-          <div id="hexList" class="space-y-4 font-mono text-xl"></div>
-          <button onclick="copyAll()" class="mt-8 w-full py-4 bg-gradient-to-r from-emerald-500 to-cyan-500 rounded-2xl font-bold hover:scale-105">
-            Copiar Tudo
-          </button>
-        </div>
-      </div>
-      <button onclick="location.reload()" class="mt-16 px-12 py-5 text-2xl rounded-full bg-gray-800 hover:scale-110">
-        Nova Paleta
-      </button>
-    </div>
-  </div>
+      <h2 class="text-6xl font-black mb-16 bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400">
+        Sua Paleta Cósmica Está Pronta
+      </h2>
+      <div id="palette" class="grid grid-cols-2 md:grid-cols-5 gap-8 mb-16"></div>
+      <div class="grid md:grid-cols-2 gap-10 max-w-4xl mx-auto">
+        <div class="bg-gray-900/60 p-10 rounded-3xl backdrop-blur border border-purple-500/20">
+          <h3 class="text-3xl font-bold mb-6 text-purple-400">Análise Cósmica</h3>
+          <p id="analysis" class="text-lg text-gray-200"></p>
+        </div>
+        <div class="bg-gray-900/60 p-10 rounded-3xl backdrop-blur border border-pink-500/20">
+          <h3 class="text-3xl font-bold mb-6 text-pink-400">Códigos HEX</h3>
+          <div id="hexList" class="space-y-4 font-mono text-xl"></div>
+          <button onclick="copyAll()" class="mt-8 w-full py-4 bg-gradient-to-r from-emerald-500 to-cyan-500 rounded-2xl font-bold hover:scale-105">
+            Copiar Tudo
+          </button>
+        </div>
+      </div>
+      <button onclick="location.reload()" class="mt-16 px-12 py-5 text-2xl rounded-full bg-gray-800 hover:scale-110">
+        Nova Paleta
+      </button>
+    </div>
+    <div id="loading" class="hidden fixed inset-0 flex items-center justify-center bg-black/95 z-50">
+      <div class="text-center">
+        <div class="w-40 h-40 border-8 border-t-purple-500 border-r-pink-500 border-b-cyan-500 border-l-transparent rounded-full animate-spin mb-10"></div>
+        <p class="text-4xl font-black bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-400">Montando sua paleta no cosmos…</p>
+      </div>
+    </div>
+    <div id="quiz" class="w-full max-w-2xl text-center pb-10">
+      <h1 class="text-5xl md:text-7xl font-black mb-6 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 inline">
+        Asthro Colors
+      </h1>
+      <span class="text-xl md:text-3xl font-black bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 align-top ml-2">
+        ✨Cosmic Edition
+      </span>
+      <p class="text-xl text-gray-300 mb-12">Toque nas respostas e veja o universo montar sua paleta</p>
+      <div id="card-wrapper" class="card-container my-12"></div>
+      <div class="flex justify-center gap-4 flex-wrap">
+        <button id="backBtn" class="px-8 py-4 text-lg font-bold rounded-full bg-gray-800/80 hover:bg-gray-700 ripple-btn hidden">Voltar</button>
+        <button id="generateBtn" class="hidden px-16 py-7 text-3xl font-bold rounded-full bg-gradient-to-r from-cyan-500 to-purple-600 hover:scale-110 shadow-2xl ripple-btn">
+          GERAR PALETA CÓSMICA
+        </button>
+      </div>
+    </div>
 <script>
   const questions = [
     { q: "Setor principal da marca", o: ["Tecnologia","Saúde","Alimentos","Luxo","Educação","Sustentabilidade","Criativo"], k: "sector" },
@@ -181,11 +190,8 @@
       });
     }
     // Atualiza botões
-    document.getElementById('backBtn').classList.toggle('hidden', current === 0);
-    document.getElementById('skipBtn').classList.toggle('hidden', q.type !== "text");
-    // ALTERADO: Adicionado '!' para que o botão 'PRÓXIMA' apareça somente para a última pergunta (de digitação)
-    document.getElementById('nextBtn').classList.toggle('hidden', q.type === "text" || current === questions.length-1); 
-    document.getElementById('generateBtn').classList.toggle('hidden', current !== questions.length-1);
+    document.getElementById('backBtn').classList.toggle('hidden', current === 0 || current === questions.length - 1);
+    document.getElementById('generateBtn').classList.toggle('hidden', current !== questions.length - 1);
   }
   function selectAnswer(value, key) {
     answers[key] = value.toLowerCase();
@@ -200,24 +206,6 @@
       current--;
       shatterCard(assembleCard);
     }
-  };
-  document.getElementById('skipBtn').onclick = () => {
-    answers[questions[current].k] = "";
-    // CORRIGIDO: Avança para o próximo card ao pular
-    if (current < questions.length - 1) { 
-        current++;
-    }
-    shatterCard(() => setTimeout(assembleCard, 300));
-  };
-  document.getElementById('nextBtn').onclick = () => {
-    if(questions[current].type === "text") {
-      answers.fav = document.getElementById('favInput').value.toLowerCase();
-    }
-    // CORRIGIDO: Avança para o próximo card
-    if (current < questions.length - 1) {
-        current++;
-    }
-    shatterCard(() => setTimeout(assembleCard, 300));
   };
   document.getElementById('generateBtn').onclick = () => {
     if(questions[current].type === "text") {
@@ -257,9 +245,11 @@
     });
     document.getElementById('analysis').textContent = `Paleta única criada às ${new Date().toLocaleTimeString('pt-BR')}. Nunca mais será igual.`;
     document.getElementById('hexList').innerHTML = colors.map((c,i)=>`<div class="flex justify-between py-2"><span class="text-gray-400">${['Primária','Sec 1','Sec 2','Acento','Fundo'][i]}</span><b class="text-2xl">${c}</b></div>`).join('');
-    document.getElementById('loading').classList.add('hidden');
-    document.getElementById('result').classList.remove('hidden');
-    document.getElementById('aurora').style.background = `linear-gradient(45deg, ${colors.join(', ')})`;
+    document.getElementById('loading').classList.add('hidden');
+    document.getElementById('result').classList.remove('hidden');
+    document.getElementById('aurora').style.background = `linear-gradient(45deg, ${colors.join(', ')})`;
+    // ADIÇÃO: Garante que o usuário veja o resultado imediatamente
+    document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
   function hslToHex(h,s,l){h/=360;s/=100;l/=100;let r,g,b;if(s===0){r=g=b=l}else{const q=l<0.5?l*(1+s):l+s-l*s;const p=2*l-q;r=h2(q,p,h+1/3);g=h2(q,p,h);b=h2(q,p,h-1/3)}return '#'+[r,g,b].map(x=>('0'+Math.round(x*255).toString(16)).slice(-2)).join('').toUpperCase();}
   function h2(q,p,t){if(t<0)t++;if(t>1)t--;if(t<1/6)return p+(q-p)*6*t;if(t<0.5)return q;if(t<2/3)return p+(q-p)*(2/3-t)*6;return p;}
