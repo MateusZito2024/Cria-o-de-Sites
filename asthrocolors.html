@@ -124,200 +124,429 @@
   </div>
 
 <script>
-  const questions = [
-    { q: "Setor principal da marca", o: ["Tecnologia","Saúde","Alimentos","Luxo","Educação","Sustentabilidade","Criativo"], k: "sector" },
-    { q: "Emoção principal", o: ["Confiança","Energia","Calma","Criatividade","Sofisticação","Entusiasmo"], k: "emotion" },
-    { q: "Estilo visual", o: ["Moderno/Minimalista","Vintage/Retrô","Negrito/Impactante","Suave/Orgânico"], k: "style" },
-    { q: "Público-alvo", o: ["Jovem (18-30)","Adulto (30-50)","Todos os públicos"], k: "audience" },
-    { q: "Sensação térmica", o: ["Quente/Aconchegante","Frio/Refrescante","Neutro"], k: "warmth" },
-    { q: "Nível de contraste", o: ["Alto contraste","Médio","Baixo/Suave"], k: "contrast" },
-    { q: "Inspirado na natureza?", o: ["Sim (oceano, floresta…)", "Não, mais urbano/tech"], k: "nature" },
-    { q: "Cor que você AMA (opcional)", type:"text", placeholder:"ex: turquesa, dourado…", k:"fav" }
-  ];
-  let current = 0;
-  let answers = {};
-  const wrapper = document.getElementById('card-wrapper');
+const closingStatements = {
+    'Poder': ['Esta paleta está pronta para dominar o mercado e transmitir autoridade máxima.', 'Uma fundação cromática de poder contido e elegância absoluta.', 'Sua marca projeta sofisticação e controle com estas cores.'],
+    'Autoridade': ['Uma fundação sólida para a sua marca, focada na confiança e estabilidade.', 'Transmita autoridade e seriedade com esta seleção cromática.', 'Seu branding agora tem a credibilidade das maiores corporações.'],
+    'Pureza': ['Sua marca agora respira tranquilidade e sofisticação suave.', 'Harmonia e serenidade definidas em cores.', 'Perfeita para criar um ambiente de bem-estar e calmaria.'],
+    'Minimalismo': ['Elegância e foco definem este conjunto cromático.', 'Um visual clean e moderno, pronto para o minimalismo de alto nível.', 'A clareza é o foco desta fundação de branding.'],
+    'Alegria': ['Uma explosão de vitalidade, pronta para o mercado!', 'Com esta paleta, sua marca irradia entusiasmo e criatividade.', 'Energia pura para impulsionar sua comunicação visual.'],
+    'Criatividade': ['O universo da inovação está ao seu alcance com esta paleta única.', 'Um conjunto de cores que inspira originalidade e novas ideias.', 'Ideal para marcas que querem fugir do comum e abraçar a inventividade.'],
+    'Paixão': ['Uma paleta vibrante que captura a força e o desejo.', 'Pronto para contagiar o público com o seu entusiasmo?', 'A escolha certa para marcas dinâmicas e cheias de vida.'],
+    'Realeza': ['Elegância e luxo em cada tonalidade.', 'Esta é a paleta da exclusividade e do alto padrão.', 'Um visual premium garantido, sofisticado e atemporal.'],
+    'Serenidade': ['A tradução perfeita de calma e inspiração em cores.', 'Uma fundação suave e profissional para o seu branding.', 'Tranquilidade visual para criar conexões duradouras.'],
+    'Bem-estar': ['A paleta ideal para saúde, frescor e equilíbrio.', 'Seu universo de branding está completo e pronto para decolar.', 'Cores que convidam ao conforto e à renovação.'],
+    'Estabilidade': ['Uma paleta robusta, que simboliza crescimento e segurança.', 'A fundação ideal para um crescimento sólido e confiável.', 'Transmita a solidez da natureza em sua comunicação.'],
+    'Aconchego': ['Cores quentes que abraçam e convidam.', 'Um branding que fala de conforto, tradição e qualidade.', 'Calor visual para criar uma experiência acolhedora.'],
+    'Tecnologia': ['A inovação e o futurismo estão no seu DNA.', 'Uma paleta pensada para o mundo digital e high-tech.', 'Exclusividade e vanguarda em cada tonalidade.'],
+    'Delicadeza': ['Suavidade e afeto definidos em cores leves.', 'O toque de ternura que sua marca precisava.', 'Beleza e calma para um visual romântico e moderno.'],
+    'Ousadia': ['Paleta de alto impacto, pronta para se destacar.', 'Sua marca com um visual forte, vibrante e inesquecível.', 'O ápice da energia e da diferenciação.'],
+    'Mistério': ['Intriga e sofisticação em um único conjunto de cores.', 'Um branding que convida à descoberta e à profundidade.', 'Elegância e mistério para um visual memorável.'],
+    'Destaque': ['A paleta perfeita para chamar a atenção imediatamente.', 'Cores que garantem ação e impacto no mercado.', 'Vibrante e inconfundível, sua marca não passará despercebida.'],
+    'Default': ['Sua fundação de branding está completa e pronta para decolar!', 'O universo das cores conspirou a seu favor!', 'A combinação final para o seu sucesso cósmico.']
+};
 
-  // 100 estrelinhas
-  for(let i=0;i<100;i++){
-    const s=document.createElement('div');
-    s.className='star';
-    s.style.cssText=`width:${Math.random()*3+1}px;height:${s.style.width};left:${Math.random()*100}vw;top:${Math.random()*100}vh;animation-delay:${Math.random()*4}s;`;
-    document.body.appendChild(s);
-  }
+const colorMeanings = {
+  primary: {
+    'Amarelo': { meaning: "Otimismo, alegria, energia, juventude, atenção. Ideal para marcas que buscam clareza e positividade.", intent: "Alegria" },
+    'Amarelo-limão': { meaning: "Frescor, limpeza, energia cítrica, juventude. Perfeito para produtos de higiene ou bebidas energéticas.", intent: "Frescor" },
+    'Mostarda': { meaning: "Retrô anos 70, ousadia temperada, outono, personalidade. Distinto e maduro.", intent: "Personalidade" },
+    'Amarelo-ouro': { meaning: "Riqueza, prestígio, sol, vitória, luxo acessível. Transmite alta qualidade e sucesso.", intent: "Riqueza" },
+    'Laranja': { meaning: "Energia, criatividade, entusiasmo, acessibilidade, diversão. Ótimo para comunicação e marcas ativas.", intent: "Criatividade" },
+    'Abóbora': { meaning: "Outono, energia acolhedora, criatividade, rusticidade. Conforto e inspiração.", intent: "Aconchego" },
+    'Ferrugem': { meaning: "Vintage, industrial, envelhecido, outono, autenticidade. Para marcas com história ou toque rústico chique.", intent: "Autenticidade" },
+    'Coral': { meaning: "Vitalidade, tropical, feminilidade suave, energia positiva. Moderno e caloroso.", intent: "Vitalidade" },
+    'Vermelho': { meaning: "Paixão, energia, urgência, poder, atenção. Ideal para gerar ação e impacto imediato.", intent: "Paixão" },
+    'Bordô': { meaning: "Luxo, poder, maturidade, vinho, tradição, seriedade. Sofisticação madura e elegante.", intent: "Maturidade" },
+    'Escarlate': { meaning: "Paixão intensa, destaque, drama, coragem. Excelente para branding ousado.", intent: "Destaque" },
+    'Rosa': { meaning: "Feminilidade, romantismo, delicadeza, juventude. Suavidade e afeto.", intent: "Delicadeza" },
+    'Rosa-bebê': { meaning: "Delicadeza, infância, ternura, romantismo suave. Calma e inocência.", intent: "Ternura" },
+    'Fúcsia': { meaning: "Ousadia, feminilidade forte, energia, modernidade. Para marcas que querem se destacar no mercado pop.", intent: "Ousadia" },
+    'Lilás': { meaning: "Nostalgia, delicadeza, espiritualidade, suavidade. Romantismo vintage.", intent: "Suavidade" },
+    'Roxo': { meaning: "Criatividade, originalidade, magia, luxo acessível. Sugere inovação e fantasia.", intent: "Criatividade" },
+    'Púrpura': { meaning: "Realeza histórica, espiritualidade, luxo, ambição. Autoridade e sofisticação premium.", intent: "Realeza" },
+    'Ametista': { meaning: "Luxo, espiritualidade, realeza, mistério, criatividade. Conexão e valor.", intent: "Mistério" },
+    'Azul': { meaning: "Confiança, profissionalismo, calma, credibilidade, tecnologia. A cor mais usada para estabilidade.", intent: "Confiança" },
+    'Azul-marinho': { meaning: "Autoridade, tradição, uniforme, credibilidade máxima. Para corporações e luxo tradicional.", intent: "Autoridade" },
+    'Azul-celeste': { meaning: "Pureza, céu aberto, leveza, espiritualidade, serenidade. Calma e inspiração.", intent: "Serenidade" },
+    'Turquesa': { meaning: "Paraíso tropical, frescor aquático, joalheria. Evoca bem-estar e luxo descontraído.", intent: "Paraíso" },
+    'Verde': { meaning: "Natureza, crescimento, saúde, equilíbrio, dinheiro. Símbolo de renovação e estabilidade.", intent: "Crescimento" },
+    'Verde-floresta': { meaning: "Natureza profunda, luxo ecológico, estabilidade. Para marcas orgânicas premium ou tradicionais.", intent: "Estabilidade" },
+    'Verde-menta': { meaning: "Frescor, spa, sorvete, juventude, higiene. Ligado à limpeza e bem-estar.", intent: "Bem-estar" },
+    'Esmeralda': { meaning: "Luxo, natureza preciosa, esperança, sofisticação. Valor e exclusividade.", intent: "Exclusividade" },
+    'Oliva': { meaning: "Militar, paz, natureza mediterrânea, praticidade. Sofisticação discreta.", intent: "Praticidade" },
+    'Marrom': { meaning: "Confiabilidade, terra, durabilidade, natureza, rusticidade. Transmite solidez e aconchego.", intent: "Confiabilidade" },
+    'Caramelo': { meaning: "Doçura, conforto, aconchego, couro, outono. Luxo suave e tátil.", intent: "Aconchego" },
+    'Bege': { meaning: "Neutralidade, elegância discreta, sobriedade, clássico. Fundação calma e sofisticada.", intent: "Elegância" },
+    'Preto': { meaning: "Elegância absoluta, poder, mistério, sofisticação (moda), autoridade. O ápice do luxo e seriedade.", intent: "Poder" },
+    'Branco': { meaning: "Pureza, minimalismo, limpeza, modernidade, simplicidade. Clareza total e foco.", intent: "Pureza" },
+    'Cinza-escuro': { meaning: "Poder contido, elegância urbana, profissionalismo sério, tecnologia premium. Sofisticação urbana.", intent: "Seriedade" },
+    'Cinza-claro': { meaning: "Minimalismo moderno, limpeza, sofisticação discreta, neutralidade elegante. Base versátil.", intent: "Minimalismo" },
+    'Dourado': { meaning: "Luxo, sucesso, riqueza, premiação, celebridade. Para excelência e prestígio.", intent: "Prestígio" },
+    'Prata': { meaning: "Modernidade, tecnologia, segunda posição, sofisticação fria. Inovação e exclusividade tech.", intent: "Tecnologia" },
+    'Bronze': { meaning: "Medalha, conquista, calor metálico. Conforto e tradição com um toque de glória.", intent: "Conquista" },
+    'Cobre': { meaning: "Tendência metálica, industrial chic, calor, artesanato. Autenticidade e modernidade.", intent: "Artesanato" },
+  },
+  combo: {
+    'alimentos': [
+        { name: 'Café Brasileiro', style: 'suave', meaning: 'Cafés, padarias, conforto matinal (Cappuccino + Chocolate + Caramelo).' },
+        { name: 'Outono Brasileiro', style: 'orgânico', meaning: 'Festa junina, energia brasileira, alimentos quentinhos, acolhimento (Abóbora + Mostarda + Caramelo).' },
+        { name: 'Doceria Gourmet', style: 'suave', meaning: 'Brigadeiro gourmet, pâtisserie, Instagram doce (Rosa Antigo + Chocolate).' },
+        { name: 'Sorveteria', style: 'suave', meaning: 'Doçura, infância, gelaterias, produtos gostosos (Menta + Limão + Lavanda).' },
+        { name: 'Cerveja Artesanal', style: 'vintage', meaning: 'Naturalidade, lúpulo, rótulos craft brasileiros.' },
+        { name: 'Vinhos Naturais', style: 'orgânico', meaning: 'Vinícolas boutique, vinho laranja, slow living.' },
+        { name: 'Churrascaria', style: 'impactante', meaning: 'Carne, Brasil, fome.' }
+    ],
+    'luxo': [
+        { name: 'Quiet Luxury', style: 'minimalista', meaning: 'Luxo sem logo, elegância sutil e altíssima qualidade (Loro Piana).' },
+        { name: 'Vinho & Uva', style: 'vintage', meaning: 'Sofisticação adulta, vinícolas, restaurantes finos, moda noite.' },
+        { name: 'Jóias Preciosas', style: 'vintage', meaning: 'Luxo clássico, joalherias, perfumes caros.' },
+        { name: 'Embalagem de Café Premium', style: 'minimalista', meaning: 'Café especial, 90+ pontos, embalagem de luxo.' },
+        { name: 'Barbearia Premium', style: 'vintage', meaning: 'Masculinidade clássica, barbearias de luxo, whisky, couro.' },
+        { name: 'Casamento Clássico', style: 'suave', meaning: 'Casamento tradicional de igreja, buffet caro.' }
+    ],
+    'tecnologia': [
+        { name: 'Tecnologia & Futurismo', style: 'impactante', meaning: 'Cyberpunk, gaming, tecnologia de ponta (Azul Elétrico + Ciano + Magenta).' },
+        { name: 'Executivo Moderno', style: 'moderno', meaning: 'Terninhos, escritórios de advocacia, tecnologia séria (Azul Marinho + Cinza).' },
+        { name: 'Minimal Luxo', style: 'minimalista', meaning: 'Arquitetura de alto padrão, moda minimalista, Apple Store.' },
+        { name: 'Y2K Futurist', style: 'impactante', meaning: 'Anos 2000 revival, Bratz, metallics.' },
+        { name: 'Foco Monocromático (Tech)', style: 'minimalista', meaning: "Aposta na simplicidade e elegância, muito usada por grandes empresas de software e eletrônicos." }
+    ],
+    'saude': [
+        { name: 'Yoga & Meditação', style: 'orgânico', meaning: 'Paz interior, estúdios de yoga, mindfulness (Lavanda + Sálvia + Areia).' },
+        { name: 'Skincare Coreana', style: 'minimalista', meaning: 'Pureza, K-beauty, glass skin, embalagens minimalistas (Rosa Bebê + Água + Pérola).' },
+        { name: 'Healthy Clean', style: 'minimalista', meaning: 'Sucos detox, academias, alimentação saudável (Verde Maçã + Branco + Água).' },
+        { name: 'Farmácia & Saúde', style: 'moderno', meaning: 'Confiança médica, limpeza, remédios, hospitais, marcas como Durex e Nivea.' },
+        { name: 'Academia High Performance', style: 'impactante', meaning: 'Força, suor, CrossFit, suplementos.' }
+    ],
+    'educacao': [
+        { name: 'Dark Academia', style: 'vintage', meaning: 'Livros antigos, Oxford, tradição acadêmica.' },
+        { name: 'Foco Monocromático (Educação)', style: 'minimalista', meaning: 'Clareza e autoridade, ideal para materiais didáticos e plataformas de EAD.' },
+        { name: 'Old Money', style: 'vintage', meaning: 'Herdeiros, clube de iate, Ralph Lauren. Clássico e tradicional em universidades de prestígio.' }
+    ],
+    'sustentabilidade': [
+        { name: 'Floresta Amazônica', style: 'orgânico', meaning: 'Ecologia séria, ONGs, cosméticos naturais (Verde Musgo + Castanho Escuro).' },
+        { name: 'Marca de Moda Sustentável', style: 'orgânico', meaning: 'Farm, Osklen, moda consciente (Verde Oliva + Areia + Cru).' },
+        { name: 'Vinhos Naturais', style: 'orgânico', meaning: 'Vinícolas boutique, vinho laranja, slow living.' },
+        { name: 'Deserto Boho', style: 'orgânico', meaning: 'Decoração boho, casamento no campo, marcas sustentáveis.' }
+    ],
+    'criativo': [
+        { name: 'Primárias Pop', style: 'impactante', meaning: 'Alegria infantil, brinquedos, marcas divertidas (Google, Lego). Energia pura.' },
+        { name: 'Anos 70 Retrô', style: 'vintage', meaning: 'Retrô, móveis vintage, marcas que querem personalidade forte (Mostarda + Laranja Queimado + Abacate).' },
+        { name: 'Poder Feminino', style: 'impactante', meaning: 'Empoderamento, Barbiecore 2023-2025, marcas de maquiagem ousadas (Rosa Choque + Preto + Dourado).' },
+        { name: 'Paleta Triádica (Criação)', style: 'impactante', meaning: "Uma paleta rica e equilibrada, perfeita para a diversidade e estímulo visual de projetos criativos." }
+    ],
+    'classico': [
+        { name: 'Harmonia Análoga', meaning: "Oferece um visual harmonioso e agradável. É calmante e fácil de usar, ideal para passar uma mensagem de unidade e fluxo suave." },
+        { name: 'Contraste Complementar', meaning: "Garante alto contraste e impacto. É vibrante e atrai atenção rapidamente." },
+    ]
+  }
+};
 
-  // ... [todo o resto do seu JavaScript permanece igual até a função generatePalette] ...
+function hexToHsl(hex) {
+  let r = 0, g = 0, b = 0;
+  if (hex.length == 7) { r = parseInt(hex.substring(1, 3), 16); g = parseInt(hex.substring(3, 5), 16); b = parseInt(hex.substring(5, 7), 16); }
+  r /= 255; g /= 255; b /= 255;
+  let max = Math.max(r, g, b), min = Math.min(r, g, b);
+  let h, s, l = (max + min) / 2;
+  if (max == min) { h = s = 0; } else { let d = max - min; s = l > 0.5 ? d / (2 - max - min) : d / (max + min); switch (max) { case r: h = (g - b) / d + (g < b ? 6 : 0); break; case g: h = (b - r) / d + 2; break; case b: h = (r - g) / d + 4; break; } h /= 6; }
+  return [Math.round(h * 360), Math.round(s * 100), Math.round(l * 100)];
+}
 
-  function generatePalette(){
-    let seed = Date.now() + Math.random()*1e8;
-    Object.values(answers).join('').split('').forEach(c=>seed += c.charCodeAt(0));
-    const rand = (m,M)=>{seed=(seed*9301+49297)%233280; return m+(seed/233280)*(M-m)};
-    let hue = rand(0,360);
-    if(answers.fav?.includes('azul')) hue = rand(200,260);
-    if(answers.fav?.includes('vermelh')||answers.fav?.includes('red')) hue = rand(340,20);
-    if(answers.fav?.includes('verde')||answers.fav?.includes('green')) hue = rand(100,160);
-    if(answers.warmth?.includes('quent')) hue = (hue + 60) % 360;
-    const colors = [];
-    for(let i=0;i<5;i++){
-      let h = (hue + i*72 + rand(-45,45)) % 360;
-      let s = answers.style?.includes('negrito') ? rand(80,100) : rand(65,92);
-      let l = answers.contrast?.includes('alto') ? rand(38,60) : answers.contrast?.includes('baixo') ? rand(68,85) : rand(50,72);
-      colors.push(hslToHex(h,s,l));
-    }
-    const p = document.getElementById('palette');
-    p.innerHTML='';
-    colors.forEach((c,i)=>{
-      const box = document.createElement('div');
-      box.className='h-80 rounded-3xl relative overflow-hidden shadow-2xl';
-      box.style.backgroundColor=c;
-      box.innerHTML = `<div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                     <div class="absolute bottom-8 left-6 text-4xl font-black ${isLight(c)?'text-black':'text-white'} drop-shadow-2xl">${c}</div>`;
-      p.appendChild(box);
-      gsap.fromTo(box,{scale:0,rotationY:180,opacity:0},{scale:1,rotationY:0,opacity:1,duration:1.6,delay:i*0.2,ease:"elastic.out"});
-    });
+function getDetailedColorName(hexColor) {
+  const [h, s, l] = hexToHsl(hexColor);
+  if (s < 10) {
+    if (l < 10) return { name: 'Preto', intent: 'Poder' };
+    if (l < 40) return { name: 'Cinza-escuro', intent: 'Autoridade' };
+    if (l < 70) return { name: 'Cinza-claro', intent: 'Minimalismo' };
+    if (l < 95) return { name: 'Branco-sujo', intent: 'Naturalidade' };
+    return { name: 'Branco', intent: 'Pureza' };
+  }
+  let baseColor = '';
+  if (h >= 345 || h < 15) baseColor = 'Vermelho'; else if (h < 45) baseColor = 'Laranja'; else if (h < 75) baseColor = 'Amarelo'; else if (h < 150) baseColor = 'Verde'; else if (h < 210) baseColor = 'Ciano'; else if (h < 270) baseColor = 'Azul'; else if (h < 315) baseColor = 'Roxo'; else if (h < 345) baseColor = 'Rosa';
 
-    document.getElementById('analysis').textContent = `Paleta única criada às ${new Date().toLocaleTimeString('pt-BR')}. Nunca mais será igual.`;
-    document.getElementById('hexList').innerHTML = colors.map((c,i)=>`<div class="flex justify-between py-2"><span class="text-gray-400">${['Primária','Sec 1','Sec 2','Acento','Fundo'][i]}</span><b class="text-2xl">${c}</b></div>`).join('');
-    
-    // === MOSTRA O RESULTADO SEM CRIAR ESPAÇO EXTRA ===
-    document.getElementById('loading').classList.add('hidden');
-    document.getElementById('result').classList.add('visible');
-    document.getElementById('quiz').style.display = 'none';
-    document.getElementById('mainContainer').classList.add('result-active');
-    document.getElementById('aurora').style.background = `linear-gradient(45deg, ${colors.join(', ')})`;
-    
-    // Rola suavemente até o topo do resultado
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
+  let modifier = '';
+  if (l < 25) modifier = 'escuro'; else if (l < 45) modifier = 'médio'; else if (l < 75) modifier = 'claro';
 
-  // === O RESTANTE DO SEU JAVASCRIPT (hslToHex, copyAll, ripple, etc.) É O MESMO ===
-  function hslToHex(h,s,l){h/=360;s/=100;l/=100;let r,g,b;if(s===0){r=g=b=l}else{const q=l<0.5?l*(1+s):l+s-l*s;const p=2*l-q;r=h2(q,p,h+1/3);g=h2(q,p,h);b=h2(q,p,h-1/3)}return '#'+[r,g,b].map(x=>('0'+Math.round(x*255).toString(16)).slice(-2)).join('').toUpperCase();}
-  function h2(q,p,t){if(t<0)t++;if(t>1)t--;if(t<1/6)return p+(q-p)*6*t;if(t<0.5)return q;if(t<2/3)return p+(q-p)*(2/3-t)*6;return p;}
-  function isLight(hex){const [r,g,b]=[1,3,5].map(i=>parseInt(hex.slice(i,i+2),16));return r*0.299+g*0.587+b*0.114>160;}
-  function copyAll(){
-    const text = Array.from(document.querySelectorAll('#palette b')).map(e=>e.textContent).join('\n');
-    navigator.clipboard.writeText(text);
-    alert('Paleta copiada!');
-  }
+  if (baseColor === 'Vermelho') {
+    if (modifier === 'escuro') return { name: 'Bordô', intent: 'Luxo' };
+    if (s > 80 && l > 50) return { name: 'Escarlate', intent: 'Destaque' };
+    return { name: 'Vermelho', intent: 'Paixão' };
+  }
+  if (baseColor === 'Laranja') {
+    if (modifier === 'escuro' && h > 30) return { name: 'Ferrugem', intent: 'Vintage' };
+    if (modifier === 'escuro') return { name: 'Laranja-queimado', intent: 'Ação' };
+    return { name: 'Laranja', intent: 'Criatividade' };
+  }
+  if (baseColor === 'Amarelo') {
+    if (modifier === 'escuro' && s > 50) return { name: 'Mostarda', intent: 'Personalidade' };
+    return { name: 'Amarelo', intent: 'Alegria' };
+  }
+  if (baseColor === 'Verde') {
+    if (modifier === 'escuro') return { name: 'Verde-floresta', intent: 'Estabilidade' };
+    if (s < 50) return { name: 'Oliva', intent: 'Natureza' };
+    return { name: 'Verde', intent: 'Crescimento' };
+  }
+  if (baseColor === 'Azul') {
+    if (modifier === 'escuro') return { name: 'Azul-marinho', intent: 'Autoridade' };
+    if (modifier === 'claro') return { name: 'Azul-celeste', intent: 'Serenidade' };
+    return { name: 'Azul', intent: 'Confiança' };
+  }
+  if (baseColor === 'Roxo') {
+    if (s > 60 && l < 40) return { name: 'Púrpura', intent: 'Realeza' };
+    return { name: 'Roxo', intent: 'Criatividade' };
+  }
+  if (baseColor === 'Rosa') {
+    if (modifier === 'claro') return { name: 'Rosa-bebê', intent: 'Delicadeza' };
+    if (modifier === 'escuro') return { name: 'Fúcsia', intent: 'Ousadia' };
+    return { name: 'Rosa', intent: 'Feminilidade' };
+  }
+  return { name: baseColor || 'Cor Principal', intent: 'Equilíbrio' };
+}
 
-  // Ripple effect
-  document.querySelectorAll('.ripple-btn').forEach(btn=>{
-    btn.addEventListener('click', e=>{
-      const r=document.createElement('span');
-      const rect=btn.getBoundingClientRect();
-      const size=Math.max(rect.width,rect.height)*2;
-      r.style.width=r.style.height=size+'px';
-      r.style.left=(e.clientX-rect.left-size/2)+'px';
-      r.style.top=(e.clientY-rect.top-size/2)+'px';
-      r.className='ripple';
-      btn.appendChild(r);
-      setTimeout(()=>r.remove(),600);
-    });
-  });
+const questions = [
+    { q: "Setor principal da marca", o: ["Tecnologia","Saúde","Alimentos","Luxo","Educação","Sustentabilidade","Criativo"], k: "sector" },
+    { q: "Emoção principal", o: ["Confiança","Energia","Calma","Criatividade","Sofisticação","Entusiasmo"], k: "emotion" },
+    { q: "Estilo visual", o: ["Moderno/Minimalista","Vintage/Retrô","Negrito/Impactante","Suave/Orgânico"], k: "style" },
+    { q: "Público-alvo", o: ["Jovem (18-30)","Adulto (30-50)","Todos os públicos"], k: "audience" },
+    { q: "Sensação térmica", o: ["Quente/Aconchegante","Frio/Refrescante","Neutro"], k: "warmth" },
+    { q: "Nível de contraste", o: ["Alto contraste","Médio","Baixo/Suave"], k: "contrast" },
+    { q: "Inspirado na natureza?", o: ["Sim (oceano, floresta…)", "Não, mais urbano/tech"], k: "nature" },
+    { q: "Cor que você AMA (opcional)", type:"text", placeholder:"ex: turquesa, dourado…", k:"fav" }
+];
+let current = 0;
+let answers = {};
+const wrapper = document.getElementById('card-wrapper');
 
-  // Funções de card (shatter, assemble, etc.) permanecem exatamente iguais
-  // ... (cole aqui todo o código das funções shatterCard, assembleCard, selectAnswer, etc. que você já tinha)
+for(let i=0;i<100;i++){
+    const s=document.createElement('div');
+    s.className='star';
+    s.style.cssText=`width:${Math.random()*3+1}px;height:${s.style.width};left:${Math.random()*100}vw;top:${Math.random()*100}vh;animation-delay:${Math.random()*4}s;`;
+    document.body.appendChild(s);
+}
 
-  function shatterCard(callback) {
-    const card = wrapper.querySelector('.card');
-    if(!card) return callback();
-    const pieces = 12;
-    for(let i = 0; i < pieces; i++) {
-      const piece = document.createElement('div');
-      piece.className = 'piece';
-      piece.style.width = (80 + Math.random()*40) + 'px';
-      piece.style.height = (80 + Math.random()*40) + 'px';
-      piece.style.background = getComputedStyle(card).background;
-      piece.style.border = '1px solid rgba(150,100,255,0.4)';
-      piece.style.left = (Math.random() * 80 + 10) + '%';
-      piece.style.top = (Math.random() * 80 + 10) + '%';
-      wrapper.appendChild(piece);
-      gsap.to(piece, {
-        x: Math.random()*800 - 400,
-        y: Math.random()*800 - 400,
-        rotation: Math.random()*1080 - 540,
-        scale: 0,
-        opacity: 0,
-        duration: 1.2,
-        ease: "power3.out",
-        delay: i*0.05,
-        onComplete: () => piece.remove()
-      });
-    }
-    gsap.to(card, {opacity: 0, duration: 0.4, onComplete: callback});
-  }
+function generatePalette(){
+    let seed = Date.now() + Math.random()*1e8;
+    Object.values(answers).join('').split('').forEach(c=>seed += c.charCodeAt(0));
+    const rand = (m,M)=>{seed=(seed*9301+49297)%233280; return m+(seed/233280)*(M-m)};
+    let hue = rand(0,360);
+    if(answers.fav?.includes('azul')) hue = rand(200,260);
+    if(answers.fav?.includes('vermelh')||answers.fav?.includes('red')) hue = rand(340,20);
+    if(answers.fav?.includes('verde')||answers.fav?.includes('green')) hue = rand(100,160);
+    if(answers.warmth?.includes('quent')) hue = (hue + 60) % 360;
+    const colors = [];
+    for(let i=0;i<5;i++){
+      let h = (hue + i*72 + rand(-45,45)) % 360;
+      let s = answers.style?.includes('negrito') ? rand(80,100) : rand(65,92);
+      let l = answers.contrast?.includes('alto') ? rand(38,60) : answers.contrast?.includes('baixo') ? rand(68,85) : rand(50,72);
+      colors.push(hslToHex(h,s,l));
+    }
+    const p = document.getElementById('palette');
+    p.innerHTML='';
+    colors.forEach((c,i)=>{
+      const box = document.createElement('div');
+      box.className='h-80 rounded-3xl relative overflow-hidden shadow-2xl';
+      box.style.backgroundColor=c;
+      box.innerHTML = `<div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                     <div class="absolute bottom-8 left-6 text-4xl font-black ${isLight(c)?'text-black':'text-white'} drop-shadow-2xl">${c}</div>`;
+      p.appendChild(box);
+      gsap.fromTo(box,{scale:0,rotationY:180,opacity:0},{scale:1,rotationY:0,opacity:1,duration:1.6,delay:i*0.2,ease:"elastic.out"});
+    });
 
-  function assembleCard() {
-    wrapper.innerHTML = '';
-    const card = document.createElement('div');
-    card.className = 'card';
-    const q = questions[current];
-    card.innerHTML = `
-      <div class="text-sm text-gray-500 mb-4">Pergunta ${current+1} de ${questions.length}</div>
-      <h3 class="text-4xl font-black mb-10 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-400">
-        ${q.q}
-      </h3>`;
-    if(q.type === "text") {
-      const input = document.createElement('input');
-      input.type = "text";
-      input.placeholder = q.placeholder;
-      input.value = answers.fav || '';
-      input.id = "favInput";
-      input.className = "w-full p-5 text-xl bg-gray-900/80 border border-purple-500/50 rounded-2xl focus:border-purple-400 outline-none ripple-btn";
-      card.appendChild(input);
-    } else {
-      q.o.forEach(opt => {
-        const btn = document.createElement('button');
-        btn.textContent = opt;
-        btn.className = `block w-full text-left p-5 my-3 text-xl rounded-2xl transition ripple-btn ${answers[q.k] === opt.toLowerCase() ? 'bg-purple-600/70 border-purple-400' : 'bg-gray-900/70 hover:bg-purple-900/50'} border`;
-        btn.onclick = () => selectAnswer(opt, q.k);
-        card.appendChild(btn);
-      });
-    }
-    wrapper.appendChild(card);
-    const pieces = 15;
-    card.style.opacity = 0;
-    for(let i = 0; i < pieces; i++) {
-      const p = document.createElement('div');
-      p.className = 'piece';
-      p.style.width = (60 + Math.random()*60) + 'px';
-      p.style.height = (60 + Math.random()*60) + 'px';
-      p.style.background = 'rgba(30,30,60,0.9)';
-      p.style.border = '1px solid rgba(150,100,255,0.4)';
-      p.style.left = Math.random() * 80 + 10 + '%';
-      p.style.top = Math.random() * 80 + 10 + '%';
-      p.style.transform = `rotate(${Math.random()*360-180}deg) scale(0)`;
-      wrapper.appendChild(p);
-      gsap.to(p, {
-        x: 0, y: 0, rotation: 0, scale: 1, opacity: 1,
-        duration: 1.4, delay: i*0.08, ease: "elastic.out(1,0.5)",
-        onComplete: () => { if(i === pieces-1) gsap.to(card, {opacity:1, duration:0.6}); p.remove(); }
-      });
-    }
-    document.getElementById('backBtn').classList.toggle('hidden', current === 0 || current === questions.length - 1);
-    document.getElementById('generateBtn').classList.toggle('hidden', current !== questions.length - 1);
-  }
+    const primaryHex = colors[0];
+    const { name: primaryColorName, intent: primaryIntent } = getDetailedColorName(primaryHex); 
+    const primaryMeaning = colorMeanings.primary[primaryColorName] || { meaning: `Significado de ${primaryColorName} não encontrado.`, intent: 'Equilíbrio' };
+    
+    const primaryKey = answers.sector?.toLowerCase().replace(' ', '');
+    let potentialCombos = [];
 
-  function selectAnswer(value, key) {
-    answers[key] = value.toLowerCase();
-    if (current < questions.length - 1) current++;
-    shatterCard(() => setTimeout(assembleCard, 300));
-  }
+    if (primaryKey && colorMeanings.combo[primaryKey]) {
+        potentialCombos = colorMeanings.combo[primaryKey];
+    } else {
+        potentialCombos = colorMeanings.combo.classico;
+    }
 
-  document.getElementById('backBtn').onclick = () => {
-    if(current > 0) { current--; shatterCard(assembleCard); }
-  };
+    const emotionKey = answers.emotion?.toLowerCase().replace(' ', '');
+    const styleKey = answers.style?.toLowerCase().split('/')[0].replace(' ', '');
+    const contrastKey = answers.contrast?.toLowerCase().replace(' ', '');
 
-  document.getElementById('generateBtn').onclick = () => {
-    if(questions[current].type === "text") {
-      answers.fav = document.getElementById('favInput').value.toLowerCase();
-    }
-    document.getElementById('loading').classList.remove('hidden');
-    setTimeout(generatePalette, 2800);
-  };
+    let refinedCombos = potentialCombos.filter(combo => {
+        const comboText = (combo.name + ' ' + combo.meaning).toLowerCase();
+        
+        if (emotionKey && comboText.includes(emotionKey)) return true;
+        if (styleKey && comboText.includes(styleKey)) return true;
+        if (contrastKey && comboText.includes(contrastKey)) return true;
 
-  // Inicia
-  assembleCard();
+        return true; 
+    });
+    
+    if (refinedCombos.length === 0) {
+        refinedCombos = potentialCombos;
+    }
+    
+    const uniqueCombos = Array.from(new Set(refinedCombos.map(c => c.name)))
+                              .map(name => refinedCombos.find(c => c.name === name));
+    
+    let bestCombo;
+    if (uniqueCombos.length > 0) {
+        const randomIndex = Math.floor(Math.random() * uniqueCombos.length);
+        bestCombo = uniqueCombos[randomIndex];
+    } else {
+        const fallbackOptions = colorMeanings.combo.classico;
+        const randomIndex = Math.floor(Math.random() * fallbackOptions.length);
+        bestCombo = fallbackOptions[randomIndex];
+    }
+
+    const intentKey = primaryIntent || 'Default';
+    const statements = closingStatements[intentKey] || closingStatements['Default'];
+    const closingPhrase = statements[Math.floor(Math.random() * statements.length)];
+
+    const analysisText = `
+      Sua paleta foi ancorada em cores que transmitem ${primaryIntent}.
+      
+      O tom principal, ${primaryColorName.toUpperCase()}, no seu contexto profissional, significa:
+      "${primaryMeaning.meaning.replace(/\s*\(.*\)\s*/g, '').trim()}"
+      
+      Esta combinação gerou o tema **${bestCombo.name.toUpperCase()}**, que remete a:
+      "${bestCombo.meaning}"
+      
+      ${closingPhrase}
+    `;
+    
+    document.getElementById('analysis').innerHTML = analysisText.split('\n').map(p => p.trim() ? `<p class="mb-4">${p.trim()}</p>` : '').join('');
+    
+    document.getElementById('hexList').innerHTML = colors.map((c,i)=>`<div class="flex justify-between py-2"><span class="text-gray-400">${['Primária','Sec 1','Sec 2','Acento','Fundo'][i]}</span><b class="text-2xl">${c}</b></div>`).join('');
+    
+    document.getElementById('loading').classList.add('hidden');
+    document.getElementById('result').classList.add('visible');
+    document.getElementById('quiz').style.display = 'none';
+    document.getElementById('mainContainer').classList.add('result-active');
+    document.getElementById('aurora').style.background = `linear-gradient(45deg, ${colors.join(', ')})`;
+    
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function hslToHex(h,s,l){h/=360;s/=100;l/=100;let r,g,b;if(s===0){r=g=b=l}else{const q=l<0.5?l*(1+s):l+s-l*s;const p=2*l-q;r=h2(q,p,h+1/3);g=h2(q,p,h);b=h2(q,p,h-1/3)}return '#'+[r,g,b].map(x=>('0'+Math.round(x*255).toString(16)).slice(-2)).join('').toUpperCase();}
+function h2(q,p,t){if(t<0)t++;if(t>1)t--;if(t<1/6)return p+(q-p)*6*t;if(t<0.5)return q;if(t<2/3)return p+(q-p)*(2/3-t)*6;return p;}
+function isLight(hex){const [r,g,b]=[1,3,5].map(i=>parseInt(hex.slice(i,i+2),16));return r*0.299+g*0.587+b*0.114>160;}
+function copyAll(){
+    const text = Array.from(document.querySelectorAll('#palette b')).map(e=>e.textContent).join('\n');
+    navigator.clipboard.writeText(text);
+    alert('Paleta copiada!');
+}
+
+document.querySelectorAll('.ripple-btn').forEach(btn=>{
+    btn.addEventListener('click', e=>{
+        const r=document.createElement('span');
+        const rect=btn.getBoundingClientRect();
+        const size=Math.max(rect.width,rect.height)*2;
+        r.style.width=r.style.height=size+'px';
+        r.style.left=(e.clientX-rect.left-size/2)+'px';
+        r.style.top=(e.clientY-rect.top-size/2)+'px';
+        r.className='ripple';
+        btn.appendChild(r);
+        setTimeout(()=>r.remove(),600);
+    });
+});
+
+function shatterCard(callback) {
+    const card = wrapper.querySelector('.card');
+    if(!card) return callback();
+    const pieces = 12;
+    for(let i = 0; i < pieces; i++) {
+        const piece = document.createElement('div');
+        piece.className = 'piece';
+        piece.style.width = (80 + Math.random()*40) + 'px';
+        piece.style.height = (80 + Math.random()*40) + 'px';
+        piece.style.background = getComputedStyle(card).background;
+        piece.style.border = '1px solid rgba(150,100,255,0.4)';
+        piece.style.left = (Math.random() * 80 + 10) + '%';
+        piece.style.top = (Math.random() * 80 + 10) + '%';
+        wrapper.appendChild(piece);
+        gsap.to(piece, {
+            x: Math.random()*800 - 400,
+            y: Math.random()*800 - 400,
+            rotation: Math.random()*1080 - 540,
+            scale: 0,
+            opacity: 0,
+            duration: 1.2,
+            ease: "power3.out",
+            delay: i*0.05,
+            onComplete: () => piece.remove()
+        });
+    }
+    gsap.to(card, {opacity: 0, duration: 0.4, onComplete: callback});
+}
+
+function assembleCard() {
+    wrapper.innerHTML = '';
+    const card = document.createElement('div');
+    card.className = 'card';
+    const q = questions[current];
+    card.innerHTML = `
+      <div class="text-sm text-gray-500 mb-4">Pergunta ${current+1} de ${questions.length}</div>
+      <h3 class="text-4xl font-black mb-10 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-400">
+        ${q.q}
+      </h3>`;
+    if(q.type === "text") {
+        const input = document.createElement('input');
+        input.type = "text";
+        input.placeholder = q.placeholder;
+        input.value = answers.fav || '';
+        input.id = "favInput";
+        input.className = "w-full p-5 text-xl bg-gray-900/80 border border-purple-500/50 rounded-2xl focus:border-purple-400 outline-none ripple-btn";
+        card.appendChild(input);
+    } else {
+        q.o.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.textContent = opt;
+            btn.className = `block w-full text-left p-5 my-3 text-xl rounded-2xl transition ripple-btn ${answers[q.k] === opt.toLowerCase() ? 'bg-purple-600/70 border-purple-400' : 'bg-gray-900/70 hover:bg-purple-900/50'} border`;
+            btn.onclick = () => selectAnswer(opt, q.k);
+            card.appendChild(btn);
+        });
+    }
+    wrapper.appendChild(card);
+    const pieces = 15;
+    card.style.opacity = 0;
+    for(let i = 0; i < pieces; i++) {
+        const p = document.createElement('div');
+        p.className = 'piece';
+        p.style.width = (60 + Math.random()*60) + 'px';
+        p.style.height = (60 + Math.random()*60) + 'px';
+        p.style.background = 'rgba(30,30,60,0.9)';
+        p.style.border = '1px solid rgba(150,100,255,0.4)';
+        p.style.left = Math.random() * 80 + 10 + '%';
+        p.style.top = Math.random() * 80 + 10 + '%';
+        p.style.transform = `rotate(${Math.random()*360-180}deg) scale(0)`;
+        wrapper.appendChild(p);
+        gsap.to(p, {
+            x: 0, y: 0, rotation: 0, scale: 1, opacity: 1,
+            duration: 1.4, delay: i*0.08, ease: "elastic.out(1,0.5)",
+            onComplete: () => { if(i === pieces-1) gsap.to(card, {opacity:1, duration:0.6}); p.remove(); }
+        });
+    }
+    document.getElementById('backBtn').classList.toggle('hidden', current === 0 || current === questions.length - 1);
+    document.getElementById('generateBtn').classList.toggle('hidden', current !== questions.length - 1);
+}
+
+function selectAnswer(value, key) {
+    answers[key] = value.toLowerCase();
+    if (current < questions.length - 1) current++;
+    shatterCard(() => setTimeout(assembleCard, 300));
+}
+
+document.getElementById('backBtn').onclick = () => {
+    if(current > 0) { current--; shatterCard(assembleCard); }
+};
+
+document.getElementById('generateBtn').onclick = () => {
+    if(questions[current].type === "text") {
+        answers.fav = document.getElementById('favInput').value.toLowerCase();
+    }
+    document.getElementById('loading').classList.remove('hidden');
+    setTimeout(generatePalette, 2800);
+};
+
+assembleCard();
 </script>
 </body>
 </html>
