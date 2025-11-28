@@ -1,310 +1,293 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Asthros Paleta Pro – Cosmic Edition</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700;900&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <style>
-    body { font-family: 'Inter', sans-serif; overflow-x: hidden; }
-    .vortex-bg {
-      position: fixed;
-      inset: 0;
-      z-index: -2;
-      background: radial-gradient(circle at center, #0f0f1e 0%, #000 80%);
-      opacity: 0.9;
-    }
-    .aurora {
-      position: fixed;
-      inset: 0;
-      z-index: -1;
-      background: linear-gradient(45deg, #ff00cc, #3333ff, #00ffcc, #ffff00);
-      background-size: 400% 400%;
-      animation: aurora 25s ease infinite;
-      opacity: 0.25;
-      mix-blend-mode: screen;
-    }
-    @keyframes aurora { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
-
-    .ripple-btn {
-      position: relative;
-      overflow: hidden;
-    }
-    .ripple {
-      position: absolute;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.6);
-      transform: scale(0);
-      animation: rippleAnim 0.6s linear;
-      pointer-events: none;
-    }
-    @keyframes rippleAnim {
-      to { transform: scale(4); opacity: 0; }
-    }
-
-    .color-box {
-      position: relative;
-      overflow: hidden;
-      cursor: pointer;
-      border-radius: 1rem;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    }
-    .liquid-wave {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-      transform: translateX(-100%);
-      transition: transform 0.8s;
-    }
-    .color-box:hover .liquid-wave { transform: translateX(100%); }
-
-    .glitch {
-      animation: glitch 0.8s ease-out forwards;
-    }
-    @keyframes glitch {
-      0%   { clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%); }
-      10%  { clip-path: polygon(0 20%, 100% 10%, 100% 80%, 0 90%); }
-      20%  { clip-path: polygon(0 0%, 100% 30%, 100% 70%, 0 100%); }
-      100% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
-    }
+    body { font-family: 'Inter', sans-serif; margin:0; background:#000; color:white; overflow-x:hidden; }
+    .vortex-bg { position:fixed; inset:0; z-index:-2; background:radial-gradient(circle at center,#0f0f1e 0%,#000 100%); }
+    .aurora { position:fixed; inset:0; z-index:-1; background:linear-gradient(45deg,#ff00cc,#3333ff,#00ffcc,#ffff00); background-size:400% 400%; animation:a 30s ease infinite; opacity:0.3; mix-blend-mode:screen; transition:background 3s; }
+    @keyframes a {0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+    .ripple-btn { position:relative; overflow:hidden; cursor:pointer; }
+    .ripple { position:absolute; border-radius:50%; background:rgba(255,255,255,0.7); transform:scale(0); animation:r 0.6s linear; pointer-events:none; }
+    @keyframes r {to{transform:scale(4);opacity:0}}
+    .question-card { background:rgba(20,20,40,0.8); backdrop-filter:blur(20px); border:1px solid rgba(150,100,255,0.3); box-shadow:0 30px 60px rgba(0,0,0,0.7); }
+    .star { position:absolute; background:white; border-radius:50%; pointer-events:none; animation:t 4s infinite; }
+    @keyframes t {0%,100%{opacity:0.3}50%{opacity:1}}
   </style>
 </head>
-<body class="bg-gray-950 text-white min-h-screen">
+<body class="min-h-screen">
 
   <div class="vortex-bg"></div>
-  <div class="aurora"></div>
+  <div class="aurora" id="aurora"></div>
 
-  <div id="app" class="relative z-10 min-h-screen flex flex-col items-center justify-center p-6">
+  <div class="relative z-10 min-h-screen flex flex-col items-center justify-center px-6">
 
-    <!-- STEP 1 – Perguntas -->
-    <div id="step-1" class="w-full max-w-4xl mx-auto">
-      <h1 class="text-5xl md:text-6xl font-black text-center mb-4 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-400">
-        Asthros Paleta Pro <span class="text-3xl">✦ Cosmic Edition</span>
+    <div id="quiz" class="w-full max-w-2xl text-center">
+      <h1 class="text-5xl md:text-7xl font-black mb-6 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400">
+        Asthros Paleta Pro<br><span class="text-3xl">Cosmic Edition</span>
       </h1>
-      <p class="text-center text-xl text-gray-300 mb-12">Responda com sinceridade e receba uma paleta única criada pelo universo</p>
+      <p class="text-xl text-gray-300 mb-12">Responda e o universo criará sua paleta única</p>
 
-      <div class="grid gap-8 md:grid-cols-2">
-        <!-- 11 perguntas – muito mais variação -->
-        <div><label class="block text-lg mb-2">1. Setor principal da marca</label>
-          <select class="q w-full p-4 rounded-xl bg-gray-900 text-white border border-gray-700 ripple-btn"><option value="tech">Tecnologia</option><option value="health">Saúde</option><option value="food">Alimentos</option><option value="luxury">Luxo</option><option value="edu">Educação</option><option value="eco">Sustentabilidade</option><option value="creative">Criativo</option></select></div>
+      <div id="question-wrapper" class="min-h-96 flex flex-col items-center justify-center"></div>
 
-        <div><label class="block text-lg mb-2">2. Emoção principal</label>
-          <select class="q w-full p-4 rounded-xl bg-gray-900 border border-gray-700 ripple-btn"><option value="trust">Confiança</option><option value="energy">Energia</option><option value="calm">Calma</option><option value="creative">Criatividade</option><option value="luxury">Sofisticação</option><option value="excitement">Entusiasmo</option></select></div>
-
-        <div><label class="block text-lg mb-2">3. Estilo visual</label>
-          <select class="q w-full p-4 rounded-xl bg-gray-900 border border-gray-700 ripple-btn"><option value="modern">Moderno/Minimalista</option><option value="vintage">Vintage/Retrô</option><option value="bold">Negrito/Impactante</option><option value="soft">Suave/Orgânico</option></select></div>
-
-        <div><label class="block text-lg mb-2">4. Público-alvo</label>
-          <select class="q w-full p-4 rounded-xl bg-gray-900 border border-gray-700 ripple-btn"><option value="young">Jovem (18-30)</option><option value="adult">Adulto (30-50)</option><option value="all">Todos os públicos</option></select></div>
-
-        <div><label class="block text-lg mb-2">5. Sensação térmica</label>
-          <select class="q w-full p-4 rounded-xl bg-gray-900 border border-gray-700 ripple-btn"><option value="warm">Quente/Aconchegante</option><option value="cool">Frio/Refrescante</option><option value="neutral">Neutro</option></select></div>
-
-        <div><label class="block text-lg mb-2">6. Nível de contraste desejado</label>
-          <select class="q w-full p-4 rounded-xl bg-gray-900 border border-gray-700 ripple-btn"><option value="high">Alto contraste</option><option value="medium">Médio</option><option value="low">Baixo/Suave</option></select></div>
-
-        <div><label class="block text-lg mb-2">7. Inspirado em natureza?</label>
-          <select class="q w-full p-4 rounded-xl bg-gray-900 border border-gray-700 ripple-btn"><option value="yes">Sim (oceano, floresta…)</option><option value="no">Não, mais urbano/tech</option></select></div>
-
-        <div><label class="block text-lg mb-2">8. Cor que você AMA (opcional)</label>
-          <input type="text" id="favColor" placeholder="ex: turquesa, vinho, dourado…" class="q w-full p-4 rounded-xl bg-gray-900 border border-gray-700"></div>
-      </div>
-
-      <div class="text-center mt-12">
-        <button id="generateBtn" class="px-12 py-6 text-2xl font-bold rounded-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 transform hover:scale-105 transition shadow-2xl ripple-btn">
+      <div class="mt-12 flex justify-center gap-6 flex-wrap">
+        <button id="backBtn" class="px-8 py-4 text-lg font-bold rounded-full bg-gray-800/80 hover:bg-gray-700 transition ripple-btn">Voltar</button>
+        <button id="skipBtn" class="px-8 py-4 text-lg font-bold rounded-full bg-gradient-to-r from-gray-600 to-gray-800 hover:scale-105 transition ripple-btn">Pular esta</button>
+        <button id="nextBtn" class="px-12 py-5 text-xl font-bold rounded-full bg-gradient-to-r from-purple-600 to-pink-600 hover:scale-110 transition ripple-btn">PRÓXIMA</button>
+        <button id="generateBtn" class="hidden px-16 py-7 text-3xl font-bold rounded-full bg-gradient-to-r from-cyan-500 to-purple-600 hover:scale-110 transition shadow-2xl ripple-btn">
           GERAR PALETA CÓSMICA
         </button>
       </div>
     </div>
 
-    <!-- LOADING -->
-    <div id="loading" class="hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-90 z-50">
+    <!-- Loading -->
+    <div id="loading" class="hidden fixed inset-0 flex items-center justify-center bg-black/95 z-50">
       <div class="text-center">
-        <div class="w-32 h-32 border-8 border-t-purple-500 border-r-pink-500 border-b-cyan-500 border-l-transparent rounded-full animate-spin mx-auto mb-8"></div>
-        <p class="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-400">Criando sua paleta única…</p>
+        <div class="w-40 h-40 border-8 border-t-purple-500 border-r-pink-500 border-b-cyan-500 border-l-transparent rounded-full animate-spin mb-10"></div>
+        <p class="text-4xl font-black bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-400">Criando sua paleta única…</p>
       </div>
     </div>
 
-    <!-- RESULTADO -->
-    <div id="result" class="hidden w-full max-w-6xl mx-auto mt-12">
-      <h2 class="text-5xl font-black text-center mb-12 bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-purple-400">Sua Paleta Asthros</h2>
-
-      <div id="palette" class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12"></div>
-
-      <div class="grid md:grid-cols-2 gap-8">
-        <div class="bg-gray-900 bg-opacity-60 p-8 rounded-2xl backdrop-blur">
-          <h3 class="text-2xl font-bold mb-4 text-purple-400">Análise Psicológica</h3>
-          <p id="analysis" class="text-gray-300 leading-relaxed"></p>
+    <!-- Resultado -->
+    <div id="result" class="hidden w-full max-w-6xl text-center px-6">
+      <h2 class="text-6xl font-black mb-16 bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400">
+        Sua Paleta Cósmica Foi Revelada
+      </h2>
+      <div id="palette" class="grid grid-cols-2 md:grid-cols-5 gap-8 mb-16"></div>
+      <div class="grid md:grid-cols-2 gap-10 max-w-4xl mx-auto">
+        <div class="bg-gray-900/60 p-10 rounded-3xl backdrop-blur border border-purple-500/20">
+          <h3 class="text-3xl font-bold mb-6 text-purple-400">Análise Cósmica</h3>
+          <p id="analysis" class="text-lg text-gray-200"></p>
         </div>
-        <div class="bg-gray-900 bg-opacity-60 p-8 rounded-2xl backdrop-blur">
-          <h3 class="text-2xl font-bold mb-4 text-pink-400">Códigos HEX</h3>
-          <div id="hexList" class="space-y-3 font-mono text-lg"></div>
-          <button onclick="copyHex()" class="mt-6 w-full py-3 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl font-bold hover:scale-105 transition">Copiar Tudo</button>
+        <div class="bg-gray-900/60 p-10 rounded-3xl backdrop-blur border border-pink-500/20">
+          <h3 class="text-3xl font-bold mb-6 text-pink-400">Códigos HEX</h3>
+          <div id="hexList" class="space-y-4 font-mono text-xl"></div>
+          <button onclick="copyAll()" class="mt-8 w-full py-4 bg-gradient-to-r from-emerald-500 to-cyan-500 rounded-2xl font-bold hover:scale-105 transition">
+            Copiar Tudo
+          </button>
         </div>
       </div>
-
-      <div class="text-center mt-12">
-        <button onclick="reset()" class="px-10 py-4 text-xl rounded-full bg-gray-800 hover:bg-gray-700 transition">Nova Paleta</button>
-      </div>
+      <button onclick="location.reload()" class="mt-16 px-12 py-5 text-2xl rounded-full bg-gray-800 hover:scale-110 transition">
+        Criar Nova Paleta
+      </button>
     </div>
   </div>
 
 <script>
-  // Paletas base muito mais ricas
-  const palettes = {
-    base: ["#2563eb","#dc2626","#f59e0b","#10b981","#8b5cf6","#ec4899","#06b6d4","#f97316","#84","#d946ef"],
-    pastel: ["#a78bfa","#f472b6","#fb923c","#a3e635","#60a5fa","#f87171","#34d399","#c084fc"],
-    dark: ["#1e3a8a","#7f1d1d","#78350f","#166534","#4c1d95","#86198f","#155e75","#992d22"],
-    neon: ["#00ffea","#ff006e","#ffea00","#8c00ff","#ff4500","#39ff14","#00ffff","#ff1493"]
+  const questions = [
+    { q: "Setor principal da marca", o: ["Tecnologia","Saúde","Alimentos","Luxo","Educação","Sustentabilidade","Criativo"], k: "sector" },
+    { q: "Emoção principal", o: ["Confiança","Energia","Calma","Criatividade","Sofisticação","Entusiasmo"], k: "emotion" },
+    { q: "Estilo visual", o: ["Moderno/Minimalista","Vintage/Retrô","Negrito/Impactante","Suave/Orgânico"], k: "style" },
+    { q: "Público-alvo", o: ["Jovem (18-30)","Adulto (30-50)","Todos os públicos"], k: "audience" },
+    { q: "Sensação térmica", o: ["Quente/Aconchegante","Frio/Refrescante","Neutro"], k: "warmth" },
+    { q: "Nível de contraste", o: ["Alto contraste","Médio","Baixo/Suave"], k: "contrast" },
+    { q: "Inspirado na natureza?", o: ["Sim (oceano, floresta…)", "Não, mais urbano/tech"], k: "nature" },
+    { q: "Cor que você AMA (opcional)", type:"text", placeholder:"ex: turquesa, dourado, vinho…", k:"fav" }
+  ];
+
+  let current = 0;
+  let answers = {};
+  const wrapper = document.getElementById('question-wrapper');
+  const backBtn = document.getElementById('backBtn');
+  const skipBtn = document.getElementById('skipBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const genBtn  = document.getElementById('generateBtn');
+
+  // Estrelas
+  for(let i=0;i<100;i++){
+    const s=document.createElement('div');
+    s.className='star';
+    s.style.cssText=`width:${Math.random()*3+1}px;height:${s.style.width};left:${Math.random()*100}vw;top:${Math.random()*100}vh;animation-delay:${Math.random()*4}s;`;
+    document.body.appendChild(s);
+  }
+
+  function showQuestion(){
+    wrapper.innerHTML = '';
+    const q = questions[current];
+
+    const card = document.createElement('div');
+    card.className = 'question-card rounded-3xl p-12 max-w-2xl mx-auto';
+
+    card.innerHTML = `
+      <div class="text-sm text-gray-500 mb-4">Pergunta ${current+1} de ${questions.length}</div>
+      <h3 class="text-4xl font-black mb-10 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-400">
+        ${q.q}
+      </h3>`;
+
+    if(q.type === "text"){
+      const input = document.createElement('input');
+      input.type = "text";
+      input.placeholder = q.placeholder;
+      input.value = answers[q.k] || '';
+      input.id = "textInput";
+      input.className = "w-full p-5 text-xl bg-gray-900/80 border border-purple-500/50 rounded-2xl focus:border-purple-400 outline-none transition ripple-btn";
+      card.appendChild(input);
+      skipBtn.classList.remove('hidden');
+      nextBtn.classList.add('hidden');
+      genBtn.classList.add('hidden');
+    } else {
+      q.o.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.textContent = opt;
+        btn.className = `block w-full text-left p-5 my-3 text-xl rounded-2xl transition ripple-btn
+          ${answers[q.k] === opt.toLowerCase() ? 'bg-purple-600/70 border-purple-400' : 'bg-gray-900/70 hover:bg-purple-900/50 border-transparent hover:border-purple-400'} border`;
+        btn.onclick = () => select(opt, q.k);
+        card.appendChild(btn);
+      });
+      skipBtn.classList.add('hidden');
+    }
+
+    wrapper.appendChild(card);
+
+    // Animação de entrada
+    gsap.fromTo(card, {scale:0, rotation:-720, opacity:0, y:200},
+                      {scale:1, rotation:0, opacity:1, y:0, duration:1.4, ease:"elastic.out(1,0.5)"});
+
+    // Controle de botões
+    backBtn.classList.toggle('hidden', current === 0);
+    if(current === questions.length-1 && q.type==="text") {
+      genBtn.classList.remove('hidden');
+      nextBtn.classList.add('hidden');
+    } else {
+      genBtn.classList.add('hidden');
+    }
+  }
+
+  function select(value, key){
+    answers[key] = value.toLowerCase();
+    next();
+  }
+
+  function next(){
+    const card = wrapper.querySelector('.question-card');
+    gsap.to(card, {scale:0.8, rotation:360, opacity:0, duration:0.8, ease:"back.in", onComplete:() => {
+      current++;
+      if(current < questions.length) showQuestion();
+      else {
+        genBtn.classList.remove('hidden');
+        nextBtn.classList.add('hidden');
+        skipBtn.classList.add('hidden');
+      }
+    }});
+  }
+
+  backBtn.onclick = () => {
+    if(current > 0){
+      const card = wrapper.querySelector('.question-card');
+      gsap.to(card, {scale:0.8, rotation:-360, opacity:0, duration:0.7, ease:"back.in", onComplete:() => {
+        current--;
+        showQuestion();
+      }});
+    }
   };
 
-  // Regras avançadas de harmonia
-  function generateUniquePalette(answers) {
-    let hueBase = 200;
-    const { style, warmth, nature } = answers;
+  skipBtn.onclick = () => { answers[questions[current].k] = ""; next(); };
 
-    if (answers.fav && answers.fav.includes('azul')) hueBase = 220;
-    if (answers.fav && answers.fav.includes('vermelho')) hueBase = 0;
-    if (answers.fav && answers.fav.includes('verde')) hueBase = 120;
-    if (warmth === 'warm') hueBase = (hueBase + 30) % 360;
-    if (nature === 'yes') hueBase = (hueBase + 100) % 360;
-
-    const harmony = answers.contrast === 'high' ? 'complementary' : 'analogous';
-    const colors = [];
-
-    // Garante cores únicas
-    const used = new Set();
-
-    for (let i = 0; i < 4; i++) {
-      let h = hueBase;
-      if (harmony === 'complementary') h = (hueBase + i*90 + (i%2===0 ? 0 : 180)) % 360;
-      else h = (hueBase + i*30 + Math.sin(i)*20) % 360;
-
-      const s = answers.style === 'bold' ? 90 : 70;
-      const l = answers.contrast === 'low' ? 60 : (answers.style === 'dark' ? 30 : 55);
-
-      const hex = hslToHex(h, s, l + i*8);
-      if (used.has(hex)) i--; else { colors.push(hex); used.add(hex); }
+  nextBtn.onclick = () => {
+    if(questions[current].type === "text"){
+      answers[questions[current].k] = document.getElementById('textInput').value.toLowerCase();
     }
-    return colors;
-  }
+    next();
+  };
 
-  function hslToHex(h, s, l) {
-    h /= 360; s /= 100; l /= 100;
-    let r, g, b;
-    if (s === 0) r = g = b = l;
-    else {
-      const hue2rgb = (p, q, t) => {
-        if (t < 0) t += 1;
-        if (t > 1) t -= 1;
-        if (t < 1/6) return p + (q - p) * 6 * t;
-        if (t < 1/2) return q;
-        if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
-        return p;
-      };
-      const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-      const p = 2 * l - q;
-      r = hue2rgb(p, q, h + 1/3);
-      g = hue2rgb(p, q, h);
-      b = hue2rgb(p, q, h - 1/3);
+  genBtn.onclick = () => {
+    if(questions[current].type === "text"){
+      answers[questions[current].k] = document.getElementById('textInput').value.toLowerCase();
     }
-    const toHex = x => {
-      const hex = Math.round(x * 255).toString(16);
-      return hex.length === 1 ? '0' + hex : hex;
-    };
-    return `#${toHex(r)}${toHex(g)}${toHex(b)}`.toUpperCase();
-  }
-
-  // Ripple effect nos botões/selects
-  document.querySelectorAll('.ripple-btn').forEach(el => {
-    el.addEventListener('click', e => {
-      const ripple = document.createElement('span');
-      const rect = el.getBoundingClientRect();
-      const size = Math.max(rect.width, rect.height);
-      const x = e.clientX - rect.left - size/2;
-      const y = e.clientY - rect.top - size/2;
-      ripple.style.width = ripple.style.height = size + 'px';
-      ripple.style.left = x + 'px';
-      ripple.style.top = y + 'px';
-      ripple.classList.add('ripple');
-      el.appendChild(ripple);
-      setTimeout(() => ripple.remove(), 600);
-    });
-  });
-
-  // Geração da paleta
-  document.getElementById('generateBtn').addEventListener('click', () => {
-    const answers = {
-      sector: document.querySelectorAll('.q')[0].value,
-      emotion: document.querySelectorAll('.q')[1].value,
-      style: document.querySelectorAll('.q')[2].value,
-      audience: document.querySelectorAll('.q')[3].value,
-      warmth: document.querySelectorAll('.q')[4].value,
-      contrast: document.querySelectorAll('.q')[5].value,
-      nature: document.querySelectorAll('.q')[6].value,
-      fav: document.getElementById('favColor').value.toLowerCase()
-    };
-
-    document.getElementById('step-1').classList.add('hidden');
+    document.getElementById('quiz').classList.add('hidden');
     document.getElementById('loading').classList.remove('hidden');
+    setTimeout(generatePalette, 2800);
+  };
 
-    setTimeout(() => {
-      const colors = generateUniquePalette(answers);
+  // Geração da paleta única
+  function generatePalette(){
+    let seed = Date.now() + Math.random()*1000000;
+    Object.values(answers).forEach(v=>seed += v.split('').reduce((a,c)=>a+c.charCodeAt(0),0));
 
-      const paletteDiv = document.getElementById('palette');
-      paletteDiv.innerHTML = '';
-      colors.forEach((hex, i) => {
-        const box = document.createElement('div');
-        box.className = 'color-box h-64 md:h-80 relative';
-        box.style.backgroundColor = hex;
-        box.innerHTML = `
-          <div class="liquid-wave"></div>
-          <div class="absolute bottom-4 left-4 text-2xl font-bold ${isLight(hex) ? 'text-black' : 'text-white'}">${hex}</div>
-        `;
-        paletteDiv.appendChild(box);
+    const rand = (min,max) => { seed = (seed*9301 + 49297) % 233280; return min + (seed/233280)*(max-min); };
 
-        // Animação de entrada com GSAP + glitch
-        gsap.fromTo(box, 
-          { scale: 0, rotation: -180, opacity: 0 },
-          { scale: 1, rotation: 0, opacity: 1, duration: 1.2, delay: i*0.2, ease: "elastic.out(1,0.5)" }
-        );
-        setTimeout(() => box.classList.add('glitch'), i*200);
-      });
+    let hue = rand(0,360);
+    if(answers.fav?.includes('azul')) hue = rand(200,260);
+    if(answers.fav?.includes('vermelh')||answers.fav?.includes('red')) hue = rand(340,20);
+    if(answers.fav?.includes('verde')||answers.fav?.includes('green')) hue = rand(100,160);
+    if(answers.warmth?.includes('quent')) hue = (hue + 50) % 360;
+    if(answers.nature?.includes('sim')) hue = (hue + 120 + rand(-40,40)) % 360;
 
-      // Análise simples
-      document.getElementById('analysis').innerHTML = `Paleta gerada com base em <strong>${answers.emotion}</strong>, estilo <strong>${answers.style}</strong> e sensação <strong>${answers.warmth}</strong>. As cores são 100% únicas e harmoniosas.`;
-      
-      const hexList = document.getElementById('hexList');
-      hexList.innerHTML = colors.map(c => `<div class="flex justify-between"><span>${['Primária','Secundária','Acento','Neutro'][colors.indexOf(c)]}</span><span class="font-bold">${c}</div>`).join('');
+    const colors = [];
+    for(let i=0;i<5;i++){
+      let h = (hue + i*72 + rand(-40,40)) % 360;
+      let s = answers.style?.includes('negrito') ? rand(80,100) : rand(65,92);
+      let l = answers.contrast?.includes('alto') ? rand(38,62) : answers.contrast?.includes('baixo') ? rand(68,85) : rand(50,72);
+      colors.push(hslToHex(h,s,l));
+    }
 
-      document.getElementById('loading').classList.add('hidden');
-      document.getElementById('result').classList.remove('hidden');
+    // Mostra resultado
+    const p = document.getElementById('palette');
+    p.innerHTML='';
+    colors.forEach((c,i)=>{
+      const box = document.createElement('div');
+      box.className='h-80 rounded-3xl relative overflow-hidden shadow-2xl';
+      box.style.backgroundColor = c;
+      box.innerHTML = `<div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                       <div class="absolute bottom-8 left-6 text-4xl font-black ${isLight(c)?'text-black':'text-white'} drop-shadow-2xl">${c}</div>`;
+      p.appendChild(box);
+      gsap.fromTo(box,{scale:0,rotation:-180,opacity:0},{scale:1,rotation:0,opacity:1,duration:1.6,delay:i*0.25,ease:"elastic.out(1,0.4)"});
+    });
 
-      // Atualiza fundo aurora com as cores da paleta
-      document.querySelector('.aurora').style.background = `linear-gradient(45deg, ${colors[0]}, ${colors[1]}, ${colors[2]}, ${colors[3]})`;
-    }, 2000);
-  });
-
-  function isLight(hex) {
-    const r = parseInt(hex.slice(1,3),16);
-    const g = parseInt(hex.slice(3,5),16);
-    const b = parseInt(hex.slice(5,7),16);
-    return (r*0.299 + g*0.587 + b*0.114) > 186;
+    document.getElementById('analysis').textContent = `Paleta única gerada em ${new Date().toLocaleString('pt-BR')}. Mesmo respondendo igual, nunca mais será a mesma.`;
+    document.getElementById('hexList').innerHTML = colors.map((c,i)=>`<div class="flex justify-between py-2"><span class="text-gray-400">${['Primária','Secundária 1','Secundária 2','Acento','Fundo'][i]}</span><b class="text-2xl">${c}</b></div>`).join('');
+    document.getElementById('loading').classList.add('hidden');
+    document.getElementById('result').classList.remove('hidden');
+    document.getElementById('aurora').style.background = `linear-gradient(45deg, ${colors.join(', ')})`;
   }
 
-  function copyHex() {
-    const text = Array.from(document.querySelectorAll('#palette .color-box')).map(el => el.querySelector('div').textContent).join('\n');
+  function hslToHex(h,s,l){
+    h/=360;s/=100;l/=100; let r,g,b;
+    if(s===0){r=g=b=l}else{
+      const q=l<0.5?l*(1+s):l+s-l*s;
+      const p=2*l-q;
+      r=hue2rgb(p,q,h+1/3);
+      g=hue2rgb(p,q,h);
+      b=hue2rgb(p,q,h-1/3);
+    }
+    const toHex=x=>('0'+Math.round(x*255).toString(16)).slice(-2);
+    return '#'+toHex(r)+toHex(g)+toHex(b);
+  }
+  function hue2rgb(p,q,t){if(t<0)t++;if(t>1)t--;if(t<1/6)return p+(q-p)*6*t;if(t<0.5)return q;if(t<2/3)return p+(q-p)*(2/3-t)*6;return p;}
+
+  function isLight(hex){
+    const r=parseInt(hex.slice(1,3),16), g=parseInt(hex.slice(3,5),16), b=parseInt(hex.slice(5,7),16);
+    return r*0.299 + g*0.587 + b*0.114 > 160;
+  }
+
+  function copyAll(){
+    const text = Array.from(document.querySelectorAll('#palette b')).map(e=>e.textContent).join('\n');
     navigator.clipboard.writeText(text);
     alert('Paleta copiada!');
   }
 
-  function reset() {
-    document.getElementById('result').classList.add('hidden');
-    document.getElementById('step-1').classList.remove('hidden');
-    document.querySelector('.aurora').style.background = 'linear-gradient(45deg, #ff00cc, #3333ff, #00ffcc, #ffff00)';
-  }
+  // Ripple effect
+  document.querySelectorAll('.ripple-btn').forEach(btn=>{
+    btn.addEventListener('click', e=>{
+      const ripple=document.createElement('span');
+      const rect=btn.getBoundingClientRect();
+      const size=Math.max(rect.width,rect.height)*2;
+      ripple.style.width=ripple.style.height=size+'px';
+      ripple.style.left=(e.clientX-rect.left-size/2)+'px';
+      ripple.style.top=(e.clientY-rect.top-size/2)+'px';
+      ripple.className='ripple';
+      btn.appendChild(ripple);
+      setTimeout(()=>ripple.remove(),600);
+    });
+  });
+
+  // Começa
+  showQuestion();
 </script>
 </body>
 </html>
