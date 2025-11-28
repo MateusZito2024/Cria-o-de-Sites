@@ -8,79 +8,119 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700;900&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <style>
-    html, body {
-    height: auto !important;
-    min-height: 100vh;
-  }
-  .relative.z-10 {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
-    /* ALTERADO: overflow-y: scroll para permitir rolagem */
     body { font-family: 'Inter', sans-serif; margin:0; background:#000; color:white; overflow-y:scroll; }
     .vortex-bg { position:fixed; inset:0; z-index:-2; background:radial-gradient(circle at center,#0f0f1e 0%,#000 100%); }
     .aurora { position:fixed; inset:0; z-index:-1; background:linear-gradient(45deg,#ff00cc,#3333ff,#00ffcc,#ffff00); background-size:400% 400%; animation:a 30s ease infinite; opacity:0.3; mix-blend-mode:screen; transition:background 3s; }
     @keyframes a {0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
-    /* ALTERADO: Removido height:500px e alterado perspective */
     .card-container { position:relative; width:100%; perspective:800px; }
-    .card { position:relative; /* ALTERADO: de absolute para relative */ background:rgba(20,20,40,0.9); backdrop-filter:blur(20px); border:1px solid rgba(150,100,255,0.3); border-radius:2rem; padding:3rem; box-shadow:0 30px 80px rgba(0,0,0,0.8); }
+    .card { position:relative; background:rgba(20,20,40,0.9); backdrop-filter:blur(20px); border:1px solid rgba(150,100,255,0.3); border-radius:2rem; padding:3rem; box-shadow:0 30px 80px rgba(0,0,0,0.8); }
     .piece { position:absolute; background:rgba(30,30,60,0.95); border-radius:8px; box-shadow:0 10px 30px rgba(0,0,0,0.6); backdrop-filter:blur(10px); }
     .ripple-btn { position:relative; overflow:hidden; cursor:pointer; }
     .ripple { position:absolute; border-radius:50%; background:rgba(255,255,255,0.7); transform:scale(0); animation:r 0.6s linear; pointer-events:none; }
     @keyframes r {to{transform:scale(4);opacity:0}}
     .star { position:absolute; background:white; border-radius:50%; pointer-events:none; animation:t 4s infinite; }
     @keyframes t {0%,100%{opacity:0.3}50%{opacity:1}}
+
+    /* ===== CORREÇÃO FINAL: REMOVE TODO ESPAÇO EXTRA ===== */
+    .main-container {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-bottom: 8rem; /* espaço pro rodapé */
+    }
+    #quiz, #result {
+      width: 100%;
+      max-w-6xl;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+    #result {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.8s ease;
+    }
+    #result.visible {
+      position: relative;
+      opacity: 1;
+      visibility: visible;
+      z-index: 20;
+    }
+    /* Remove min-height forçado quando resultado aparece */
+    .main-container.result-active {
+      min-height: unset;
+      justify-content: flex-start;
+      padding-top: 6rem;
+    }
   </style>
 </head>
 <body>
   <div class="vortex-bg"></div>
   <div class="aurora" id="aurora"></div>
-  <div class="relative z-10 flex flex-col items-center px-6 py-12">
-    <div id="result" class="hidden w-full max-w-6xl text-center px-6">
-      <h2 class="text-6xl font-black mb-16 bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400">
-        Sua Paleta Cósmica Está Pronta
-      </h2>
-      <div id="palette" class="grid grid-cols-2 md:grid-cols-5 gap-8 mb-16"></div>
-      <div class="grid md:grid-cols-2 gap-10 max-w-4xl mx-auto">
-        <div class="bg-gray-900/60 p-10 rounded-3xl backdrop-blur border border-purple-500/20">
-          <h3 class="text-3xl font-bold mb-6 text-purple-400">Análise Cósmica</h3>
-          <p id="analysis" class="text-lg text-gray-200"></p>
-        </div>
-        <div class="bg-gray-900/60 p-10 rounded-3xl backdrop-blur border border-pink-500/20">
-          <h3 class="text-3xl font-bold mb-6 text-pink-400">Códigos HEX</h3>
-          <div id="hexList" class="space-y-4 font-mono text-xl"></div>
-          <button onclick="copyAll()" class="mt-8 w-full py-4 bg-gradient-to-r from-emerald-500 to-cyan-500 rounded-2xl font-bold hover:scale-105">
-            Copiar Tudo
-          </button>
-        </div>
-      </div>
-      <button onclick="location.reload()" class="mt-16 px-12 py-5 text-2xl rounded-full bg-gray-800 hover:scale-110">
-        Nova Paleta
-      </button>
-    </div>
-    <div id="loading" class="hidden fixed inset-0 flex items-center justify-center bg-black/95 z-50">
-      <div class="text-center">
-        <div class="w-40 h-40 border-8 border-t-purple-500 border-r-pink-500 border-b-cyan-500 border-l-transparent rounded-full animate-spin mb-10"></div>
-        <p class="text-4xl font-black bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-400">Montando sua paleta no cosmos…</p>
-      </div>
-    </div>
-    <div id="quiz" class="w-full max-w-2xl text-center pb-10">
-      <h1 class="text-5xl md:text-7xl font-black mb-6 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 inline">
-        Asthro Colors
-      </h1>
-      <span class="text-xl md:text-3xl font-black bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 align-top ml-2">
-        ✨Cosmic Edition
-      </span>
-      <p class="text-xl text-gray-300 mb-12">Toque nas respostas e veja o universo montar sua paleta</p>
-      <div id="card-wrapper" class="card-container my-12"></div>
-      <div class="flex justify-center gap-4 flex-wrap">
-        <button id="backBtn" class="px-8 py-4 text-lg font-bold rounded-full bg-gray-800/80 hover:bg-gray-700 ripple-btn hidden">Voltar</button>
-        <button id="generateBtn" class="hidden px-16 py-7 text-3xl font-bold rounded-full bg-gradient-to-r from-cyan-500 to-purple-600 hover:scale-110 shadow-2xl ripple-btn">
-          GERAR PALETA CÓSMICA
-        </button>
-      </div>
-    </div>
+
+  <!-- CONTAINER PRINCIPAL -->
+  <div class="relative z-10 main-container" id="mainContainer">
+    
+    <!-- QUIZ (visível no começo) -->
+    <div id="quiz" class="text-center">
+      <h1 class="text-5xl md:text-7xl font-black mb-6 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 inline">
+        Asthro Colors
+      </h1>
+      <span class="text-xl md:text-3xl font-black bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 align-top ml-2">
+        ✨Cosmic Edition
+      </span>
+      <p class="text-xl text-gray-300 mb-12">Toque nas respostas e veja o universo montar sua paleta</p>
+      <div id="card-wrapper" class="card-container my-12"></div>
+      <div class="flex justify-center gap-4 flex-wrap">
+        <button id="backBtn" class="px-8 py-4 text-lg font-bold rounded-full bg-gray-800/80 hover:bg-gray-700 ripple-btn hidden">Voltar</button>
+        <button id="generateBtn" class="hidden px-16 py-7 text-3xl font-bold rounded-full bg-gradient-to-r from-cyan-500 to-purple-600 hover:scale-110 shadow-2xl ripple-btn">
+          GERAR PALETA CÓSMICA
+        </button>
+      </div>
+    </div>
+
+    <!-- RESULTADO (fica por cima, sem empurrar nada pra baixo) -->
+    <div id="result" class="text-center pb-12">
+      <h2 class="text-6xl font-black mb-16 bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400">
+        Sua Paleta Cósmica Está Pronta
+      </h2>
+      <div id="palette" class="grid grid-cols-2 md:grid-cols-5 gap-8 mb-16"></div>
+      <div class="grid md:grid-cols-2 gap-10 max-w-4xl mx-auto">
+        <div class="bg-gray-900/60 p-10 rounded-3xl backdrop-blur border border-purple-500/20">
+          <h3 class="text-3xl font-bold mb-6 text-purple-400">Análise Cósmica</h3>
+          <p id="analysis" class="text-lg text-gray-200"></p>
+        </div>
+        <div class="bg-gray-900/60 p-10 rounded-3xl backdrop-blur border border-pink-500/20">
+          <h3 class="text-3xl font-bold mb-6 text-pink-400">Códigos HEX</h3>
+          <div id="hexList" class="space-y-4 font-mono text-xl"></div>
+          <button onclick="copyAll()" class="mt-8 w-full py-4 bg-gradient-to-r from-emerald-500 to-cyan-500 rounded-2xl font-bold hover:scale-105 transition">
+            Copiar Tudo
+          </button>
+        </div>
+      </div>
+      <button onclick="location.reload()" class="mt-20 px-12 py-5 text-2xl rounded-full bg-gray-800 hover:scale-110 transition font-bold">
+        Nova Paleta
+      </button>
+    </div>
+  </div>
+
+  <!-- RODAPÉ FIXO NO FINAL (sempre visível) -->
+  <footer class="fixed bottom-0 left-0 right-0 text-center py-6 bg-gradient-to-t from-black/80 to-transparent text-gray-400 text-sm z-30">
+    © 2025 Asthro • Todos os direitos reservados
+  </footer>
+
+  <!-- LOADING -->
+  <div id="loading" class="hidden fixed inset-0 flex items-center justify-center bg-black/95 z-50">
+    <div class="text-center">
+      <div class="w-40 h-40 border-8 border-t-purple-500 border-r-pink-500 border-b-cyan-500 border-l-transparent rounded-full animate-spin mb-10"></div>
+      <p class="text-4xl font-black bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-400">Montando sua paleta no cosmos…</p>
+    </div>
+  </div>
+
 <script>
   const questions = [
     { q: "Setor principal da marca", o: ["Tecnologia","Saúde","Alimentos","Luxo","Educação","Sustentabilidade","Criativo"], k: "sector" },
@@ -95,127 +135,17 @@
   let current = 0;
   let answers = {};
   const wrapper = document.getElementById('card-wrapper');
-  // Cria 100 estrelinhas
+
+  // 100 estrelinhas
   for(let i=0;i<100;i++){
     const s=document.createElement('div');
     s.className='star';
     s.style.cssText=`width:${Math.random()*3+1}px;height:${s.style.width};left:${Math.random()*100}vw;top:${Math.random()*100}vh;animation-delay:${Math.random()*4}s;`;
     document.body.appendChild(s);
   }
-  function shatterCard(callback) {
-    const card = wrapper.querySelector('.card');
-    if(!card) return callback();
-    const pieces = 12;
-    const rect = card.getBoundingClientRect();
-    for(let i = 0; i < pieces; i++) {
-      const piece = document.createElement('div');
-      piece.className = 'piece';
-      piece.style.width = (80 + Math.random()*40) + 'px';
-      piece.style.height = (80 + Math.random()*40) + 'px';
-      piece.style.background = getComputedStyle(card).background;
-      piece.style.border = '1px solid rgba(150,100,255,0.4)';
-      piece.style.left = (Math.random() * 80 + 10) + '%';
-      piece.style.top = (Math.random() * 80 + 10) + '%';
-      wrapper.appendChild(piece);
-      gsap.to(piece, {
-        x: Math.random()*800 - 400,
-        y: Math.random()*800 - 400,
-        rotation: Math.random()*1080 - 540,
-        scale: 0,
-        opacity: 0,
-        duration: 1.2,
-        ease: "power3.out",
-        delay: i*0.05,
-        onComplete: () => piece.remove()
-      });
-    }
-    gsap.to(card, {opacity: 0, duration: 0.4, onComplete: callback});
-  }
-  function assembleCard() {
-    wrapper.innerHTML = '';
-    const card = document.createElement('div');
-    // REMOVIDA: A classe 'absolute' do CSS estava causando problemas com a rolagem
-    card.className = 'card'; 
-    const q = questions[current];
-    card.innerHTML = `
-      <div class="text-sm text-gray-500 mb-4">Pergunta ${current+1} de ${questions.length}</div>
-      <h3 class="text-4xl font-black mb-10 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-400">
-        ${q.q}
-      </h3>`;
-    if(q.type === "text") {
-      const input = document.createElement('input');
-      input.type = "text";
-      input.placeholder = q.placeholder;
-      input.value = answers.fav || '';
-      input.id = "favInput";
-      input.className = "w-full p-5 text-xl bg-gray-900/80 border border-purple-500/50 rounded-2xl focus:border-purple-400 outline-none ripple-btn";
-      card.appendChild(input);
-    } else {
-      q.o.forEach(opt => {
-        const btn = document.createElement('button');
-        btn.textContent = opt;
-        btn.className = `block w-full text-left p-5 my-3 text-xl rounded-2xl transition ripple-btn ${answers[q.k] === opt.toLowerCase() ? 'bg-purple-600/70 border-purple-400' : 'bg-gray-900/70 hover:bg-purple-900/50'} border`;
-        btn.onclick = () => selectAnswer(opt, q.k);
-        card.appendChild(btn);
-      });
-    }
-    wrapper.appendChild(card);
-    // Quebra-cabeça: entra em pedaços e se monta
-    const pieces = 15;
-    card.style.opacity = 0;
-    for(let i = 0; i < pieces; i++) {
-      const p = document.createElement('div');
-      p.className = 'piece';
-      p.style.width = (60 + Math.random()*60) + 'px';
-      p.style.height = (60 + Math.random()*60) + 'px';
-      p.style.background = 'rgba(30,30,60,0.9)';
-      p.style.border = '1px solid rgba(150,100,255,0.4)';
-      p.style.left = Math.random() * 80 + 10 + '%';
-      p.style.top = Math.random() * 80 + 10 + '%';
-      p.style.transform = `rotate(${Math.random()*360-180}deg) scale(0)`;
-      wrapper.appendChild(p);
-      gsap.to(p, {
-        x: 0,
-        y: 0,
-        rotation: 0,
-        scale: 1,
-        opacity: 1,
-        duration: 1.4,
-        delay: i*0.08,
-        ease: "elastic.out(1,0.5)",
-        onComplete: () => {
-          if(i === pieces-1) gsap.to(card, {opacity:1, duration:0.6});
-          p.remove();
-        }
-      });
-    }
-    // Atualiza botões
-    document.getElementById('backBtn').classList.toggle('hidden', current === 0 || current === questions.length - 1);
-    document.getElementById('generateBtn').classList.toggle('hidden', current !== questions.length - 1);
-  }
-  function selectAnswer(value, key) {
-    answers[key] = value.toLowerCase();
-    // CORRIGIDO: Avança para o próximo card
-    if (current < questions.length - 1) { 
-        current++;
-    }
-    shatterCard(() => setTimeout(assembleCard, 300));
-  }
-  document.getElementById('backBtn').onclick = () => {
-    if(current > 0) {
-      current--;
-      shatterCard(assembleCard);
-    }
-  };
-  document.getElementById('generateBtn').onclick = () => {
-    if(questions[current].type === "text") {
-      answers.fav = document.getElementById('favInput').value.toLowerCase();
-    }
-    document.getElementById('quiz').style.opacity = 0;
-    document.getElementById('loading').classList.remove('hidden');
-    setTimeout(generatePalette, 2800);
-  };
-  // === Geração da paleta (igual à anterior, só que ainda mais única) ===
+
+  // ... [todo o resto do seu JavaScript permanece igual até a função generatePalette] ...
+
   function generatePalette(){
     let seed = Date.now() + Math.random()*1e8;
     Object.values(answers).join('').split('').forEach(c=>seed += c.charCodeAt(0));
@@ -243,14 +173,22 @@
       p.appendChild(box);
       gsap.fromTo(box,{scale:0,rotationY:180,opacity:0},{scale:1,rotationY:0,opacity:1,duration:1.6,delay:i*0.2,ease:"elastic.out"});
     });
+
     document.getElementById('analysis').textContent = `Paleta única criada às ${new Date().toLocaleTimeString('pt-BR')}. Nunca mais será igual.`;
     document.getElementById('hexList').innerHTML = colors.map((c,i)=>`<div class="flex justify-between py-2"><span class="text-gray-400">${['Primária','Sec 1','Sec 2','Acento','Fundo'][i]}</span><b class="text-2xl">${c}</b></div>`).join('');
-    document.getElementById('loading').classList.add('hidden');
-    document.getElementById('result').classList.remove('hidden');
-    document.getElementById('aurora').style.background = `linear-gradient(45deg, ${colors.join(', ')})`;
-    // ADIÇÃO: Garante que o usuário veja o resultado imediatamente
-    document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    
+    // === MOSTRA O RESULTADO SEM CRIAR ESPAÇO EXTRA ===
+    document.getElementById('loading').classList.add('hidden');
+    document.getElementById('result').classList.add('visible');
+    document.getElementById('quiz').style.display = 'none';
+    document.getElementById('mainContainer').classList.add('result-active');
+    document.getElementById('aurora').style.background = `linear-gradient(45deg, ${colors.join(', ')})`;
+    
+    // Rola suavemente até o topo do resultado
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
+
+  // === O RESTANTE DO SEU JAVASCRIPT (hslToHex, copyAll, ripple, etc.) É O MESMO ===
   function hslToHex(h,s,l){h/=360;s/=100;l/=100;let r,g,b;if(s===0){r=g=b=l}else{const q=l<0.5?l*(1+s):l+s-l*s;const p=2*l-q;r=h2(q,p,h+1/3);g=h2(q,p,h);b=h2(q,p,h-1/3)}return '#'+[r,g,b].map(x=>('0'+Math.round(x*255).toString(16)).slice(-2)).join('').toUpperCase();}
   function h2(q,p,t){if(t<0)t++;if(t>1)t--;if(t<1/6)return p+(q-p)*6*t;if(t<0.5)return q;if(t<2/3)return p+(q-p)*(2/3-t)*6;return p;}
   function isLight(hex){const [r,g,b]=[1,3,5].map(i=>parseInt(hex.slice(i,i+2),16));return r*0.299+g*0.587+b*0.114>160;}
@@ -259,7 +197,8 @@
     navigator.clipboard.writeText(text);
     alert('Paleta copiada!');
   }
-  // Ripple
+
+  // Ripple effect
   document.querySelectorAll('.ripple-btn').forEach(btn=>{
     btn.addEventListener('click', e=>{
       const r=document.createElement('span');
@@ -273,7 +212,109 @@
       setTimeout(()=>r.remove(),600);
     });
   });
-  // Começa
+
+  // Funções de card (shatter, assemble, etc.) permanecem exatamente iguais
+  // ... (cole aqui todo o código das funções shatterCard, assembleCard, selectAnswer, etc. que você já tinha)
+
+  function shatterCard(callback) {
+    const card = wrapper.querySelector('.card');
+    if(!card) return callback();
+    const pieces = 12;
+    for(let i = 0; i < pieces; i++) {
+      const piece = document.createElement('div');
+      piece.className = 'piece';
+      piece.style.width = (80 + Math.random()*40) + 'px';
+      piece.style.height = (80 + Math.random()*40) + 'px';
+      piece.style.background = getComputedStyle(card).background;
+      piece.style.border = '1px solid rgba(150,100,255,0.4)';
+      piece.style.left = (Math.random() * 80 + 10) + '%';
+      piece.style.top = (Math.random() * 80 + 10) + '%';
+      wrapper.appendChild(piece);
+      gsap.to(piece, {
+        x: Math.random()*800 - 400,
+        y: Math.random()*800 - 400,
+        rotation: Math.random()*1080 - 540,
+        scale: 0,
+        opacity: 0,
+        duration: 1.2,
+        ease: "power3.out",
+        delay: i*0.05,
+        onComplete: () => piece.remove()
+      });
+    }
+    gsap.to(card, {opacity: 0, duration: 0.4, onComplete: callback});
+  }
+
+  function assembleCard() {
+    wrapper.innerHTML = '';
+    const card = document.createElement('div');
+    card.className = 'card';
+    const q = questions[current];
+    card.innerHTML = `
+      <div class="text-sm text-gray-500 mb-4">Pergunta ${current+1} de ${questions.length}</div>
+      <h3 class="text-4xl font-black mb-10 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-400">
+        ${q.q}
+      </h3>`;
+    if(q.type === "text") {
+      const input = document.createElement('input');
+      input.type = "text";
+      input.placeholder = q.placeholder;
+      input.value = answers.fav || '';
+      input.id = "favInput";
+      input.className = "w-full p-5 text-xl bg-gray-900/80 border border-purple-500/50 rounded-2xl focus:border-purple-400 outline-none ripple-btn";
+      card.appendChild(input);
+    } else {
+      q.o.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.textContent = opt;
+        btn.className = `block w-full text-left p-5 my-3 text-xl rounded-2xl transition ripple-btn ${answers[q.k] === opt.toLowerCase() ? 'bg-purple-600/70 border-purple-400' : 'bg-gray-900/70 hover:bg-purple-900/50'} border`;
+        btn.onclick = () => selectAnswer(opt, q.k);
+        card.appendChild(btn);
+      });
+    }
+    wrapper.appendChild(card);
+    const pieces = 15;
+    card.style.opacity = 0;
+    for(let i = 0; i < pieces; i++) {
+      const p = document.createElement('div');
+      p.className = 'piece';
+      p.style.width = (60 + Math.random()*60) + 'px';
+      p.style.height = (60 + Math.random()*60) + 'px';
+      p.style.background = 'rgba(30,30,60,0.9)';
+      p.style.border = '1px solid rgba(150,100,255,0.4)';
+      p.style.left = Math.random() * 80 + 10 + '%';
+      p.style.top = Math.random() * 80 + 10 + '%';
+      p.style.transform = `rotate(${Math.random()*360-180}deg) scale(0)`;
+      wrapper.appendChild(p);
+      gsap.to(p, {
+        x: 0, y: 0, rotation: 0, scale: 1, opacity: 1,
+        duration: 1.4, delay: i*0.08, ease: "elastic.out(1,0.5)",
+        onComplete: () => { if(i === pieces-1) gsap.to(card, {opacity:1, duration:0.6}); p.remove(); }
+      });
+    }
+    document.getElementById('backBtn').classList.toggle('hidden', current === 0 || current === questions.length - 1);
+    document.getElementById('generateBtn').classList.toggle('hidden', current !== questions.length - 1);
+  }
+
+  function selectAnswer(value, key) {
+    answers[key] = value.toLowerCase();
+    if (current < questions.length - 1) current++;
+    shatterCard(() => setTimeout(assembleCard, 300));
+  }
+
+  document.getElementById('backBtn').onclick = () => {
+    if(current > 0) { current--; shatterCard(assembleCard); }
+  };
+
+  document.getElementById('generateBtn').onclick = () => {
+    if(questions[current].type === "text") {
+      answers.fav = document.getElementById('favInput').value.toLowerCase();
+    }
+    document.getElementById('loading').classList.remove('hidden');
+    setTimeout(generatePalette, 2800);
+  };
+
+  // Inicia
   assembleCard();
 </script>
 </body>
