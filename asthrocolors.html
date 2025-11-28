@@ -8,55 +8,50 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700;900&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <style>
-    body { font-family: 'Inter', sans-serif; margin:0; background:#000; color:white; overflow-x:hidden; }
+    /* ALTERADO: overflow-y: scroll para permitir rolagem */
+    body { font-family: 'Inter', sans-serif; margin:0; background:#000; color:white; overflow-y:scroll; }
     .vortex-bg { position:fixed; inset:0; z-index:-2; background:radial-gradient(circle at center,#0f0f1e 0%,#000 100%); }
     .aurora { position:fixed; inset:0; z-index:-1; background:linear-gradient(45deg,#ff00cc,#3333ff,#00ffcc,#ffff00); background-size:400% 400%; animation:a 30s ease infinite; opacity:0.3; mix-blend-mode:screen; transition:background 3s; }
     @keyframes a {0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+    /* ALTERADO: Removido height:500px e alterado perspective */
+    .card-container { position:relative; width:100%; perspective:800px; }
+    .card { position:relative; /* ALTERADO: de absolute para relative */ background:rgba(20,20,40,0.9); backdrop-filter:blur(20px); border:1px solid rgba(150,100,255,0.3); border-radius:2rem; padding:3rem; box-shadow:0 30px 80px rgba(0,0,0,0.8); }
+    .piece { position:absolute; background:rgba(30,30,60,0.95); border-radius:8px; box-shadow:0 10px 30px rgba(0,0,0,0.6); backdrop-filter:blur(10px); }
     .ripple-btn { position:relative; overflow:hidden; cursor:pointer; }
     .ripple { position:absolute; border-radius:50%; background:rgba(255,255,255,0.7); transform:scale(0); animation:r 0.6s linear; pointer-events:none; }
     @keyframes r {to{transform:scale(4);opacity:0}}
-    .question-card { background:rgba(20,20,40,0.8); backdrop-filter:blur(20px); border:1px solid rgba(150,100,255,0.3); box-shadow:0 30px 60px rgba(0,0,0,0.7); }
     .star { position:absolute; background:white; border-radius:50%; pointer-events:none; animation:t 4s infinite; }
     @keyframes t {0%,100%{opacity:0.3}50%{opacity:1}}
   </style>
 </head>
-<body class="min-h-screen">
-
+<body>
   <div class="vortex-bg"></div>
   <div class="aurora" id="aurora"></div>
-
-  <div class="relative z-10 min-h-screen flex flex-col items-center justify-center px-6">
-
-    <div id="quiz" class="w-full max-w-2xl text-center">
+  <div class="relative z-10 flex flex-col items-center justify-center px-6 py-20">
+    <div id="quiz" class="w-full max-w-2xl text-center pb-40"> 
       <h1 class="text-5xl md:text-7xl font-black mb-6 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400">
         Asthros Paleta Pro<br><span class="text-3xl">Cosmic Edition</span>
       </h1>
-      <p class="text-xl text-gray-300 mb-12">Responda e o universo criará sua paleta única</p>
-
-      <div id="question-wrapper" class="min-h-96 flex flex-col items-center justify-center"></div>
-
-      <div class="mt-12 flex justify-center gap-6 flex-wrap">
-        <button id="backBtn" class="px-8 py-4 text-lg font-bold rounded-full bg-gray-800/80 hover:bg-gray-700 transition ripple-btn">Voltar</button>
-        <button id="skipBtn" class="px-8 py-4 text-lg font-bold rounded-full bg-gradient-to-r from-gray-600 to-gray-800 hover:scale-105 transition ripple-btn">Pular esta</button>
-        <button id="nextBtn" class="px-12 py-5 text-xl font-bold rounded-full bg-gradient-to-r from-purple-600 to-pink-600 hover:scale-110 transition ripple-btn">PRÓXIMA</button>
-        <button id="generateBtn" class="hidden px-16 py-7 text-3xl font-bold rounded-full bg-gradient-to-r from-cyan-500 to-purple-600 hover:scale-110 transition shadow-2xl ripple-btn">
+      <p class="text-xl text-gray-300 mb-12">Toque nas respostas e veja o universo montar sua paleta</p>
+      <div id="card-wrapper" class="card-container my-12"></div>
+      <div class="flex justify-center gap-4 flex-wrap">
+        <button id="backBtn" class="px-8 py-4 text-lg font-bold rounded-full bg-gray-800/80 hover:bg-gray-700 ripple-btn">Voltar</button>
+        <button id="skipBtn" class="px-8 py-4 text-lg font-bold rounded-full bg-gradient-to-r from-gray-600 to-gray-800 ripple-btn">Pular esta</button>
+        <button id="nextBtn" class="px-12 py-5 text-xl font-bold rounded-full bg-gradient-to-r from-purple-600 to-pink-600 hover:scale-105 ripple-btn">PRÓXIMA</button>
+        <button id="generateBtn" class="hidden px-16 py-7 text-3xl font-bold rounded-full bg-gradient-to-r from-cyan-500 to-purple-600 hover:scale-110 shadow-2xl ripple-btn">
           GERAR PALETA CÓSMICA
         </button>
       </div>
     </div>
-
-    <!-- Loading -->
     <div id="loading" class="hidden fixed inset-0 flex items-center justify-center bg-black/95 z-50">
       <div class="text-center">
         <div class="w-40 h-40 border-8 border-t-purple-500 border-r-pink-500 border-b-cyan-500 border-l-transparent rounded-full animate-spin mb-10"></div>
-        <p class="text-4xl font-black bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-400">Criando sua paleta única…</p>
+        <p class="text-4xl font-black bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-400">Montando sua paleta no cosmos…</p>
       </div>
     </div>
-
-    <!-- Resultado -->
     <div id="result" class="hidden w-full max-w-6xl text-center px-6">
       <h2 class="text-6xl font-black mb-16 bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400">
-        Sua Paleta Cósmica Foi Revelada
+        Sua Paleta Cósmica Está Pronta
       </h2>
       <div id="palette" class="grid grid-cols-2 md:grid-cols-5 gap-8 mb-16"></div>
       <div class="grid md:grid-cols-2 gap-10 max-w-4xl mx-auto">
@@ -67,17 +62,16 @@
         <div class="bg-gray-900/60 p-10 rounded-3xl backdrop-blur border border-pink-500/20">
           <h3 class="text-3xl font-bold mb-6 text-pink-400">Códigos HEX</h3>
           <div id="hexList" class="space-y-4 font-mono text-xl"></div>
-          <button onclick="copyAll()" class="mt-8 w-full py-4 bg-gradient-to-r from-emerald-500 to-cyan-500 rounded-2xl font-bold hover:scale-105 transition">
+          <button onclick="copyAll()" class="mt-8 w-full py-4 bg-gradient-to-r from-emerald-500 to-cyan-500 rounded-2xl font-bold hover:scale-105">
             Copiar Tudo
           </button>
         </div>
       </div>
-      <button onclick="location.reload()" class="mt-16 px-12 py-5 text-2xl rounded-full bg-gray-800 hover:scale-110 transition">
-        Criar Nova Paleta
+      <button onclick="location.reload()" class="mt-16 px-12 py-5 text-2xl rounded-full bg-gray-800 hover:scale-110">
+        Nova Paleta
       </button>
     </div>
   </div>
-
 <script>
   const questions = [
     { q: "Setor principal da marca", o: ["Tecnologia","Saúde","Alimentos","Luxo","Educação","Sustentabilidade","Criativo"], k: "sector" },
@@ -87,207 +81,210 @@
     { q: "Sensação térmica", o: ["Quente/Aconchegante","Frio/Refrescante","Neutro"], k: "warmth" },
     { q: "Nível de contraste", o: ["Alto contraste","Médio","Baixo/Suave"], k: "contrast" },
     { q: "Inspirado na natureza?", o: ["Sim (oceano, floresta…)", "Não, mais urbano/tech"], k: "nature" },
-    { q: "Cor que você AMA (opcional)", type:"text", placeholder:"ex: turquesa, dourado, vinho…", k:"fav" }
+    { q: "Cor que você AMA (opcional)", type:"text", placeholder:"ex: turquesa, dourado…", k:"fav" }
   ];
-
   let current = 0;
   let answers = {};
-  const wrapper = document.getElementById('question-wrapper');
-  const backBtn = document.getElementById('backBtn');
-  const skipBtn = document.getElementById('skipBtn');
-  const nextBtn = document.getElementById('nextBtn');
-  const genBtn  = document.getElementById('generateBtn');
-
-  // Estrelas
+  const wrapper = document.getElementById('card-wrapper');
+  // Cria 100 estrelinhas
   for(let i=0;i<100;i++){
     const s=document.createElement('div');
     s.className='star';
     s.style.cssText=`width:${Math.random()*3+1}px;height:${s.style.width};left:${Math.random()*100}vw;top:${Math.random()*100}vh;animation-delay:${Math.random()*4}s;`;
     document.body.appendChild(s);
   }
-
-  function showQuestion(){
+  function shatterCard(callback) {
+    const card = wrapper.querySelector('.card');
+    if(!card) return callback();
+    const pieces = 12;
+    const rect = card.getBoundingClientRect();
+    for(let i = 0; i < pieces; i++) {
+      const piece = document.createElement('div');
+      piece.className = 'piece';
+      piece.style.width = (80 + Math.random()*40) + 'px';
+      piece.style.height = (80 + Math.random()*40) + 'px';
+      piece.style.background = getComputedStyle(card).background;
+      piece.style.border = '1px solid rgba(150,100,255,0.4)';
+      piece.style.left = (Math.random() * 80 + 10) + '%';
+      piece.style.top = (Math.random() * 80 + 10) + '%';
+      wrapper.appendChild(piece);
+      gsap.to(piece, {
+        x: Math.random()*800 - 400,
+        y: Math.random()*800 - 400,
+        rotation: Math.random()*1080 - 540,
+        scale: 0,
+        opacity: 0,
+        duration: 1.2,
+        ease: "power3.out",
+        delay: i*0.05,
+        onComplete: () => piece.remove()
+      });
+    }
+    gsap.to(card, {opacity: 0, duration: 0.4, onComplete: callback});
+  }
+  function assembleCard() {
     wrapper.innerHTML = '';
-    const q = questions[current];
-
     const card = document.createElement('div');
-    card.className = 'question-card rounded-3xl p-12 max-w-2xl mx-auto';
-
+    // REMOVIDA: A classe 'absolute' do CSS estava causando problemas com a rolagem
+    card.className = 'card'; 
+    const q = questions[current];
     card.innerHTML = `
       <div class="text-sm text-gray-500 mb-4">Pergunta ${current+1} de ${questions.length}</div>
       <h3 class="text-4xl font-black mb-10 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-400">
         ${q.q}
       </h3>`;
-
-    if(q.type === "text"){
+    if(q.type === "text") {
       const input = document.createElement('input');
       input.type = "text";
       input.placeholder = q.placeholder;
-      input.value = answers[q.k] || '';
-      input.id = "textInput";
-      input.className = "w-full p-5 text-xl bg-gray-900/80 border border-purple-500/50 rounded-2xl focus:border-purple-400 outline-none transition ripple-btn";
+      input.value = answers.fav || '';
+      input.id = "favInput";
+      input.className = "w-full p-5 text-xl bg-gray-900/80 border border-purple-500/50 rounded-2xl focus:border-purple-400 outline-none ripple-btn";
       card.appendChild(input);
-      skipBtn.classList.remove('hidden');
-      nextBtn.classList.add('hidden');
-      genBtn.classList.add('hidden');
     } else {
       q.o.forEach(opt => {
         const btn = document.createElement('button');
         btn.textContent = opt;
-        btn.className = `block w-full text-left p-5 my-3 text-xl rounded-2xl transition ripple-btn
-          ${answers[q.k] === opt.toLowerCase() ? 'bg-purple-600/70 border-purple-400' : 'bg-gray-900/70 hover:bg-purple-900/50 border-transparent hover:border-purple-400'} border`;
-        btn.onclick = () => select(opt, q.k);
+        btn.className = `block w-full text-left p-5 my-3 text-xl rounded-2xl transition ripple-btn ${answers[q.k] === opt.toLowerCase() ? 'bg-purple-600/70 border-purple-400' : 'bg-gray-900/70 hover:bg-purple-900/50'} border`;
+        btn.onclick = () => selectAnswer(opt, q.k);
         card.appendChild(btn);
       });
-      skipBtn.classList.add('hidden');
     }
-
     wrapper.appendChild(card);
-
-    // Animação de entrada
-    gsap.fromTo(card, {scale:0, rotation:-720, opacity:0, y:200},
-                      {scale:1, rotation:0, opacity:1, y:0, duration:1.4, ease:"elastic.out(1,0.5)"});
-
-    // Controle de botões
-    backBtn.classList.toggle('hidden', current === 0);
-    if(current === questions.length-1 && q.type==="text") {
-      genBtn.classList.remove('hidden');
-      nextBtn.classList.add('hidden');
-    } else {
-      genBtn.classList.add('hidden');
+    // Quebra-cabeça: entra em pedaços e se monta
+    const pieces = 15;
+    card.style.opacity = 0;
+    for(let i = 0; i < pieces; i++) {
+      const p = document.createElement('div');
+      p.className = 'piece';
+      p.style.width = (60 + Math.random()*60) + 'px';
+      p.style.height = (60 + Math.random()*60) + 'px';
+      p.style.background = 'rgba(30,30,60,0.9)';
+      p.style.border = '1px solid rgba(150,100,255,0.4)';
+      p.style.left = Math.random() * 80 + 10 + '%';
+      p.style.top = Math.random() * 80 + 10 + '%';
+      p.style.transform = `rotate(${Math.random()*360-180}deg) scale(0)`;
+      wrapper.appendChild(p);
+      gsap.to(p, {
+        x: 0,
+        y: 0,
+        rotation: 0,
+        scale: 1,
+        opacity: 1,
+        duration: 1.4,
+        delay: i*0.08,
+        ease: "elastic.out(1,0.5)",
+        onComplete: () => {
+          if(i === pieces-1) gsap.to(card, {opacity:1, duration:0.6});
+          p.remove();
+        }
+      });
     }
+    // Atualiza botões
+    document.getElementById('backBtn').classList.toggle('hidden', current === 0);
+    document.getElementById('skipBtn').classList.toggle('hidden', q.type !== "text");
+    // ALTERADO: Adicionado '!' para que o botão 'PRÓXIMA' apareça somente para a última pergunta (de digitação)
+    document.getElementById('nextBtn').classList.toggle('hidden', q.type === "text" || current === questions.length-1); 
+    document.getElementById('generateBtn').classList.toggle('hidden', current !== questions.length-1);
   }
-
-  function select(value, key){
+  function selectAnswer(value, key) {
     answers[key] = value.toLowerCase();
-    next();
+    // CORRIGIDO: Avança para o próximo card
+    if (current < questions.length - 1) { 
+        current++;
+    }
+    shatterCard(() => setTimeout(assembleCard, 300));
   }
-
-  function next(){
-    const card = wrapper.querySelector('.question-card');
-    gsap.to(card, {scale:0.8, rotation:360, opacity:0, duration:0.8, ease:"back.in", onComplete:() => {
-      current++;
-      if(current < questions.length) showQuestion();
-      else {
-        genBtn.classList.remove('hidden');
-        nextBtn.classList.add('hidden');
-        skipBtn.classList.add('hidden');
-      }
-    }});
-  }
-
-  backBtn.onclick = () => {
-    if(current > 0){
-      const card = wrapper.querySelector('.question-card');
-      gsap.to(card, {scale:0.8, rotation:-360, opacity:0, duration:0.7, ease:"back.in", onComplete:() => {
-        current--;
-        showQuestion();
-      }});
+  document.getElementById('backBtn').onclick = () => {
+    if(current > 0) {
+      current--;
+      shatterCard(assembleCard);
     }
   };
-
-  skipBtn.onclick = () => { answers[questions[current].k] = ""; next(); };
-
-  nextBtn.onclick = () => {
-    if(questions[current].type === "text"){
-      answers[questions[current].k] = document.getElementById('textInput').value.toLowerCase();
+  document.getElementById('skipBtn').onclick = () => {
+    answers[questions[current].k] = "";
+    // CORRIGIDO: Avança para o próximo card ao pular
+    if (current < questions.length - 1) { 
+        current++;
     }
-    next();
+    shatterCard(() => setTimeout(assembleCard, 300));
   };
-
-  genBtn.onclick = () => {
-    if(questions[current].type === "text"){
-      answers[questions[current].k] = document.getElementById('textInput').value.toLowerCase();
+  document.getElementById('nextBtn').onclick = () => {
+    if(questions[current].type === "text") {
+      answers.fav = document.getElementById('favInput').value.toLowerCase();
     }
-    document.getElementById('quiz').classList.add('hidden');
+    // CORRIGIDO: Avança para o próximo card
+    if (current < questions.length - 1) {
+        current++;
+    }
+    shatterCard(() => setTimeout(assembleCard, 300));
+  };
+  document.getElementById('generateBtn').onclick = () => {
+    if(questions[current].type === "text") {
+      answers.fav = document.getElementById('favInput').value.toLowerCase();
+    }
+    document.getElementById('quiz').style.opacity = 0;
     document.getElementById('loading').classList.remove('hidden');
     setTimeout(generatePalette, 2800);
   };
-
-  // Geração da paleta única
+  // === Geração da paleta (igual à anterior, só que ainda mais única) ===
   function generatePalette(){
-    let seed = Date.now() + Math.random()*1000000;
-    Object.values(answers).forEach(v=>seed += v.split('').reduce((a,c)=>a+c.charCodeAt(0),0));
-
-    const rand = (min,max) => { seed = (seed*9301 + 49297) % 233280; return min + (seed/233280)*(max-min); };
-
+    let seed = Date.now() + Math.random()*1e8;
+    Object.values(answers).join('').split('').forEach(c=>seed += c.charCodeAt(0));
+    const rand = (m,M)=>{seed=(seed*9301+49297)%233280; return m+(seed/233280)*(M-m)};
     let hue = rand(0,360);
     if(answers.fav?.includes('azul')) hue = rand(200,260);
     if(answers.fav?.includes('vermelh')||answers.fav?.includes('red')) hue = rand(340,20);
     if(answers.fav?.includes('verde')||answers.fav?.includes('green')) hue = rand(100,160);
-    if(answers.warmth?.includes('quent')) hue = (hue + 50) % 360;
-    if(answers.nature?.includes('sim')) hue = (hue + 120 + rand(-40,40)) % 360;
-
+    if(answers.warmth?.includes('quent')) hue = (hue + 60) % 360;
     const colors = [];
     for(let i=0;i<5;i++){
-      let h = (hue + i*72 + rand(-40,40)) % 360;
+      let h = (hue + i*72 + rand(-45,45)) % 360;
       let s = answers.style?.includes('negrito') ? rand(80,100) : rand(65,92);
-      let l = answers.contrast?.includes('alto') ? rand(38,62) : answers.contrast?.includes('baixo') ? rand(68,85) : rand(50,72);
+      let l = answers.contrast?.includes('alto') ? rand(38,60) : answers.contrast?.includes('baixo') ? rand(68,85) : rand(50,72);
       colors.push(hslToHex(h,s,l));
     }
-
-    // Mostra resultado
     const p = document.getElementById('palette');
     p.innerHTML='';
     colors.forEach((c,i)=>{
       const box = document.createElement('div');
       box.className='h-80 rounded-3xl relative overflow-hidden shadow-2xl';
-      box.style.backgroundColor = c;
+      box.style.backgroundColor=c;
       box.innerHTML = `<div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                       <div class="absolute bottom-8 left-6 text-4xl font-black ${isLight(c)?'text-black':'text-white'} drop-shadow-2xl">${c}</div>`;
+                     <div class="absolute bottom-8 left-6 text-4xl font-black ${isLight(c)?'text-black':'text-white'} drop-shadow-2xl">${c}</div>`;
       p.appendChild(box);
-      gsap.fromTo(box,{scale:0,rotation:-180,opacity:0},{scale:1,rotation:0,opacity:1,duration:1.6,delay:i*0.25,ease:"elastic.out(1,0.4)"});
+      gsap.fromTo(box,{scale:0,rotationY:180,opacity:0},{scale:1,rotationY:0,opacity:1,duration:1.6,delay:i*0.2,ease:"elastic.out"});
     });
-
-    document.getElementById('analysis').textContent = `Paleta única gerada em ${new Date().toLocaleString('pt-BR')}. Mesmo respondendo igual, nunca mais será a mesma.`;
-    document.getElementById('hexList').innerHTML = colors.map((c,i)=>`<div class="flex justify-between py-2"><span class="text-gray-400">${['Primária','Secundária 1','Secundária 2','Acento','Fundo'][i]}</span><b class="text-2xl">${c}</b></div>`).join('');
+    document.getElementById('analysis').textContent = `Paleta única criada às ${new Date().toLocaleTimeString('pt-BR')}. Nunca mais será igual.`;
+    document.getElementById('hexList').innerHTML = colors.map((c,i)=>`<div class="flex justify-between py-2"><span class="text-gray-400">${['Primária','Sec 1','Sec 2','Acento','Fundo'][i]}</span><b class="text-2xl">${c}</b></div>`).join('');
     document.getElementById('loading').classList.add('hidden');
     document.getElementById('result').classList.remove('hidden');
     document.getElementById('aurora').style.background = `linear-gradient(45deg, ${colors.join(', ')})`;
   }
-
-  function hslToHex(h,s,l){
-    h/=360;s/=100;l/=100; let r,g,b;
-    if(s===0){r=g=b=l}else{
-      const q=l<0.5?l*(1+s):l+s-l*s;
-      const p=2*l-q;
-      r=hue2rgb(p,q,h+1/3);
-      g=hue2rgb(p,q,h);
-      b=hue2rgb(p,q,h-1/3);
-    }
-    const toHex=x=>('0'+Math.round(x*255).toString(16)).slice(-2);
-    return '#'+toHex(r)+toHex(g)+toHex(b);
-  }
-  function hue2rgb(p,q,t){if(t<0)t++;if(t>1)t--;if(t<1/6)return p+(q-p)*6*t;if(t<0.5)return q;if(t<2/3)return p+(q-p)*(2/3-t)*6;return p;}
-
-  function isLight(hex){
-    const r=parseInt(hex.slice(1,3),16), g=parseInt(hex.slice(3,5),16), b=parseInt(hex.slice(5,7),16);
-    return r*0.299 + g*0.587 + b*0.114 > 160;
-  }
-
+  function hslToHex(h,s,l){h/=360;s/=100;l/=100;let r,g,b;if(s===0){r=g=b=l}else{const q=l<0.5?l*(1+s):l+s-l*s;const p=2*l-q;r=h2(q,p,h+1/3);g=h2(q,p,h);b=h2(q,p,h-1/3)}return '#'+[r,g,b].map(x=>('0'+Math.round(x*255).toString(16)).slice(-2)).join('').toUpperCase();}
+  function h2(q,p,t){if(t<0)t++;if(t>1)t--;if(t<1/6)return p+(q-p)*6*t;if(t<0.5)return q;if(t<2/3)return p+(q-p)*(2/3-t)*6;return p;}
+  function isLight(hex){const [r,g,b]=[1,3,5].map(i=>parseInt(hex.slice(i,i+2),16));return r*0.299+g*0.587+b*0.114>160;}
   function copyAll(){
     const text = Array.from(document.querySelectorAll('#palette b')).map(e=>e.textContent).join('\n');
     navigator.clipboard.writeText(text);
     alert('Paleta copiada!');
   }
-
-  // Ripple effect
+  // Ripple
   document.querySelectorAll('.ripple-btn').forEach(btn=>{
     btn.addEventListener('click', e=>{
-      const ripple=document.createElement('span');
+      const r=document.createElement('span');
       const rect=btn.getBoundingClientRect();
       const size=Math.max(rect.width,rect.height)*2;
-      ripple.style.width=ripple.style.height=size+'px';
-      ripple.style.left=(e.clientX-rect.left-size/2)+'px';
-      ripple.style.top=(e.clientY-rect.top-size/2)+'px';
-      ripple.className='ripple';
-      btn.appendChild(ripple);
-      setTimeout(()=>ripple.remove(),600);
+      r.style.width=r.style.height=size+'px';
+      r.style.left=(e.clientX-rect.left-size/2)+'px';
+      r.style.top=(e.clientY-rect.top-size/2)+'px';
+      r.className='ripple';
+      btn.appendChild(r);
+      setTimeout(()=>r.remove(),600);
     });
   });
-
   // Começa
-  showQuestion();
+  assembleCard();
 </script>
 </body>
 </html>
