@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AsthroAura | Gerador de Nomes de Marca + Disponibilidade .COM.BR</title>
+    <!-- Carrega o Tailwind CSS para um design moderno e responsivo -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Estilos globais para a fonte e o fundo */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; /* Fundo suave */
+            color: #1a202c;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 20px 10px;
+        }
+        /* Estilo para a caixa de input e botão */
+        .input-box {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        /* Estilo para a caixa de resultados */
+        #results-container {
+            min-height: 300px;
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        /* Efeito de carregamento (spinner) */
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: #3b82f6;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="max-w-4xl w-full space-y-8">
+        <!-- HEADER e AVISO -->
+        <header class="text-center space-y-4">
+            <h1 class="text-4xl font-extrabold text-[#3b82f6]">AsthroAura</h1>
+            <p class="text-xl text-gray-700">Gerador de Nomes de Marca &amp; Verificação de Disponibilidade</p>
+            <div id="security-warning" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative text-sm">
+                ⚠️ **Aviso de Segurança:** Por ser um arquivo HTML único, sua chave API está exposta no código. Para um site em produção, a chamada à API do Gemini deve ser feita sempre por um **servidor back-end seguro**.
+            </div>
+        </header>
+
+        <!-- FORMULÁRIO DE ENTRADA -->
+        <div class="input-box">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-800">1. Insira suas Palavras-Chave</h2>
+            <form id="name-generator-form" class="space-y-4">
+                <input type="text" id="keywords" required
+                       class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                       placeholder="Ex: design, criação, digital (3 a 5 palavras-chave)"
+                       minlength="3">
+                <button type="submit" id="generate-button"
+                        class="w-full bg-[#3b82f6] text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-600 transition duration-300 flex items-center justify-center space-x-2">
+                    <span id="button-text">Gerar 30 Nomes Criativos (Rápido)</span>
+                    <span id="loading-spinner" class="hidden spinner"></span>
+                </button>
+            </form>
+        </div>
+
+        <!-- RESULTADOS -->
+        <div id="results-area" class="space-y-4 hidden">
+            <h2 class="text-2xl font-semibold text-gray-800">2. Nomes Sugeridos</h2>
+            <div id="results-container" class="p-4">
+                <!-- Resultados serão injetados aqui -->
+                <p class="text-gray-500 text-center">Os nomes gerados e suas disponibilidades aparecerão aqui.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // CONFIGURAÇÃO DA API
+        // ⚠️ ATENÇÃO: Chave exposta APENAS para fins de PROTÓTIPO em ambiente isolado.
+        const API_KEY = 'AIzaSyBq9kBfP3SLKcb7oBEfQiOr4DJh3ACei18'; 
+        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${API_KEY}`;
+        
+        // Elementos do DOM
+        const form = document.getElementById('name-generator-form');
+        const keywordsInput = document.getElementById('keywords');
+        const generateButton = document.getElementById('generate-button');
+        const buttonText = document.getElementById('button-text');
+        const loadingSpinner = document.getElementById('loading-spinner');
+        const resultsArea = document.getElementById('results-area');
+        const resultsContainer = document.getElementById('results-container');
+        
+        // --- FUNÇÕES DE SIMULAÇÃO DE VERIFICAÇÃO ---
+
+        // SIMULAÇÃO: Checa se o .COM.BR está "disponível"
+        // Sem uma API oficial do Registro.br, isso é uma simulação aleatória.
+        function checkDomain(name) {
+            // Apenas para simulação: 80% de chance de estar disponível.
+            const available = Math.random() < 0.8;
+            const link = `https://registro.br/busca/?dominio=${name.toLowerCase().replace(/ /g, '')}`;
+            
+            return {
+                available,
+                link,
+                text: available ? 'Disponível (Simulação)' : 'Indisponível (Simulação)'
+            };
+        }
+
+        // SIMULAÇÃO: Checa a disponibilidade em Redes Sociais
+        // Sem APIs de redes sociais, apenas fornecemos o link de verificação.
+        function checkSocial(name) {
+            const handle = name.toLowerCase().replace(/ /g, '').replace(/[^a-z0-9_.]/g, ''); // Remove caracteres especiais
+            const igLink = `https://www.instagram.com/${handle}`;
+            const ttLink = `https://www.tiktok.com/@${handle}`;
+            
+            return {
+                instagram: { link: igLink, text: `Verificar @${handle}` },
+                tiktok: { link: ttLink, text: `Verificar @${handle}` }
+            };
+        }
+
+        // --- FUNÇÃO DE GERAÇÃO DE NOMES (GEMINI API) ---
+        
+        async function fetchNames(keywords) {
+            const keywordsArray = keywords.split(',').map(k => k.trim()).filter(k => k.length > 0);
+            const keywordsString = keywordsArray.join(', ');
+
+            // O prompt foi ajustado para gerar APENAS 30 nomes para garantir uma resposta rápida!
+            const systemPrompt = "Você é um especialista em naming e branding, trabalhando para a agência Asthro. Seu objetivo é gerar nomes de marca inovadores, criativos e memoráveis, focados no mercado brasileiro.";
+            
+            // Alteração: de 120 para 30
+            const userQuery = `Gere 30 nomes de marca únicos, variados e criativos com foco no mercado brasileiro, usando as seguintes palavras-chave: [${keywordsString}]. A saída DEVE ser um único array JSON, onde cada item é um objeto com as chaves "nome" e "categoria". Os nomes devem ser distribuídos em categorias como 'Neologismo', 'Composto' e 'Descritivo'.`;
+            
+            const payload = {
+                contents: [{ parts: [{ text: userQuery }] }],
+                systemInstruction: { parts: [{ text: systemPrompt }] },
+                // Configura a resposta para ser JSON, garantindo a estrutura
+                generationConfig: {
+                    responseMimeType: "application/json",
+                    responseSchema: {
+                        type: "ARRAY",
+                        items: {
+                            type: "OBJECT",
+                            properties: {
+                                "nome": { "type": "STRING", "description": "O nome da marca gerado." },
+                                "categoria": { "type": "STRING", "description": "A categoria do nome (Neologismo, Composto, Descritivo)." }
+                            }
+                        }
+                    }
+                }
+            };
+
+            let response;
+            const maxRetries = 5;
+            let retryDelay = 1000; // 1 segundo inicial
+
+            for (let i = 0; i < maxRetries; i++) {
+                try {
+                    response = await fetch(API_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (response.status === 429) { // Too Many Requests (Limite de taxa)
+                        await new Promise(resolve => setTimeout(resolve, retryDelay));
+                        retryDelay *= 2; // Backoff exponencial
+                        continue;
+                    }
+
+                    if (!response.ok) {
+                        throw new Error(`Erro de HTTP: ${response.status}`);
+                    }
+
+                    const result = await response.json();
+                    
+                    if (result.candidates && result.candidates.length > 0 && result.candidates[0].content && result.candidates[0].content.parts && result.candidates[0].content.parts.length > 0) {
+                        const jsonText = result.candidates[0].content.parts[0].text;
+                        // O modelo deve retornar JSON limpo, mas adicionamos um tratamento de erro caso não seja válido
+                        try {
+                            const parsedJson = JSON.parse(jsonText);
+                            return parsedJson;
+                        } catch (e) {
+                            console.error("Erro ao fazer parse do JSON:", jsonText, e);
+                            throw new Error("A IA gerou um formato inválido. Tente novamente.");
+                        }
+                    }
+                    throw new Error("A resposta da API está vazia ou malformada.");
+
+                } catch (error) {
+                    console.error("Erro na API Gemini (Tentativa ${i + 1}):", error);
+                    if (i === maxRetries - 1) throw error; // Lança o erro na última tentativa
+                    await new Promise(resolve => setTimeout(resolve, retryDelay));
+                    retryDelay *= 2; // Backoff exponencial
+                }
+            }
+        }
+
+        // --- FUNÇÃO DE RENDERIZAÇÃO E EVENTOS ---
+
+        function renderResults(names) {
+            resultsContainer.innerHTML = ''; // Limpa resultados anteriores
+            
+            const grid = document.createElement('div');
+            grid.className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6';
+
+            names.forEach((item, index) => {
+                const domainStatus = checkDomain(item.nome);
+                const socialStatus = checkSocial(item.nome);
+
+                const card = document.createElement('div');
+                card.className = 'p-4 border border-gray-200 rounded-xl bg-white hover:shadow-lg transition duration-300 space-y-2';
+                
+                // Nome da Marca
+                const nameHeader = document.createElement('h3');
+                nameHeader.className = 'text-xl font-bold text-gray-800';
+                nameHeader.textContent = item.nome;
+                
+                // Categoria
+                const categoryTag = document.createElement('p');
+                categoryTag.className = 'text-xs font-medium px-2 py-0.5 inline-block rounded-full bg-blue-100 text-blue-800';
+                categoryTag.textContent = item.categoria;
+
+                // Status do Domínio
+                const domainP = document.createElement('p');
+                domainP.className = 'text-sm mt-2 flex items-center space-x-2';
+                const domainIcon = `<span class="${domainStatus.available ? 'text-green-500' : 'text-red-500'} font-bold">●</span>`;
+                const domainLink = `<a href="${domainStatus.link}" target="_blank" class="text-sm font-medium ${domainStatus.available ? 'text-green-600 hover:text-green-800' : 'text-red-600 hover:text-red-800'} underline">${domainStatus.text}</a>`;
+                domainP.innerHTML = `${domainIcon} Domínio .com.br: ${domainLink}`;
+
+                // Status das Redes Sociais
+                const socialP = document.createElement('p');
+                socialP.className = 'text-sm space-x-3 mt-1';
+                socialP.innerHTML = `
+                    <a href="${socialStatus.instagram.link}" target="_blank" class="text-indigo-600 hover:text-indigo-800 transition duration-150">
+                        <span class="font-bold">#</span> Instagram
+                    </a>
+                    <a href="${socialStatus.tiktok.link}" target="_blank" class="text-black hover:text-gray-700 transition duration-150">
+                        <span class="font-bold">#</span> TikTok
+                    </a>
+                `;
+
+                card.appendChild(nameHeader);
+                card.appendChild(categoryTag);
+                card.appendChild(domainP);
+                card.appendChild(socialP);
+                grid.appendChild(card);
+            });
+
+            resultsContainer.appendChild(grid);
+            resultsArea.classList.remove('hidden');
+        }
+
+        // --- EVENT LISTENER DO FORMULÁRIO ---
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const keywords = keywordsInput.value.trim();
+            const keywordCount = keywords.split(',').map(k => k.trim()).filter(k => k.length > 0).length;
+
+            if (keywordCount < 3 || keywordCount > 5) {
+                // Modificado para usar um alerta customizado ao invés de alert() nativo
+                const errorMsg = 'Por favor, insira entre 3 e 5 palavras-chave separadas por vírgula.';
+                resultsContainer.innerHTML = `<div class="bg-red-50 border-l-4 border-red-500 text-red-700 p-4" role="alert"><p class="font-bold">Entrada Inválida</p><p>${errorMsg}</p></div>`;
+                resultsArea.classList.remove('hidden');
+                return;
+            }
+
+            // Ativa o estado de carregamento
+            generateButton.disabled = true;
+            buttonText.textContent = 'Gerando Nomes...';
+            loadingSpinner.classList.remove('hidden');
+            // Alteração: de 120 para 30
+            resultsContainer.innerHTML = '<p class="text-center text-gray-500 p-8 flex items-center justify-center space-x-2"><span class="spinner"></span> <span>Aguarde, a IA está pensando em 30 nomes incríveis...</span></p>';
+            resultsArea.classList.remove('hidden');
+
+            try {
+                const names = await fetchNames(keywords);
+                renderResults(names);
+            } catch (error) {
+                resultsContainer.innerHTML = `<div class="bg-red-50 border-l-4 border-red-500 text-red-700 p-4" role="alert"><p class="font-bold">Erro ao Gerar Nomes</p><p>${error.message}. Verifique sua Chave API ou tente palavras-chave diferentes.</p></div>`;
+            } finally {
+                // Desativa o estado de carregamento
+                generateButton.disabled = false;
+                buttonText.textContent = 'Gerar 30 Nomes Criativos (Rápido)'; // Alterado o texto
+                loadingSpinner.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
