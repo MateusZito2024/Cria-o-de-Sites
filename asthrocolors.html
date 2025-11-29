@@ -47,26 +47,41 @@
         }
 
         /* Estilos do Container e Card de Pergunta/Resposta (Manutenção do Shatter/Assemble) */
-        .card-container { 
-            position: relative; 
-            width: 100%; 
-            perspective: 1200px; /* Aumenta a profundidade 3D para o efeito */
-            min-height: 400px; /* Garante espaço para a animação */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+       .card-container { 
+    position: relative; 
+    width: 100%; 
+    perspective: 1200px; /* Aumenta a profundidade 3D para o efeito */
+    
+    /* Mantenha o min-height alto, ou aumente para algo como 700px */
+    min-height: 700px; /* AUMENTE AQUI */ 
+    
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    
+    /* === AJUSTES DE EMPILHAMENTO E POSIÇÃO === */
+    padding-top: 3rem;
+    /* Remova o padding-bottom fixo para evitar vazamentos e use o min-height */
+    z-index: 50;
+    /* ========================================= */
+}
         .card { 
-            position: absolute; /* Usar absolute para o efeito de transição */
-            width: 100%;
-            max-width: 600px; /* Limite a largura para foco */
-            background: rgba(15, 15, 30, 0.95); 
-            backdrop-filter: blur(20px); 
-            border: 1px solid rgba(150, 100, 255, 0.4); 
-            border-radius: 2.5rem; /* Mais arredondado */
-            padding: 3.5rem; 
-            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.9); 
-        }
+    position: absolute; /* Usar absolute para o efeito de transição */
+    width: 100%;
+    max-width: 600px; /* Limite a largura para foco */
+    
+    /* === AJUSTES DE POSIÇÃO E EMPILHAMENTO === */
+    top: 0;           /* Ancorar no topo do card-container (que já tem o padding de separação) */
+    z-index: 20;      /* Coloca o card abaixo do footer (z-30) */
+    /* ========================================= */
+    
+    background: rgba(15, 15, 30, 0.95); 
+    backdrop-filter: blur(20px); 
+    border: 1px solid rgba(150, 100, 255, 0.4); 
+    border-radius: 2.5rem; /* Mais arredondado */
+    padding: 3.5rem; 
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.9); 
+}
         .piece { 
             position: absolute; 
             background: rgba(30, 30, 60, 0.98); 
@@ -108,14 +123,21 @@
         }
 
         /* Ajustes de Layout e Transição */
-        .main-container {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding-bottom: 8rem;
-            padding-top: 4rem;
-        }
+      .main-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    
+    /* === AJUSTE DE ESPAÇAMENTO === */
+    padding-bottom: 20rem; /* Aumenta a margem de respiro no final da página */
+    /* ============================ */
+    
+    padding-top: 4rem;
+    
+    position: relative;
+    z-index: 10;
+}
         #quiz, #result {
             width: 100%;
             max-width: 72rem;
@@ -215,9 +237,9 @@
         </div>
     </div>
 
-    <footer class="relative w-full text-center py-6 mt-auto bg-gradient-to-t from-black/90 to-transparent text-gray-500 text-sm z-30">
-        © 2025 Asthro • Todos os direitos reservados
-    </footer>
+    <footer class="relative w-full text-center py-6 mt-auto bg-gradient-to-t from-black/90 to-transparent text-gray-500 text-sm **z-60**">
+    © 2025 Asthro • Todos os direitos reservados
+</footer>
 
     <div id="loading" class="hidden fixed inset-0 flex items-center justify-center bg-black/95 z-50 transition duration-500">
         <div class="text-center">
