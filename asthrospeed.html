@@ -173,52 +173,53 @@
 }
         /* --- NOVOS ESTILOS PARA O DROPDOWN DE FERRAMENTAS --- */
 .dropdown-menu {
-    position: absolute; 
+    position: absolute;
     top: 100%;
     left: 50%;
-    transform: translateX(-50%) translateY(10px); /* Inicialmente deslocado para baixo */
-    min-width: 180px;
-    background: rgba(17, 17, 17, 0.95);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border: 1px solid rgba(102, 39, 255, 0.5);
-    border-radius: 0.5rem;
-    padding: 0.5rem 0;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+    transform: translateX(-50%) translateY(10px);
+    min-width: 260px;                          /* mesma largura da página de Políticas */
+    background: rgba(255, 255, 255, 0);         /* transparente puro */
+    backdrop-filter: blur(25px);               /* vidro fosco forte */
+    -webkit-backdrop-filter: blur(25px);
+    border: 2px solid #6627ff;                 /* borda roxa sólida */
+    border-radius: 1rem;
+    padding: 0.75rem;
     z-index: 50;
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+    /* REMOVIDO qualquer box-shadow externo que estava vazando */
 }
 
-/* CLASSE ATIVADA VIA JAVASCRIPT: Mostra o menu */
 .dropdown.active .dropdown-menu {
     opacity: 1;
     visibility: visible;
-    transform: translateX(-50%) translateY(5px); /* Efeito de subida suave */
+    transform: translateX(-50%) translateY(5px);
 }
 
-/* Estilos para os links internos do dropdown */
+/* Links dentro do submenu */
 .dropdown-menu a {
     display: block;
-    padding: 0.6rem 1rem;
+    padding: 0.8rem 1rem;
     color: #edf1f7;
     font-size: 1rem;
     font-weight: 500;
-    transition: all 0.2s ease;
+    text-decoration: none;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
 }
 
 .dropdown-menu a:hover {
-    background: linear-gradient(90deg, rgba(102, 39, 255, 0.3), rgba(11, 244, 237, 0.3));
+    background: linear-gradient(90deg, rgba(102, 39, 255, 0.2), rgba(11, 244, 237, 0.2));
     color: #0bf4ed;
+    transform: translateX(5px);
 }
 
-/* Alinhamento do ícone de seta */
+/* Seta do dropdown (gira 180° quando aberto) */
 .dropdown-arrow {
     display: inline-block;
     transition: transform 0.3s ease;
 }
-/* Rotaciona a seta quando o menu está ativo (via JS) */
 .dropdown.active .dropdown-arrow {
     transform: rotate(180deg);
 }
