@@ -1408,6 +1408,33 @@ nav > div {
         margin-right: 4px;
     }
 }
+        /* ==================== CORRIGE PARTÍCULAS FLUTUANTES POR CIMA DO TEXTO ==================== */
+#results::after {
+    content: '';
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: #0bf4ed;
+    border-radius: 50%;
+    top: 20%;
+    left: 10%;
+    box-shadow: 
+        0 0 15px #0bf4ed,
+        120px 80px 0 -2px #6627ff,
+        -80px 150px 0 -3px #ffffff,
+        200px -50px 0 -1px #0bf4ed,
+        -150px -100px 0 -2px #6627ff;
+    animation: floatParticles 20s infinite linear;
+    opacity: 0.6;
+    pointer-events: none;
+    z-index: 1 !important;   /* <--- AQUI ESTÁ A MÁGICA */
+}
+
+/* Garante que todo o conteúdo (títulos, cards, textos) fique sempre acima das partículas */
+#results > * {
+    position: relative;
+    z-index: 10;
+}
     </style>
 </head>
 <body class="text-gray-100">
