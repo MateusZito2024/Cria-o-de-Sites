@@ -1315,6 +1315,98 @@ nav {
     box-shadow: 0 0 15px rgba(11, 244, 237, 0.5) !important;
 }
 .traduzir-btn:hover { transform: scale(1.1); box-shadow: 0 0 25px rgba(11, 244, 237, 0.8) !important; }
+        /* ==================== LOADING CÓSMICO ASTHRO ==================== */
+.loading-cosmic {
+    text-align: center;
+    padding: 3rem 1rem;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #edf1f7;
+    min-height: 140px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+}
+
+.loading-cosmic .text {
+    font-family: 'Archivo', sans-serif;
+    background: linear-gradient(90deg, #6627ff, #0bf4ed);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 1.6rem;
+    animation: pulseText 3s ease-in-out infinite;
+}
+
+.loading-dots {
+    display: flex;
+    gap: 12px;
+}
+
+.loading-dots span {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    animation: bounceDot 1.4s infinite ease-in-out;
+}
+
+.loading-dots span:nth-child(1) {
+    background: #6627ff;
+    animation-delay: 0s;
+}
+
+.loading-dots span:nth-child(2) {
+    background: #0bf4ed;
+    animation-delay: 0.2s;
+}
+
+.loading-dots span:nth-child(3) {
+    background: #ffffff;
+    animation-delay: 0.4s;
+}
+
+@keyframes bounceDot {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+@keyframes pulseText {
+    0%, 100% { opacity: 0.9; }
+    50% { opacity: 1; }
+}
+        /* ==================== RESPIRO SUTIL NO CABEÇALHO (DESKTOP + MOBILE) ==================== */
+nav > div {
+    /* Desktop: respiro sutil de 12px de cada lado */
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+}
+
+/* Em telas grandes (acima de 1024px): aumenta um pouquinho mais o respiro (fica lindo) */
+@media (min-width: 1024px) {
+    nav > div {
+        padding-left: 2rem !important;   /* 32px — elegante, sem exagerar */
+        padding-right: 2rem !important;
+    }
+}
+
+/* Mobile: garante que o hamburger não grude na borda (só 8px de respiro) */
+@media (max-width: 768px) {
+    nav > div {
+        padding-left: 8px !important;
+        padding-right: 8px !important;
+    }
+    
+    /* Afasta só um tiquinho o hamburger da borda direita */
+    .hamburger {
+        margin-right: 4px;
+    }
+}
     </style>
 </head>
 <body class="text-gray-100">
@@ -1609,7 +1701,16 @@ function setupCollapsibles() {
             }
             
             // Exibir carregamento
-            RESULTS_DIV.innerHTML = '<div class="loading">Analisando... Por favor, aguarde cerca de 30 segundos.</div>';
+            RESULTS_DIV.innerHTML = `
+    <div class="loading-cosmic">
+        <div class="text">Analisando em realidades alternativas</div>
+        <div class="loading-dots">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+`;
             ANALYZE_BUTTON.disabled = true;
 
             // Construir o URL da API
