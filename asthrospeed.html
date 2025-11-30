@@ -4,13 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Asthro - AsthroSpeed</title>
-    <!-- Inclui Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script> 
-    <!-- Fontes do Asthro -->
     <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700&family=Manrope:wght@400;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="https://i.imgur.com/ZeaGXHD.png">
     
-    <!-- Metatags para SEO (Adaptadas para a página Analisador) -->
     <meta property="og:image" content="https://i.imgur.com/sE44ypp.png">
     <meta property="og:url" content="https://asthro.com.br/asthrospeed.html">
     <meta property="og:title" content="Asthro | Analisador AsthroSpeed Gratuito">
@@ -1307,7 +1304,6 @@ nav {
         </section>
     </main>
 
-    <!-- RODAPÉ - EXATAMENTE IGUAL AO SEU TEMPLATE -->
     <footer class="text-gray-200 py-8 relative z-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center content-layer">
             
@@ -1369,21 +1365,30 @@ if (mobileToolsButton && mobileToolsModal) {
         });
     });
 }
-        // --- Lógica de Acordeão ---
+        // --- Lógica de Acordeão (SETUP ORIGINAL) ---
 function setupCollapsibles() {
     const headers = document.querySelectorAll('.collapsible-header');
 
     headers.forEach(header => {
+        // **IMPORTANTE**: Recalcula a altura de todos os conteúdos no setup
+        const content = header.nextElementSibling;
+        if (content) {
+            content.style.maxHeight = null; // Garante que começa fechado
+        }
+
         header.addEventListener('click', function() {
             this.classList.toggle('active');
-            const content = this.nextElementSibling;
+            const currentContent = this.nextElementSibling;
             
-            if (content.style.maxHeight) {
+            if (currentContent.style.maxHeight) {
                 // Se estiver aberto, fecha
-                content.style.maxHeight = null;
+                currentContent.style.maxHeight = null;
             } else {
-                // Se estiver fechado, abre. Usamos scrollHeight para calcular a altura exata do conteúdo.
-                content.style.maxHeight = content.scrollHeight + "px";
+                // Se estiver fechado, abre. 
+                // CORREÇÃO: Adicionamos um pequeno timeout para dar tempo de o DOM se ajustar antes de medir
+                setTimeout(() => {
+                    currentContent.style.maxHeight = currentContent.scrollHeight + "px";
+                }, 50); 
             } 
         });
     });
@@ -1590,6 +1595,10 @@ function setupCollapsibles() {
                 <div class="metric-grid">${metricsHtml}</div>
             `;
         }
+        
+        // ===================================================================
+        // === FUNÇÃO renderAuditDetails CORRIGIDA PARA INCLUIR TODOS OS BLOCoS ===
+        // ===================================================================
 
         function renderAuditDetails(lhr) {
             const categories = {
@@ -1604,15 +1613,26 @@ function setupCollapsibles() {
             for (const [key, categoryName] of Object.entries(categories)) {
                 const auditRefs = lhr.categories[key].auditRefs;
                 
-                // Falhas / Oportunidades (Score < 0.9)
-                const failedAudits = auditRefs.filter(ref => lhr.audits[ref.id].score < 0.9 && lhr.audits[ref.id].score !== null);
-                // Aprovados (Score = 1)
+                // 1. Falhas / Oportunidades (Score < 0.9)
+                const failedAudits = auditRefs.filter(ref => {
+                    const audit = lhr.audits[ref.id];
+                    // Falhas: Score < 0.9 E o modo de display é 'failure' ou 'opportunity'
+                    return audit.score !== null && audit.score < 0.9 && (audit.scoreDisplayMode === 'failure' || audit.scoreDisplayMode === 'opportunity');
+                });
+
+                // 2. Aprovados (Score = 1)
                 const passedAudits = auditRefs.filter(ref => lhr.audits[ref.id].score === 1);
-                // Informações ou Avisos (Score entre 0.9 e 1 ou sem score)
-                const informationalAudits = auditRefs.filter(ref => 
-                    (lhr.audits[ref.id].score >= 0.9 && lhr.audits[ref.id].score < 1) || 
-                    (lhr.audits[ref.id].score === null && lhr.audits[ref.id].scoreDisplayMode === 'not applicable')
-                );
+                
+                // 3. Informações / Diagnósticos / Manual
+                const informationalAudits = auditRefs.filter(ref => {
+                    const audit = lhr.audits[ref.id];
+                    // Inclui tudo que tem score entre 0.9 e 1, OU que o modo de display é 'diagnostic', 'manual' ou 'not applicable',
+                    // E que ainda não foi incluído nas Falhas ou Aprovados (para evitar duplicidade).
+                    const isFailed = audit.score !== null && audit.score < 0.9 && (audit.scoreDisplayMode === 'failure' || audit.scoreDisplayMode === 'opportunity');
+                    const isPassed = audit.score === 1;
+                    
+                    return !isFailed && !isPassed;
+                });
 
 
                 // --- Falhas (Vermelho) ---
@@ -1630,11 +1650,12 @@ function setupCollapsibles() {
                 }
 
                 // --- Avisos / Diagnósticos (Amarelo) ---
+                 // **NOVA LÓGICA:** Se há diagnósticos para mostrar
                  if (informationalAudits.length > 0) {
                     detailsHtml += `
                         <div class="report-section">
                             <div class="collapsible-header status-warn">
-                                ⚠️ ${categoryName}: Diagnósticos e Avisos (${informationalAudits.length})
+                                ⚠️ ${categoryName}: Diagnósticos e Informações (${informationalAudits.length})
                             </div>
                             <div class="collapsible-content">
                                 ${informationalAudits.map(ref => renderAuditItem(lhr.audits[ref.id])).join('')}
@@ -1681,6 +1702,7 @@ function setupCollapsibles() {
         async function traduzirTexto(texto) {
     try {
         const encodedText = encodeURIComponent(texto);
+        // Usando o Google Translate API (Versão pública e não oficial)
         const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=pt&dt=t&q=${encodedText}`;
         const response = await fetch(url);
         const data = await response.json();
@@ -1770,23 +1792,6 @@ function setupCollapsibles() {
             }
         };
 
-        // --- Lógica de Acordeão ---
-        function setupCollapsibles() {
-            const headers = document.querySelectorAll('.collapsible-header');
-
-            headers.forEach(header => {
-                header.addEventListener('click', function() {
-                    this.classList.toggle('active');
-                    const content = this.nextElementSibling;
-                    
-                    if (content.style.maxHeight) {
-                        content.style.maxHeight = null;
-                    } else {
-                        content.style.maxHeight = content.scrollHeight + "px";
-                    } 
-                });
-            });
-        }
         // ===================================================================
 // ================== LÓGICA DO DROPDOWN (CLICÁVEL) ==================
 // ===================================================================
