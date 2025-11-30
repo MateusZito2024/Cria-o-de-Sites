@@ -1191,6 +1191,130 @@ nav {
 }
 .audit-item strong { color: #0bf4ed; } /* Título da oportunidade em ciano neon */
 .audit-item p { color: #bbb; } /* Descrição mais clara */
+        /* ==================== RESULTADOS ASTHRO - ESTILO CÓSMICO (SÓ ATIVA APÓS A PESQUISA) ==================== */
+#results {
+    position: relative;
+    margin-top: 2rem;
+    padding: 0;                  /* Remove padding extra aqui */
+    min-height: auto;            /* Não força altura mínima */
+    transition: all 0.6s ease;
+}
+
+/* Estado inicial: mantém exatamente o visual antigo (sem fundo cósmico, sem borda glow, sem altura extra) */
+#results:empty,
+#results:has(only-child p) {     /* Quando só tem o <p> inicial */
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 1.5rem 0 !important;
+    margin-top: 1rem !important;
+    min-height: auto !important;
+}
+
+/* Só ativa o modo cósmico QUANDO tiver conteúdo real (h3, métricas, etc) */
+#results:has(h3),
+#results:has(.metric-grid),
+#results:has(.collapsible-header) {
+    background: linear-gradient(135deg, #0f0f1a 0%, #1a0033 50%, #0f0f1a 100%);
+    border: 1.5px solid transparent;
+    border-radius: 1rem;
+    padding: 2rem;
+    min-height: 500px;
+    box-shadow: 0 0 30px rgba(102, 39, 255, 0.4), inset 0 0 20px rgba(11, 244, 237, 0.1);
+    animation: cosmicPulse 8s ease-in-out infinite alternate;
+    overflow: hidden;
+}
+
+/* Borda animada e partículas só aparecem depois da análise */
+#results:has(h3)::before,
+#results:has(.metric-grid)::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(45deg, #6627ff, #0bf4ed, #6627ff, #0bf4ed);
+    background-size: 300% 300%;
+    border-radius: 1rem;
+    z-index: -1;
+    animation: borderFlow 12s linear infinite;
+    filter: blur(8px);
+    opacity: 0.7;
+}
+
+#results:has(h3)::after {
+    content: '';
+    position: absolute;
+    width: 6px; height: 6px;
+    background: #0bf4ed;
+    border-radius: 50%;
+    top: 20%; left: 10%;
+    box-shadow: 
+        0 0 15px #0bf4ed,
+        120px 80px 0 -2px #6627ff,
+        -80px 150px 0 -3px #ffffff,
+        200px -50px 0 -1px #0bf4ed,
+        -150px -100px 0 -2px #6627ff;
+    animation: floatParticles 20s infinite linear;
+    opacity: 0.6;
+}
+
+/* === O RESTO DO ESTILO CÓSMICO (só ativa quando precisar) === */
+#results h3, #results h4 {
+    background: linear-gradient(90deg, #6627ff, #0bf4ed, #ffffff, #0bf4ed, #6627ff);
+    background-size: 300% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 6s linear infinite;
+    text-shadow: 0 0 20px rgba(11, 244, 237, 0.6);
+    font-family: 'Archivo', sans-serif;
+}
+
+.metric-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
+.metric-box { 
+    background: rgba(17, 17, 34, 0.6); 
+    backdrop-filter: blur(10px); 
+    border: 1px solid rgba(102, 39, 255, 0.4); 
+    border-radius: 1rem; 
+    padding: 1.5rem; 
+    text-align: center; 
+    transition: all 0.4s ease; 
+    position: relative; 
+    overflow: hidden;
+    animation: floatCard 6s ease-in-out infinite;
+    animation-delay: calc(var(--i, 0) * 0.3s);
+}
+.metric-box:hover { transform: translateY(-12px) scale(1.05); border-color: #0bf4ed; box-shadow: 0 15px 30px rgba(11, 244, 237, 0.4); }
+.metric-score { font-size: 2.8rem !important; font-weight: 800; text-shadow: 0 0 20px currentColor; animation: glowScore 3s ease-in-out infinite alternate; }
+
+.collapsible-header {
+    background: linear-gradient(90deg, rgba(102, 39, 255, 0.3), rgba(11, 244, 237, 0.2));
+    border: 1px solid rgba(102, 39, 255, 0.5);
+    border-radius: 12px;
+    padding: 1.2rem 1.5rem;
+    margin: 1rem 0;
+    font-weight: 700;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    backdrop-filter: blur(5px);
+}
+.collapsible-header::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: left 0.7s; }
+.collapsible-header:hover::before { left: 100%; }
+.collapsible-header.active { background: linear-gradient(90deg, #6627ff, #0bf4ed); box-shadow: 0 0 20px rgba(11, 244, 237, 0.6); }
+.collapsible-content { background: rgba(10, 10, 30, 0.7); border: 1px solid rgba(102, 39, 255, 0.3); border-top: none; border-radius: 0 0 12px 12px; padding: 1.5rem; backdrop-filter: blur(8px); }
+
+.audit-item:hover { background: rgba(102, 39, 255, 0.1); padding-left: 1rem; border-left: 4px solid #0bf4ed; }
+
+.traduzir-btn {
+    background: linear-gradient(45deg, #6627ff, #0bf4ed) !important;
+    color: white !important;
+    padding: 0.5rem 1rem !important;
+    border-radius: 50px !important;
+    font-size: 0.8rem !important;
+    box-shadow: 0 0 15px rgba(11, 244, 237, 0.5) !important;
+}
+.traduzir-btn:hover { transform: scale(1.1); box-shadow: 0 0 25px rgba(11, 244, 237, 0.8) !important; }
     </style>
 </head>
 <body class="text-gray-100">
