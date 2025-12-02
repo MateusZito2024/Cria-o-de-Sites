@@ -231,7 +231,7 @@
         z-index: 1000;
         
         /* 1. FUNDO PRETO TRANSPARENTE COM GLASSMORPHYSM */
-        background: rgba(17, 17, 17, 0.95); /* Fundo preto escuro semi-transparente */
+        background: rgba(17, 17, 17, 0.0); /* Fundo preto escuro semi-transparente */
         backdrop-filter: blur(8px); /* Efeito de desfoque sutil (Glassmorphism) */
         -webkit-backdrop-filter: blur(8px); /* Compatibilidade Safari */
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* Sombra para profundidade */
@@ -786,9 +786,9 @@ nav {
     height: 100vh;
     width: 100%;
     max-width: 300px;
-    background: rgba(17, 17, 17, 0.9); /* Fundo semi-transparente para o glassmorphism */
-    backdrop-filter: blur(10px); /* Efeito de desfoque */
-    -webkit-backdrop-filter: blur(10px); /* Para compatibilidade com Safari */
+    background: rgba(17, 17, 17, 0.98); /* Fundo semi-transparente para o glassmorphism */
+    backdrop-filter: blur(15px); /* Efeito de desfoque */
+    -webkit-backdrop-filter: blur(15px); /* Para compatibilidade com Safari */
     border-left: 1px solid rgba(102, 39, 255, 0.5); /* Borda sutil */
     
     flex-direction: column;
@@ -890,27 +890,33 @@ nav {
     }
 
     /* Mobile nav menu com Glassmorphism */
-    .nav-menu-mobile {
+     .nav-menu-mobile {
         position: fixed;
         top: 0;
-        right: -100%; /* Initially off-screen */
+        right: -100%;
         height: 100vh;
         width: 100%;
-        max-width: 300px; /* Limit width for larger tablets */
-        background: rgba(17, 17, 17, 0.9); /* Fundo semi-transparente para o glassmorphism */
-        backdrop-filter: blur(10px); /* Efeito de desfoque */
-        -webkit-backdrop-filter: blur(10px); /* Para compatibilidade com Safari */
-        border-left: 1px solid rgba(102, 39, 255, 0.5); /* Borda sutil */
+        max-width: 300px;
+        background: rgba(17, 17, 17, 0.98);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border-left: 1px solid rgba(102, 39, 255, 0.5);
         flex-direction: column;
-        justify-content: flex-start;
+        
+        /* Alinhamento ao topo, conforme o primeiro código */
+        justify-content: flex-start; 
+        
         align-items: center;
-        gap: 1.5rem; /* Espaçamento entre os itens */
+        gap: 1.5rem; 
         transition: right 0.3s ease;
         z-index: 30;
-        display: flex; /* Show flex container */
+        display: flex; 
         box-sizing: border-box;
-        padding: 0 1rem;
-        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3); /* Sombra para profundidade */
+        
+        /* Zera o padding superior para que o margin-top do link funcione */
+        padding: 0 1rem; 
+        
+        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
     }
 .nav-menu-mobile .mobile-menu-logo {
         margin-top: 0rem; /* Espaço entre o último link e a logo */
