@@ -3,129 +3,398 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ASthroVision - Analisador de Logos</title>
+  <title>AsthroVision | Analisador de Logos</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  
   <style>
-    body { font-family: 'Segoe UI', sans-serif; max-width: 900px; margin: 40px auto; padding: 20px; background: #f8f9fa; }
-    h1 { text-align: center; color: #1a73e8; }
-    .upload-area { border: 4px dashed #ccc; border-radius: 20px; padding: 60px; text-align: center; background: white; cursor: pointer; transition: .3s; margin: 30px 0; }
-    .upload-area:hover, .upload-area.dragover { border-color: #1a73e8; background: #f0f8ff; }
-    #preview { max-width: 380px; max-height: 380px; margin: 20px auto; display: block; border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.2); }
-    button { padding: 15px 50px; background: #1a73e8; color: white; border: none; border-radius: 12px; font-size: 19px; cursor: pointer; box-shadow: 0 5px 15px rgba(26,115,232,0.4); }
-    button:hover:not(:disabled) { background: #0d47a1; }
-    button:disabled { background: #aaa; cursor: not-allowed; }
-    #resultado { margin-top: 40px; padding: 35px; background: white; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.12); line-height: 1.8; display: none; }
-    .loading { font-size: 19px; color: #1a73e8; text-align: center; }
+    /* VARIÁVEIS DE CORES ASTHRO */
+    :root {
+      --cor-fundo: #0a0a1a;
+      --cor-primaria: #0d47a1; /* Azul Profundo */
+      --cor-secundaria: #673ab7; /* Roxo Astro */
+      --cor-texto-claro: #e9e9f0;
+      --cor-gradiente-principal: linear-gradient(90deg, #1A73E8 0%, #673AB7 100%);
+      --cor-input-bg: rgba(255, 255, 255, 0.05);
+      --cor-input-border: #333;
+    }
+    /* ANIMAÇÃO DO BACKGROUND – Efeito Estrelas/Nebulosa (Puro CSS) */
+    @keyframes moveNebula {
+        0% { background-position: 0% 0%; }
+        100% { background-position: 100% 100%; }
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      background: var(--cor-fundo);
+      color: var(--cor-texto-claro);
+      min-height: 10vh;
+      box-shadow: 0 0 50px rgba(0, 0, 0, 0.5) inset;
+      
+      /* Aplica a animação de fundo */
+      background-image: radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.05) 1px, transparent 1.5px),
+                        radial-gradient(circle at 90% 80%, rgba(255, 255, 255, 0.05) 1px, transparent 1.5px);
+      background-size: 500px 500px, 800px 800px;
+      animation: moveNebula 120s linear infinite alternate;
+    }
+    /* EFEITO AURORA BOREAL NO TÍTULO */
+    @keyframes aurora {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    h1 {
+      text-align: center;
+      font-size: 3.5rem;
+      font-weight: 700;
+      margin-bottom: 5px;
+      
+      background: var(--cor-gradiente-principal);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      
+      background-size: 200% auto;
+      animation: aurora 8s ease-in-out infinite;
+      text-shadow: 0 0 15px rgba(103, 58, 183, 0.6); /* Sombra Galáctica */
+    }
+    .subtitle {
+      text-align: center;
+      color: #9fa8da;
+      font-size: 1.1rem;
+      margin-bottom: 40px;
+      font-weight: 300;
+    }
+    /* ÁREA DE UPLOAD – High-Tech e Brilhante */
+    @keyframes pulseBorder {
+        0% { box-shadow: 0 0 0 0px rgba(26, 115, 232, 0.4); }
+        50% { box-shadow: 0 0 0 10px rgba(26, 115, 232, 0); }
+        100% { box-shadow: 0 0 0 0px rgba(26, 115, 232, 0.4); }
+    }
+    .upload-area {
+      border: 3px solid var(--cor-secundaria);
+      border-radius: 25px;
+      padding: 50px;
+      text-align: center;
+      background: rgba(10, 10, 26, 0.6); /* Fundo semi-transparente */
+      cursor: pointer;
+      transition: all .5s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Transição suave e 'flutuante' */
+      margin: 30px 0;
+      box-shadow: 0 0 30px rgba(103, 58, 183, 0.2); /* Brilho inicial */
+    }
+    
+    .upload-area p {
+        font-size: 1.5rem;
+        color: var(--cor-texto-claro);
+        opacity: 0.8;
+        font-weight: 600;
+        transition: opacity 0.3s;
+    }
+    .upload-area:hover, .upload-area.dragover {
+      border-color: #1a73e8; /* Azul intenso */
+      background: rgba(13, 71, 161, 0.3); /* Fundo azulado para destaque */
+      transform: translateY(-5px) scale(1.01);
+      box-shadow: 0 15px 40px rgba(26, 115, 232, 0.4);
+      animation: pulseBorder 2s infinite ease-out; /* Efeito de pulso ao arrastar */
+    }
+    
+    .upload-area:hover p { opacity: 1; }
+    #preview {
+      max-width: 90%;
+      max-height: 350px;
+      margin: 20px auto;
+      display: none;
+      border-radius: 15px;
+      border: 1px solid #444;
+      box-shadow: 0 0 20px rgba(26, 115, 232, 0.5); /* Sombra futurista */
+      transition: all 0.5s;
+    }
+    /* CAMPO DE SEGMENTO */
+    #segmentoInput {
+        width: 100%;
+        padding: 15px;
+        margin: 20px 0 0 0; /* Ajustado para melhor espaçamento */
+        border: 1px solid var(--cor-input-border);
+        border-radius: 10px;
+        background: var(--cor-input-bg);
+        color: var(--cor-texto-claro);
+        font-size: 1rem;
+        box-sizing: border-box;
+        transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    #segmentoInput:focus {
+        border-color: #1a73e8;
+        box-shadow: 0 0 10px rgba(26, 115, 232, 0.5);
+        outline: none;
+    }
+    /* BOTÃO ANALISAR – Efeito 'Decolagem' */
+    @keyframes pulseShadow {
+        0% { box-shadow: 0 0 20px rgba(26, 115, 232, 0.7); }
+        50% { box-shadow: 0 0 40px rgba(26, 115, 232, 0.9), 0 0 5px rgba(255, 255, 255, 0.8); }
+        100% { box-shadow: 0 0 20px rgba(26, 115, 232, 0.7); }
+    }
+    
+    button {
+      padding: 18px 60px;
+      background: var(--cor-gradiente-principal);
+      color: white;
+      border: none;
+      border-radius: 15px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 0 20px rgba(26, 115, 232, 0.5);
+      transition: all .3s;
+      margin-top: 20px;
+      animation: pulseShadow 2s infinite ease-in-out;
+    }
+    button:hover:not(:disabled) {
+      background: linear-gradient(90deg, #1a73e8, #8258f5);
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 15px 40px rgba(26, 115, 232, 0.6);
+    }
+    button:disabled {
+      background: #333;
+      cursor: not-allowed;
+      box-shadow: none;
+      animation: none;
+    }
+    /* ÁREA DE RESULTADO – Estrutura Limpa e Profunda */
+    #resultado {
+      margin-top: 50px;
+      padding: 40px;
+      background: rgba(20, 20, 40, 0.8);
+      border-radius: 20px;
+      box-shadow: 0 0 40px rgba(26, 115, 232, 0.1), 0 0 10px rgba(103, 58, 183, 0.5) inset;
+      line-height: 1.9;
+      display: none;
+      border: 1px solid #2c2c45;
+      color: #ccc;
+    }
+    #resultado h3 {
+        font-size: 1.8rem;
+        color: #8258f5; /* Títulos em roxo */
+        border-bottom: 2px solid #333;
+        padding-bottom: 10px;
+        margin-top: 30px;
+        font-weight: 600;
+    }
+    
+    #resultado ul {
+        list-style: none;
+        padding-left: 0;
+    }
+    
+    #resultado li {
+        margin-bottom: 10px;
+        padding-left: 1.5em;
+        position: relative;
+    }
+    
+    /* PONTOS DE LISTA CUSTOMIZADOS (Estilo Tech) */
+    #resultado li::before {
+        content: '»'; /* Ou um emoji de ponto de luz: ✨ */
+        position: absolute;
+        left: 0;
+        color: #1a73e8;
+        font-weight: 700;
+        font-size: 1.2em;
+    }
+    
+    /* EFEITO DE TYPING PARA O LOADING */
+    @keyframes typing {
+      from { width: 0 }
+      to { width: 100% }
+    }
+    @keyframes blink-caret {
+      from, to { border-color: transparent }
+      50% { border-color: #1a73e8; }
+    }
+    .loading {
+      font-size: 1.4rem;
+      color: #1a73e8;
+      text-align: center;
+      margin: 40px 0;
+      
+      overflow: hidden; 
+      border-right: .15em solid #1a73e8; /* Cursor */
+      white-space: nowrap;
+      margin: 0 auto;
+      letter-spacing: .08em;
+      animation: typing 3s steps(40, end), blink-caret .75s step-end infinite;
+      max-width: 100%;
+    }
+    
+    /* Cor e formato para o score */
+    #resultado h3:first-of-type {
+        font-size: 2.5rem;
+        text-align: center;
+        border-bottom: none;
+        padding-bottom: 0;
+        color: #e6e61a; /* Amarelo de destaque */
+        text-shadow: 0 0 10px #e6e61a;
+    }
   </style>
 </head>
 <body>
-
-  <h1>Analisador de Logos com Gemini 2.5 Flash</h1>
-  <p style="text-align:center; color:#555; font-size:18px;">Análise completa + cores + conceito + nota (grátis)</p>
-
+  <h1>✨ AsthroVision ✨</h1>
+  <p class="subtitle">Análise de Branding e Design de Logo com Inteligência Artificial Avançada.</p>
+  
+  <input type="text" id="segmentoInput" placeholder="Qual o segmento de negócio desta logo? (Ex: Startup de Fintech, Clínica Veterinária, Loja de E-commerce)" required>
+  
   <div class="upload-area" id="dropArea">
-    <p style="font-size:21px; color:#444;">Clique ou arraste o logo aqui</p>
+    <p>Clique ou Arraste seu Arquivo de Logo Aqui</p>
     <input type="file" id="fileInput" accept="image/*" style="display:none">
-    <img id="preview" src="" alt="">
+    <img id="preview" src="" alt="Pré-visualização do Logo">
   </div>
-
   <div style="text-align:center;">
-    <button id="analisarBtn" disabled>Analisar com IA</button>
+    <button id="analisarBtn" disabled>ATIVAR ANÁLISE ORBITAL</button>
   </div>
-
   <div id="resultado"></div>
-
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script>
-    const API_KEY = "AIzaSyBQODnQgOa7GASqYssyJ1bIcA9eqzsjzyU"; // ← troque pela sua chave nova
+    // ** ATENÇÃO: SUBSTITUA ESTA CHAVE PELA SUA CHAVE REAL E VÁLIDA **
+    const API_KEY = "AIzaSyBQODnQgOa7GASqYssyJ1bIcA9eqzsjzyU"; 
     const MODEL = "gemini-2.5-flash";
+    const dropArea = document.getElementById('dropArea');
+    const fileInput = document.getElementById('fileInput');
+    const preview = document.getElementById('preview');
+    const analisarBtn = document.getElementById('analisarBtn');
+    const resultadoDiv = document.getElementById('resultado');
+    const segmentoInput = document.getElementById('segmentoInput'); 
+    
+    window.currentFile = null;
 
-    // resto do código de drag & drop igual ao anterior (mantive só a parte crítica)
-    document.getElementById('dropArea').onclick = () => document.getElementById('fileInput').click();
-    document.getElementById('fileInput').onchange = e => e.target.files[0] && handleFile(e.target.files[0]);
-    document.getElementById('dropArea').ondrop = e => { e.preventDefault(); document.getElementById('dropArea').classList.remove('dragover'); handleFile(e.dataTransfer.files[0]); };
-    ['dragover','dragenter'].forEach(e => document.getElementById('dropArea').addEventListener(e, ev => { ev.preventDefault(); document.getElementById('dropArea').classList.add('dragover'); }));
-    ['dragleave','dragend'].forEach(e => document.getElementById('dropArea').addEventListener(e, ev => { ev.preventDefault(); document.getElementById('dropArea').classList.remove('dragover'); }));
+    // Função de verificação para habilitar o botão
+    function checkReadiness() {
+        const isFileReady = !!window.currentFile;
+        const isSegmentFilled = segmentoInput.value.trim().length > 0;
+        // O botão só é habilitado se houver arquivo E segmento preenchido
+        analisarBtn.disabled = !(isFileReady && isSegmentFilled);
+    }
 
+    // Ouvinte para o campo de texto
+    segmentoInput.oninput = checkReadiness;
+
+    // Funções de Drag & Drop
+    dropArea.onclick = () => fileInput.click();
+    fileInput.onchange = e => e.target.files[0] && handleFile(e.target.files[0]);
+    ['dragover','dragenter'].forEach(eventName => {
+      dropArea.addEventListener(eventName, ev => { 
+        ev.preventDefault(); 
+        dropArea.classList.add('dragover'); 
+      });
+    });
+    
+    ['dragleave','dragend','drop'].forEach(eventName => {
+      dropArea.addEventListener(eventName, ev => { 
+        ev.preventDefault(); 
+        dropArea.classList.remove('dragover'); 
+      });
+    });
+    
+    dropArea.addEventListener('drop', e => {
+      if (e.dataTransfer.files[0]) {
+        handleFile(e.dataTransfer.files[0]);
+      }
+    });
     function handleFile(file) {
       if (!file.type.startsWith('image/')) return;
       const r = new FileReader();
-      r.onload = e => { document.getElementById('preview').src = e.target.result; document.getElementById('preview').style.display = 'block'; document.getElementById('analisarBtn').disabled = false; };
+      r.onload = e => { 
+        preview.src = e.target.result; 
+        preview.style.display = 'block'; 
+        resultadoDiv.style.display = 'none'; // Esconde o resultado anterior
+        window.currentFile = file; // Salva o arquivo
+        checkReadiness(); // Verifica se pode habilitar o botão
+      };
       r.readAsDataURL(file);
-      window.currentFile = file;
     }
+    // Função de Análise com a API Gemini
+    analisarBtn.onclick = async () => {
+      if (!window.currentFile || analisarBtn.disabled) return;
+      
+      const segmento = segmentoInput.value.trim();
+      if (!segmento) {
+        alert("Por favor, preencha o segmento de negócio.");
+        return;
+      }
 
-    document.getElementById('analisarBtn').onclick = async () => {
-      if (!window.currentFile) return;
-      const resultado = document.getElementById('resultado');
-      resultado.style.display = 'block';
-      resultado.innerHTML = '<p class="loading">Analisando com Gemini 2.5 Flash… aguarde 12–20 segundos</p>';
-      document.getElementById('analisarBtn').disabled = true;
+      resultadoDiv.style.display = 'block';
+      resultadoDiv.innerHTML = '<p class="loading">Iniciando protocolo de análise...</p>';
+      analisarBtn.disabled = true;
 
       try {
-        const base64 = await new Promise(r => { const fr = new FileReader(); fr.onload = () => r(fr.result.split(',')[1]); fr.readAsDataURL(window.currentFile); });
-
-        // PROMPT FORTE E DETALHADO – agora ele NUNCA pula as cores
-        const prompt = `Você é um designer gráfico e diretor de arte com 20+ anos de experiência em branding global.
-
-Analise este logo com extremo cuidado e responda em português usando EXATAMENTE este formato (nunca pule nenhuma seção):
-
-### Nota final: X/10
-
-### Está bom ou precisa melhorar?
-[1 frase direta e honesta]
-
-### Pontos fortes (não precisa mudar)
-• ponto forte 1
-• ponto forte 2
-(mínimo 3 itens)
-
-### Pontos a melhorar
-• ponto fraco 1
-• ponto fraco 2
-(mínimo 3 itens)
-
-### Análise detalhada das cores
-Identifique TODAS as cores principais presentes no logo (use nome ou código hex se possível).
-Para cada cor explique:
-– significado psicológico principal
-– emoção que transmite
-– se é adequada ao segmento da marca
-– se a paleta combina entre si
-Exemplo:
-• Azul #0055FF: transmite confiança e profissionalismo, ótimo para tecnologia
-• Vermelho #FF0000: energia e urgência, mas pode cansar se usado em excesso
-
-### A ideia conceitual é boa?
-Explique em 4–6 linhas se o conceito é criativo, memorável, único e se comunica bem a essência da empresa.
-
-### Sugestões práticas de melhoria
-Liste exatamente 5 dicas concretas e acionáveis que o cliente consiga aplicar hoje mesmo.
-
-Seja 100% sincero — se o logo for ruim, dê nota baixa sem medo.`;
-
+        const base64 = await new Promise(r => { 
+          const fr = new FileReader(); 
+          fr.onload = () => r(fr.result.split(',')[1]); 
+          fr.readAsDataURL(window.currentFile); 
+        });
+        
+        // PROMPT FORTE E DETALHADO (Versão Asthro - Incluindo o Segmento)
+        const prompt = `Você é um Designer Sênior e Estrategista de Branding da AsthroVision, com 25+ anos de experiência em marcas globais, especializado em design que comunica modernidade e futuro. Sua análise é 100% sincera e de alto valor.
+O Segmento de Negócio do cliente é: **${segmento}**.
+Analise esta imagem (o logo do cliente) com rigor e forneça um relatório completo. Use um tom de voz direto, profissional e inspirador, focado em alta performance. Responda em português usando EXATAMENTE este formato (nunca pule nenhuma seção):
+### NOTA DE PERFORMANCE ESTELAR: X/10
+[A nota deve ser uma avaliação objetiva de design, impacto e alinhamento com o segmento.]
+### VEREDITO ASTHRO
+[1 frase curta e de impacto que resume se o logo é "Pronto para Decolar" ou "Precisa de Ajuste na Rota".]
+### PONTOS FORTES (Pilares da Marca)
+Liste no mínimo 3 bullet points. Destaque elementos que demonstram autenticidade e potencial.
+### PONTOS A MELHORAR (Ajustes de Trajetória)
+Liste no mínimo 3 bullet points. Seja honesto sobre as fraquezas visuais ou conceituais.
+### ANÁLISE CROMÁTICA PROFUNDA (O Código de Cores)
+1. Identifique as 3 a 5 cores principais (use código hex se possível).
+2. Para cada cor principal, explique seu significado psicológico, a energia que injeta no logo e se ela é chamativa (e se o nível de chamativo é adequado ao segmento).
+3. Analise se a junção/combinação das cores é harmoniosa, estratégica e coesa.
+### ALINHAMENTO ESTRATÉGICO COM O SEGMENTO **${segmento.toUpperCase()}**
+Avalie se o estilo, cores e tipografia do logo **batem** com o segmento informado. É autêntico neste nicho? Faz sentido?
+### CONCEITO POR TRÁS DO VETOR
+Explique em 4–6 linhas se a ideia conceitual é inteligente, memorável, original e se consegue traduzir a Missão e Visão da empresa em uma única forma visual.
+### 5 AÇÕES PRÁTICAS PARA O UPGRADE
+Liste exatamente 5 dicas concretas, de alto impacto e imediatamente aplicáveis que o cliente deve executar para otimizar o logo e levá-lo para o próximo nível (Nível Asthro).`;
+        
         const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${API_KEY}`, {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
             contents: [{ parts: [{text: prompt}, {inline_data: {mime_type: window.currentFile.type, data: base64}}] }],
-            generationConfig: { temperature: 0.8, maxOutputTokens: 2048 }
+            generationConfig: { 
+                temperature: 0.7, 
+                // SOLUÇÃO: Aumentado de 2048 para 4096 para evitar o erro MAX_TOKENS
+                maxOutputTokens: 4096 
+            } 
           })
         });
-
-        if (!res.ok) throw new Error((await res.json()).error?.message || res.status);
-
+        if (!res.ok) {
+            const errorData = await res.json();
+            throw new Error(`API retornou status ${res.status}: ${errorData.error?.message || JSON.stringify(errorData)}`);
+        }
         const data = await res.json();
-        const texto = data.candidates[0].content.parts[0].text;
-
-        resultado.innerHTML = marked.parse(texto);
-
+        
+        // ** TRATAMENTO DE ERRO COM OPTIONAL CHAINING PARA MAIOR ROBUSTEZ **
+        const texto = data.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (!texto) {
+            // Se 'data' veio, mas o texto não está onde deveria
+            // Adicionei a verificação de MAX_TOKENS aqui para ser mais informativo em caso de falha.
+             if (data.candidates?.[0]?.finishReason === "MAX_TOKENS") {
+                throw new Error("A IA atingiu o limite de tokens (MAX_TOKENS). Tente novamente com um limite maior ou simplifique o prompt.");
+            }
+            throw new Error("Resposta da IA incompleta. Detalhes da Resposta: " + JSON.stringify(data));
+        }
+        resultadoDiv.innerHTML = marked.parse(texto);
       } catch (e) {
-        resultado.innerHTML = `<p style="color:red">Erro: ${e.message}</p>`;
+        resultadoDiv.innerHTML = `<p style="color:red; text-align:center;">
+          ❌ **ERRO DE EXECUÇÃO** ❌<br>
+          <strong style="color:white; background:red; padding:2px 5px; border-radius:5px;">${e.message}</strong><br>
+          <br>
+          **Verificações:** A chave está correta e tem permissões? O arquivo de imagem não é muito grande?
+        </p>`;
       }
-
-      document.getElementById('analisarBtn').disabled = false;
+      analisarBtn.disabled = false;
     };
   </script>
-
 </body>
 </html>
