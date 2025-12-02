@@ -9,6 +9,39 @@
     <link rel="icon" type="image/png" href="https://i.imgur.com/ZeaGXHD.png">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <style>
+        @media (max-width: 768px) {
+
+    /* (as regras que você já tem aqui…) */
+
+    /* ← AQUI É A MÁGICA: muda o título para coluna e centraliza no mobile */
+    #quiz .flex.items-end.justify-center {
+        flex-direction: column !important;      /* empilha verticalmente */
+        align-items: center !important;         /* centraliza horizontalmente */
+        text-align: center;
+        gap: 0.5rem;                            /* espaço entre as duas linhas */
+        margin-top: 2rem;                       /* opcional: mais respiro no topo */
+    }
+
+    /* Aumenta um pouco o tamanho do "Asthro Colors" no mobile pra ficar impactante */
+    #quiz h1 {
+        font-size: 3.5rem !important;           /* ou 4rem se quiser ainda maior */
+        line-height: 1;
+    }
+
+    /* Ajusta o "Cosmic Edition" para ficar logo abaixo, menor e com o emoji */
+    #quiz .text-xl.md\\:text-3xl {
+        font-size: 1.75rem !important;          /* tamanho perfeito em mobile */
+        margin-left: 0 !important;
+        padding-bottom: 0 !important;
+    }
+
+    /* Garante que o emoji fique bonitinho */
+    #quiz .text-xl.md\\:text-3xl::before {
+        content: "✨ ";
+        font-size: 1.5em;
+        display: inline-block;
+    }
+}
         .shooting-star {
     position: absolute;
     width: 3px;
