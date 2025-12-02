@@ -11,6 +11,92 @@
     <style>
         @media (max-width: 768px) {
 
+    /* ==== 1. Card do Quiz (perguntas) ==== */
+    .card {
+        width: 95% !important;
+        max-width: 380px !important;      /* menor e mais confortável no celular */
+        margin: 0 auto;
+        padding: 2rem 1.5rem !important;  /* reduz o padding interno */
+        border-radius: 2rem;
+    }
+
+    .card h3 {
+        font-size: 2.2rem !important;     /* título da pergunta menor no mobile */
+        line-height: 1.2;
+    }
+
+    .card button,
+    .card input {
+        font-size: 1.1rem !important;
+        padding: 1rem 1.2rem !important;
+        margin: 0.5rem 0 !important;
+    }
+
+    /* ==== 2. Paleta de cores no resultado ==== */
+    #palette {
+        grid-template-columns: 1fr 1fr !important;   /* só 2 colunas no mobile */
+        gap: 1rem !important;
+        padding: 0 1rem;
+    }
+
+    #palette .color-box-shadow {
+        height: 140px !important;         /* caixinhas menores e proporcionais */
+        border-radius: 1.5rem;
+    }
+
+    #palette .color-box-shadow div:last-child {
+        font-size: 1.4rem !important;     /* código HEX menor e legível */
+        bottom: 0.75rem;
+        left: 1rem;
+    }
+
+    /* ==== 3. Análise Cósmica + Códigos HEX ==== */
+    #result .grid.md\\:grid-cols-2 {
+        grid-template-columns: 1fr !important;   /* empilha as duas caixas no mobile */
+        gap: 2rem;
+        padding: 0 1rem;
+    }
+
+    #result .bg-gray-900\/60 {
+        padding: 2rem 1.5rem !important;
+        border-radius: 2rem;
+    }
+
+    #result h3.text-4xl {
+        font-size: 2rem !important;
+    }
+
+    #hexList {
+        font-size: 1.1rem !important;
+    }
+
+    #hexList b {
+        font-size: 1.6rem !important;
+    }
+
+    /* botão "Copiar Todos" e "Nova Paleta" */
+    #result button {
+        font-size: 1.1rem !important;
+        padding: 1rem 1.5rem !important;
+        border-radius: 1.5rem;
+    }
+
+    button#generateBtn {
+        font-size: 1.8rem !important;
+        padding: 1.2rem 2rem !important;
+    }
+
+    /* ==== 4. Espaçamento geral do resultado ==== */
+    #result {
+        padding-bottom: 4rem !important;
+    }
+
+    .main-container.result-active {
+        padding-top: 4rem !important;
+    }
+}
+        @media (max-width: 768px) {
+
     /* (as regras que você já tem aqui…) */
 
     /* ← AQUI É A MÁGICA: muda o título para coluna e centraliza no mobile */
