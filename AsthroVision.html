@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analisador de Logos com IA – 100% Grátis (Atualizado 2025)</title>
+  <style>
+    body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 900px; margin: 40px auto; padding: 20px; background: #f8f9fa; color: #333; }
+    h1 { text-align: center; color: #1a73e8; }
+    .upload-area {
+      border: 4px dashed #ccc;
+      border-radius: 20px;
+      padding: 60px 20px;
+      text-align: center;
+      background: white;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin: 30px 0;
+    }
+    .upload-area:hover, .upload-area.dragover { border-color: #1a73e8; background: #f0f8ff; }
+    #preview { max-width: 350px; max-height: 350px; margin: 20px auto; display: block; border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
+    button {
+      padding: 14px 40px;
+      background: #1a73e8;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 18px;
+      cursor: pointer;
+      margin-top: 20px;
+      box-shadow: 0 4px 10px rgba(26,115,232,0.3);
+    }
+    button:hover:not(:disabled) { background: #0d47a1; }
+    button:disabled { background: #aaa; cursor: not-allowed; }
+    #resultado {
+      margin-top: 40px;
+      padding: 30px;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+      line-height: 1.7;
+      display: none;
+    }
+    .loading { color: #1a73e8; font-size: 18px; text-align: center; }
+    .creditos { text-align: center; margin-top: 60px; color: #666; font-size: 14px; }
+    details { margin-top: 10px; }
+    pre { background: #f5f5f5; padding: 10px; overflow: auto; font-size: 12px; }
+  </style>
+</head>
+<body>
+
+  <h1>Analisador de Logos com Gemini IA (Atualizado Dez/2025)</h1>
+  <p style="text-align:center; color:#555; font-size:18px;">
+    Arraste o logo ou clique para enviar → análise completa em segundos (grátis com Gemini 2.5 Flash)
+  </p>
+
+  <div class="upload-area" id="dropArea">
+    <p style="font-size:20px; color:#555;">Clique aqui ou arraste a imagem do logo</p>
+    <input type="file" id="fileInput" accept="image/*" style="display:none;">
+    <img id="preview" src="" alt="Prévia do logo">
+  </div>
+
+  <div style="text-align:center;">
+    <button id="analisarBtn" disabled>Analisar Logo com IA</button>
+  </div>
+
+  <div id="resultado"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script>
+    const dropArea = document.getElementById('dropArea');
+    const fileInput = document.getElementById('fileInput');
+    const preview = document.getElementById('preview');
+    const analisarBtn = document.getElementById('analisarBtn');
+    const resultado = document.getElementById('resultado');
+
+    // COLE AQUI SUA CHAVE NOVA DO GEMINI (crie em https://aistudio.google.com/app/apikey)
+    const API_KEY = "AIzaSyBQODnQgOa7GASqYssyJ1bIcA9eqzsjzyU"; // Ex: "AIzaSyExemplo123..."
+
+    // Modelo atualizado para 2025: gemini-2.5-flash (gratuito e suporta imagens)
+    const MODEL = "gemini-2.5-flash";
+
+    // Drag & drop + clique
+    dropArea.addEventListener('click', () => fileInput.click());
+    ['dragover', 'dragenter'].forEach(e => dropArea.addEventListener(e, ev => { ev.preventDefault(); dropArea.classList.add('dragover'); }));
+    ['dragleave', 'dragend', 'drop'].forEach(e => dropArea.addEventListener(e, ev => { 
+      ev.preventDefault(); 
+      dropArea.classList.remove('dragover');
+      if (e === 'drop' && ev.dataTransfer.files[0]) handleFile(ev.dataTransfer.files[0]);
+    }));
+    fileInput.addEventListener('change', e => { if (e.target.files[0]) handleFile(e.target.files[0]); });
+
+    function handleFile(file) {
+      if (!file.type.startsWith('image/')) return alert('Selecione uma imagem válida (JPG, PNG, etc.)');
+      if (file.size > 4 * 1024 * 1024) return alert('Imagem muito grande! Use uma menor que 4MB.');
+      const reader = new FileReader();
+      reader.onload = e => {
+        preview.src = e.target.result;
+        preview.style.display = 'block';
+        analisarBtn.disabled = false;
+      };
+      reader.readAsDataURL(file);
+      window.currentFile = file;
+    }
+
+    analisarBtn.onclick = async () => {
+      if (!window.currentFile || !API_KEY || API_KEY === "COLE_SUA_CHAVE_AQUI") {
+        alert('Cole sua chave da API primeiro!');
+        return;
+      }
+
+      resultado.style.display = 'block';
+      resultado.innerHTML = '<p class="loading">Enviando para Gemini 2.5 Flash... aguarde 10–25 segundos</p>';
+      analisarBtn.disabled = true;
+
+      try {
+        const base64 = await new Promise((res, rej) => {
+          const reader = new FileReader();
+          reader.onload = () => res(reader.result.split(',')[1]);
+          reader.onerror = rej;
+          reader.readAsDataURL(window.currentFile);
+        });
+
+        const prompt = `Você é um designer gráfico sênior e especialista em branding com 20 anos de experiência.
+
+Analise este logo com muita atenção e responda em português usando exatamente este formato (markdown):
+
+### Nota final: X/10
+
+### Está bom ou precisa melhorar?
+[Resposta direta em 1 frase]
+
+### Pontos fortes (não precisa mudar)
+• ponto 1
+• ponto 2
+...
+
+### Pontos a melhorar
+• ponto 1
+• ponto 2
+...
+
+### Análise das cores
+Descreva cada cor principal, seu significado psicológico e se combinam bem com a marca.
+
+### A ideia conceitual é boa?
+Explique se o conceito é criativo, memorável e transmite a mensagem da empresa.
+
+### Sugestões práticas de melhoria
+Liste 3–5 dicas concretas e fáceis de aplicar.
+
+Seja 100% sincero — dê nota baixa se o logo for ruim.`;
+
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${API_KEY}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{
+              parts: [
+                { text: prompt },
+                {
+                  inline_data: {
+                    mime_type: window.currentFile.type,
+                    data: base64
+                  }
+                }
+              ]
+            }],
+            generationConfig: {
+              temperature: 0.7,
+              maxOutputTokens: 2048
+            }
+          })
+        });
+
+        // Debug: Abra F12 > Console para ver detalhes
+        console.log('Status da resposta:', response.status);
+        console.log('Response headers:', response.headers);
+
+        if (!response.ok) {
+          const err = await response.json();
+          console.error('Erro completo da API:', err);
+          throw new Error(err.error?.message || `Erro HTTP ${response.status}. Modelo: ${MODEL}. Verifique se é suportado.`);
+        }
+
+        const data = await response.json();
+        console.log('Resposta completa da API:', data);
+
+        if (data.candidates && data.candidates[0]?.content?.parts?.[0]?.text) {
+          const texto = data.candidates[0].content.parts[0].text;
+          resultado.innerHTML = marked.parse(texto); // Markdown para HTML bonito
+        } else {
+          throw new Error('Resposta vazia ou malformada. Veja o console para detalhes.');
+        }
+
+      } catch (erro) {
+        console.error('Erro detalhado:', erro);
+        let dicaExtra = '';
+        if (erro.message.includes('not found') || erro.message.includes('model')) {
+          dicaExtra = '<p><strong>Dica:</strong> Modelo depreciado? Teste trocar para "gemini-2.0-flash" no código ou liste modelos com: <a href="https://generativelanguage.googleapis.com/v1beta/models?key=' + API_KEY + '" target="_blank">Listar Modelos</a></p>';
+        }
+        resultado.innerHTML = `
+          <p style="color:red;font-weight:bold;">Erro na análise: ${erro.message}</p>
+          <details>
+            <summary>Detalhes técnicos (clique para ver)</summary>
+            <pre>${JSON.stringify(erro, null, 2)}</pre>
+          </details>
+          <hr>
+          <small>
+            • Verifique se a chave está correta e não foi exposta<br>
+            • Imagem <4 MB e formato válido<br>
+            • Quota gratuita: 1.500 req/dia (reseta diariamente)<br>
+            • Teste a chave no <a href="https://aistudio.google.com" target="_blank">Google AI Studio</a><br>
+            ${dicaExtra}
+          </small>`;
+      }
+
+      analisarBtn.disabled = false;
+    };
+  </script>
+
+  <div class="creditos">
+    Feito com Gemini 2.5 Flash (grátis) • Atualização: Dezembro 2025<br>
+    <a href="https://aistudio.google.com/app/apikey" target="_blank">Pegar chave grátis aqui</a> | 
+    <a href="https://ai.google.dev/gemini-api/docs/models/gemini" target="_blank">Docs dos Modelos</a>
+  </div>
+
+</body>
+</html>
