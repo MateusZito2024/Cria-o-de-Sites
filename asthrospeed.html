@@ -226,6 +226,26 @@
 
 /* Oculta o dropdown no mobile para usar o menu hamburguer padrão */
 @media (max-width: 768px) {
+    nav {
+        pointer-events: auto;
+        z-index: 1000;
+        
+        /* 1. FUNDO PRETO TRANSPARENTE COM GLASSMORPHYSM */
+        background: rgba(17, 17, 17, 0.95); /* Fundo preto escuro semi-transparente */
+        backdrop-filter: blur(8px); /* Efeito de desfoque sutil (Glassmorphism) */
+        -webkit-backdrop-filter: blur(8px); /* Compatibilidade Safari */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* Sombra para profundidade */
+    }
+
+    /* 2. FORÇA A ALTURA E O ESPAÇAMENTO INTERNO */
+    nav > div {
+        /* A altura do conteúdo principal da navbar */
+        height: 60px; /* Um pouco menor que h-16 (64px) para parecer mais compacto */
+        
+        /* Redefinir padding vertical da barra de navegação principal (opcional, se quiser menos respiro) */
+        padding-top: 0.5rem !important; /* 8px */
+        padding-bottom: 0.5rem !important; /* 8px */
+    }
     .dropdown {
         display: none !important;
     }
