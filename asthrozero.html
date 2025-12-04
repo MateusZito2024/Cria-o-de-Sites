@@ -1516,6 +1516,34 @@ p, span, a {
             .hamburger { display: flex; }
             .mobile-menu-logo { display: block; margin-top: 0; }
         }
+        .error-message ul {
+    /* Estilo da lista */
+    list-style: disc; 
+    text-align: left; /* Alinha a lista à esquerda */
+    margin: 1.5rem auto 1.5rem 10%; /* Adiciona margem lateral e vertical */
+    padding-left: 0;
+    max-width: 90%; /* Limita a largura da lista */
+}
+
+.error-message ul li {
+    /* Espaçamento entre os itens da lista */
+    margin-bottom: 0.5rem; 
+    line-height: 1.4;
+    font-size: clamp(0.9rem, 3.5vw, 1rem); /* Garante boa legibilidade */
+}
+
+.error-message strong {
+    /* Garante que o negrito funcione */
+    font-weight: 700 !important; 
+    color: #0bf4ed; /* Cor ciano para destaque dos formatos */
+}
+
+.error-message .text-red-400 {
+    /* Estilo para a mensagem da API */
+    color: #f87171; 
+    display: block;
+    margin-top: 1rem;
+}
     </style>
 </head>
 <body class="text-gray-100">
@@ -1853,8 +1881,28 @@ p, span, a {
             }
 
         } catch (error) {
-            console.error("Erro no processamento:", error);
-            toggleElements(true, false, false, `Erro: ${error.message}. Tente novamente.`);
+            // 🚀 CORREÇÃO CRÍTICA: Captura QUALQUER erro (rede, formato, cota, etc.)
+            // e exibe a mensagem amigável da Asthro.
+            
+            const asthroErrorMessage = `
+                O sistema trabalha com arquivos de até <strong>22 MB</strong> nos seguintes formatos:
+                <ul>
+                    <li><strong>JPG (.jpg / .jpeg):</strong> indicado para fotos por gerar arquivos menores graças à compressão.</li>
+                    <li><strong>PNG (.png):</strong> preserva transparência, ideal para imagens que precisam manter o fundo transparente.</li>
+                    <li><strong>WebP (.webp):</strong> formato mais atual, une qualidade alta a tamanhos reduzidos e já é totalmente suportado.</li>
+                </ul>
+                <strong class="text-red-400">Erro detectado:</strong> Houve um problema ao processar sua imagem. Por favor, verifique os requisitos acima.
+            `;
+
+            // 1. Exibe a mensagem personalizada da Asthro usando innerHTML para manter a formatação
+            statusText.innerHTML = `<p class="error-message">${asthroErrorMessage}</p>`;
+
+            // 2. Garante que a área de upload volte a ser mostrada
+            toggleElements(true, false, false);
+            statusText.classList.remove('hidden');
+
+            // Opcional: Para fins de debugging (só aparece no Console do navegador)
+            console.error("Erro completo da API/Processamento:", error);
         }
     }
 
