@@ -1324,12 +1324,12 @@ function generatePalette(){
 
     // 6. MONTAGEM DO TEXTO FINAL
     const analysisText = `
-        <p class="mb-4">Sua paleta foi ancorada no **${highestIntent.toUpperCase()}**, o tema mais forte de suas escolhas.</p>
+        <p class="mb-4">Sua paleta foi ancorada no ${highestIntent.toUpperCase()}, o tema mais forte de suas escolhas.</p>
         
-        <p class="mb-4">A cor principal, **${primaryColorName.toUpperCase()}**, foi gerada a partir do seu perfil e, isoladamente, significa:</p>
+        <p class="mb-4">A cor principal, ${primaryColorName.toUpperCase()}, foi gerada a partir do seu perfil e, isoladamente, significa:</p>
         <blockquote class="border-l-4 border-purple-400 pl-4 py-2 italic text-lg text-gray-400">"${primaryMeaning.meaning.replace(/\s*\(.*\)\s*/g, '').trim()}"</blockquote>
         
-        <p class="mb-4">Esta combinação multidimensional gerou o tema **${bestCombo.name.toUpperCase()}**, que remete a:</p>
+        <p class="mb-4">Esta combinação multidimensional gerou o tema ${bestCombo.name.toUpperCase()}, que remete a:</p>
         <blockquote class="border-l-4 border-pink-400 pl-4 py-2 italic text-lg text-gray-400">"${bestCombo.meaning}"</blockquote>
         
         <p class="mt-6 font-bold text-cyan-300 text-2xl">${closingPhrase}</p>
