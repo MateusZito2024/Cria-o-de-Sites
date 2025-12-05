@@ -367,36 +367,6 @@ footer .content-layer {
             box-shadow: 0 5px 15px rgba(11, 244, 237, 0.6);
         }
 
-        .carousel-container {
-            position: relative;
-            width: 100%;
-            max-width: 800px;
-            height: 400px; /* Altura fixa para o carrossel principal no PC */
-            margin: 0 auto;
-            overflow: hidden;
-            border-radius: 1rem;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-        }
-
-        .carousel-wrapper {
-            display: flex;
-            width: 300%; /* 100% * número de slides */
-            height: 100%;
-            transition: transform 0.5s ease-in-out;
-        }
-
-        .carousel-slide {
-            width: 33.33%; /* 100% / número de slides */
-            height: 100%;
-        }
-
-        .carousel-slide img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 1rem;
-        }
-
         .cursive-heading {
             font-family: 'Great Vibes', cursive;
             font-size: 3.5rem;
@@ -853,6 +823,118 @@ footer .content-layer {
             .hamburger { display: flex; }
             .mobile-menu-logo { display: block; margin-top: 0; }
         }
+        .carousel-container {
+    position: relative;
+    max-width: 900px;
+    height: 480px;
+    margin: 4rem auto;
+    border-radius: 1.8rem;
+    overflow: hidden;
+    background: rgba(17,17,17,0.6);
+    backdrop-filter: blur(14px);
+    border: 2px solid transparent;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.7), inset 0 0 0 40px rgba(102,39,255,0.2);
+}
+
+.carousel-wrapper {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.carousel-slide {
+    min-width: 100%;
+    position: relative;
+}
+
+.carousel-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 1.6rem;
+    transition: transform 0.6s ease;
+}
+
+.carousel-slide::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(102,39,255,0.3), rgba(11,244,237,0.15));
+    border-radius: 1.6rem;
+    pointer-events: none;
+}
+
+/* Botões */
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 64px;
+    height: 64px;
+    background: rgba(17,17,17,0.8);
+    backdrop-filter: blur(12px);
+    border: 2px solid #6627ff;
+    border-radius: 50%;
+    color: #0bf4ed;
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.4s ease;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+}
+.carousel-btn:hover {
+    background: linear-gradient(135deg, #6627ff, #0bf4ed);
+    transform: translateY(-50%) scale(1.2);
+    box-shadow: 0 0 30px rgba(11,244,237,0.9);
+}
+.carousel-btn.prev { left: 24px; }
+.carousel-btn.next { right: 24px; }
+
+/* Indicadores */
+.carousel-indicators {
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 14px;
+    z-index: 10;
+}
+.indicator {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    cursor: pointer;
+    transition: all 0.4s ease;
+    box-shadow: 0 0 12px rgba(0,0,0,0.6);
+}
+.indicator.active,
+.indicator:hover {
+    background: #0bf4ed;
+    transform: scale(1.5);
+    box-shadow: 0 0 20px rgba(11,244,237,0.9);
+}
+
+/* Responsivo mobile */
+@media (max-width: 768px) {
+    .carousel-container {
+        height: 300px;
+        margin: 2rem auto;
+        border-radius: 1.2rem;
+    }
+    .carousel-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 1.6rem;
+    }
+    .carousel-btn.prev { left: 16px; }
+    .carousel-btn.next { right: 16px; }
+}
     </style>
 </head>
 <body class="text-gray-100">
@@ -947,20 +1029,26 @@ footer .content-layer {
                     Na Asthro, cada trabalho é feito com propósito, estratégia e criatividade.
                 </p>
                 <div class="carousel-container">
-                    <div class="carousel-wrapper" id="carouselWrapper">
-                        <div class="carousel-slide">
-                            <img src="https://i.imgur.com/FppqPMc.png" alt="Projeto 1 - Interface de site com design moderno">
-                        </div>
-                        <div class="carousel-slide">
-                            <img src="https://i.postimg.cc/BbgNnChB/Captura-de-tela-2025-04-12-152929.png" alt="Projeto 2 - Layout de site com foco em usabilidade">
-                        </div>
-                        <div class="carousel-slide">
-                            <img src="https://i.imgur.com/yWnRAgg.png" alt="Projeto 3 - Design de site com paleta de cores vibrantes">
-                        </div>
-                        <div class="carousel-slide">
-                            <img src="https://i.imgur.com/Hjk7KNf.png" alt="Projeto 4 - Design de site de casamento">
-                        </div>
-                    </div>
+    <!-- Botões de navegação -->
+    <button class="carousel-btn prev" aria-label="Slide anterior">←</button>
+    <button class="carousel-btn next" aria-label="Próximo slide">→</button>
+
+    <!-- Slides -->
+    <div class="carousel-wrapper" id="carouselWrapper">
+        <div class="carousel-slide"><img src="https://i.imgur.com/FppqPMc.png" alt="Projeto Asthro 1"></div>
+        <div class="carousel-slide"><img src="https://i.postimg.cc/BbgNnChB/Captura-de-tela-2025-04-12-152929.png" alt="Projeto Asthro 2"></div>
+        <div class="carousel-slide"><img src="https://i.imgur.com/yWnRAgg.png" alt="Projeto Asthro 3"></div>
+        <div class="carousel-slide"><img src="https://i.imgur.com/Hjk7KNf.png" alt="Projeto Asthro 4"></div>
+    </div>
+
+    <!-- Indicadores (bolinhas) -->
+    <div class="carousel-indicators">
+        <span class="indicator active" data-slide="0"></span>
+        <span class="indicator" data-slide="1"></span>
+        <span class="indicator" data-slide="2"></span>
+        <span class="indicator" data-slide="3"></span>
+    </div>
+</div>
                 </div>
             </div>
         </section>
@@ -1125,25 +1213,47 @@ footer .content-layer {
     }
     
     // --- LÓGICA DO CARROSSEL (AJUSTADA) ---
-    function showSlide(index) {
-        if (!carouselWrapper) return;
-        // Calcula a largura do wrapper (ex: 300% para 3 slides)
-        const wrapperWidth = totalSlides * 100;
-        carouselWrapper.style.width = `${wrapperWidth}%`;
+    const wrapper = document.getElementById('carouselWrapper');
+const totalSlidesNew = document.querySelectorAll('.carousel-slide').length;
+let currentSlideNew = 0;
+let autoSlideTimer;
 
-        // Define a largura individual de cada slide (ex: 33.33%)
-        carouselSlides.forEach(slide => {
-            slide.style.width = `${100 / totalSlides}%`;
-        });
+function showNewSlide(n) {
+    wrapper.style.transform = `translateX(-${n * 100}%)`;
+    document.querySelectorAll('.indicator').forEach((dot, i) => {
+        dot.classList.toggle('active', i === n);
+    });
+}
 
-        // Move o wrapper horizontalmente
-        carouselWrapper.style.transform = `translateX(-${index * (100 / totalSlides)}%)`;
-    }
+function nextNew() {
+    currentSlideNew = (currentSlideNew + 1) % totalSlidesNew;
+    showNewSlide(currentSlideNew);
+}
 
-    function nextSlide() {
-        currentSlide = (currentSlide + 1) % totalSlides;
-        showSlide(currentSlide);
-    }
+function prevNew() {
+    currentSlideNew = (currentSlideNew - 1 + totalSlidesNew) % totalSlidesNew;
+    showNewSlide(currentSlideNew);
+}
+
+// Botões e indicadores
+document.querySelector('.carousel-btn.next').addEventListener('click', nextNew);
+document.querySelector('.carousel-btn.prev').addEventListener('click', prevNew);
+document.querySelectorAll('.indicator').forEach((dot, i) => {
+    dot.addEventListener('click', () => {
+        currentSlideNew = i;
+        showNewSlide(i);
+        clearInterval(autoSlideTimer);
+        autoSlideTimer = setInterval(nextNew, 5000);
+    });
+});
+
+// Auto slide
+autoSlideTimer = setInterval(nextNew, 5000);
+document.querySelector('.carousel-container').addEventListener('mouseenter', () => clearInterval(autoSlideTimer));
+document.querySelector('.carousel-container').addEventListener('mouseleave', () => autoSlideTimer = setInterval(nextNew, 5000));
+
+// Inicia
+showNewSlide(0);
     
     // ===================================================================
     // ====================== INICIALIZAÇÃO E EVENTOS ====================
