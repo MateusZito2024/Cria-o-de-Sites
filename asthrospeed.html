@@ -1506,8 +1506,8 @@ nav > div {
                     
                     <div class="dropdown-menu absolute" id="toolsMenu">
                         <a href="https://asthro.com.br/asthrocolors.html" class="nav-link block">AsthroColors (Gerador de Paleta)</a>
-                        <a href="https://asthro.com.br/asthrospeed.html" class="nav-link block">AsthroSpeed (Análise de Sites)</a>
-                        <a href="https://asthro.com.br/asthrozero.html" class="nav-link block">AsthroZero (Removedor de Fundo)</a>
+                        <a href="https://asthro.com.br/asthrospeed.html" class="nav-link block">AsthroSpeed (Análise de Performance e SEO)</a>
+                        <a href="https://asthro.com.br/asthrozero.html" class="nav-link block">AsthroZero (Removedor de Fundo de Imagens)</a>
                     </div>
                 </div>
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/sobre.html" class="nav-link text-lg transition">Sobre</a>
@@ -1519,35 +1519,36 @@ nav > div {
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/index.html" class="nav-link text-lg transition block">Início</a>
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/servi%C3%A7os.html" class="nav-link text-lg transition block">Serviços</a>
                 <button id="mobileToolsButton" class="nav-link text-lg transition block w-full text-center" style="cursor: pointer;">
-        Ferramentas
-    </button>
+                    Ferramentas
+                </button>
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/sobre.html" class="nav-link text-lg transition block">Sobre</a>
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/portf%C3%B3lio.html" class="nav-link text-lg transition block">Portfólio</a>
                 <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/contato.html" class="nav-link text-lg transition block">Contato</a>
                 <a href="https://asthro.com.br/politicas.html" class="nav-link text-lg transition">Políticas</a>
             </div>
-            <div id="mobileToolsModal" class="tools-modal">
-    <div class="modal-content">
-        <button class="modal-close">&times;</button>
-                    <h3 class="animated-gradient-text text-3xl font-bold mb-8">Nossas Ferramentas</h3>
-                    <a href="https://asthro.com.br/asthrocolors.html" class="modal-link">
-            AsthroColors
-            <span class="modal-link-subtitle">Gerador de Paletas de Cores</span>
-        </a>
-                    <a href="https://asthro.com.br/asthrospeed.html" class="modal-link">
-                        AsthroSpeed
-                        <span class="modal-link-subtitle">Analisador de Performance e SEO</span>
-                    </a>
-                    
-                    <a href="https://asthro.com.br/asthrozero.html" class="modal-link">
-                    AsthroZero
-                    <span class="modal-link-subtitle">Removedor de Fundo de Imagens</span>
-                </a>
-                    <p class="text-sm text-gray-400 mt-10">Clique fora para fechar</p>
-                </div>
         </div>
     </nav>
-
+    <!-- ==================== MODAL DE FERRAMENTAS (FICOU FORA DA NAV) ==================== -->
+    <div id="mobileToolsModal" class="tools-modal">
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <h3 class="animated-gradient-text text-3xl font-bold mb-8">Nossas Ferramentas</h3>
+            <a href="https://asthro.com.br/asthrocolors.html" class="modal-link">
+                AsthroColors
+                <span class="modal-link-subtitle">Gerador de Paletas de Cores</span>
+            </a>
+            <a href="https://asthro.com.br/asthrospeed.html" class="modal-link">
+                AsthroSpeed
+                <span class="modal-link-subtitle">Analisador de Performance e SEO</span>
+            </a>
+            <a href="https://asthro.com.br/asthrozero.html" class="modal-link">
+                AsthroZero
+                <span class="modal-link-subtitle">Removedor de Fundo de Imagens</span>
+            </a>
+            <p class="text-sm text-gray-400 mt-10">Clique fora para fechar</p>
+        </div>
+    </div>
+    <!-- ==================== MAIN CONTENT ==================== -->
     <main class="pt-24 pb-20 min-h-screen relative z-10">
         <section id="analyser" class="section-bg">
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 content-layer">
@@ -1558,9 +1559,7 @@ nav > div {
                 <p class="text-center text-xl text-gray-300 mb-10">
                     Avalie gratuitamente a performance, acessibilidade e SEO do seu site.
                 </p>
-
                 <div id="analyser-container" class="analyser-card p-6 md:p-10 rounded-xl">
-
                     <div id="input-area" class="flex flex-col md:flex-row gap-4 mb-8">
                         <input 
                             type="url" 
@@ -1573,13 +1572,11 @@ nav > div {
                             Analisar Site
                         </button>
                     </div>
-
                     <div id="results">
                         <p class="text-center text-gray-400">
                             Digite uma URL válida no campo acima para começar.
                         </p>
                     </div>
-
                 </div>
             </div>
         </section>
