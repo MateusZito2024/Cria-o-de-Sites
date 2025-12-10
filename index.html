@@ -503,20 +503,19 @@ footer .content-layer {
             gap: 0.75rem;
         }
         .message {
-            max-width: 80%;
-            padding: 0.5rem;
-            border-radius: 0.75rem;
-            line-height: 1.5;
-            font-size: clamp(0.875rem, 2.5vw, 1rem);
-        }
+    max-width: 90%; /* CRÍTICO: Deixa o balão ir mais longe (como no WhatsApp) */
+    padding: 0.5rem;
+    border-radius: 0.75rem;
+    line-height: 1.5;
+    font-size: clamp(0.875rem, 2.5vw, 1rem);
+}
         .bot-message-container {
-    display: flex; /* Permite alinhar o avatar e a mensagem lado a lado */
-    align-items: flex-start; /* Alinha o avatar e a mensagem no topo */
-    max-width: 80%;
-    align-self: flex-start;
-    gap: 0.5rem; /* Espaço entre o avatar e a mensagem */
-    /* 💥 NOVO: Ajuste para garantir que o container não se expanda além do necessário */
-    width: auto;
+    display: flex; /* Permite alinhar o avatar e a mensagem lado a lado */
+    align-items: flex-start; /* Alinha o avatar e a mensagem no topo */
+    max-width: 90%; /* Agora ocupa até 90% da largura do chat */
+    align-self: flex-start;
+    gap: 0.5rem; /* Espaço entre o avatar e a mensagem */
+    width: auto;
 }
 
 /* 💡 NOVO: Estilo para o avatar do bot */
@@ -529,43 +528,50 @@ footer .content-layer {
     flex-shrink: 0; /* Impede que o avatar encolha */
 }
         .bot-message {
-            background: #374151;
-            color: #e2e8f0;
-            align-self: flex-start;
-            border-bottom-left-radius: 0;
-        }
-        /* 💡 NOVO: Estilo para o contêiner da mensagem do bot + avatar */
-.bot-message-container {
-    display: flex; /* Permite alinhar o avatar e a mensagem lado a lado */
-    align-items: flex-start; /* Alinha o avatar e a mensagem no topo */
-    max-width: 80%;
-    align-self: flex-start;
-    gap: 0.5rem; /* Espaço entre o avatar e a mensagem */
+    background: #374151;
+    color: #e2e8f0;
+    /* CRÍTICO: Balão do bot deve ter a borda de baixo-esquerda reta */
+    border-bottom-left-radius: 0;
+    align-self: auto; /* Deixa o flex do container controlar o alinhamento */
 }
 
-/* 💡 NOVO: Estilo para o avatar do bot */
+/* LINHA 400: Estilo do Container do Bot (CRÍTICO: Define o posicionamento com o Avatar) */
+.bot-message-container {
+    display: flex; /* Alinha avatar e balão lado a lado */
+    align-items: flex-start; /* Alinha no topo (avatar e balão) */
+    max-width: 90%; /* CRÍTICO: Deixa o balão ir mais longe */
+    align-self: flex-start;
+    gap: 0.5rem; /* Espaço entre o avatar e a mensagem */
+    width: auto;
+}
+
+/* LINHA 408: Estilo do Avatar */
 .bot-avatar {
-    width: 32px; /* Tamanho do avatar */
-    height: 32px;
-    border-radius: 50%; /* Torna a imagem redonda */
-    object-fit: cover;
-    border: 2px solid #0bf4ed; /* Borda sutil de neon */
-    flex-shrink: 0; /* Impede que o avatar encolha */
+    width: 32px !important; /* Tamanho pequeno forçado */
+    height: 32px !important;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #0bf4ed;
+    flex-shrink: 0;
 }
-/* 💡 NOVO: Ajuste para remover o "align-self" do user-message (já que a mensagem do bot terá um container) */
+
+/* LINHA 418: Estilo da Mensagem do Usuário (sem avatar) */
 .user-message {
-    background: #6627ff;
-    color: #edf1f7;
-    align-self: flex-end; /* Mantém o alinhamento à direita para o usuário */
-    border-bottom-right-radius: 0;
+    background: #6627ff;
+    color: #edf1f7;
+    align-self: flex-end; /* Mantém o alinhamento à direita para o usuário */
+    border-bottom-right-radius: 0;
 }
-/* 💡 NOVO: Ajuste para o indicador de digitação */
+
+/* LINHA 425: Indicador de Digitação */
 .typing-indicator {
+    /* CRÍTICO: Remove a margem para que fique dentro do novo wrapper */
+    margin-left: 0;
+    align-self: auto;
+    
     display: flex;
     gap: 0.3rem;
-    /* align-self: flex-start; <--- REMOVA SE ESTIVER AQUI */
     padding: 0.5rem;
-    margin-left: 37px; /* Adiciona o mesmo espaçamento do avatar (32px + 5px de gap) */
 }
         .user-message {
             background: #6627ff;
@@ -2543,29 +2549,31 @@ function setupFlipCards() {
             scrollToBottom();
         }
         function showTypingIndicator() {
-            // Cria um container wrapper para respeitar o fluxo do avatar
-            const wrapper = document.createElement('div');
-            wrapper.classList.add('bot-message-container');
-            
-            // O avatar, invisível, apenas para criar o espaçamento correto
-            const spacerAvatar = document.createElement('div');
-            // Usamos a classe .bot-avatar, mas tornamos este elemento DIV invisível (não é a imagem)
-            spacerAvatar.classList.add('bot-avatar'); 
-            spacerAvatar.style.visibility = 'hidden'; // CRÍTICO: Oculta o avatar de espaço!
-            
-            const typingElement = document.createElement('div');
-            typingElement.classList.add('typing-indicator');
-            typingElement.innerHTML = '<span></span><span></span><span></span>';
-            typingElement.id = 'typingIndicator';
-            
-            // Monta a estrutura
-            wrapper.appendChild(spacerAvatar);
-            wrapper.appendChild(typingElement);
-            
-            chatMessages.appendChild(wrapper);
-            scrollToBottom();
-            isBotTyping = true;
-        }
+    if (isBotTyping || !chatMessages) return;
+    isBotTyping = true;
+
+    // 1. Cria o contêiner principal para o avatar (espaçador) e o indicador
+    const wrapper = document.createElement('div');
+    wrapper.classList.add('bot-message-container');
+    
+    // 2. O avatar, invisível, apenas para criar o espaçamento correto
+    const spacerAvatar = document.createElement('div');
+    spacerAvatar.classList.add('bot-avatar'); 
+    spacerAvatar.style.visibility = 'hidden'; 
+    
+    // 3. Cria o elemento do indicador de digitação
+    const typingElement = document.createElement('div');
+    typingElement.id = 'typingIndicator';
+    typingElement.classList.add('typing-indicator');
+    typingElement.innerHTML = '<span></span><span></span><span></span>';
+    
+    // 4. Monta a estrutura: Wrapper -> [Spacer, Indicador]
+    wrapper.appendChild(spacerAvatar);
+    wrapper.appendChild(typingElement);
+    
+    chatMessages.appendChild(wrapper);
+    scrollToBottom();
+}
         function removeTypingIndicator() {
             const typingElement = document.getElementById('typingIndicator');
             if (typingElement) {
