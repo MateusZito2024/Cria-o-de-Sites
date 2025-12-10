@@ -1624,10 +1624,15 @@ if (mobileToolsButton && mobileToolsModal) {
 
     // Fecha o modal ao clicar fora dele
     window.addEventListener('click', (event) => {
-        if (event.target === mobileToolsModal) {
-            closeModal();
-        }
-    });
+        // Verifica se o modal está aberto e se o clique ocorreu fora do modal-content
+        const modalContent = mobileToolsModal.querySelector('.modal-content');
+        if (mobileToolsModal.classList.contains('open') && !modalContent.contains(event.target)) {
+            // Adicionalmente, verifica se o clique não foi no botão que abriu o modal, para evitar fechar imediatamente após abrir.
+            if (event.target !== mobileToolsButton && !mobileToolsButton.contains(event.target)) {
+                closeModal();
+            }
+        }
+    });
 
     // Fecha o modal ao clicar em qualquer link de ferramenta
     mobileToolsModal.querySelectorAll('.modal-link').forEach(link => {
