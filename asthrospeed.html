@@ -18,27 +18,33 @@
         /* --- NOVOS ESTILOS PARA O POP-UP (MODAL) MOBILE --- */
 
 /* Oculta o modal por padrão */
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 .tools-modal {
     position: fixed;
-    z-index: 2000; /* CRÍTICO: Deve ser mais alto que o menu hambúrguer (1000) */
+    z-index: 2000;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.95); /* Fundo escuro com transparência */
+    background: rgba(0, 0, 0, 0.95);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
-    display: none; /* Inicia Oculto */
+    
+    /* 🚀 CORREÇÃO 1: Manter display: flex para ativar a centralização */
+    display: flex;
     justify-content: center;
     align-items: center;
+    
+    /* 🚀 CORREÇÃO 2: Usar visibility para ocultar sem quebrar o layout */
+    visibility: hidden; 
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease, visibility 0.3s ease; /* Adiciona transição para visibility */
 }
 
-/* Mostra o modal */
 .tools-modal.open {
-    display: flex;
+    visibility: visible; /* Apenas torna visível */
     opacity: 1;
+    /* display: flex; REMOVIDO */
 }
 
 .modal-content {
@@ -52,6 +58,9 @@
     animation: fadeIn 0.3s ease-out;
     position: relative;
     text-align: center;
+    
+    /* 🚀 NOVO: Garante que a centralização do seu PARENTE (.tools-modal) seja respeitada */
+    margin: auto;
 }
 
 .modal-close {
