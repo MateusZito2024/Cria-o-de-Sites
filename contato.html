@@ -726,6 +726,48 @@ p, span, a {
             align-self: flex-end;
             border-bottom-right-radius: 0;
         }
+        .user-message {
+    background: #6627ff;
+    color: #edf1f7;
+    align-self: flex-end;
+    border-bottom-right-radius: 0;
+}
+
+/* 💡 NOVOS ESTILOS PARA O AVATAR E CONTÊINER (Copie e cole abaixo do .user-message) */
+.bot-message-container {
+    display: flex; /* Alinha avatar e balão lado a lado */
+    align-items: flex-start; /* Alinha no topo */
+    max-width: 70%; /* Mesmo max-width do .message */
+    align-self: flex-start;
+    gap: 0.5rem; /* Espaço entre avatar e balão */
+    width: auto;
+}
+
+.bot-avatar {
+    width: 32px !important; /* Tamanho do avatar (força a aplicação) */
+    height: 32px !important;
+    border-radius: 50%; /* Torna a imagem redonda */
+    object-fit: cover;
+    border: 2px solid #0bf4ed; /* Borda sutil de neon */
+    flex-shrink: 0; /* Impede que o avatar encolha */
+}
+
+/* 💡 CORREÇÃO CRÍTICA: Ajusta o indicador de digitação para respeitar o espaço do avatar */
+.typing-indicator {
+    display: flex;
+    gap: 0.3rem;
+    align-self: flex-start;
+    padding: 0.75rem;
+    /* Move o indicador para o lado do avatar: (32px do avatar) + (8px de padding do chat-messages) */
+    margin-left: 32px; 
+    margin-top: -16px; /* Ajuste para centralizar verticalmente no espaço vazio */
+}
+
+/* 💡 AJUSTE ADICIONAL: Remove a margem extra do balão .bot-message (agora o container controla o alinhamento) */
+.message.bot-message {
+    align-self: auto; /* Remove a regra anterior para que o flex do container funcione */
+    /* Mantém o resto das propriedades do balão (.bot-message) inalterado */
+}
 
         .typing-indicator {
             display: flex;
@@ -1961,28 +2003,57 @@ function extractName(message) {
 
     // FUNÇÕES DE INTERFACE DO CHAT
     function addMessage(text, type) {
-        if (!chatMessages) return;
-        const messageElement = document.createElement('div');
-        messageElement.classList.add('message', `${type}-message`);
-        messageElement.textContent = text;
+    if (!chatMessages) return;
+    
+    const messageElement = document.createElement('div');
+    messageElement.classList.add('message', `${type}-message`);
+    messageElement.textContent = text;
+
+    if (type === 'bot') {
+        // Se for o BOT, cria o container e o avatar
+        const containerElement = document.createElement('div');
+        containerElement.classList.add('bot-message-container');
+
+        const avatarElement = document.createElement('img');
+        avatarElement.src = 'https://i.imgur.com/kMZAAf1.png'; // IMAGEM DO SEU ASTHROBOT
+        avatarElement.alt = 'AsthroBot Avatar';
+        avatarElement.classList.add('bot-avatar');
+
+        containerElement.appendChild(avatarElement);
+        containerElement.appendChild(messageElement);
+        chatMessages.appendChild(containerElement);
+    } else {
+        // Se for o usuário, adiciona diretamente (sem avatar)
         chatMessages.appendChild(messageElement);
-        scrollToBottom();
     }
-    function showTypingIndicator() {
-        if (isBotTyping || !chatMessages) return;
-        isBotTyping = true;
-        const typingElement = document.createElement('div');
-        typingElement.id = 'typingIndicator';
-        typingElement.classList.add('typing-indicator');
-        typingElement.innerHTML = '<span></span><span></span><span></span>';
-        chatMessages.appendChild(typingElement);
-        scrollToBottom();
-    }
-    function removeTypingIndicator() {
-        const typingElement = document.getElementById('typingIndicator');
-        if (typingElement) typingElement.remove();
-        isBotTyping = false;
-    }
+
+    scrollToBottom();
+}
+
+function showTypingIndicator() {
+    if (isBotTyping || !chatMessages) return;
+    isBotTyping = true;
+
+    // Cria o elemento de digitação
+    const typingElement = document.createElement('div');
+    typingElement.id = 'typingIndicator';
+    typingElement.classList.add('typing-indicator');
+    typingElement.innerHTML = '<span></span><span></span><span></span>';
+
+    // Se o CSS for ajustado para usar margin-left/padding para o alinhamento:
+    // Basta adicionar o typingElement diretamente, pois o CSS já está ajustado (ver passo 1)
+    
+    // Adiciona ao chat (o CSS fará o deslocamento horizontal)
+    chatMessages.appendChild(typingElement); 
+
+    scrollToBottom();
+}
+
+function removeTypingIndicator() {
+    const typingElement = document.getElementById('typingIndicator');
+    if (typingElement) typingElement.remove();
+    isBotTyping = false;
+}
     function scrollToBottom() {
         if (chatMessages) chatMessages.scrollTop = chatMessages.scrollHeight;
     }
