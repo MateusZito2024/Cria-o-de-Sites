@@ -18,6 +18,46 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://i.imgur.com/sE44ypp.png">
     <style>
+        .hidden-text {
+    opacity: 0 !important;
+}
+        .value-icon {
+    /* Estas dimensões (64px x 70px) agora definem o tamanho FIXO do contêiner (o círculo invisível) */
+    width: 64px;
+    height: 70px;
+    margin-bottom: 1rem;
+    position: relative; /* Adiciona posicionamento relativo para o transform funcionar bem */
+    overflow: hidden; /* Opcional: Recorta a imagem se ela for ampliada demais */
+}
+
+/* NOVO CSS: Aumenta a imagem dentro do contêiner */
+.value-icon-img {
+    /* Garante que a imagem preencha o espaço original do contêiner */
+    width: 100%;
+    height: 100%;
+    
+    /* 🚀 CRÍTICO: Aplica a ampliação visual sem alterar o contêiner pai */
+    transform: scale(1.3); /* Aumenta a imagem em 30%. Ajuste este valor. */
+    
+    /* Garante que a imagem se ajuste bem ao contêiner */
+    object-fit: contain;
+}
+
+/* Regras de Responsividade para Mobile (AJUSTE CRÍTICO: Mantenha o novo tamanho no contêiner!) */
+@media (max-width: 768px) {
+    /* Mantenha o contêiner menor, como você já tinha */
+    .value-icon {
+        width: 56px;
+        height: 60px;
+    }
+}
+@media (max-width: 480px) {
+    /* Mantenha o contêiner ainda menor */
+    .value-icon {
+        width: 58px;
+        height: 65px;
+    }
+}
         footer .content-layer {
     display: block !important; 
     pointer-events: auto !important;
@@ -327,14 +367,6 @@ footer .content-layer {
         @keyframes shimmer {
             0% { background-position: 0% 50%; }
             100% { background-position: 200% 50%; }
-        }
-
-        #hero-title.fade-in, #hero-description.fade-in, #hero-button.fade-in {
-            animation: fadeIn 1s ease-in-out forwards;
-        }
-
-        #hero-title.fade-out, #hero-description.fade-out, #hero-button.fade-out {
-            animation: fadeOut 1s ease-in-out forwards;
         }
 
         .section-animate {
@@ -1213,27 +1245,36 @@ footer .content-layer {
         </section>
 
         <section id="valores" class="py-20 section-bg section-animate">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 content-layer">
-                <h2 class="text-4xl font-bold text-center gradient-text mb-12 fade-in">Nossos Valores</h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="value-item p-6 rounded-xl transition fade-in text-center" style="animation-delay: 0.2s;">
-                        <img src="https://i.imgur.com/tctKpXI.png" alt="Criatividade" class="value-icon mx-auto mb-4">
-                        <h3 class="text-2xl font-semibold gradient-text mb-4">Criatividade</h3>
-                        <p class="text-gray-300">Transformamos ideias em soluções únicas que surpreendem e engajam.</p>
-                    </div>
-                    <div class="value-item p-6 rounded-xl transition fade-in text-center" style="animation-delay: 0.4s;">
-                        <img src="https://i.imgur.com/NRYLABp.png" alt="Colaboração" class="value-icon mx-auto mb-4">
-                        <h3 class="text-2xl font-semibold gradient-text mb-4">Colaboração</h3>
-                        <p class="text-gray-300">Trabalhamos juntos, unindo talentos para alcançar resultados incríveis.</p>
-                    </div>
-                    <div class="value-item p-6 rounded-xl transition fade-in text-center" style="animation-delay: 0.6s;">
-                        <img src="https://i.imgur.com/OcjcOK9.png" alt="Inovação" class="value-icon mx-auto mb-4">
-                        <h3 class="text-2xl font-semibold gradient-text mb-4">Inovação</h3>
-                        <p class="text-gray-300">Buscamos sempre o novo, trazendo tecnologia e tendências ao seu projeto.</p>
-                    </div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 content-layer">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            
+            <div class="value-item p-6 rounded-xl transition fade-in text-center" style="animation-delay: 0.2s;">
+                <div class="value-icon mx-auto mb-4">
+                    <img src="https://i.imgur.com/7nr76mV.png" alt="Criatividade" class="value-icon-img transition-transform">
                 </div>
+                <h3 class="text-2xl font-semibold gradient-text mb-4">Criatividade</h3>
+                <p class="text-gray-300">Transformamos ideias em soluções únicas que surpreendem e engajam.</p>
             </div>
-        </section>
+            
+            <div class="value-item p-6 rounded-xl transition fade-in text-center" style="animation-delay: 0.4s;">
+                <div class="value-icon mx-auto mb-4">
+                    <img src="https://i.imgur.com/uYOFac5.png" alt="Colaboração" class="value-icon-img transition-transform">
+                </div>
+                <h3 class="text-2xl font-semibold gradient-text mb-4">Colaboração</h3>
+                <p class="text-gray-300">Trabalhamos juntos, unindo talentos para alcançar resultados incríveis.</p>
+            </div>
+            
+            <div class="value-item p-6 rounded-xl transition fade-in text-center" style="animation-delay: 0.6s;">
+                <div class="value-icon mx-auto mb-4">
+                    <img src="https://i.imgur.com/JCWNXP7.png" alt="Inovação" class="value-icon-img transition-transform">
+                </div>
+                <h3 class="text-2xl font-semibold gradient-text mb-4">Inovação</h3>
+                <p class="text-gray-300">Buscamos sempre o novo, trazendo tecnologia e tendências ao seu projeto.</p>
+            </div>
+            
+        </div>
+    </div>
+</section>
     </main>
 
     <footer class="text-gray-200 py-8">
@@ -1341,40 +1382,30 @@ footer .content-layer {
     }
     
     // --- FUNÇÃO DE ANIMAÇÃO DO TEXTO HERO ---
-    function updateHeroText() {
-        const heroTitle = document.getElementById('hero-title');
-        const heroDescription = document.getElementById('hero-description');
-        const heroButton = document.getElementById('hero-button');
-        if (!heroTitle) return;
+   function updateHeroText() {
+    const heroTitle = document.getElementById('hero-title');
+    const heroDescription = document.getElementById('hero-description');
+    const heroButton = document.getElementById('hero-button');
+    if (!heroTitle) return;
 
-        // Apply fade-out animation smoothly
-        heroTitle.classList.add('fade-out');
-        heroDescription.classList.add('fade-out');
-        heroButton.classList.add('fade-out');
+    // 1. Aplica a classe para SUMIR (transição de 1s para opacidade 0)
+    heroTitle.classList.add('hidden-text');
+    heroDescription.classList.add('hidden-text');
+    heroButton.classList.add('hidden-text');
 
-        setTimeout(() => {
-            heroTitle.classList.remove('fade-out');
-            heroDescription.classList.remove('fade-out');
-            heroButton.classList.remove('fade-out');
+    setTimeout(() => {
+        // 2. Atualiza o texto (enquanto ele está invisível)
+        heroTitle.textContent = heroTexts[currentTextIndex].title;
+        heroDescription.textContent = heroTexts[currentTextIndex].description;
+        
+        // 3. Remove a classe para APARECER (transição de 1s para opacidade 1)
+        heroTitle.classList.remove('hidden-text');
+        heroDescription.classList.remove('hidden-text');
+        heroButton.classList.remove('hidden-text');
 
-            // Update text
-            heroTitle.textContent = heroTexts[currentTextIndex].title;
-            heroDescription.textContent = heroTexts[currentTextIndex].description;
-
-            // Apply fade-in animation smoothly
-            heroTitle.classList.add('fade-in');
-            heroDescription.classList.add('fade-in');
-            heroButton.classList.add('fade-in');
-
-            setTimeout(() => {
-                heroTitle.classList.remove('fade-in');
-                heroDescription.classList.remove('fade-in');
-                heroButton.classList.remove('fade-in');
-            }, 1000);
-
-            currentTextIndex = (currentTextIndex + 1) % heroTexts.length;
-        }, 1000);
-    }
+        currentTextIndex = (currentTextIndex + 1) % heroTexts.length;
+    }, 1000); // Aguarda o 1s de transição de saída
+}
 
     // --- FUNÇÃO ESTRELAS (PARA O FUNDO) ---
     function createStars() {
