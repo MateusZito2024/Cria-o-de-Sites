@@ -378,20 +378,33 @@ footer .content-layer {
             height: clamp(40px, 10vw, 48px);
             margin-bottom: 1rem;
         }
+        @keyframes refined-glow {
+    0% { box-shadow: 0 0 30px rgba(102, 39, 255, 0.4); }
+    50% { box-shadow: 0 0 50px rgba(11, 244, 237, 0.6); }
+    100% { box-shadow: 0 0 30px rgba(102, 39, 255, 0.4); }
+}
+
+@keyframes star-scroll {
+    to { background-position: -1500px 1000px; } 
+}
         /* Ajustes para o pop-up de inatividade (PC) */
         .inactivity-card {
             position: fixed;
+            overflow: hidden;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: #1f2937;
+            background: rgba(10, 10, 15, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(11, 244, 237, 0.3);
             background-image: url('https://img.lovepik.com/free-png/20211126/lovepik-computer-and-mobile-phone-png-image_401144716_wh1200.png');
             background-size: contain;
             background-position: center;
             background-repeat: no-repeat;
             padding: 1.5rem;
             border-radius: 1rem;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
             z-index: 1000;
             display: none;
             text-align: center;
@@ -400,6 +413,46 @@ footer .content-layer {
             max-width: 500px; /* Limita a largura em telas grandes (PC) */
             box-sizing: border-box;
         }
+        .inactivity-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    
+    /* Padrão de Estrelas */
+    background-image: radial-gradient(#fff 1px, transparent 1px),
+                      radial-gradient(#0bf4ed 1.5px, transparent 1.5px);
+    background-size: 50px 50px;
+    background-position: 0 0;
+    
+    animation: star-scroll 60s linear infinite;
+    opacity: 0.08; /* Sutil */
+    pointer-events: none;
+    z-index: 999;
+    border: none;
+}
+
+/* DETALHE 2: LINHAS DE GRADE HOLOGRÁFICA (CAMADA DE SUPERFÍCIE) */
+.inactivity-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    
+    /* Grid Ciano/Roxo, estático e fino */
+    background: linear-gradient(to right, rgba(11, 244, 237, 0.1) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(102, 39, 255, 0.1) 1px, transparent 1px);
+    background-size: 40px 40px; 
+    
+    opacity: 0.2; 
+    pointer-events: none;
+    z-index: 1001; 
+    border: none;
+}
         .inactivity-card h3 {
             font-size: clamp(1.25rem, 4vw, 1.5rem);
             font-weight: bold;
