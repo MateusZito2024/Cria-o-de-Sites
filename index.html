@@ -2459,7 +2459,7 @@ function setupFlipCards() {
             setTimeout(() => {
                 removeTypingIndicator();
                 if (chatState.step === 1) {
-                    addBotMessage("Olá! Sou o assistente da Asthro. 😊 Qual é o seu nome ou como você gostaria de ser chamado?");
+                    addBotMessage("Olá! Sou o assistente da Asthro. 😊 Qual é o seu nome ou como você gostaria de ser chamado(a)?");
                 } else if (chatState.step === 2) {
                     const greeting = chatState.gender === 'feminine' ? 
                         `Prazer em conhecê-la, ${chatState.name}!` : 
@@ -2598,7 +2598,7 @@ function setupFlipCards() {
                     showTypingIndicator();
                     setTimeout(() => {
                         removeTypingIndicator();
-                        addBotMessage("Olá! Sou o assistente da Asthro. 😊 Qual é o seu nome ou como você gostaria de ser chamado?");
+                        addBotMessage("Olá! Sou o assistente da Asthro. 😊 Qual é o seu nome ou como você gostaria de ser chamado(a)?");
                         hasGreeted = true;
                         saveChatState();
                     }, 3000);
@@ -2619,7 +2619,7 @@ function setupFlipCards() {
                     const greeting = requestedGender === 'feminine' ? 
                         `Entendido! Prazer em conhecê-la, ${chatState.name || 'você'}!` : 
                         `Entendido! Prazer em conhecê-lo, ${chatState.name || 'você'}!`;
-                    addBotMessage(`${greeting} ${chatState.step === 1 ? 'Qual é o seu nome ou como você gostaria de ser chamado?' : 'Qual é o seu e-mail de contato?'}`);
+                    addBotMessage(`${greeting} ${chatState.step === 1 ? 'Qual é o seu nome ou como você gostaria de ser chamado(a)?' : 'Qual é o seu e-mail de contato?'}`);
                     saveChatState();
                 }, 2000);
                 userInput.value = '';
@@ -2704,13 +2704,13 @@ function setupFlipCards() {
                     showTypingIndicator();
                     setTimeout(() => {
                         removeTypingIndicator();
-                        addBotMessage(`${botGreeting} Qual é o seu nome ou como você gostaria de ser chamado?`);
+                        addBotMessage(`${botGreeting} Qual é o seu nome ou como você gostaria de ser chamado(a)?`);
                     }, 3000);
                 } else {
                     showTypingIndicator();
                     setTimeout(() => {
                         removeTypingIndicator();
-                        addBotMessage("Desculpe, não sei se esse é o seu nome. 😅 Pode me dizer seu nome ou como você gostaria de ser chamado?");
+                        addBotMessage("Desculpe, não sei se esse é o seu nome. 😅 Pode me dizer seu nome ou como você gostaria de ser chamado(a)?");
                     }, 3000);
                 }
             } else if (chatState.step === 2) {
