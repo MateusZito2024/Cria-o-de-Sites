@@ -18,7 +18,41 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://i.imgur.com/sE44ypp.png"> 
     <style>
-        
+        .marketing-circle {
+    /* Garante o tamanho fixo para o círculo */
+    width: 80px; 
+    height: 80px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 50%;
+    /* Estilo de fundo do seu serviço, aplicado aqui para o círculo */
+    background: linear-gradient(45deg, rgba(102, 39, 255, 0.2), rgba(11, 244, 237, 0.2));
+    box-shadow: 0 0 10px rgba(165, 180, 252, 0.3);
+    overflow: hidden; /* CRÍTICO: Garante que o conteúdo maior não quebre o layout */
+    position: relative;
+}
+
+/* NOVO: Aumenta a imagem DENTRO do círculo */
+.marketing-icon-img {
+    /* Define a imagem para ocupar o círculo */
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    
+    /* Aumenta a imagem interna em 50% sem alterar o tamanho do círculo */
+    transform: scale(3.8); 
+    
+    /* Remove a classe service-icon da tag img para evitar conflitos de estilo*/
+    background: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+}
+
+/* Garante que o ícone original não seja afetado, mantendo a img original transparente, se necessário */
+.service-icon:not(.marketing-icon-img) {
+    width: 80px;
+    height: 80px;
+}
         footer .content-layer {
     display: block !important; 
     pointer-events: auto !important;
@@ -1361,10 +1395,10 @@ footer .content-layer {
             </div>
 
             <div class="card-container-3d h-full">
-                <div class="p-6 lg:px-6 lg:py-12 rounded-xl service-card-main">
-                    <div class="flex items-center justify-center mb-4">
-                        <img src="https://i.imgur.com/uzwIjr3.png" alt="Marketing Icon" class="service-icon w-20 h-20 transition-transform">
-                    </div>
+    <div class="p-6 lg:px-6 lg:py-12 rounded-xl service-card-main">
+        <div class="marketing-circle flex items-center justify-center mb-4">
+            <img src="https://i.imgur.com/T8Y2gyK.png" alt="Marketing Icon" class="service-icon marketing-icon-img transition-transform">
+        </div>
                     <h3 class="text-xl font-semibold mb-3 text-center">Marketing Digital</h3>
                     <p class="mb-4 lg:mb-8 text-center text-sm">
                         Estratégias para redes sociais e e-mail marketing.
