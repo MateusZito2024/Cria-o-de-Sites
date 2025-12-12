@@ -1921,6 +1921,13 @@ footer .content-layer {
         <p>© 2025 Asthro. Todos os direitos reservados.</p>
     </div>
 </footer>
+    <audio id="inactivitySound" preload="auto">
+    <!-- Arquivo principal (MP3 – funciona em todos os navegadores) -->
+    <source src="https://asthro.com.br/sound-effect-495.mp3" type="audio/mpeg">
+    <!-- Fallback em OGG (caso alguém use Firefox antigo) -->
+    <source src="https://asthro.com.br/sound-effect-495.ogg" type="audio/ogg">
+    Seu navegador não suporta áudio.
+</audio>
     <div class="inactivity-card" id="inactivityCard">
         <button class="close-btn" onclick="hideInactivityCard()">×</button>
         <h3 class="gradient-text">Seu Site Ideal Começa Aqui</h3>
@@ -2234,6 +2241,15 @@ function setupFlipCards() {
             if (!hasShown) {
                 inactivityCard.style.display = 'block';
                 hasShown = true;
+                
+                // NOVO: Adiciona a lógica para tocar o som
+                const sound = document.getElementById('inactivitySound');
+                if (sound) {
+                    // Tenta tocar o som. O .catch impede erro se o navegador bloquear o som.
+                    sound.play().catch(error => {
+                        console.log("Erro ao tentar tocar o som. O navegador pode ter bloqueado a reprodução automática sem interação do usuário.", error);
+                    });
+                }
             }
         }
         function hideInactivityCard() {
@@ -2892,6 +2908,43 @@ document.addEventListener('contextmenu', function(e) {
         e.preventDefault();
     }
 }, false);
+
+// 🚨 INÍCIO DA CORREÇÃO CRÍTICA PARA REPRODUÇÃO DE ÁUDIO 🚨
+const inactivitySound = document.getElementById('inactivitySound');
+let audioUnlocked = false;
+
+// Tenta desbloquear o áudio mudo no primeiro clique ou toque
+function universalAudioUnlock() {
+    if (audioUnlocked || !inactivitySound) {
+        return;
+    }
+    
+    // Tenta tocar o áudio MUDO
+    inactivitySound.muted = true;
+    
+    inactivitySound.play()
+        .then(() => {
+            // Se chegou aqui, o áudio mudo foi aceito e está desbloqueado.
+            inactivitySound.pause();
+            inactivitySound.currentTime = 0; // Volta para o início
+            inactivitySound.muted = false; // Desmuta para o som real
+            audioUnlocked = true;
+            
+            console.log("Áudio universalmente desbloqueado.");
+            
+            // Remove os listeners de desbloqueio
+            document.removeEventListener('click', universalAudioUnlock);
+            document.removeEventListener('touchstart', universalAudioUnlock);
+        })
+        .catch(error => {
+             // Ainda não foi permitido. Espera o próximo toque.
+             console.log("Aguardando interação do usuário para desbloquear o áudio.");
+        });
+}
+
+// Ouve o primeiro clique ou toque do usuário para tentar o desbloqueio
+document.addEventListener('click', universalAudioUnlock);
+document.addEventListener('touchstart', universalAudioUnlock);
     </script>
 </body>
 </html>
