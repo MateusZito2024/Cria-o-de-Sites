@@ -2954,6 +2954,24 @@ function universalAudioUnlock() {
 // Ouve o primeiro clique ou toque do usuário para tentar o desbloqueio
 document.addEventListener('click', universalAudioUnlock);
 document.addEventListener('touchstart', universalAudioUnlock);
+        const openSound = document.getElementById('inactivitySound');
+
+// Desbloqueio automático silencioso ao carregar a página
+window.addEventListener('load', () => {
+    const unlock = new Audio("data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA");
+    unlock.volume = 0;
+    unlock.play().catch(() => {});
+});
+
+// Garante que o som toque mesmo se o popup abrir antes do desbloqueio
+const originalShow = showInactivityCard;
+showInactivityCard = function() {
+    originalShow();
+    if (openSound) {
+        openSound.currentTime = 0;
+        openSound.play().catch(() => {});
+    }
+};
     </script>
 </body>
 </html>
