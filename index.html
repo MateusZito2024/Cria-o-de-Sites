@@ -2919,59 +2919,40 @@ document.addEventListener('contextmenu', function(e) {
 }, false);
 
 // 🚨 INÍCIO DA CORREÇÃO CRÍTICA PARA REPRODUÇÃO DE ÁUDIO 🚨
-const inactivitySound = document.getElementById('inactivitySound');
-let audioUnlocked = false;
+const popupOpenSound  = document.getElementById('inactivitySound');
+const popupCloseSound = document.getElementById('closePopupSound');
+let audioAllowed = false;
 
-// Tenta desbloquear o áudio mudo no primeiro clique ou toque
-function universalAudioUnlock() {
-    if (audioUnlocked || !inactivitySound) {
-        return;
-    }
-    
-    // Tenta tocar o áudio MUDO
-    inactivitySound.muted = true;
-    
-    inactivitySound.play()
-        .then(() => {
-            // Se chegou aqui, o áudio mudo foi aceito e está desbloqueado.
-            inactivitySound.pause();
-            inactivitySound.currentTime = 0; // Volta para o início
-            inactivitySound.muted = false; // Desmuta para o som real
-            audioUnlocked = true;
-            
-            console.log("Áudio universalmente desbloqueado.");
-            
-            // Remove os listeners de desbloqueio
-            document.removeEventListener('click', universalAudioUnlock);
-            document.removeEventListener('touchstart', universalAudioUnlock);
-        })
-        .catch(error => {
-             // Ainda não foi permitido. Espera o próximo toque.
-             console.log("Aguardando interação do usuário para desbloquear o áudio.");
-        });
+// Desbloqueio automático + forçado (funciona até com F5)
+function unlockAudio() {
+    if (audioAllowed) return;
+    const silent = new Audio("data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA");
+    silent.play().catch(() => {});
+    audioAllowed = true;
 }
+window.addEventListener('load', unlockAudio);
+document.body.addEventListener('click', unlockAudio, { once: true });
+document.body.addEventListener('touchstart', unlockAudio, { once: true });
 
-// Ouve o primeiro clique ou toque do usuário para tentar o desbloqueio
-document.addEventListener('click', universalAudioUnlock);
-document.addEventListener('touchstart', universalAudioUnlock);
-        const openSound = document.getElementById('inactivitySound');
-
-// Desbloqueio automático silencioso ao carregar a página
-window.addEventListener('load', () => {
-    const unlock = new Audio("data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA");
-    unlock.volume = 0;
-    unlock.play().catch(() => {});
-});
-
-// Garante que o som toque mesmo se o popup abrir antes do desbloqueio
+// Força o som de abertura sempre que o popup aparecer
 const originalShow = showInactivityCard;
-showInactivityCard = function() {
+showInactivityCard = function () {
     originalShow();
-    if (openSound) {
-        openSound.currentTime = 0;
-        openSound.play().catch(() => {});
+    if (popupOpenSound) {
+        popupOpenSound.currentTime = 0;
+        popupOpenSound.play().catch(() => {});
     }
 };
+
+// Som de fechar (já estava funcionando – só deixei mais limpo)
+function hideInactivityCard() {
+    inactivityCard.style.display = 'none';
+    clearTimeout(inactivityTimeout);
+    if (popupCloseSound) {
+        popupCloseSound.currentTime = 0;
+        popupCloseSound.play().catch(() => {});
+    }
+}
     </script>
 </body>
 </html>
