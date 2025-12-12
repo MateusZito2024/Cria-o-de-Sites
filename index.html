@@ -2235,6 +2235,7 @@ function setupFlipCards() {
             },
             retina_detect: true
         });
+        
         const inactivityCard = document.getElementById('inactivityCard');
         let inactivityTimeout;
         let hasShown = false;
@@ -2919,56 +2920,6 @@ document.addEventListener('contextmenu', function(e) {
 }, false);
 
 // 🚨 INÍCIO DA CORREÇÃO CRÍTICA PARA REPRODUÇÃO DE ÁUDIO 🚨
-const openSound  = document.getElementById('inactivitySound');
-const closeSound = document.getElementById('closePopupSound');
-
-// Desbloqueio automático FORTE (roda 3 vezes até garantir)
-function unlockAudio() {
-    const silent = new Audio("data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA");
-    silent.volume = 0;
-    silent.play().catch(() => {});
-}
-
-// Tenta desbloquear o mais rápido possível
-window.addEventListener('load', () => {
-    unlockAudio();
-    setTimeout(unlockAudio, 100);
-    setTimeout(unlockAudio, 500);
-    setTimeout(unlockAudio, 1000);
-});
-
-// Garante com clique/toque
-document.addEventListener('click', unlockAudio);
-document.addEventListener('touchstart', unlockAudio);
-document.addEventListener('scroll', unlockAudio, { once: true });
-
-// SOBRESCREVE A FUNÇÃO ORIGINAL PARA SEMPRE TOCAR O SOM
-const funcaoOriginalShow = showInactivityCard;
-showInactivityCard = function() {
-    // Executa tudo que a função original fazia
-    funcaoOriginalShow();
-
-    // FORÇA O SOM DE ABERTURA (mesmo com F5)
-    if (openSound) {
-        openSound.currentTime = 0;
-        openSound.play().catch(() => {
-            // Se ainda não desbloqueou, tenta de novo em 300ms
-            setTimeout(() => openSound.play(), 300);
-        });
-    }
-};
-
-// MELHORA O SOM DE FECHAR (mais confiável)
-const funcaoOriginalHide = hideInactivityCard;
-hideInactivityCard = function() {
-    inactivityCard.style.display = 'none';
-    clearTimeout(inactivityTimeout);
-
-    if (closeSound) {
-        closeSound.currentTime = 0;
-        closeSound.play();
-    }
-};
     </script>
 </body>
 </html>
