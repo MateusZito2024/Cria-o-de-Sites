@@ -492,11 +492,12 @@ footer .content-layer {
     position: absolute;
     top: 0.5rem;
     right: 0.5rem;
-    background: none;
+    background: rgba(11, 244, 237, 0.2);
     border: none;
-    color: #0bf4ed; /* Cor Azul Prisma para o X */
+    color: #0bf4ed;
     font-size: 1.25rem;
     cursor: pointer;
+    transform: scale(0.85);
     /* ... (outras propriedades de layout) ... */
     
     /* 🚨 CORREÇÃO: Adiciona border-radius para o formato circular */
@@ -1928,6 +1929,14 @@ footer .content-layer {
     <source src="https://asthro.com.br/sound-effect-495.ogg" type="audio/ogg">
     Seu navegador não suporta áudio.
 </audio>
+    <audio id="inactivitySound" preload="auto">
+    <source src="https://asthro.com.br/sound-effect-495.mp3" type="audio/mpeg">
+</audio>
+
+<!-- SOM DO BOTÃO FECHAR (CLIQUE NO X) -->
+<audio id="closePopupSound" preload="auto">
+    <source src="https://asthro.com.br/clicking1926.mp3" type="audio/mpeg">
+</audio>
     <div class="inactivity-card" id="inactivityCard">
         <button class="close-btn" onclick="hideInactivityCard()">×</button>
         <h3 class="gradient-text">Seu Site Ideal Começa Aqui</h3>
@@ -2253,9 +2262,17 @@ function setupFlipCards() {
             }
         }
         function hideInactivityCard() {
-            inactivityCard.style.display = 'none';
-            clearTimeout(inactivityTimeout);
-        }
+    inactivityCard.style.display = 'none';
+    clearTimeout(inactivityTimeout);
+
+    // TOCA O SOM DE CLIQUE AO FECHAR
+    const closeSound = document.getElementById('closePopupSound');
+    if (closeSound) {
+        closeSound.currentTime = 0;
+        // O clique no X já é uma interação do usuário → o navegador sempre permite tocar som aqui
+        closeSound.play().catch(e => console.log("Som de fechar bloqueado (raro):", e));
+    }
+}
         function resetInactivityTimer() {
             if (!hasShown) {
                 clearTimeout(inactivityTimeout);
