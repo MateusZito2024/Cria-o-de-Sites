@@ -867,57 +867,58 @@ footer .content-layer {
 
 /* Botões */
 .carousel-btn {
+    /* Posição e alinhamento */
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    width: 64px;
-    height: 64px;
-    background: rgba(17,17,17,0.8);
-    backdrop-filter: blur(12px);
-    border: 2px solid #6627ff;
-    border-radius: 50%;
-    color: #0bf4ed;
-    font-size: 2rem;
+    
+    /* Tamanho e Estilo de Seta */
+    width: 3.5rem; /* Largura maior */
+    height: 3.5rem; /* Altura maior */
+    line-height: 0; /* Ajuda a centralizar o texto */
+    
+    /* Fundo e Borda - REMOVIDO BACKGROUND E BORDA PARA O VISUAL VAZADO */
+    background: transparent; /* Fundo transparente */
+    backdrop-filter: none; /* Sem desfoque no botão */
+    border: none; /* Sem borda de círculo */
+    border-radius: 0; /* Sem borda arredondada */
+    
+    /* Cor e Seta */
+    color: #edf1f7; /* Cor da seta (branco suave) */
+    font-size: 3rem; /* Tamanho da seta (mantenha o ← ou →) */
+    font-weight: 300; /* Deixa o traço mais fino */
+    
+    /* Display e Interação */
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     z-index: 10;
     transition: all 0.4s ease;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+    
+    /* Sombra e Brilho (Estilo Neon) */
+    text-shadow: 0 0 10px rgba(102, 39, 255, 0.4), 0 0 20px rgba(11, 244, 237, 0.4);
 }
-.carousel-btn:hover {
-    background: linear-gradient(135deg, #6627ff, #0bf4ed);
-    transform: translateY(-50%) scale(1.2);
-    box-shadow: 0 0 30px rgba(11,244,237,0.9);
-}
-.carousel-btn.prev { left: 24px; }
-.carousel-btn.next { right: 24px; }
 
-/* Indicadores */
+.carousel-btn:hover {
+    /* Hover: Aumenta sutilmente e aplica o brilho Ciano */
+    background: transparent; /* Mantém o fundo transparente */
+    transform: translateY(-50%) scale(1.1); /* Sutil aumento */
+    color: #0bf4ed; /* Cor ciano no hover */
+    text-shadow: 0 0 15px #0bf4ed, 0 0 30px #0bf4ed; /* Brilho neon intenso */
+}
+
+/* Posição Específica (Margem maior para afastar das bordas) */
+.carousel-btn.prev { 
+    left: 10px; /* Mais perto da borda */
+}
+.carousel-btn.next { 
+    right: 10px; /* Mais perto da borda */
+}
+
+/* Indicadores - COMPLETAMENTE REMOVIDOS/OCULTADOS */
 .carousel-indicators {
-    position: absolute;
-    bottom: 24px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 14px;
-    z-index: 10;
-}
-.indicator {
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.3);
-    cursor: pointer;
-    transition: all 0.4s ease;
-    box-shadow: 0 0 12px rgba(0,0,0,0.6);
-}
-.indicator.active,
-.indicator:hover {
-    background: #0bf4ed;
-    transform: scale(1.5);
-    box-shadow: 0 0 20px rgba(11,244,237,0.9);
+    display: none !important; /* Esconde o container das bolinhas */
 }
 
 /* Responsivo mobile */
@@ -928,12 +929,13 @@ footer .content-layer {
         border-radius: 1.2rem;
     }
     .carousel-btn {
-        width: 40px;
-        height: 40px;
-        font-size: 1.6rem;
+        width: 3rem; /* Tamanho menor no mobile */
+        height: 3rem; /* Tamanho menor no mobile */
+        font-size: 2.2rem; /* Seta menor no mobile */
     }
-    .carousel-btn.prev { left: 12px; }
-    .carousel-btn.next { right: 12px; }
+    /* Posição Específica Mobile (Mais perto da borda) */
+    .carousel-btn.prev { left: 5px; }
+    .carousel-btn.next { right: 5px; }
 }
     </style>
 </head>
@@ -1042,13 +1044,6 @@ footer .content-layer {
     </div>
 
     <!-- Indicadores (bolinhas) -->
-    <div class="carousel-indicators">
-        <span class="indicator active" data-slide="0"></span>
-        <span class="indicator" data-slide="1"></span>
-        <span class="indicator" data-slide="2"></span>
-        <span class="indicator" data-slide="3"></span>
-    </div>
-</div>
                 </div>
             </div>
         </section>
