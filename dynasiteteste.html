@@ -5,18 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dynamix - Sua Loja de Suplementos e Produtos Naturais</title>
   
-  <meta name="description" content="Explore a Dynamix para uma ampla gama de suplementos e produtos de saúde. Categorias incluem Perda de Peso, Saúde, Colágeno, Chás, Vitaminas e Treino.">
-  <meta property="og:title" content="Dynamix - Sua Loja de Suplementos">
-  <meta property="og:description" content="Explore a Dynamix para uma ampla gama de suplementos e produtos de saúde.">
-  <meta name="twitter:card" content="summary">
-
+  <meta name="description" content="Explore a Dynamix para uma ampla gama de suplementos e produtos de saúde.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
   <link id="google-fonts-link" href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
   <script src="https://kit.fontawesome.com/8e98006f77.js" crossorigin="anonymous"></script>
   <script src="https://cdn.tailwindcss.com"></script>
-
   <style>
     :root {
       --accent-color: #f3a712;
@@ -51,26 +45,30 @@
     }
   </style>
 </head>
-
-<body class="h-full bg-white [font-family:var(--font-family-body)] flex flex-col">
-
-  <!-- HEADER -->
-  <header id="global-header" class="code-section bg-white shadow-md sticky top-0 z-50">
+<body class="min-h-screen bg-white [font-family:var(--font-family-body)] flex flex-col">
+  
+  <header id="global-header" class="code-section bg-white border-b border-gray-300 sticky top-0 z-50">
     <div class="container mx-auto px-4">
       <div class="flex items-center justify-between h-28">
         <a href="/" class="flex items-center">
           <img src="https://dcdn-us.mitiendanube.com/stores/006/841/772/themes/common/logo-530192879-1760983056-b7632d061a91dd244ce6e9446228d7df1760983056-480-0.webp" alt="Dynamix" class="h-28 py-2 object-contain">
         </a>
-
+        
         <nav class="hidden lg:flex items-center space-x-8">
           <a href="/" class="text-[var(--dark-text-color)] hover:text-[var(--accent-color)] font-medium transition-colors duration-300">Início</a>
           <a href="/products" class="text-[var(--dark-text-color)] hover:text-[var(--accent-color)] font-medium transition-colors duration-300">Produtos</a>
           <a href="/combos" class="text-[var(--dark-text-color)] hover:text-[var(--accent-color)] font-medium transition-colors duration-300">Combos</a>
-          <a href="/my-account" class="text-[var(--dark-text-color)] hover:text-[var(--accent-color)] font-medium transition-colors duration-300">Minha Conta</a>
           <a href="/about-us" class="text-[var(--dark-text-color)] hover:text-[var(--accent-color)] font-medium transition-colors duration-300">Sobre Nós</a>
           <a href="/contact" class="text-[var(--dark-text-color)] hover:text-[var(--accent-color)] font-medium transition-colors duration-300">Contato</a>
-          <a href="/products" class="bg-gradient-to-r from-[var(--primary-color)] to-[var(--accent2-color)] text-[var(--primary-button-text-color)] px-6 py-3 rounded-lg font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300">
-            Ver Produtos
+          
+          <a href="/my-account" class="flex items-center gap-3 group pl-4 border-l border-gray-300">
+            <i class="fas fa-user text-2xl text-black group-hover:text-[var(--accent-color)] transition-colors duration-300"></i>
+            <div class="flex flex-col leading-none">
+              <span class="text-[11px] text-gray-500 font-medium">Bem-vindo</span>
+              <span class="text-sm font-bold text-black group-hover:text-[var(--accent-color)] transition-colors duration-300">
+                Entre ou <br>Cadastre-se
+              </span>
+            </div>
           </a>
         </nav>
 
@@ -84,92 +82,20 @@
           <a href="/" class="text-[var(--dark-text-color)] hover:text-[var(--accent-color)] font-medium py-2 border-b border-[var(--light-border-color)] transition-colors duration-300">Início</a>
           <a href="/products" class="text-[var(--dark-text-color)] hover:text-[var(--accent-color)] font-medium py-2 border-b border-[var(--light-border-color)] transition-colors duration-300">Produtos</a>
           <a href="/combos" class="text-[var(--dark-text-color)] hover:text-[var(--accent-color)] font-medium py-2 border-b border-[var(--light-border-color)] transition-colors duration-300">Combos</a>
-          <a href="/my-account" class="text-[var(--dark-text-color)] hover:text-[var(--accent-color)] font-medium py-2 border-b border-[var(--light-border-color)] transition-colors duration-300">Minha Conta</a>
+          <a href="/my-account" class="flex items-center gap-2 text-[var(--dark-text-color)] hover:text-[var(--accent-color)] font-medium py-2 border-b border-[var(--light-border-color)] transition-colors duration-300">
+             <i class="fas fa-user text-black text-lg"></i>
+             <span>Entre ou Cadastre-se</span>
+          </a>
           <a href="/contact" class="text-[var(--dark-text-color)] hover:text-[var(--accent-color)] font-medium py-2 border-b border-[var(--light-border-color)] transition-colors duration-300">Contato</a>
         </div>
       </nav>
     </div>
   </header>
 
-  <!-- HERO CARROSSEL -->
-  <section class="code-section relative overflow-hidden" id="hero-carousel">
-    <div class="relative h-[500px] sm:h-[600px] lg:h-[700px] overflow-hidden rounded-none">
-      <div id="carousel-track" class="carousel-track h-full">
-        
-        <div class="carousel-slide relative flex w-full flex-shrink-0 group">
-          <div class="absolute inset-0 bg-gradient-to-r from-[var(--primary-color)] via-[var(--accent-color)] to-[var(--accent2-color)]"></div>
-          <div class="absolute inset-0" style="background: url('https://imagedelivery.net/xaKlCos5cTg_1RWzIu_h-A/7d86a54c-76b0-4d53-2c97-45173395be00/publicContain') center/cover no-repeat;"></div>
-          <div class="absolute inset-0 bg-gradient-to-r from-black to-transparent" style="background: linear-gradient(90deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.2) 100%);"></div>
-          <div class="relative container mx-auto px-4 flex items-center h-full z-10">
-            <div class="max-w-2xl text-white">
-              <h1 class="text-4xl sm:text-5xl lg:text-7xl font-bold mb-6 font-[var(--font-family-heading)] leading-tight">
-                Transforme Seu Corpo<br>Com os Melhores Suplementos
-              </h1>
-              <p class="text-lg sm:text-xl lg:text-2xl mb-8 opacity-90">
-                Qualidade premium, resultados reais. Comece sua jornada de saúde hoje!
-              </p>
-              <a href="/products" class="inline-block bg-gradient-to-r from-[var(--primary-color)] to-[var(--accent2-color)] text-[var(--dark-text-color)] px-8 py-4 rounded-lg font-bold text-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300">
-                Explorar Produtos
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <div class="carousel-slide relative flex w-full flex-shrink-0 group">
-          <div class="absolute inset-0 bg-gradient-to-br from-[var(--accent3-color)] via-[var(--dark-background-color)] to-[var(--accent4-color)]"></div>
-          <div class="absolute inset-0" style="background: url('https://imagedelivery.net/xaKlCos5cTg_1RWzIu_h-A/56d3e0bd-b834-44b7-0168-a259e68cc000/publicContain') center/cover no-repeat;"></div>
-          <div class="absolute inset-0" style="background: linear-gradient(90deg, rgba(21,93,154,0.9) 0%, rgba(23,104,172,0.6) 50%, rgba(18,81,134,0.3) 100%);"></div>
-          <div class="relative container mx-auto px-4 flex items-center h-full z-10">
-            <div class="max-w-2xl text-white">
-              <h1 class="text-4xl sm:text-5xl lg:text-7xl font-bold mb-6 font-[var(--font-family-heading)] leading-tight">
-                Nutrição Esportiva<br>de Alta Performance
-              </h1>
-              <p class="text-lg sm:text-xl lg:text-2xl mb-8 font-[var(--font-family-body)] opacity-90">
-                Potencialize seus treinos e alcance seus objetivos mais rápido
-              </p>
-              <a href="/category/treino" class="inline-block bg-gradient-to-r from-[var(--primary-color)] to-[var(--accent2-color)] text-[var(--dark-text-color)] px-8 py-4 rounded-lg font-bold text-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300">
-                Ver Linha Treino
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <div class="carousel-slide relative flex w-full flex-shrink-0 group">
-          <div class="absolute inset-0 bg-gradient-to-l from-[var(--accent2-color)] via-[var(--accent-color)] to-[var(--primary-color)]"></div>
-          <div class="absolute inset-0" style="background: url('https://imagedelivery.net/xaKlCos5cTg_1RWzIu_h-A/5e114643-5b6a-4e41-ccbc-eeec7344d800/publicContain') center/cover no-repeat;"></div>
-          <div class="absolute inset-0" style="background: linear-gradient(270deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.2) 100%);"></div>
-          <div class="relative container mx-auto px-4 flex items-center justify-end h-full z-10">
-            <div class="max-w-2xl text-white text-right">
-              <h1 class="text-4xl sm:text-5xl lg:text-7xl font-bold mb-6 font-[var(--font-family-heading)] leading-tight">
-                Saúde e Bem-Estar<br>Em Primeiro Lugar
-              </h1>
-              <p class="text-lg sm:text-xl lg:text-2xl mb-8 font-[var(--font-family-body)] opacity-90">
-                Vitaminas, colágeno, chás e muito mais para sua qualidade de vida
-              </p>
-              <a href="/category/saude" class="inline-block bg-gradient-to-r from-[var(--primary-color)] to-[var(--accent2-color)] text-[var(--dark-text-color)] px-8 py-4 rounded-lg font-bold text-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300">
-                Descubra Mais
-              </a>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      <button id="prev-btn" class="absolute left-4 top-1/2 -translate-y-1/2 bg-white bg-opacity-20 backdrop-blur-sm hover:bg-opacity-40 text-white p-4 rounded-full transition-all duration-300 z-20 group">
-        <i class="fas fa-chevron-left text-2xl group-hover:scale-110 transition-transform"></i>
-      </button>
-      <button id="next-btn" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white bg-opacity-20 backdrop-blur-sm hover:bg-opacity-40 text-white p-4 rounded-full transition-all duration-300 z-20 group">
-        <i class="fas fa-chevron-right text-2xl group-hover:scale-110 transition-transform"></i>
-      </button>
-    </div>
-  </section>
-
-  <!-- CARROSSEL DE BANNERS PROMOCIONAIS -->
-  <section class="code-section py-16 bg-gradient-to-b from-white to-[var(--light-background-color)]">
+  <section class="code-section py-8 bg-gradient-to-b from-white to-[var(--light-background-color)]">
     <div class="container mx-auto px-4">
       <div class="relative h-[300px] sm:h-[400px] overflow-hidden rounded-2xl shadow-2xl">
         <div id="banner-track" class="carousel-track h-full">
-          
           <div class="carousel-slide">
             <img src="https://imagedelivery.net/xaKlCos5cTg_1RWzIu_h-A/7d86a54c-76b0-4d53-2c97-45173395be00/publicContain" alt="Promoção Emagrecimento" class="w-full h-full object-cover">
             <div class="absolute inset-0 bg-gradient-to-r from-black to-transparent opacity-60"></div>
@@ -181,7 +107,6 @@
               </div>
             </div>
           </div>
-
           <div class="carousel-slide">
             <img src="https://imagedelivery.net/xaKlCos5cTg_1RWzIu_h-A/56d3e0bd-b834-44b7-0168-a259e68cc000/publicContain" alt="Linha Treino" class="w-full h-full object-cover">
             <div class="absolute inset-0 bg-gradient-to-r from-[var(--accent3-color)] to-transparent opacity-70"></div>
@@ -193,7 +118,6 @@
               </div>
             </div>
           </div>
-
           <div class="carousel-slide">
             <img src="https://imagedelivery.net/xaKlCos5cTg_1RWzIu_h-A/64223829-c4e4-4b27-049d-0a8fb3ff3c00/publicContain" alt="Combos Especiais" class="w-full h-full object-cover">
             <div class="absolute inset-0 bg-gradient-to-l from-black to-transparent opacity-60"></div>
@@ -205,9 +129,7 @@
               </div>
             </div>
           </div>
-
         </div>
-
         <button id="banner-prev" class="absolute left-4 top-1/2 -translate-y-1/2 bg-white bg-opacity-30 hover:bg-opacity-50 text-black p-3 rounded-full z-20">
           <i class="fas fa-chevron-left text-xl"></i>
         </button>
@@ -218,8 +140,7 @@
     </div>
   </section>
 
-  <!-- CATEGORIAS EM CARDS -->
-  <section class="code-section py-20 bg-white">
+  <section class="code-section py-16 bg-white">
     <div class="container mx-auto px-4">
       <div class="text-center mb-16">
         <h2 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-[var(--dark-text-color)] mb-4 font-[var(--font-family-heading)]">
@@ -229,118 +150,100 @@
           Encontre exatamente o que você precisa para alcançar seus objetivos de saúde e bem-estar
         </p>
       </div>
-
+      
       <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
-        <!-- Cards de categorias (mantidos exatamente como antes) -->
-        <a href="/category/emagrecimento" class="group relative overflow-hidden rounded-2xl bg-white shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
-          <div class="absolute inset-0 bg-gradient-to-br from-[var(--accent-color)] to-[var(--accent2-color)] opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+        
+        <a href="/category/emagrecimento" class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-[var(--primary-color)] via-[var(--accent2-color)] to-[var(--accent4-color)] shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+          <div class="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity"></div>
           <div class="p-6 text-center">
-            <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-[var(--accent-color)] to-[var(--accent2-color)] flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-              <i class="fas fa-fire text-white text-2xl"></i>
+            <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-white flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-300">
+              <i class="fas fa-fire text-[var(--accent3-color)] text-2xl"></i>
             </div>
-            <h3 class="text-lg font-bold text-[var(--dark-text-color)] mb-2 font-[var(--font-family-heading)] group-hover:text-[var(--accent2-color)] transition-colors">
-              Emagrecimento
-            </h3>
-            <p class="text-sm text-[var(--gray-text-color)]">Queime gordura</p>
+            <h3 class="text-lg font-bold text-white mb-2 font-[var(--font-family-heading)] drop-shadow-md">Emagrecimento</h3>
+            <p class="text-sm text-white opacity-90 font-medium">Queime gordura</p>
           </div>
         </a>
 
-        <a href="/category/saude" class="group relative overflow-hidden rounded-2xl bg-white shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
-          <div class="absolute inset-0 bg-gradient-to-br from-[var(--accent3-color)] to-[var(--dark-background-color)] opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
-          <div class="p-6 text-center">
-            <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-[var(--accent3-color)] to-[var(--dark-background-color)] flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-              <i class="fas fa-heart text-white text-2xl"></i>
+        <a href="/category/saude" class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-[var(--primary-color)] via-[var(--accent2-color)] to-[var(--accent4-color)] shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+           <div class="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity"></div>
+           <div class="p-6 text-center">
+            <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-white flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-300">
+              <i class="fas fa-heart text-[var(--accent3-color)] text-2xl"></i>
             </div>
-            <h3 class="text-lg font-bold text-[var(--dark-text-color)] mb-2 font-[var(--font-family-heading)] group-hover:text-[var(--accent3-color)] transition-colors">
-              Saúde
-            </h3>
-            <p class="text-sm text-[var(--gray-text-color)]">Bem-estar geral</p>
+            <h3 class="text-lg font-bold text-white mb-2 font-[var(--font-family-heading)] drop-shadow-md">Saúde</h3>
+            <p class="text-sm text-white opacity-90 font-medium">Bem-estar geral</p>
           </div>
         </a>
 
-        <a href="/category/colageno" class="group relative overflow-hidden rounded-2xl bg-white shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
-          <div class="absolute inset-0 bg-gradient-to-br from-[var(--primary-color)] to-[var(--accent-color)] opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+        <a href="/category/colageno" class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-[var(--primary-color)] via-[var(--accent2-color)] to-[var(--accent4-color)] shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+          <div class="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity"></div>
           <div class="p-6 text-center">
-            <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-[var(--primary-color)] to-[var(--accent-color)] flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-              <i class="fas fa-spa text-white text-2xl"></i>
+            <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-white flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-300">
+              <i class="fas fa-spa text-[var(--accent3-color)] text-2xl"></i>
             </div>
-            <h3 class="text-lg font-bold text-[var(--dark-text-color)] mb-2 font-[var(--font-family-heading)] group-hover:text-[var(--accent-color)] transition-colors">
-              Colágeno
-            </h3>
-            <p class="text-sm text-[var(--gray-text-color)]">Pele e articulações</p>
+            <h3 class="text-lg font-bold text-white mb-2 font-[var(--font-family-heading)] drop-shadow-md">Colágeno</h3>
+            <p class="text-sm text-white opacity-90 font-medium">Pele e articulações</p>
           </div>
         </a>
 
-        <a href="/category/chas" class="group relative overflow-hidden rounded-2xl bg-white shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
-          <div class="absolute inset-0 bg-gradient-to-br from-[var(--accent2-color)] to-[var(--accent-color)] opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+        <a href="/category/chas" class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-[var(--primary-color)] via-[var(--accent2-color)] to-[var(--accent4-color)] shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+          <div class="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity"></div>
           <div class="p-6 text-center">
-            <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-[var(--accent2-color)] to-[var(--accent-color)] flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-              <i class="fas fa-mug-hot text-white text-2xl"></i>
+            <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-white flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-300">
+              <i class="fas fa-mug-hot text-[var(--accent3-color)] text-2xl"></i>
             </div>
-            <h3 class="text-lg font-bold text-[var(--dark-text-color)] mb-2 font-[var(--font-family-heading)] group-hover:text-[var(--accent2-color)] transition-colors">
-              Chás
-            </h3>
-            <p class="text-sm text-[var(--gray-text-color)]">Detox natural</p>
+            <h3 class="text-lg font-bold text-white mb-2 font-[var(--font-family-heading)] drop-shadow-md">Chás</h3>
+            <p class="text-sm text-white opacity-90 font-medium">Detox natural</p>
           </div>
         </a>
 
-        <a href="/category/vitaminas" class="group relative overflow-hidden rounded-2xl bg-white shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
-          <div class="absolute inset-0 bg-gradient-to-br from-[var(--dark-background-color)] to-[var(--accent4-color)] opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+        <a href="/category/vitaminas" class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-[var(--primary-color)] via-[var(--accent2-color)] to-[var(--accent4-color)] shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+          <div class="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity"></div>
           <div class="p-6 text-center">
-            <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-[var(--dark-background-color)] to-[var(--accent4-color)] flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-              <i class="fas fa-capsules text-white text-2xl"></i>
+            <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-white flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-300">
+              <i class="fas fa-capsules text-[var(--accent3-color)] text-2xl"></i>
             </div>
-            <h3 class="text-lg font-bold text-[var(--dark-text-color)] mb-2 font-[var(--font-family-heading)] group-hover:text-[var(--dark-background-color)] transition-colors">
-              Vitaminas
-            </h3>
-            <p class="text-sm text-[var(--gray-text-color)]">Nutrição essencial</p>
+            <h3 class="text-lg font-bold text-white mb-2 font-[var(--font-family-heading)] drop-shadow-md">Vitaminas</h3>
+            <p class="text-sm text-white opacity-90 font-medium">Nutrição essencial</p>
           </div>
         </a>
 
-        <a href="/category/treino" class="group relative overflow-hidden rounded-2xl bg-white shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
-          <div class="absolute inset-0 bg-gradient-to-br from-[var(--primary-color)] to-[var(--accent2-color)] opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+        <a href="/category/treino" class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-[var(--primary-color)] via-[var(--accent2-color)] to-[var(--accent4-color)] shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+          <div class="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity"></div>
           <div class="p-6 text-center">
-            <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-[var(--primary-color)] to-[var(--accent2-color)] flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-              <i class="fas fa-dumbbell text-white text-2xl"></i>
+            <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-white flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-300">
+              <i class="fas fa-dumbbell text-[var(--accent3-color)] text-2xl"></i>
             </div>
-            <h3 class="text-lg font-bold text-[var(--dark-text-color)] mb-2 font-[var(--font-family-heading)] group-hover:text-[var(--accent2-color)] transition-colors">
-              Treino
-            </h3>
-            <p class="text-sm text-[var(--gray-text-color)]">Performance máxima</p>
+            <h3 class="text-lg font-bold text-white mb-2 font-[var(--font-family-heading)] drop-shadow-md">Treino</h3>
+            <p class="text-sm text-white opacity-90 font-medium">Performance máxima</p>
           </div>
         </a>
 
-        <a href="/category/gels-e-cintas" class="group relative overflow-hidden rounded-2xl bg-white shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
-          <div class="absolute inset-0 bg-gradient-to-br from-[var(--accent3-color)] to-[var(--accent4-color)] opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+        <a href="/category/gels-e-cintas" class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-[var(--primary-color)] via-[var(--accent2-color)] to-[var(--accent4-color)] shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+          <div class="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity"></div>
           <div class="p-6 text-center">
-            <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-[var(--accent3-color)] to-[var(--accent4-color)] flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-              <i class="fas fa-compress text-white text-2xl"></i>
+            <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-white flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-300">
+              <i class="fas fa-compress text-[var(--accent3-color)] text-2xl"></i>
             </div>
-            <h3 class="text-lg font-bold text-[var(--dark-text-color)] mb-2 font-[var(--font-family-heading)] group-hover:text-[var(--accent3-color)] transition-colors">
-              Gels e Cintas
-            </h3>
-            <p class="text-sm text-[var(--gray-text-color)]">Modelagem corporal</p>
+            <h3 class="text-lg font-bold text-white mb-2 font-[var(--font-family-heading)] drop-shadow-md">Gels e Cintas</h3>
+            <p class="text-sm text-white opacity-90 font-medium">Modelagem corporal</p>
           </div>
         </a>
 
-        <a href="/combos" class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-[var(--primary-color)] via-[var(--accent-color)] to-[var(--accent2-color)] shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+        <a href="/combos" class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-[var(--primary-color)] via-[var(--accent2-color)] to-[var(--accent4-color)] shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+          <div class="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity"></div>
           <div class="p-6 text-center">
-            <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-white flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-              <i class="fas fa-box-open text-[var(--accent2-color)] text-2xl"></i>
+            <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-white flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-300">
+              <i class="fas fa-box-open text-[var(--accent3-color)] text-2xl"></i>
             </div>
-            <h3 class="text-lg font-bold text-white mb-2 font-[var(--font-family-heading)]">
-              Combos
-            </h3>
-            <p class="text-sm text-white opacity-90">
-              Economize mais!
-            </p>
+            <h3 class="text-lg font-bold text-white mb-2 font-[var(--font-family-heading)] drop-shadow-md">Combos</h3>
+            <p class="text-sm text-white opacity-90 font-medium">Economize mais!</p>
           </div>
         </a>
       </div>
     </div>
   </section>
 
-  <!-- PRODUTOS EM DESTAQUE (agora com 10 produtos) -->
   <section class="code-section py-20 bg-gradient-to-b from-[var(--light-background-color)] to-white">
     <div class="container mx-auto px-4">
       <div class="text-center mb-16">
@@ -351,18 +254,20 @@
           Os mais vendidos e bem avaliados pelos nossos clientes
         </p>
       </div>
-
+      
       <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-        <!-- Produto 1 -->
-        <div class="bg-white rounded-2xl shadow-lg overflow-hidden group hover:shadow-2xl transition-all duration-300">
-          <div class="relative overflow-hidden">
+        
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden group hover:shadow-2xl transition-all duration-300 h-full flex flex-col">
+          <div class="relative overflow-hidden shrink-0">
             <img src="https://imagedelivery.net/xaKlCos5cTg_1RWzIu_h-A/64223829-c4e4-4b27-049d-0a8fb3ff3c00/publicContain" alt="Whey Protein" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500">
             <span class="absolute top-3 left-3 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">-20%</span>
           </div>
-          <div class="p-4">
-            <h3 class="font-semibold text-lg mb-2">Whey Protein Isolado 900g</h3>
-            <p class="text-sm text-gray-600 mb-3">Sabor Chocolate</p>
-            <div class="flex items-center justify-between">
+          <div class="p-4 flex flex-col flex-grow">
+            <div class="flex-grow">
+                <h3 class="font-semibold text-lg mb-2">Whey Protein Isolado 900g</h3>
+                <p class="text-sm text-gray-600 mb-3">Sabor Chocolate</p>
+            </div>
+            <div class="flex items-center justify-between mt-auto">
               <div>
                 <span class="text-2xl font-bold text-[var(--accent2-color)]">R$199,90</span>
                 <span class="block text-sm text-gray-500 line-through">R$249,90</span>
@@ -374,16 +279,17 @@
           </div>
         </div>
 
-        <!-- Produto 2 -->
-        <div class="bg-white rounded-2xl shadow-lg overflow-hidden group hover:shadow-2xl transition-all duration-300">
-          <div class="relative overflow-hidden">
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden group hover:shadow-2xl transition-all duration-300 h-full flex flex-col">
+          <div class="relative overflow-hidden shrink-0">
             <img src="https://imagedelivery.net/xaKlCos5cTg_1RWzIu_h-A/5b4968af-23af-4aea-5688-ef36df5f0200/public" alt="Colágeno" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500">
             <span class="absolute top-3 left-3 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-bold">Novo</span>
           </div>
-          <div class="p-4">
-            <h3 class="font-semibold text-lg mb-2">Colágeno Verisol 300g</h3>
-            <p class="text-sm text-gray-600 mb-3">Pele, cabelo e unhas</p>
-            <div class="flex items-center justify-between">
+          <div class="p-4 flex flex-col flex-grow">
+            <div class="flex-grow">
+                <h3 class="font-semibold text-lg mb-2">Colágeno Verisol 300g</h3>
+                <p class="text-sm text-gray-600 mb-3">Pele, cabelo e unhas</p>
+            </div>
+            <div class="flex items-center justify-between mt-auto">
               <span class="text-2xl font-bold text-[var(--accent2-color)]">R$149,90</span>
               <a href="/product/colageno" class="bg-gradient-to-r from-[var(--primary-color)] to-[var(--accent2-color)] text-black p-3 rounded-lg hover:scale-110 transition-transform">
                 <i class="fas fa-shopping-cart"></i>
@@ -392,16 +298,17 @@
           </div>
         </div>
 
-        <!-- Produto 3 -->
-        <div class="bg-white rounded-2xl shadow-lg overflow-hidden group hover:shadow-2xl transition-all duration-300">
-          <div class="relative overflow-hidden">
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden group hover:shadow-2xl transition-all duration-300 h-full flex flex-col">
+          <div class="relative overflow-hidden shrink-0">
             <img src="https://imagedelivery.net/xaKlCos5cTg_1RWzIu_h-A/7d86a54c-76b0-4d53-2c97-45173395be00/publicContain" alt="Termogênico" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500">
             <span class="absolute top-3 left-3 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">-15%</span>
           </div>
-          <div class="p-4">
-            <h3 class="font-semibold text-lg mb-2">Termogênico Fire Burn 60 caps</h3>
-            <p class="text-sm text-gray-600 mb-3">Acelere o metabolismo</p>
-            <div class="flex items-center justify-between">
+          <div class="p-4 flex flex-col flex-grow">
+            <div class="flex-grow">
+                <h3 class="font-semibold text-lg mb-2">Termogênico Fire Burn 60 caps</h3>
+                <p class="text-sm text-gray-600 mb-3">Acelere o metabolismo</p>
+            </div>
+            <div class="flex items-center justify-between mt-auto">
               <span class="text-2xl font-bold text-[var(--accent2-color)]">R$129,90</span>
               <a href="/product/termogenico" class="bg-gradient-to-r from-[var(--primary-color)] to-[var(--accent2-color)] text-black p-3 rounded-lg hover:scale-110 transition-transform">
                 <i class="fas fa-shopping-cart"></i>
@@ -410,15 +317,16 @@
           </div>
         </div>
 
-        <!-- Produto 4 -->
-        <div class="bg-white rounded-2xl shadow-lg overflow-hidden group hover:shadow-2xl transition-all duration-300">
-          <div class="relative overflow-hidden">
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden group hover:shadow-2xl transition-all duration-300 h-full flex flex-col">
+          <div class="relative overflow-hidden shrink-0">
             <img src="https://imagedelivery.net/xaKlCos5cTg_1RWzIu_h-A/56d3e0bd-b834-44b7-0168-a259e68cc000/publicContain" alt="Creatina" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500">
           </div>
-          <div class="p-4">
-            <h3 class="font-semibold text-lg mb-2">Creatina Monohidratada 300g</h3>
-            <p class="text-sm text-gray-600 mb-3">Força e resistência</p>
-            <div class="flex items-center justify-between">
+          <div class="p-4 flex flex-col flex-grow">
+            <div class="flex-grow">
+                <h3 class="font-semibold text-lg mb-2">Creatina Monohidratada 300g</h3>
+                <p class="text-sm text-gray-600 mb-3">Força e resistência</p>
+            </div>
+            <div class="flex items-center justify-between mt-auto">
               <span class="text-2xl font-bold text-[var(--accent2-color)]">R$109,90</span>
               <a href="/product/creatina" class="bg-gradient-to-r from-[var(--primary-color)] to-[var(--accent2-color)] text-black p-3 rounded-lg hover:scale-110 transition-transform">
                 <i class="fas fa-shopping-cart"></i>
@@ -427,16 +335,17 @@
           </div>
         </div>
 
-        <!-- Produto 5 -->
-        <div class="bg-white rounded-2xl shadow-lg overflow-hidden group hover:shadow-2xl transition-all duration-300">
-          <div class="relative overflow-hidden">
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden group hover:shadow-2xl transition-all duration-300 h-full flex flex-col">
+          <div class="relative overflow-hidden shrink-0">
             <img src="https://imagedelivery.net/xaKlCos5cTg_1RWzIu_h-A/5e114643-5b6a-4e41-ccbc-eeec7344d800/publicContain" alt="Multivitamínico" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500">
             <span class="absolute top-3 left-3 bg-purple-600 text-white px-3 py-1 rounded-full text-sm font-bold">Best Seller</span>
           </div>
-          <div class="p-4">
-            <h3 class="font-semibold text-lg mb-2">Multivitamínico Daily 120 caps</h3>
-            <p class="text-sm text-gray-600 mb-3">Imunidade e energia</p>
-            <div class="flex items-center justify-between">
+          <div class="p-4 flex flex-col flex-grow">
+            <div class="flex-grow">
+                <h3 class="font-semibold text-lg mb-2">Multivitamínico Daily 120 caps</h3>
+                <p class="text-sm text-gray-600 mb-3">Imunidade e energia</p>
+            </div>
+            <div class="flex items-center justify-between mt-auto">
               <span class="text-2xl font-bold text-[var(--accent2-color)]">R$89,90</span>
               <a href="/product/multivitaminico" class="bg-gradient-to-r from-[var(--primary-color)] to-[var(--accent2-color)] text-black p-3 rounded-lg hover:scale-110 transition-transform">
                 <i class="fas fa-shopping-cart"></i>
@@ -445,15 +354,16 @@
           </div>
         </div>
 
-        <!-- Produto 6 a 10 (você pode repetir ou trocar imagens/títulos) -->
-        <div class="bg-white rounded-2xl shadow-lg overflow-hidden group hover:shadow-2xl transition-all duration-300">
-          <div class="relative overflow-hidden">
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden group hover:shadow-2xl transition-all duration-300 h-full flex flex-col">
+          <div class="relative overflow-hidden shrink-0">
             <img src="https://imagedelivery.net/xaKlCos5cTg_1RWzIu_h-A/0fb8f22c-5ed6-4ea8-f180-380dfe9f6100/public" alt="Chá Detox" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500">
           </div>
-          <div class="p-4">
-            <h3 class="font-semibold text-lg mb-2">Chá Detox 30 sachês</h3>
-            <p class="text-sm text-gray-600 mb-3">Limpeza natural</p>
-            <div class="flex items-center justify-between">
+          <div class="p-4 flex flex-col flex-grow">
+            <div class="flex-grow">
+                <h3 class="font-semibold text-lg mb-2">Chá Detox 30 sachês</h3>
+                <p class="text-sm text-gray-600 mb-3">Limpeza natural</p>
+            </div>
+            <div class="flex items-center justify-between mt-auto">
               <span class="text-2xl font-bold text-[var(--accent2-color)]">R$59,90</span>
               <a href="/product/cha-detox" class="bg-gradient-to-r from-[var(--primary-color)] to-[var(--accent2-color)] text-black p-3 rounded-lg hover:scale-110 transition-transform">
                 <i class="fas fa-shopping-cart"></i>
@@ -462,15 +372,17 @@
           </div>
         </div>
 
-        <div class="bg-white rounded-2xl shadow-lg overflow-hidden group hover:shadow-2xl transition-all duration-300">
-          <div class="relative overflow-hidden">
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden group hover:shadow-2xl transition-all duration-300 h-full flex flex-col">
+          <div class="relative overflow-hidden shrink-0">
             <img src="https://imagedelivery.net/xaKlCos5cTg_1RWzIu_h-A/9abc5020-5149-48c6-3f94-42dfbac02500/public" alt="Pré-treino" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500">
             <span class="absolute top-3 left-3 bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-bold">-25%</span>
           </div>
-          <div class="p-4">
-            <h3 class="font-semibold text-lg mb-2">Pré-Treino Explosive 300g</h3>
-            <p class="text-sm text-gray-600 mb-3">Energia máxima</p>
-            <div class="flex items-center justify-between">
+          <div class="p-4 flex flex-col flex-grow">
+            <div class="flex-grow">
+                <h3 class="font-semibold text-lg mb-2">Pré-Treino Explosive 300g</h3>
+                <p class="text-sm text-gray-600 mb-3">Energia máxima</p>
+            </div>
+            <div class="flex items-center justify-between mt-auto">
               <span class="text-2xl font-bold text-[var(--accent2-color)]">R$139,90</span>
               <a href="/product/pre-treino" class="bg-gradient-to-r from-[var(--primary-color)] to-[var(--accent2-color)] text-black p-3 rounded-lg hover:scale-110 transition-transform">
                 <i class="fas fa-shopping-cart"></i>
@@ -479,14 +391,16 @@
           </div>
         </div>
 
-        <div class="bg-white rounded-2xl shadow-lg overflow-hidden group hover:shadow-2xl transition-all duration-300">
-          <div class="relative overflow-hidden">
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden group hover:shadow-2xl transition-all duration-300 h-full flex flex-col">
+          <div class="relative overflow-hidden shrink-0">
             <img src="https://imagedelivery.net/xaKlCos5cTg_1RWzIu_h-A/e9297a4f-a230-45c7-6f0d-22c2afbb2f00/public" alt="Ômega 3" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500">
           </div>
-          <div class="p-4">
-            <h3 class="font-semibold text-lg mb-2">Ômega 3 1000mg 120 caps</h3>
-            <p class="text-sm text-gray-600 mb-3">Saúde cardiovascular</p>
-            <div class="flex items-center justify-between">
+          <div class="p-4 flex flex-col flex-grow">
+            <div class="flex-grow">
+                <h3 class="font-semibold text-lg mb-2">Ômega 3 1000mg 120 caps</h3>
+                <p class="text-sm text-gray-600 mb-3">Saúde cardiovascular</p>
+            </div>
+            <div class="flex items-center justify-between mt-auto">
               <span class="text-2xl font-bold text-[var(--accent2-color)]">R$99,90</span>
               <a href="/product/omega3" class="bg-gradient-to-r from-[var(--primary-color)] to-[var(--accent2-color)] text-black p-3 rounded-lg hover:scale-110 transition-transform">
                 <i class="fas fa-shopping-cart"></i>
@@ -495,14 +409,16 @@
           </div>
         </div>
 
-        <div class="bg-white rounded-2xl shadow-lg overflow-hidden group hover:shadow-2xl transition-all duration-300">
-          <div class="relative overflow-hidden">
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden group hover:shadow-2xl transition-all duration-300 h-full flex flex-col">
+          <div class="relative overflow-hidden shrink-0">
             <img src="https://imagedelivery.net/xaKlCos5cTg_1RWzIu_h-A/65558f3a-8f9d-4863-e363-943557855700/public" alt="Gel Redutor" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500">
           </div>
-          <div class="p-4">
-            <h3 class="font-semibold text-lg mb-2">Gel Redutor Corporal 200g</h3>
-            <p class="text-sm text-gray-600 mb-3">Modelagem intensiva</p>
-            <div class="flex items-center justify-between">
+          <div class="p-4 flex flex-col flex-grow">
+            <div class="flex-grow">
+                <h3 class="font-semibold text-lg mb-2">Gel Redutor Corporal 200g</h3>
+                <p class="text-sm text-gray-600 mb-3">Modelagem intensiva</p>
+            </div>
+            <div class="flex items-center justify-between mt-auto">
               <span class="text-2xl font-bold text-[var(--accent2-color)]">R$79,90</span>
               <a href="/product/gel-redutor" class="bg-gradient-to-r from-[var(--primary-color)] to-[var(--accent2-color)] text-black p-3 rounded-lg hover:scale-110 transition-transform">
                 <i class="fas fa-shopping-cart"></i>
@@ -511,15 +427,17 @@
           </div>
         </div>
 
-        <div class="bg-white rounded-2xl shadow-lg overflow-hidden group hover:shadow-2xl transition-all duration-300">
-          <div class="relative overflow-hidden">
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden group hover:shadow-2xl transition-all duration-300 h-full flex flex-col">
+          <div class="relative overflow-hidden shrink-0">
             <img src="https://imagedelivery.net/xaKlCos5cTg_1RWzIu_h-A/64223829-c4e4-4b27-049d-0a8fb3ff3c00/publicContain" alt="Combo Emagrecimento" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500">
             <span class="absolute top-3 left-3 bg-red-600 text-white px-3 py-1 rounded-full text-sm font-bold">-35%</span>
           </div>
-          <div class="p-4">
-            <h3 class="font-semibold text-lg mb-2">Combo Emagrecimento Completo</h3>
-            <p class="text-sm text-gray-600 mb-3">Termogênico + Chá + Gel</p>
-            <div class="flex items-center justify-between">
+          <div class="p-4 flex flex-col flex-grow">
+            <div class="flex-grow">
+                <h3 class="font-semibold text-lg mb-2">Combo Emagrecimento Completo</h3>
+                <p class="text-sm text-gray-600 mb-3">Termogênico + Chá + Gel</p>
+            </div>
+            <div class="flex items-center justify-between mt-auto">
               <span class="text-2xl font-bold text-[var(--accent2-color)]">R$299,90</span>
               <a href="/combo/emagrecimento" class="bg-gradient-to-r from-[var(--primary-color)] to-[var(--accent2-color)] text-black p-3 rounded-lg hover:scale-110 transition-transform">
                 <i class="fas fa-shopping-cart"></i>
@@ -529,7 +447,6 @@
         </div>
 
       </div>
-
       <div class="text-center mt-12">
         <a href="/products" class="inline-block bg-gradient-to-r from-[var(--primary-color)] to-[var(--accent2-color)] text-black px-10 py-4 rounded-xl font-bold text-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300">
           Ver Todos os Produtos
@@ -538,8 +455,7 @@
     </div>
   </section>
 
-  <!-- CALL TO ACTION -->
-  <section class="code-section py-20 relative overflow-hidden" id="si435t7">
+  <section class="code-section py-20 relative overflow-hidden z-10" id="si435t7">
     <div class="absolute inset-0 bg-gradient-to-br from-[var(--primary-color)] via-[var(--accent-color)] to-[var(--accent2-color)]"></div>
     <div class="absolute inset-0" style="background: url('https://imagedelivery.net/xaKlCos5cTg_1RWzIu_h-A/0fb8f22c-5ed6-4ea8-f180-380dfe9f6100/public') center/cover no-repeat; opacity: 0.15;"></div>
     
@@ -589,8 +505,7 @@
     </div>
   </section>
 
-  <!-- FOOTER (restaurado completamente) -->
-  <footer id="global-footer" class="code-section bg-gradient-to-b from-[var(--dark-text-color)] to-[var(--accent4-color)] text-white mt-auto">
+  <footer id="global-footer" class="code-section bg-gradient-to-b from-[var(--dark-text-color)] to-[var(--accent4-color)] text-white mt-auto relative z-20">
     <div class="container mx-auto px-4 py-16">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
         
@@ -613,7 +528,6 @@
             </a>
           </div>
         </div>
-
         <div>
           <h3 class="text-xl font-bold mb-6 font-[var(--font-family-heading)] text-[var(--primary-color)]">Links Rápidos</h3>
           <ul class="space-y-3">
@@ -633,7 +547,6 @@
             <li><a href="/category/treino" class="text-gray-300 hover:text-[var(--primary-color)] transition-colors duration-300 flex items-center gap-2"><i class="fas fa-dumbbell text-xs"></i><span>Treino</span></a></li>
           </ul>
         </div>
-
         <div>
           <h3 class="text-xl font-bold mb-6 font-[var(--font-family-heading)] text-[var(--primary-color)]">Contato</h3>
           <ul class="space-y-4 mb-6">
@@ -655,7 +568,6 @@
           </form>
         </div>
       </div>
-
       <div class="border-t border-white border-opacity-10 pt-8 mb-8">
         <h3 class="text-lg font-bold mb-6 text-center font-[var(--font-family-heading)] text-[var(--primary-color)]">
           Formas de Pagamento
@@ -667,7 +579,6 @@
           <div class="bg-white rounded-lg px-4 py-2 shadow-md"><i class="fab fa-pix text-3xl text-teal-500"></i></div>
         </div>
       </div>
-
       <div class="border-t border-white border-opacity-10 pt-8">
         <div class="flex flex-col md:flex-row justify-between items-center gap-6">
           <p class="text-gray-400 text-sm text-center md:text-left">© 2025 Dynamix. Todos os direitos reservados.</p>
@@ -681,7 +592,6 @@
       </div>
     </div>
   </footer>
-
   <script>
     // Menu Mobile
     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
@@ -692,43 +602,17 @@
         });
     }
 
-    // Carrossel Hero
-    const track = document.getElementById('carousel-track');
-    const slides = track ? Array.from(track.children) : [];
-    const nextButton = document.getElementById('next-btn');
-    const prevButton = document.getElementById('prev-btn');
-    let currentSlideIndex = 0;
-
-    function updateCarousel() {
-        if (track) track.style.transform = `translateX(-${currentSlideIndex * 100}%)`;
-    }
-
-    if (nextButton && prevButton && track) {
-        nextButton.addEventListener('click', () => {
-            currentSlideIndex = (currentSlideIndex + 1) % slides.length;
-            updateCarousel();
-        });
-        prevButton.addEventListener('click', () => {
-            currentSlideIndex = (currentSlideIndex - 1 + slides.length) % slides.length;
-            updateCarousel();
-        });
-        setInterval(() => {
-            currentSlideIndex = (currentSlideIndex + 1) % slides.length;
-            updateCarousel();
-        }, 5000);
-    }
-
     // Carrossel de Banners
     const bannerTrack = document.getElementById('banner-track');
     const bannerSlides = bannerTrack ? Array.from(bannerTrack.children) : [];
     const bannerNext = document.getElementById('banner-next');
     const bannerPrev = document.getElementById('banner-prev');
     let bannerIndex = 0;
-
+    
     function updateBannerCarousel() {
         if (bannerTrack) bannerTrack.style.transform = `translateX(-${bannerIndex * 100}%)`;
     }
-
+    
     if (bannerNext && bannerPrev && bannerTrack) {
         bannerNext.addEventListener('click', () => {
             bannerIndex = (bannerIndex + 1) % bannerSlides.length;
@@ -738,12 +622,12 @@
             bannerIndex = (bannerIndex - 1 + bannerSlides.length) % bannerSlides.length;
             updateBannerCarousel();
         });
+        // Auto-play
         setInterval(() => {
             bannerIndex = (bannerIndex + 1) % bannerSlides.length;
             updateBannerCarousel();
         }, 6000);
     }
   </script>
-
 </body>
 </html>
