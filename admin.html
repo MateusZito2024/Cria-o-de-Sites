@@ -1,853 +1,927 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Asthro | Painel de Administração</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700&family=Manrope:wght@400;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/png" href="https://i.imgur.com/ZeaGXHD.png">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Asthro | Admin</title>
 
-    <style>
-    /* Tipografia Padronizada */
-    h2, h3, h4 { font-family: 'Archivo', sans-serif; }
-    body, p, a, input, button, select, textarea { font-family: 'Manrope', sans-serif; font-weight: 400; }
-    
-    /* Fundo Escuro para Estilo de Sistema */
-    body { 
-        background: #0d0d1a; /* Roxo escuro para base */
-        color: #edf1f7; 
-        min-height: 100vh;
-        overflow-x: hidden; /* Evita barra de rolagem horizontal */
-    }
-    
-    /* Efeito de Neon Animado para Títulos */
-    @keyframes neon-glow {
-        0% { text-shadow: 0 0 5px #0bf4ed, 0 0 10px #0bf4ed; color: #0bf4ed; }
-        25% { text-shadow: 0 0 5px #6627ff, 0 0 10px #6627ff; color: #6627ff; }
-        50% { text-shadow: 0 0 5px #ff2766, 0 0 10px #ff2766; color: #ff2766; }
-        75% { text-shadow: 0 0 5px #ffd700, 0 0 10px #ffd700; color: #ffd700; }
-        100% { text-shadow: 0 0 5px #0bf4ed, 0 0 10px #0bf4ed; color: #0bf4ed; }
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Firebase compat -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="https://i.imgur.com/ZeaGXHD.png">
+
+  <style>
+    :root{
+      --bg0:#070712;
+      --bg1:#0b0b18;
+      --card: rgba(255,255,255,.04);
+      --card2: rgba(255,255,255,.06);
+      --stroke: rgba(255,255,255,.10);
+      --txt:#edf1f7;
+      --muted: rgba(237,241,247,.70);
+      --cyan:#0bf4ed;
+      --purple:#6627ff;
+      --pink:#ff2766;
+      --shadow: 0 18px 60px rgba(0,0,0,.55);
     }
 
-    .animated-neon-text {
-        animation: neon-glow 6s ease-in-out infinite alternate;
-        -webkit-text-fill-color: initial; /* Anula o gradient-text */
+    html, body { height: 100%; }
+    body{
+      margin:0;
+      color: var(--txt);
+      background:
+        radial-gradient(1100px 800px at 20% 10%, rgba(102,39,255,.20), transparent 50%),
+        radial-gradient(900px 700px at 85% 15%, rgba(11,244,237,.14), transparent 55%),
+        radial-gradient(900px 900px at 60% 90%, rgba(255,39,102,.08), transparent 55%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+      background-size: 400% 400%;
+      animation: bgMove 18s ease-in-out infinite;
+      overflow-x:hidden;
+      font-family: 'Manrope', sans-serif;
+    }
+    @keyframes bgMove{
+      0%{background-position:0% 50%}
+      50%{background-position:100% 50%}
+      100%{background-position:0% 50%}
     }
 
-    /* Borda e Sombra de Container */
-    .neon-border { 
-        border: 1px solid rgba(102, 39, 255, 0.4); 
-        box-shadow: 0 0 15px rgba(11, 244, 237, 0.3); 
-        background-color: #1a1a2e; /* Fundo do card mais escuro */
+    h1,h2,h3,h4{ font-family:'Archivo', sans-serif; }
+
+    .stars-container{
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events:none;
+    }
+    .star{
+      position:absolute;
+      width:2px;height:2px;border-radius:50%;
+      opacity:.35;
+      box-shadow:0 0 10px rgba(255,255,255,.25);
+      animation: floatStar 16s ease-in-out infinite;
+    }
+    .star.purple{ background: var(--purple); box-shadow:0 0 10px rgba(102,39,255,.35); }
+    .star.cyan{ background: var(--cyan); box-shadow:0 0 10px rgba(11,244,237,.30); }
+    .star.white{ background: #fff; box-shadow:0 0 10px rgba(255,255,255,.25); }
+    @keyframes floatStar{
+      0%{ transform: translate(0,0); opacity:.25 }
+      50%{ transform: translate(var(--mx), var(--my)); opacity:.6 }
+      100%{ transform: translate(0,0); opacity:.25 }
     }
 
-    /* Para manter a barra lateral fixa e o conteúdo rolável */
-    .dashboard-grid {
-        display: grid;
-        /* Sidebar de 250px, e o restante para o conteúdo */
-        grid-template-columns: 250px 1fr; 
-        min-height: 100vh;
+    .content-layer{ position: relative; z-index: 2; }
+
+    .glass{
+      background: var(--card);
+      border: 1px solid var(--stroke);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
-    
-    /* Estilo para a caixa de diálogo de confirmação (sem alteração) */
-    .custom-dialog {
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-        background: rgba(0, 0, 0, 0.7); display: flex; justify-content: center; align-items: center;
-        z-index: 100;
+    .glass-strong{
+      background: var(--card2);
+      border: 1px solid rgba(255,255,255,.14);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
     }
-</style>
+    .gradient-text{
+      background: linear-gradient(135deg, var(--purple), var(--cyan));
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+    }
+    .field{
+      background: rgba(0,0,0,.25);
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 14px;
+      color: var(--txt);
+      outline:none;
+    }
+    .field:focus{
+      border-color: rgba(11,244,237,.45);
+      box-shadow: 0 0 0 3px rgba(11,244,237,.12);
+    }
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center; gap:8px;
+      border-radius: 14px;
+      padding: 10px 12px;
+      font-weight: 800;
+      border: 1px solid rgba(255,255,255,.10);
+      transition: transform .15s ease, background .2s ease, border .2s ease, box-shadow .2s ease;
+      user-select:none;
+    }
+    .btn:hover{ transform: translateY(-1px); }
+    .btn-primary{
+      background: linear-gradient(135deg, rgba(102,39,255,.95), rgba(11,244,237,.65));
+      color:#071016;
+      border-color: rgba(11,244,237,.25);
+      box-shadow: 0 10px 30px rgba(102,39,255,.15);
+    }
+    .btn-ghost{
+      background: rgba(255,255,255,.06);
+      color: var(--txt);
+    }
+    .btn-ghost:hover{ background: rgba(255,255,255,.10); }
+
+    .tab{
+      width:100%;
+      text-align:left;
+      padding: 12px 12px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.10);
+      transition: background .2s ease, border .2s ease, transform .15s ease;
+      font-weight: 900;
+      color: var(--txt);
+    }
+    .tab:hover{ transform: translateY(-1px); background: rgba(255,255,255,.08); }
+    .tab.active{
+      background: linear-gradient(135deg, rgba(102,39,255,.28), rgba(11,244,237,.12));
+      border-color: rgba(102,39,255,.45);
+    }
+
+    .custom-dialog{
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,.65);
+      display:flex; align-items:center; justify-content:center;
+      z-index: 50;
+      padding: 16px;
+    }
+  </style>
 </head>
-<body class="p-0"> <div id="confirm-dialog" class="custom-dialog hidden">
-        <div class="p-6 rounded-xl bg-gray-900 neon-border max-w-sm w-full">
-            <h4 class="text-xl font-bold text-white mb-4">Confirmação</h4>
-            <p id="confirm-message" class="text-gray-300 mb-6"></p>
-            <div class="flex justify-end space-x-4">
-                <button id="confirm-cancel" class="bg-gray-700 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300">Cancelar</button>
-                <button id="confirm-ok" class="bg-yellow-600 hover:bg-yellow-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-300">Finalizar</button>
-            </div>
-        </div>
+
+<body>
+  <div class="stars-container" id="stars-container"></div>
+
+  <!-- CONFIRM DIALOG -->
+  <div id="confirm-dialog" class="custom-dialog hidden">
+    <div class="glass-strong content-layer w-full max-w-md rounded-2xl p-6">
+      <h4 class="text-xl font-bold gradient-text">Confirmação</h4>
+      <p id="confirm-message" class="mt-3 text-sm" style="color: var(--muted); font-weight:700;"></p>
+      <div class="mt-6 flex justify-end gap-3">
+        <button id="confirm-cancel" class="btn btn-ghost">Cancelar</button>
+        <button id="confirm-ok" class="btn btn-primary">Finalizar</button>
+      </div>
     </div>
-
-
-    <div id="login-section" class="flex items-center justify-center min-h-screen">
-  <div class="max-w-md w-full mx-auto p-8 rounded-xl bg-gray-900 neon-border">
-    <h3 class="text-3xl font-bold text-center mb-6 animated-neon-text" style="font-family: 'Archivo', sans-serif;">
-      🔒 Acesso Asthro Admin
-    </h3>
-
-    <input
-      type="email"
-      id="adminEmail"
-      placeholder="Seu e-mail de admin"
-      class="w-full p-4 rounded-lg bg-gray-800 text-white border-gray-600 focus:ring-purple-500 focus:border-purple-500 mb-4 text-lg"
-    >
-
-    <input
-      type="password"
-      id="adminPassword"
-      placeholder="Sua senha"
-      class="w-full p-4 rounded-lg bg-gray-800 text-white border-gray-600 focus:ring-purple-500 focus:border-purple-500 mb-4 text-lg"
-    >
-
-    <button onclick="login()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-4 px-6 rounded-lg transition duration-300 w-full text-xl shadow-lg shadow-indigo-500/50">
-      ENTRAR
-    </button>
-
-    <p id="login-feedback" class="mt-4 text-red-400 text-center hidden">Falha no login.</p>
   </div>
-</div>
 
+  <!-- LOGIN -->
+  <section id="login-section" class="content-layer min-h-screen flex items-center justify-center p-6">
+    <div class="glass-strong w-full max-w-md rounded-3xl p-6 md:p-8">
+      <div class="flex items-center gap-3 mb-6">
+        <img src="https://i.imgur.com/sE44ypp.png" alt="Asthro" class="h-10 w-auto">
+        <div class="leading-tight">
+          <div class="text-lg font-extrabold gradient-text" style="font-family:'Archivo',sans-serif;">Asthro Admin</div>
+          <div class="text-xs" style="color: var(--muted); font-weight:800;">Painel interno</div>
+        </div>
+      </div>
 
-    <div id="admin-panel" class="dashboard-grid hidden"> <aside class="bg-gray-950 border-r border-gray-800 p-6 flex flex-col justify-between fixed h-full w-[250px]">
-            <div>
-                <h1 class="text-2xl font-bold animated-neon-text mb-8" style="font-family: 'Archivo', sans-serif;">🌌 ASTHRO Admin</h1>
-                
-                <nav class="space-y-4">
-                    <button onclick="resetForm(); scrollToTop()" class="flex items-center w-full text-left p-3 rounded-lg bg-purple-900/50 hover:bg-purple-800/70 text-purple-300 font-semibold transition duration-300 border border-purple-700 shadow-lg shadow-purple-900/40">
-                        ✨ Criar Novo Projeto
-                    </button>
-                    <button onclick="loadProjects(1); scrollToProjects()" class="flex items-center w-full text-left p-3 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 transition duration-300">
-                        📄 Ver/Editar Projetos
-                    </button>
-                    <button class="flex items-center w-full text-left p-3 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 transition duration-300 opacity-50 cursor-not-allowed">
-                        📊 Relatórios (Em breve)
-                    </button>
-                </nav>
+      <h2 class="text-2xl font-extrabold">Entrar</h2>
+      <p class="mt-2 text-sm" style="color: var(--muted); font-weight:700;">Use seu e-mail e senha do Firebase Auth.</p>
+
+      <div class="mt-6">
+        <label class="text-xs" style="color: var(--muted); font-weight:800;">E-mail</label>
+        <input id="adminEmail" type="email" class="field w-full p-4 mt-2" placeholder="seuemail@dominio.com">
+      </div>
+
+      <div class="mt-4">
+        <label class="text-xs" style="color: var(--muted); font-weight:800;">Senha</label>
+        <input id="adminPassword" type="password" class="field w-full p-4 mt-2" placeholder="••••••••">
+      </div>
+
+      <button onclick="login()" class="btn btn-primary w-full py-4 mt-6 text-base">Entrar</button>
+      <p id="login-feedback" class="mt-4 text-sm hidden" style="color:#ff6b8f; font-weight:900;"></p>
+
+      <div class="mt-6 text-xs" style="color: rgba(237,241,247,.55); font-weight:800;">
+        Segurança por Firebase Auth • Asthro
+      </div>
+    </div>
+  </section>
+
+  <!-- APP -->
+  <section id="app" class="content-layer hidden">
+    <div class="max-w-7xl mx-auto px-4 md:px-6 py-6">
+      <!-- Topbar -->
+      <div class="glass rounded-2xl p-4 md:p-5 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+        <div class="flex items-center gap-3">
+          <img src="https://i.imgur.com/sE44ypp.png" alt="Asthro" class="h-10 w-auto">
+          <div class="leading-tight">
+            <div class="text-lg md:text-xl font-extrabold gradient-text" style="font-family:'Archivo',sans-serif;">Asthro Admin</div>
+            <div class="text-xs md:text-sm" style="color: var(--muted); font-weight:800;">Status Tracker • Projetos</div>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <div class="hidden md:block text-right">
+            <div class="text-xs" style="color: var(--muted); font-weight:800;">Logado como</div>
+            <div id="whoami" class="text-sm font-extrabold"></div>
+          </div>
+          <button class="btn btn-ghost" onclick="logout()">Sair</button>
+        </div>
+      </div>
+
+      <!-- Layout -->
+      <div class="mt-6 grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-6">
+        <!-- Sidebar Tabs -->
+        <aside class="glass rounded-2xl p-4">
+          <div class="text-xs mb-3" style="color: var(--muted); font-weight:900;">NAVEGAÇÃO</div>
+          <div class="space-y-3">
+            <button id="tab-dashboard" class="tab active" onclick="showTab('dashboard')">📊 Dashboard</button>
+            <button id="tab-projects" class="tab" onclick="showTab('projects')">📄 Projetos</button>
+            <button id="tab-editor" class="tab" onclick="showTab('editor')">✨ Novo / Editar</button>
+          </div>
+
+          <div class="mt-6 glass rounded-2xl p-4">
+            <div class="text-xs" style="color: var(--muted); font-weight:900;">DICAS</div>
+            <div class="mt-2 text-xs leading-relaxed" style="color: rgba(237,241,247,.62); font-weight:800;">
+              • “Projetos” mostra tudo em tabela<br>
+              • “Editor” cria/edita com auditoria<br>
+              • “Dashboard” traz métricas reais
             </div>
-            
-            <div class="text-sm text-gray-500">
-                <p>Status Tracker v1.0</p>
-                <p class="mt-1">Desenvolvido por Asthro</p>
-            </div>
+          </div>
         </aside>
 
-        <main class="col-start-2 p-10">
-    
-    <div class="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-5 gap-10">
-        
-        <div class="lg:col-span-2 xl:col-span-3">
-            <section id="project-list-section">
-                <h3 class="text-2xl font-bold text-cyan-400 mb-6">📂 Projetos Existentes</h3>
-                
-                <section id="search-section" class="mb-8">
-                    <h4 class="text-xl font-bold text-purple-400 mb-4">🔍 Gerenciamento Rápido</h4>
-                    
-                    <div class="flex flex-col md:flex-row gap-4 items-stretch p-6 rounded-xl bg-gray-900 border border-gray-800">
-                        <div class="w-full md:w-auto flex-shrink-0">
-                            <select id="orderBySelect" onchange="loadProjects(1)" 
-                                class="w-full p-3 rounded-lg bg-gray-800 text-white border-gray-600 focus:ring-purple-500 focus:border-purple-500 appearance-none pr-8">
-                                <option value="status_id_desc">✨ Prioridade/Status</option>
-                                <option value="id_desc">🗓️ Mais Recentes</option>
-                                <option value="id_asc">⏳ Mais Antigos</option>
-                                <option value="clientName_asc">A-Z</option>
-                                <option value="clientName_desc">Z-A</option>
-                            </select>
-                        </div>
+        <!-- Main -->
+        <main class="space-y-6">
+          <!-- DASHBOARD -->
+          <section id="view-dashboard" class="glass rounded-2xl p-5 md:p-6">
+            <div class="flex items-start justify-between gap-4">
+              <div>
+                <h3 class="text-2xl font-extrabold gradient-text">Dashboard</h3>
+                <p class="mt-1 text-sm" style="color: var(--muted); font-weight:800;">Visão geral e relatórios automáticos.</p>
+              </div>
+              <button class="btn btn-ghost" onclick="refreshAll()">Atualizar</button>
+            </div>
 
-                        <div class="flex space-x-4 items-stretch w-full">
-                            <input type="text" id="searchInput" placeholder="Buscar por ID ou Nome do Cliente..."
-                                class="w-full p-3 rounded-lg bg-gray-800 text-white border-gray-600 focus:ring-purple-500 focus:border-purple-500"
-                                onkeyup="debouncedSearch()" onchange="debouncedSearch()">
-                            
-                            <button onclick="clearSearchAndReload()"
-                                class="bg-pink-600 hover:bg-pink-700 text-white font-semibold px-6 rounded-lg transition duration-300 whitespace-nowrap shadow-md">
-                                Limpar Busca
-                            </button>
-                        </div>
-                    </div>
-                    <p id="search-feedback" class="mt-2 text-sm text-gray-400 hidden"></p>
-                </section>
-                
-                <div id="project-list" class="space-y-6">
-                    <p class="text-gray-500">Carregando projetos...</p>
+            <div class="mt-6 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+              <div class="glass-strong rounded-2xl p-4">
+                <div class="text-xs" style="color: var(--muted); font-weight:900;">TOTAL DE PROJETOS</div>
+                <div id="kpiTotal" class="mt-2 text-3xl font-extrabold">—</div>
+              </div>
+              <div class="glass-strong rounded-2xl p-4">
+                <div class="text-xs" style="color: var(--muted); font-weight:900;">CRIADOS ESTE MÊS</div>
+                <div id="kpiMonth" class="mt-2 text-3xl font-extrabold">—</div>
+              </div>
+              <div class="glass-strong rounded-2xl p-4">
+                <div class="text-xs" style="color: var(--muted); font-weight:900;">CRIADOS ESTE ANO</div>
+                <div id="kpiYear" class="mt-2 text-3xl font-extrabold">—</div>
+              </div>
+              <div class="glass-strong rounded-2xl p-4">
+                <div class="text-xs" style="color: var(--muted); font-weight:900;">CONCLUÍDOS</div>
+                <div id="kpiDone" class="mt-2 text-3xl font-extrabold">—</div>
+              </div>
+            </div>
+
+            <div class="mt-4 grid grid-cols-1 xl:grid-cols-2 gap-4">
+              <div class="glass-strong rounded-2xl p-4">
+                <div class="text-xs" style="color: var(--muted); font-weight:900;">ENTREGUES NO PRAZO</div>
+                <div id="kpiOnTime" class="mt-2 text-xl font-extrabold">—</div>
+                <p class="mt-2 text-xs" style="color: rgba(237,241,247,.62); font-weight:800;">
+                  Considera “concluído” e compara <b>finishedAt</b> com <b>deliveryDate</b> (quando disponível).
+                </p>
+              </div>
+
+              <div class="glass-strong rounded-2xl p-4">
+                <div class="text-xs" style="color: var(--muted); font-weight:900;">AUDITORIA (ÚLTIMAS 30 DIAS)</div>
+                <div id="kpiAudit" class="mt-2 text-xl font-extrabold">—</div>
+                <p class="mt-2 text-xs" style="color: rgba(237,241,247,.62); font-weight:800;">
+                  Total de criações/edições registradas em <b>/audit</b>.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <!-- PROJECTS -->
+          <section id="view-projects" class="glass rounded-2xl p-5 md:p-6 hidden">
+            <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+              <div>
+                <h3 class="text-2xl font-extrabold gradient-text">Projetos</h3>
+                <p class="mt-1 text-sm" style="color: var(--muted); font-weight:800;">Tabela organizada para achar rápido.</p>
+              </div>
+
+              <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+                <input id="q" class="field p-3 w-full sm:w-72" placeholder="Buscar por ID ou cliente…" oninput="applyFilters()">
+                <select id="sort" class="field p-3 w-full sm:w-64" onchange="applyFilters()">
+                  <option value="created_desc">Criado (recentes)</option>
+                  <option value="created_asc">Criado (antigos)</option>
+                  <option value="updated_desc">Última edição (recentes)</option>
+                  <option value="updated_asc">Última edição (antigos)</option>
+                  <option value="client_asc">Cliente (A-Z)</option>
+                  <option value="client_desc">Cliente (Z-A)</option>
+                  <option value="status_asc">Status (ordem)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="mt-4 overflow-auto">
+              <table class="min-w-full text-sm">
+                <thead>
+                  <tr class="text-left" style="color: var(--muted); font-weight:900;">
+                    <th class="py-3 pr-4">ID</th>
+                    <th class="py-3 pr-4">Cliente</th>
+                    <th class="py-3 pr-4">Status</th>
+                    <th class="py-3 pr-4">Entrega</th>
+                    <th class="py-3 pr-4">Criado</th>
+                    <th class="py-3 pr-4">Editado</th>
+                    <th class="py-3 pr-4"></th>
+                  </tr>
+                </thead>
+                <tbody id="projectsTbody"></tbody>
+              </table>
+            </div>
+
+            <div class="mt-4 flex items-center justify-between">
+              <div id="projectsMeta" class="text-xs" style="color: var(--muted); font-weight:900;">—</div>
+              <div class="flex gap-2">
+                <button class="btn btn-ghost" onclick="prevPage()">Anterior</button>
+                <button class="btn btn-ghost" onclick="nextPage()">Próxima</button>
+              </div>
+            </div>
+          </section>
+
+          <!-- EDITOR -->
+          <section id="view-editor" class="glass rounded-2xl p-5 md:p-6 hidden">
+            <div class="flex items-start justify-between gap-4">
+              <div>
+                <h3 id="editorTitle" class="text-2xl font-extrabold gradient-text">Novo projeto</h3>
+                <p class="mt-1 text-sm" style="color: var(--muted); font-weight:800;">Crie ou edite com segurança.</p>
+              </div>
+              <div class="flex gap-2">
+                <button class="btn btn-ghost" onclick="resetForm()">Limpar</button>
+              </div>
+            </div>
+
+            <div class="mt-6 grid grid-cols-1 xl:grid-cols-2 gap-4">
+              <div class="glass-strong rounded-2xl p-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div class="md:col-span-2">
+                    <label class="text-xs" style="color: var(--muted); font-weight:900;">ID do Projeto</label>
+                    <input id="idInput" class="field w-full p-3 mt-2 font-mono" readonly>
+                  </div>
+
+                  <div>
+                    <label class="text-xs" style="color: var(--muted); font-weight:900;">Criado em</label>
+                    <input id="createdAtInput" class="field w-full p-3 mt-2" readonly value="N/A">
+                  </div>
+                  <div>
+                    <label class="text-xs" style="color: var(--muted); font-weight:900;">Última edição</label>
+                    <input id="lastUpdatedInput" class="field w-full p-3 mt-2" readonly value="N/A">
+                  </div>
+
+                  <div class="md:col-span-2">
+                    <label class="text-xs" style="color: var(--muted); font-weight:900;">Cliente / Projeto</label>
+                    <input id="clientNameInput" class="field w-full p-3 mt-2" placeholder="Ex: Landing Page Empresa X">
+                  </div>
+
+                  <div>
+                    <label class="text-xs" style="color: var(--muted); font-weight:900;">Status</label>
+                    <select id="statusSelect" class="field w-full p-3 mt-2">
+                      <option value="setup">Setup Inicial</option>
+                      <option value="design_andamento">Design e Criação</option>
+                      <option value="dev_andamento">Desenvolvimento</option>
+                      <option value="revisao_cliente">Revisão do Cliente</option>
+                      <option value="concluido">Concluído</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label class="text-xs" style="color: var(--muted); font-weight:900;">Previsão de entrega</label>
+                    <input id="deliveryDateInput" type="date" class="field w-full p-3 mt-2">
+                  </div>
+
+                  <div class="md:col-span-2">
+                    <label class="text-xs" style="color: var(--muted); font-weight:900;">Notas</label>
+                    <textarea id="notesInput" class="field w-full p-3 mt-2 min-h-[110px]" placeholder="Detalhes da etapa atual, próximos passos..."></textarea>
+                  </div>
                 </div>
-                <div id="pagination-container" class="mt-8"></div>
-            </section>
-        </div>
 
-        <div class="lg:col-span-1 xl:col-span-2">
-            <section id="form-section">
-                <div class="p-8 rounded-2xl neon-border shadow-xl shadow-cyan-900/30 sticky top-10">
-                    <h3 class="text-3xl font-bold text-cyan-400 mb-8" id="form-title">✨ Criar Novo Projeto</h3>
-                    
-                    <div class="mb-6 grid grid-cols-1 gap-4">
-                        <div>
-                            <label for="idInput" class="block text-sm font-medium text-gray-400 mb-1">ID do Projeto</label>
-                            <input type="text" id="idInput" value="" readonly class="w-full p-3 rounded-lg bg-gray-800 text-indigo-400 font-mono text-lg border border-gray-700">
-                        </div>
-                        <div id="audit-fields-container" class="grid grid-cols-2 gap-4 form-audit-field hidden">
-                            <div>
-                                <label for="createdAtInput" class="block text-sm font-medium text-gray-400 mb-1">Criado em</label>
-                                <input type="text" id="createdAtInput" value="N/A" readonly class="w-full p-3 rounded-lg bg-gray-800 text-gray-300 border border-gray-700 text-sm">
-                            </div>
-                            <div>
-                                <label for="lastUpdatedInput" class="block text-sm font-medium text-gray-400 mb-1">Última Edição</label>
-                                <input type="text" id="lastUpdatedInput" value="N/A" readonly class="w-full p-3 rounded-lg bg-gray-800 text-gray-300 border border-gray-700 text-sm">
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="mb-6">
-                        <label for="clientNameInput" class="block text-sm font-medium text-gray-400 mb-1">Nome do Cliente / Projeto</label>
-                        <input type="text" id="clientNameInput" placeholder="Ex: Projeto Landing Page Empresa X" class="w-full p-4 rounded-lg bg-gray-800 text-white border border-gray-700 focus:ring-cyan-500 focus:border-cyan-500 text-xl">
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                        <div>
-                            <label for="statusSelect" class="block text-sm font-medium text-gray-400 mb-1">Status Atual</label>
-                            <select id="statusSelect" class="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:ring-cyan-500 focus:border-cyan-500">
-                                <option value="setup">Setup Inicial</option>
-                                <option value="design_andamento">Design e Criação</option>
-                                <option value="dev_andamento">Desenvolvimento</option>
-                                <option value="revisao_cliente">Revisão do Cliente</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label for="deliveryDateInput" class="block text-sm font-medium text-gray-400 mb-1">Previsão de Entrega</label>
-                            <input type="date" id="deliveryDateInput" class="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:ring-cyan-500 focus:border-cyan-500">
-                        </div>
-                    </div>
-
-                    <div class="mb-8">
-                        <label for="notesInput" class="block text-sm font-medium text-gray-400 mb-1">Notas do Consultor</label>
-                        <textarea id="notesInput" placeholder="Detalhes da etapa atual ou próximos passos." class="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:ring-cyan-500 focus:border-cyan-500 h-24"></textarea>
-                    </div>
-
-                    <div class="flex flex-col gap-3 md:flex-row md:gap-4">
-    <button id="cancelButton" onclick="resetForm()" class="hidden bg-gray-700 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 flex-1 order-3 md:order-1 text-sm">
-        ❌ Cancelar
-    </button>
-
-    <button id="finishButton" onclick="openConfirmDialog()" class="hidden bg-yellow-600 hover:bg-yellow-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 flex-1 order-1 md:order-2 shadow-md hover:shadow-lg text-sm">Finalizar Projeto</button>
-    
-    <button onclick="saveProject()" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 flex-1 order-2 md:order-3 shadow-lg shadow-purple-500/50 hover:shadow-xl text-sm">Salvar / Atualizar Projeto</button>
-</div>
-                    
-                    <p id="admin-feedback" class="mt-4 hidden text-center"></p>
+                <div class="mt-4 flex flex-col md:flex-row gap-3">
+                  <button class="btn btn-primary w-full md:w-auto md:flex-1" onclick="saveProject()">Salvar</button>
+                  <button id="finishButton" class="btn btn-ghost w-full md:w-auto md:flex-1 hidden" onclick="openConfirmDialog()">Finalizar</button>
                 </div>
-            </section>
-        </div>
-        
+
+                <p id="admin-feedback" class="mt-4 text-sm hidden" style="font-weight:900;"></p>
+              </div>
+
+              <div class="glass-strong rounded-2xl p-4">
+                <div class="text-xs" style="color: var(--muted); font-weight:900;">STATUS ATUAL</div>
+                <div class="mt-2 text-lg font-extrabold" id="statusPreview">—</div>
+
+                <div class="mt-4">
+                  <div class="text-xs" style="color: var(--muted); font-weight:900;">PROGRESSO</div>
+                  <div class="mt-2 h-2 rounded-full bg-white/10 overflow-hidden">
+                    <div id="progressFill" class="h-full" style="width:0%; background: linear-gradient(90deg, rgba(102,39,255,.95), rgba(11,244,237,.75));"></div>
+                  </div>
+                  <div id="progressLabel" class="mt-2 text-xs" style="color: var(--muted); font-weight:900;">0%</div>
+                </div>
+
+                <div class="mt-6 text-xs leading-relaxed" style="color: rgba(237,241,247,.62); font-weight:800;">
+                  • O acompanhamento público lê <b>/projects</b><br>
+                  • Este painel escreve em <b>/projects</b> e registra em <b>/audit</b><br>
+                  • Datas suportam Timestamp/ISO sem quebrar
+                </div>
+              </div>
+            </div>
+          </section>
+
+        </main>
+      </div>
     </div>
-</main>
-        
-    </div>
+  </section>
 
+  <script>
+    // ========= FIREBASE CONFIG =========
+    const FIREBASE_CONFIG = {
+      apiKey: "AIzaSyBb8jAT-VR5723XaxZnH4jcw-PxOlRKn8w",
+      authDomain: "asthro-status-tracker.firebaseapp.com",
+      projectId: "asthro-status-tracker",
+      storageBucket: "asthro-status-tracker.firebasestorage.app",
+      messagingSenderId: "1023071296327",
+      appId: "1:1023071296327:web:477b39bd6d846fff148a62"
+    };
 
-    <script>
-        function checkFormDirty() {
-    const clientName = document.getElementById('clientNameInput').value.trim();
-    const deliveryDate = document.getElementById('deliveryDateInput').value;
-    const notes = document.getElementById('notesInput').value.trim();
-    const status = document.getElementById('statusSelect').value;
-    
-    const cancelButton = document.getElementById('cancelButton');
-    
-    // O formulário está "sujo" se:
-    // 1. O Nome do Cliente NÃO estiver vazio, OU
-    // 2. A Data de Entrega NÃO estiver vazia, OU
-    // 3. As Notas NÃO estiverem vazias, OU
-    // 4. O Status NÃO for o valor padrão 'setup'.
-    const isDirty = clientName.length > 0 || 
-                    deliveryDate.length > 0 || 
-                    notes.length > 0 ||
-                    status !== 'setup';
-                    
-    if (isDirty) {
-        cancelButton.classList.remove('hidden');
-    } else {
-        cancelButton.classList.add('hidden');
+    if (!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
+    const db = firebase.firestore();
+    const auth = firebase.auth();
+
+    const FieldValue = firebase.firestore.FieldValue;
+
+    // ========= STATUS MAP =========
+    const statusMap = {
+      'setup': { name: 'Setup Inicial', percent: 10 },
+      'design_andamento': { name: 'Design e Criação', percent: 35 },
+      'dev_andamento': { name: 'Desenvolvimento', percent: 65 },
+      'revisao_cliente': { name: 'Revisão do Cliente', percent: 85 },
+      'concluido': { name: 'Concluído', percent: 100 }
+    };
+
+    // ========= STATE =========
+    let allProjects = [];        // { id, ...data }
+    let filteredProjects = [];
+    let page = 1;
+    const PAGE_SIZE = 8;
+
+    // ========= HELPERS (CORRIGE SEU ERRO) =========
+    function toMillisAny(v){
+      // Firestore Timestamp
+      if (v && typeof v === 'object' && typeof v.toMillis === 'function') return v.toMillis();
+      // Date
+      if (v instanceof Date) return v.getTime();
+      // number
+      if (typeof v === 'number') return v;
+      // string ISO or date string
+      if (typeof v === 'string' && v.trim()) {
+        const t = Date.parse(v);
+        return Number.isNaN(t) ? 0 : t;
+      }
+      return 0;
     }
-}
 
-// 📌 ADICIONE ESTE BLOCO DE EVENT LISTENERS (DEPOIS DAS FUNÇÕES)
-// Garante que a função checkFormDirty seja chamada toda vez que o usuário interagir com o formulário
-document.addEventListener('DOMContentLoaded', () => {
-    // Campos que devem ser monitorados
-    const monitoredFields = [
-        document.getElementById('clientNameInput'),
-        document.getElementById('deliveryDateInput'),
-        document.getElementById('notesInput'),
-        document.getElementById('statusSelect')
-    ];
-
-    monitoredFields.forEach(field => {
-        // 'input' funciona para texto, 'change' funciona para select/date
-        field.addEventListener('input', checkFormDirty);
-        field.addEventListener('change', checkFormDirty);
-    });
-    
-    // Checagem inicial ao carregar a página
-    checkFormDirty(); 
-});
-        function scrollToTop() {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+    function formatDateTime(v){
+      const ms = toMillisAny(v);
+      if (!ms) return 'N/A';
+      const d = new Date(ms);
+      const pad = (n)=> String(n).padStart(2,'0');
+      return `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
     }
-    function scrollToProjects() {
-        // Rola até a seção de Projetos Existentes
-        document.getElementById('project-list-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    function formatDateOnly(v){
+      // usado para deliveryDate (YYYY-MM-DD)
+      if (!v) return 'N/A';
+      if (typeof v === 'string') return v;
+      const ms = toMillisAny(v);
+      if (!ms) return 'N/A';
+      const d = new Date(ms);
+      const pad = (n)=> String(n).padStart(2,'0');
+      return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
     }
-        // SUAS CREDENCIAIS DO FIREBASE
-        const FIREBASE_CONFIG = {
-            apiKey: "AIzaSyBb8jAT-VR5723XaxZnH4jcw-PxOlRKn8w", 
-            authDomain: "asthro-status-tracker.firebaseapp.com",
-            projectId: "asthro-status-tracker",
-            storageBucket: "asthro-status-tracker.firebasestorage.app",
-            messagingSenderId: "1023071296327",
-            appId: "1:1023071296327:web:477b39bd6d846fff148a62"
-        };
-    
-        // Inicializa o Firebase
-        firebase.initializeApp(FIREBASE_CONFIG);
-const db = firebase.firestore();
-const auth = firebase.auth();
 
-        // Variáveis de Paginação
-        const PROJECTS_PER_PAGE = 6;
-const HOME_PAGE_PROJECTS = 1; // 👈 AGORA MOSTRA APENAS UM PROJETO NA PÁGINA INICIAL
-let currentPage = 1;
-let totalPages = 1;
-let searchTimeout = null;
-        const projectListElement = document.getElementById('project-list');
-        const adminFeedbackElement = document.getElementById('admin-feedback');
-        
-        // Mapeamento de Status
-        const statusMap = {
-            'setup': { name: 'Setup Inicial', percent: 10 },
-            'design_andamento': { name: 'Design e Criação', percent: 35 },
-            'dev_andamento': { name: 'Desenvolvimento em Andamento', percent: 65 },
-            'revisao_cliente': { name: 'Revisão do Cliente', percent: 85 },
-            'concluido': { name: 'CONCLUÍDO', percent: 100 }
-        };
-        function clearSearchAndReload() {
-    document.getElementById('searchInput').value = '';
-    loadProjects(1);
-}
-function pad(num) {
-    return num.toString().padStart(2, '0');
-}
-// 🆕 FUNÇÃO PARA FORMATAR DATA E HORA
-function formatDateTime(isoString) {
-    if (!isoString) return 'N/A';
-    const date = new Date(isoString);
-    const day = pad(date.getDate());
-    const month = pad(date.getMonth() + 1);
-    const year = date.getFullYear();
-    const hours = pad(date.getHours());
-    const minutes = pad(date.getMinutes());
-    const seconds = pad(date.getSeconds());
-    return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
-}
-// 🆕 FUNÇÃO PARA GERAR ID AUTOMÁTICO BASEADO NA DATA E HORA
-function generateAsthroId() {
-    const now = new Date();
-    
-    // Captura as partes no formato solicitado
-    const hour = pad(now.getHours()); // HH
-    const day = pad(now.getDate());   // DD
-    const minute = pad(now.getMinutes()); // MM
-    const month = pad(now.getMonth() + 1); // MM (meses são 0-11)
-    const second = pad(now.getSeconds()); // SS
-    const year = now.getFullYear().toString().substring(2); // AA (últimos 2 dígitos)
-    
-    // Formato: Asthro-HH,DD,MM,MM,SS,AA (onde o segundo 'MM' é o mês)
-    const trackingId = `ASTHRO-${hour}${day}${minute}${month}${second}${year}`;
-    
-    return trackingId;
-}
-        async function login() {
-  const email = document.getElementById('adminEmail').value.trim();
-  const password = document.getElementById('adminPassword').value;
-  const feedback = document.getElementById('login-feedback');
-
-  feedback.classList.add('hidden');
-  feedback.textContent = '';
-
-  if (!email || !password) {
-    feedback.textContent = "Preencha e-mail e senha.";
-    feedback.classList.remove('hidden');
-    return;
-  }
-
-  try {
-    await auth.signInWithEmailAndPassword(email, password);
-
-    // Se logou, o onAuthStateChanged (abaixo) vai liberar o painel
-  } catch (err) {
-  console.error("Erro no login:", err);
-
-  // Mostra o erro REAL do Firebase na tela
-  feedback.textContent = `Falha no login: ${err.code || ''} ${err.message || ''}`;
-  feedback.classList.remove('hidden');
-}
-}
-        auth.onAuthStateChanged((user) => {
-  const loginSection = document.getElementById('login-section');
-  const adminPanel = document.getElementById('admin-panel');
-
-  if (user) {
-    // Usuário logado
-    loginSection.classList.add('hidden');
-    adminPanel.classList.remove('hidden');
-
-    resetForm();
-    loadProjects(1);
-  } else {
-    // Usuário deslogado
-    adminPanel.classList.add('hidden');
-    loginSection.classList.remove('hidden');
-  }
-});
-       function resetForm() {
-    document.getElementById('form-title').textContent = 'Criar Novo Projeto';
-    document.getElementById('audit-fields-container').classList.add('hidden');
-    document.getElementById('idInput').value = generateAsthroId();
-    
-    // Limpeza dos campos
-    document.getElementById('clientNameInput').value = '';
-    document.getElementById('statusSelect').value = 'setup'; // Valor padrão
-    document.getElementById('deliveryDateInput').value = '';
-    document.getElementById('notesInput').value = '';
-    
-    document.getElementById('createdAtInput').value = 'N/A';
-    document.getElementById('lastUpdatedInput').value = 'N/A';
-    document.getElementById('finishButton').classList.add('hidden');
-    
-    // 🎯 NOVO: Verifica o estado do formulário. Como todos estão limpos, o botão 'Cancelar' será ocultado.
-    checkFormDirty(); 
-    
-    loadProjects(1);
-    scrollToTop();
-}
-        // Função para mostrar o diálogo de confirmação (substitui confirm())
-        function openConfirmDialog() {
-            const projectId = document.getElementById('finishButton').getAttribute('data-project-id');
-            const dialog = document.getElementById('confirm-dialog');
-            document.getElementById('confirm-message').textContent = 
-                `Tem certeza que deseja FINALIZAR e ARQUIVAR o projeto ${projectId}? O ID ficará disponível para reutilização.`;
-            
-            dialog.classList.remove('hidden');
-
-            const handleFinish = () => {
-                finishProject(projectId);
-                dialog.classList.add('hidden');
-                document.getElementById('confirm-ok').removeEventListener('click', handleFinish);
-            };
-
-            const handleCancel = () => {
-                dialog.classList.add('hidden');
-                document.getElementById('confirm-cancel').removeEventListener('click', handleCancel);
-            };
-
-            document.getElementById('confirm-ok').addEventListener('click', handleFinish);
-            document.getElementById('confirm-cancel').addEventListener('click', handleCancel);
-        }
-
-
-        function editProject(projectId) {
-            db.collection('projects').doc(projectId).get().then(doc => {
-                if (doc.exists) {
-                    const data = doc.data();
-                    document.getElementById('form-title').textContent = `Editar Projeto: ${projectId}`;
-                    document.getElementById('idInput').value = projectId;
-                    // document.getElementById('idInput').disabled = true; // Mantido readonly no HTML
-                    document.getElementById('clientNameInput').value = data.clientName || '';
-                    document.getElementById('statusSelect').value = data.status || 'setup'; 
-                    document.getElementById('deliveryDateInput').value = data.deliveryDate || '';
-                    document.getElementById('notesInput').value = data.notes || '';
-                    
-                    // 🆕 PREENCHE OS CAMPOS DE DATA/HORA
-                    document.getElementById('createdAtInput').value = formatDateTime(data.createdAt);
-                    document.getElementById('lastUpdatedInput').value = formatDateTime(data.lastUpdated);
-                    
-                    // 🆕 Sempre exibe o botão Finalizar/Arquivar na edição
-                    const finishButton = document.getElementById('finishButton');
-                    finishButton.classList.remove('hidden'); // Torna visível
-                    finishButton.setAttribute('data-project-id', projectId);
-                    window.scrollTo(0, 0); // Rola para o topo para ver o formulário
-                    checkFormDirty();
-
-    scrollToTop();
-                }
-            }).catch(error => console.error("Erro ao buscar projeto para edição:", error));
-        }
-
-       async function finishProject(projectId) {
-    try {
-        const now = new Date().toISOString(); // 🆕 Captura Data/Hora completa (ISO string)
-        
-        // Atualiza o projeto para o status "concluido"
-        await db.collection('projects').doc(projectId).update({
-            status: 'concluido',
-            notes: 'Projeto formalmente FINALIZADO e ENTREGUE.',
-            deliveryDate: new Date().toISOString().split('T')[0], // Mantém só a data para o campo de previsão
-            lastUpdated: now, // 🆕 Registra a hora da finalização como última edição
-            finishedAt: now // 🆕 NOVO CAMPO: Registra a hora exata da conclusão
-        });
-        
-        adminFeedbackElement.textContent = `Projeto ${projectId} FINALIZADO com sucesso!`;
-        adminFeedbackElement.className = 'mt-4 text-green-400';
-        adminFeedbackElement.classList.remove('hidden');
-        
-        resetForm();
-        loadProjects();
-        
-    } catch (error) {
-        console.error("Erro ao finalizar projeto:", error);
-        adminFeedbackElement.textContent = "Erro ao finalizar: Verifique as permissões.";
-        adminFeedbackElement.className = 'mt-4 text-red-400';
-        adminFeedbackElement.classList.remove('hidden');
+    function generateAsthroId(){
+      const now = new Date();
+      const pad = (n)=> String(n).padStart(2,'0');
+      const hour = pad(now.getHours());
+      const day = pad(now.getDate());
+      const minute = pad(now.getMinutes());
+      const month = pad(now.getMonth()+1);
+      const second = pad(now.getSeconds());
+      const year = String(now.getFullYear()).slice(-2);
+      return `ASTHRO-${hour}${day}${minute}${month}${second}${year}`;
     }
-}
 
+    function setFeedback(msg, ok=true){
+      const el = document.getElementById('admin-feedback');
+      el.textContent = msg;
+      el.classList.remove('hidden');
+      el.style.color = ok ? '#7CFFB2' : '#ff6b8f';
+    }
 
-        async function saveProject() {
-    const projectId = document.getElementById('idInput').value.trim().toUpperCase();
-    const clientName = document.getElementById('clientNameInput').value.trim();
-    const status = document.getElementById('statusSelect').value;
-    const deliveryDate = document.getElementById('deliveryDateInput').value;
-    const notes = document.getElementById('notesInput').value.trim();
+    // ========= AUTH =========
+    async function login(){
+      const email = document.getElementById('adminEmail').value.trim();
+      const password = document.getElementById('adminPassword').value;
+      const fb = document.getElementById('login-feedback');
+      fb.classList.add('hidden');
+      fb.textContent = '';
 
-    // 🆕 VARIÁVEIS DE DATA E HORA
-    const now = new Date(); // Data/Hora atual para última edição
-    const timestampUpdate = now.toISOString();
-    const isCreationMode = document.getElementById('form-title').textContent.includes('Criar Novo');
-
-    if (!projectId || !clientName || !status) {
-        adminFeedbackElement.textContent = "Nome do Cliente e ID do Projeto são obrigatórios.";
-        adminFeedbackElement.className = 'mt-4 text-red-400';
-        adminFeedbackElement.classList.remove('hidden');
+      if(!email || !password){
+        fb.textContent = 'Preencha e-mail e senha.';
+        fb.classList.remove('hidden');
         return;
+      }
+
+      try{
+        await auth.signInWithEmailAndPassword(email, password);
+      }catch(err){
+        console.error('Erro no login:', err);
+        fb.textContent = `Falha no login: ${err.code || ''} ${err.message || ''}`;
+        fb.classList.remove('hidden');
+      }
     }
 
-    try {
-        const docRef = db.collection('projects').doc(projectId);
-        let projectData = {
-            clientName: clientName,
-            status: status,
-            deliveryDate: deliveryDate,
-            notes: notes,
-            // 🆕 SEMPRE ATUALIZA A DATA DE ÚLTIMA EDIÇÃO
-            lastUpdated: timestampUpdate 
-        };
-        
-        // Se for modo de criação, verifica se já existe e adiciona o campo de criação
-        if (isCreationMode) {
-            const existingDoc = await docRef.get();
-            if (existingDoc.exists) {
-                const existingData = existingDoc.data();
-                
-                // Se o projeto já existe e NÃO está concluído, BLOQUEIA a sobrescrita
-                if (existingData.status !== 'concluido') {
-                    adminFeedbackElement.textContent = `ERRO: Já existe um projeto ATIVO (${existingData.clientName}, Status: ${statusMap[existingData.status].name}) com o ID ${projectId}. Tente novamente em 1 minuto.`;
-                    adminFeedbackElement.className = 'mt-4 text-red-400';
-                    adminFeedbackElement.classList.remove('hidden');
-                    return;
-                }
-            }
-            
-            // 🆕 ADICIONA A HORA DE CRIAÇÃO SOMENTE NA CRIAÇÃO INICIAL
-            projectData.createdAt = timestampUpdate; 
-        }
+    async function logout(){
+      await auth.signOut();
+    }
 
-        // --- Salva ou Atualiza o Projeto ---
-        await docRef.set(projectData, { merge: true });
+    auth.onAuthStateChanged(async (user)=>{
+      const loginSection = document.getElementById('login-section');
+      const app = document.getElementById('app');
 
-        adminFeedbackElement.textContent = `Projeto ${projectId} salvo com sucesso!`;
-        adminFeedbackElement.className = 'mt-4 text-green-400';
-        adminFeedbackElement.classList.remove('hidden');
+      if(user){
+        loginSection.classList.add('hidden');
+        app.classList.remove('hidden');
+
+        document.getElementById('whoami').textContent = user.email || user.uid;
 
         resetForm();
-        loadProjects();
+        showTab('dashboard');
+        await refreshAll();
+      }else{
+        app.classList.add('hidden');
+        loginSection.classList.remove('hidden');
+      }
+    });
 
-    } catch (error) {
-        console.error("Erro ao salvar projeto:", error);
-        adminFeedbackElement.textContent = "Erro ao salvar: Verifique suas permissões do Firestore.";
-        adminFeedbackElement.className = 'mt-4 text-red-400';
-        adminFeedbackElement.classList.remove('hidden');
+    // ========= TABS =========
+    function showTab(name){
+      const views = ['dashboard','projects','editor'];
+      views.forEach(v=>{
+        document.getElementById('view-'+v).classList.toggle('hidden', v !== name);
+        document.getElementById('tab-'+v).classList.toggle('active', v === name);
+      });
     }
-}
-function debouncedSearch() {
-            // Limpa o timer anterior para não chamar a função imediatamente
-            clearTimeout(searchTimeout);
-            // Configura um novo timer para chamar loadProjects em 500ms
-            searchTimeout = setTimeout(() => {
-                loadProjects(1); // Sempre volta para a primeira página ao pesquisar
-            }, 500);
+
+    // ========= LOAD =========
+    async function refreshAll(){
+      await loadProjects();
+      applyFilters();   // render table
+      await renderDashboard();
+    }
+
+    async function loadProjects(){
+      // puxa tudo de /projects
+      const snap = await db.collection('projects').get();
+      allProjects = snap.docs.map(d=>({ id: d.id, ...d.data() }));
+      // se tiver projeto sem createdAt, não quebra
+      return allProjects;
+    }
+
+    // ========= FILTER/SORT/PAGINATE =========
+    function applyFilters(){
+      const q = (document.getElementById('q')?.value || '').trim().toUpperCase();
+      const sort = document.getElementById('sort')?.value || 'created_desc';
+
+      filteredProjects = allProjects.filter(p=>{
+        const id = (p.id || '').toUpperCase();
+        const client = (p.clientName || '').toUpperCase();
+        return !q || id.includes(q) || client.includes(q);
+      });
+
+      // Ordenação ROBUSTA (sem localeCompare em datas!)
+      filteredProjects.sort((a,b)=>{
+        const aCreated = toMillisAny(a.createdAt);
+        const bCreated = toMillisAny(b.createdAt);
+        const aUpd = toMillisAny(a.lastUpdated);
+        const bUpd = toMillisAny(b.lastUpdated);
+
+        switch(sort){
+          case 'created_asc': return aCreated - bCreated;
+          case 'created_desc': return bCreated - aCreated;
+          case 'updated_asc': return aUpd - bUpd;
+          case 'updated_desc': return bUpd - aUpd;
+          case 'client_asc': return String(a.clientName||'').localeCompare(String(b.clientName||''), 'pt-BR');
+          case 'client_desc': return String(b.clientName||'').localeCompare(String(a.clientName||''), 'pt-BR');
+          case 'status_asc': return String(a.status||'').localeCompare(String(b.status||''), 'pt-BR');
+          default: return bCreated - aCreated;
         }
-        
-        function updateSearchFeedback(searchText, totalResults) {
-            const feedbackElement = document.getElementById('search-feedback');
-            if (searchText) {
-                feedbackElement.textContent = `Mostrando ${totalResults} resultado(s) para: "${searchText}"`;
-                feedbackElement.classList.remove('hidden');
-                feedbackElement.classList.remove('text-red-400');
-                feedbackElement.classList.add('text-green-400');
-            } else {
-                feedbackElement.classList.add('hidden');
-            }
-        }
-        async function loadProjects(page = 1) {
-    projectListElement.innerHTML = '';
-    currentPage = page;
-    document.getElementById('pagination-container').innerHTML = '';
+      });
 
-    const searchInput = document.getElementById('searchInput');
-    const orderBySelect = document.getElementById('orderBySelect'); // 🆕 Pega o elemento Select
-    
-    // Pega o valor da ordenação
-    const selectedOrder = orderBySelect ? orderBySelect.value : 'status_id_desc'; 
-    const searchText = searchInput ? searchInput.value.trim().toUpperCase() : '';
-    
-    // Variável para armazenar todos os documentos se houver pesquisa ou para contagem
-    let allDocs = [];
-    let isSearching = !!searchText;
+      page = 1;
+      renderProjectsTable();
+    }
 
-    try {
-        // 1. QUERY DE BUSCA BASE - LÓGICA DE ORDENAÇÃO
-        let baseQuery = db.collection('projects');
-        
-        switch (selectedOrder) {
-            case 'clientName_asc':
-                baseQuery = baseQuery.orderBy('clientName', 'asc');
-                break;
-            case 'clientName_desc':
-                baseQuery = baseQuery.orderBy('clientName', 'desc');
-                break;
-            case 'id_asc':
-                baseQuery = baseQuery.orderBy(firebase.firestore.FieldPath.documentId(), 'asc');
-                break;
-            case 'id_desc':
-                baseQuery = baseQuery.orderBy(firebase.firestore.FieldPath.documentId(), 'desc');
-                break;
-            case 'status_id_desc':
-            default:
-                // Padrão: Ordena por Status e depois por ID (Mais Recente)
-                baseQuery = baseQuery.orderBy('status', 'asc')
-                                     .orderBy(firebase.firestore.FieldPath.documentId(), 'desc');
-        }
-                
-                // Se houver pesquisa, faremos a busca no cliente (browser)
-                if (isSearching) {
-                    projectListElement.innerHTML = '<p class="text-gray-500">Buscando...</p>';
-                    // Pega TODOS os projetos para filtro local (limitação do Firestore)
-                    const snapshot = await baseQuery.get();
-                    
-                    // Armazena todos os documentos
-                    allDocs = snapshot.docs;
-                    
-                    // Filtra localmente por ID OU Nome do Cliente
-                    const filteredDocs = allDocs.filter(doc => {
-                        const data = doc.data();
-                        const projectId = doc.id.toUpperCase();
-                        const clientName = data.clientName ? data.clientName.toUpperCase() : '';
+    function renderProjectsTable(){
+      const tbody = document.getElementById('projectsTbody');
+      const meta = document.getElementById('projectsMeta');
+      tbody.innerHTML = '';
 
-                        return projectId.includes(searchText) || clientName.includes(searchText);
-                    });
+      const total = filteredProjects.length;
+      const pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+      page = Math.min(page, pages);
 
-                    allDocs = filteredDocs; // Agora allDocs contém apenas os resultados filtrados
-                    
-                    updateSearchFeedback(searchText, allDocs.length);
-                    
-                } else {
-                    // SE NÃO ESTIVER PESQUISANDO, MANTÉM A LÓGICA DE PAGINAÇÃO
-                    
-                    const countSnapshot = await baseQuery.get();
-                    const totalActiveProjects = countSnapshot.docs.length; // Pega todos para contagem
-                    
-                    // Calcula o total de páginas (além da Home Page)
-                    const projectsAfterHome = Math.max(0, totalActiveProjects - HOME_PAGE_PROJECTS);
-                    totalPages = Math.ceil(projectsAfterHome / PROJECTS_PER_PAGE);
+      const start = (page - 1) * PAGE_SIZE;
+      const slice = filteredProjects.slice(start, start + PAGE_SIZE);
 
-                    let query = baseQuery;
-                    
-                    // Lógica de Paginação (a mesma que você já tinha)
-                    if (currentPage === 1) {
-                        query = baseQuery.limit(HOME_PAGE_PROJECTS);
-                    } else {
-                        const docsToSkip = HOME_PAGE_PROJECTS + (currentPage - 2) * PROJECTS_PER_PAGE;
-                        if (docsToSkip > 0) {
-                            const startDocSnapshot = await baseQuery.limit(docsToSkip).get();
-                            if (!startDocSnapshot.empty) {
-                                const startDoc = startDocSnapshot.docs[startDocSnapshot.docs.length - 1];
-                                query = baseQuery.startAfter(startDoc).limit(PROJECTS_PER_PAGE);
-                            } else {
-                                projectListElement.innerHTML = '<p class="text-gray-500">Nenhum projeto encontrado nesta página.</p>';
-                                updateSearchFeedback(searchText, 0);
-                                return;
-                            }
-                        } else {
-                            query = baseQuery.limit(HOME_PAGE_PROJECTS);
-                        }
-                    }
-                    
-                    const snapshot = await query.get();
-                    allDocs = snapshot.docs; // Armazena os documentos da página atual
+      meta.textContent = `Mostrando ${slice.length} de ${total} • Página ${page}/${pages}`;
 
-                    updateSearchFeedback(searchText, allDocs.length); // Limpa o feedback de pesquisa
-                }
+      if(slice.length === 0){
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td colspan="7" class="py-6" style="color: var(--muted); font-weight:900;">Nenhum projeto encontrado.</td>`;
+        tbody.appendChild(tr);
+        return;
+      }
 
-                
-                // 2. RENDERIZAÇÃO DOS PROJETOS (para pesquisa E paginação)
-                if (allDocs.length === 0) {
-                    projectListElement.innerHTML = `<p class="text-gray-500">${isSearching ? 'Nenhum resultado encontrado para a pesquisa.' : 'Nenhum projeto cadastrado ativo.'}</p>`;
-                    // Renderiza paginação apenas se não estiver pesquisando
-                    if (!isSearching) renderPaginationControls(totalPages);
-                    return;
-                }
+      slice.forEach(p=>{
+        const statusInfo = statusMap[p.status] || { name: '—', percent: 0 };
+        const tr = document.createElement('tr');
+        tr.className = "border-t border-white/10";
 
-                projectListElement.innerHTML = '';
-                allDocs.forEach(doc => {
-                    const data = doc.data();
-                    const statusInfo = statusMap[data.status] || { name: 'Desconhecido', percent: 0 };
+        tr.innerHTML = `
+          <td class="py-3 pr-4 font-mono text-xs md:text-sm">${p.id}</td>
+          <td class="py-3 pr-4 font-extrabold">${p.clientName || 'Sem nome'}</td>
+          <td class="py-3 pr-4">
+            <span class="px-2 py-1 rounded-lg bg-white/5 border border-white/10 text-xs font-extrabold">${statusInfo.name}</span>
+          </td>
+          <td class="py-3 pr-4 text-sm" style="color: var(--muted); font-weight:900;">${p.deliveryDate || 'N/A'}</td>
+          <td class="py-3 pr-4 text-xs" style="color: var(--muted); font-weight:900;">${formatDateTime(p.createdAt)}</td>
+          <td class="py-3 pr-4 text-xs" style="color: var(--muted); font-weight:900;">${formatDateTime(p.lastUpdated)}</td>
+          <td class="py-3 pr-0 text-right">
+            <button class="btn btn-ghost text-xs" onclick="openEdit('${p.id.replace(/'/g,"\\'")}')">Editar</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
 
-                    const created = formatDateTime(data.createdAt);
-                    const updated = formatDateTime(data.lastUpdated);
-                    const finished = data.finishedAt ? formatDateTime(data.finishedAt) : null;
-                    
-                    // Define classes de cor e borda baseadas no status
-                    let cardBorderClass = 'border-gray-700';
-                    let statusColorClass = 'text-purple-400';
-                    let progressBarColor = 'bg-purple-600';
-                    let progressText = statusInfo.percent > 0 ? `${statusInfo.percent}%` : '';
+    function prevPage(){ page = Math.max(1, page - 1); renderProjectsTable(); }
+    function nextPage(){
+      const pages = Math.max(1, Math.ceil(filteredProjects.length / PAGE_SIZE));
+      page = Math.min(pages, page + 1);
+      renderProjectsTable();
+    }
 
-                    if (data.status === 'concluido') {
-                        cardBorderClass = 'border-green-500 shadow-lg shadow-green-700/30';
-                        statusColorClass = 'text-green-400';
-                        progressBarColor = 'bg-green-600';
-                        progressText = '100%';
-                    } else if (data.status === 'revisao_cliente') {
-                        cardBorderClass = 'border-yellow-500 shadow-lg shadow-yellow-700/30';
-                        statusColorClass = 'text-yellow-400';
-                        progressBarColor = 'bg-yellow-600';
-                    }
+    // ========= EDITOR =========
+    function resetForm(){
+      document.getElementById('editorTitle').textContent = 'Novo projeto';
+      document.getElementById('idInput').value = generateAsthroId();
+      document.getElementById('clientNameInput').value = '';
+      document.getElementById('statusSelect').value = 'setup';
+      document.getElementById('deliveryDateInput').value = '';
+      document.getElementById('notesInput').value = '';
+      document.getElementById('createdAtInput').value = 'N/A';
+      document.getElementById('lastUpdatedInput').value = 'N/A';
+      document.getElementById('finishButton').classList.add('hidden');
+      document.getElementById('admin-feedback').classList.add('hidden');
+      updatePreview();
+    }
 
-                    const projectCard = document.createElement('div');
-                    projectCard.className = `p-6 bg-gray-900 rounded-xl transition-all duration-300 ease-in-out hover:scale-[1.01] ${cardBorderClass} border-2`;
-                    
-                    projectCard.innerHTML = `
-                        <div class="flex justify-between items-start mb-4">
-                            <div>
-                                <h4 class="text-xl font-bold gradient-text mb-1">${data.clientName}</h4>
-                                <p class="text-sm text-gray-400 font-mono">ID: <span class="text-indigo-400 font-semibold">${doc.id}</span></p>
-                            </div>
-                            <button onclick="editProject('${doc.id}')" 
-                                    class="bg-purple-700 hover:bg-purple-600 text-white font-semibold py-2 px-4 rounded-lg text-sm transition duration-300 flex-shrink-0">
-                                Editar
-                            </button>
-                        </div>
+    function updatePreview(){
+      const s = document.getElementById('statusSelect').value;
+      const info = statusMap[s] || { name: '—', percent: 0 };
+      document.getElementById('statusPreview').textContent = info.name;
+      document.getElementById('progressFill').style.width = `${info.percent}%`;
+      document.getElementById('progressLabel').textContent = `${info.percent}%`;
+    }
+    document.getElementById('statusSelect').addEventListener('change', updatePreview);
 
-                        <div class="mb-4">
-                            <p class="text-base text-gray-300">Status Atual: <span class="${statusColorClass} font-bold">${statusInfo.name}</span></p>
-                            <div class="w-full bg-gray-700 rounded-full h-2.5 mt-2">
-                                <div class="${progressBarColor} h-2.5 rounded-full" style="width: ${statusInfo.percent}%"></div>
-                            </div>
-                            <p class="text-right text-xs text-gray-400 mt-1">${progressText}</p>
-                        </div>
+    async function openEdit(projectId){
+      showTab('editor');
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-y-2 mb-4 text-sm text-gray-400">
-                            <div><span class="font-medium text-gray-300">Previsão de Entrega:</span> ${data.deliveryDate || 'N/A'}</div>
-                            ${finished ? `<div class="md:col-span-2 text-green-400 font-bold">✅ Projeto Concluído em: ${finished}</div>` : ''}
-                            <div><span class="font-medium text-gray-300">Criado em:</span> ${created}</div>
-                            <div><span class="font-medium text-gray-300">Última Edição:</span> ${updated}</div>
-                        </div>
+      const doc = await db.collection('projects').doc(projectId).get();
+      if(!doc.exists){
+        setFeedback('Projeto não encontrado para edição.', false);
+        return;
+      }
 
-                        ${data.notes ? `
-                            <div class="border-t border-gray-700 pt-4 mt-4">
-                                <p class="text-xs text-gray-400 font-medium mb-1">Notas do Consultor:</p>
-                                <p class="text-sm text-gray-300 italic">${data.notes}</p>
-                            </div>
-                        ` : ''}
-                    `;
-                    projectListElement.appendChild(projectCard);
-                });
+      const data = doc.data() || {};
+      document.getElementById('editorTitle').textContent = `Editando: ${projectId}`;
+      document.getElementById('idInput').value = projectId;
+      document.getElementById('clientNameInput').value = data.clientName || '';
+      document.getElementById('statusSelect').value = data.status || 'setup';
+      document.getElementById('deliveryDateInput').value = data.deliveryDate || '';
+      document.getElementById('notesInput').value = data.notes || '';
 
-                // 3. Renderiza os controles de paginação (APENAS se não estiver pesquisando)
-                if (!isSearching) {
-                    renderPaginationControls(totalPages);
-                } else {
-                    document.getElementById('pagination-container').innerHTML = '';
-                }
+      document.getElementById('createdAtInput').value = formatDateTime(data.createdAt);
+      document.getElementById('lastUpdatedInput').value = formatDateTime(data.lastUpdated);
 
-            } catch (error) {
-                // Loga o erro, incluindo o erro de índice
-                console.error("ERRO CRÍTICO NA CONSULTA DO FIRESTORE:", error);
+      const finishBtn = document.getElementById('finishButton');
+      finishBtn.classList.remove('hidden');
+      finishBtn.setAttribute('data-project-id', projectId);
 
-                if (error.message && error.message.includes('requires an index')) {
-                    // Tenta extrair a URL de criação do índice do erro do Firebase (se for fornecida)
-                    const indexUrlMatch = error.message.match(/https:\/\/[^\s]+/);
-                    const indexUrl = indexUrlMatch ? indexUrlMatch[0] : 'Nenhuma URL de índice encontrada. Crie o índice manualmente: status ASC, __name__ DESC';
-                    projectListElement.innerHTML = `
-                        <p class="text-red-400 font-bold">ERRO DE ÍNDICE: O Firestore exige um índice composto específico.</p>
-                        <p class="text-gray-400 mt-2">Por favor, verifique no Console do Firebase e crie o índice com a ordem exata:</p>
-                        <ul class="list-disc list-inside mt-2 ml-4 text-gray-300">
-                            <li>Campo 1: <code>status</code> (Ascendente)</li>
-                            <li>Campo 2: <code>__name__</code> (Descendente)</li>
-                        </ul>
-                        <p class="text-sm text-red-500 mt-4">Erro Bruto: ${error.message}</p>
-                        <p class="text-xs text-blue-400 mt-2">URL de Criação (Copie e Cole no seu navegador): ${indexUrl}</p>
-                    `;
-                } else {
-                     projectListElement.innerHTML = `<p class="text-red-400">Erro ao carregar lista de projetos: ${error.message}</p>`;
-                }
-            }
+      updatePreview();
+    }
+
+    // ========= SAVE / FINISH =========
+    async function saveProject(){
+      const projectId = document.getElementById('idInput').value.trim().toUpperCase();
+      const clientName = document.getElementById('clientNameInput').value.trim();
+      const status = document.getElementById('statusSelect').value;
+      const deliveryDate = document.getElementById('deliveryDateInput').value;
+      const notes = document.getElementById('notesInput').value.trim();
+
+      if(!projectId || !clientName){
+        setFeedback('Nome do cliente é obrigatório.', false);
+        return;
+      }
+
+      try{
+        const ref = db.collection('projects').doc(projectId);
+        const snap = await ref.get();
+        const exists = snap.exists;
+
+        const payload = {
+          clientName,
+          status,
+          deliveryDate,
+          notes,
+          lastUpdated: FieldValue.serverTimestamp()
+        };
+
+        if(!exists){
+          payload.createdAt = FieldValue.serverTimestamp();
         }
 
+        await ref.set(payload, { merge: true });
 
-        function renderPaginationControls(pages) {
-            const container = document.getElementById('pagination-container');
-            container.innerHTML = '';
-            
-            // +1 para incluir a Página Inicial (que é a primeira visualização)
-            const totalButtons = pages + 1; 
-
-            // Mostra apenas se houver mais de 5 projetos ativos
-            if (totalButtons > 1) { 
-                const paginationDiv = document.createElement('div');
-                paginationDiv.className = 'mt-8 flex justify-center flex-wrap gap-2';
-                
-                // i = 1 é a Página Inicial. i > 1 são as páginas numeradas.
-                for (let i = 1; i <= totalButtons; i++) {
-                    const pageButton = document.createElement('button');
-                    const pageIndex = i;
-                    
-                    pageButton.textContent = (pageIndex === 1) ? 'Página Inicial (5 Recentes)' : `Página ${pageIndex - 1}`;
-                    pageButton.onclick = () => loadProjects(pageIndex);
-                    
-                    const baseClasses = 'py-2 px-4 rounded-lg text-sm transition duration-300 whitespace-nowrap';
-                    
-                    if (pageIndex === currentPage) {
-                        pageButton.className = `${baseClasses} bg-purple-600 text-white font-bold`;
-                    } else {
-                        pageButton.className = `${baseClasses} bg-gray-800 hover:bg-purple-500 text-gray-300`;
-                    }
-                    paginationDiv.appendChild(pageButton);
-                }
-                container.appendChild(paginationDiv);
-            }
+        // auditoria (se regras permitirem)
+        try{
+          await db.collection('audit').add({
+            projectId,
+            action: exists ? 'update' : 'create',
+            uid: auth.currentUser?.uid || null,
+            email: auth.currentUser?.email || null,
+            at: FieldValue.serverTimestamp()
+          });
+        }catch(e){
+          console.warn('Audit falhou (regras?)', e);
         }
 
-        
-        document.addEventListener('DOMContentLoaded', () => {
-  const pass = document.getElementById('adminPassword');
-  const email = document.getElementById('adminEmail');
+        setFeedback(`Projeto ${projectId} salvo com sucesso!`, true);
 
-  if (email) {
-    email.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') login();
+        await refreshAll();
+        // mantém no editor, mas atualiza campos (created/updated do server)
+        await openEdit(projectId);
+
+      }catch(error){
+        console.error("Erro ao salvar projeto:", error);
+        setFeedback(`Erro ao salvar: ${error.message}`, false);
+      }
+    }
+
+    function openConfirmDialog(){
+      const projectId = document.getElementById('finishButton').getAttribute('data-project-id');
+      const dialog = document.getElementById('confirm-dialog');
+      document.getElementById('confirm-message').textContent =
+        `Tem certeza que deseja FINALIZAR o projeto ${projectId}? Isso marcará como "Concluído".`;
+
+      dialog.classList.remove('hidden');
+
+      const onOk = async () => {
+        dialog.classList.add('hidden');
+        document.getElementById('confirm-ok').removeEventListener('click', onOk);
+        document.getElementById('confirm-cancel').removeEventListener('click', onCancel);
+        await finishProject(projectId);
+      };
+      const onCancel = () => {
+        dialog.classList.add('hidden');
+        document.getElementById('confirm-ok').removeEventListener('click', onOk);
+        document.getElementById('confirm-cancel').removeEventListener('click', onCancel);
+      };
+
+      document.getElementById('confirm-ok').addEventListener('click', onOk);
+      document.getElementById('confirm-cancel').addEventListener('click', onCancel);
+    }
+
+    async function finishProject(projectId){
+      try{
+        const now = FieldValue.serverTimestamp();
+        const today = new Date();
+        const pad = (n)=> String(n).padStart(2,'0');
+        const dateOnly = `${today.getFullYear()}-${pad(today.getMonth()+1)}-${pad(today.getDate())}`;
+
+        await db.collection('projects').doc(projectId).update({
+          status: 'concluido',
+          lastUpdated: now,
+          finishedAt: now,
+          deliveryDate: dateOnly
+        });
+
+        try{
+          await db.collection('audit').add({
+            projectId,
+            action: 'finish',
+            uid: auth.currentUser?.uid || null,
+            email: auth.currentUser?.email || null,
+            at: now
+          });
+        }catch(e){
+          console.warn('Audit finish falhou', e);
+        }
+
+        setFeedback(`Projeto ${projectId} finalizado com sucesso!`, true);
+        await refreshAll();
+        await openEdit(projectId);
+
+      }catch(error){
+        console.error("Erro ao finalizar:", error);
+        setFeedback(`Erro ao finalizar: ${error.message}`, false);
+      }
+    }
+
+    // ========= DASHBOARD =========
+    async function renderDashboard(){
+      // KPIs de projects
+      const total = allProjects.length;
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = now.getMonth(); // 0-11
+
+      let createdThisYear = 0;
+      let createdThisMonth = 0;
+      let done = 0;
+      let onTime = 0;
+
+      allProjects.forEach(p=>{
+        const c = new Date(toMillisAny(p.createdAt) || 0);
+        if (c.getFullYear() === year) createdThisYear++;
+        if (c.getFullYear() === year && c.getMonth() === month) createdThisMonth++;
+
+        if (p.status === 'concluido') {
+          done++;
+          // entrega no prazo: finishedAt <= deliveryDate (se existir)
+          if (p.deliveryDate && p.finishedAt){
+            const finishedMs = toMillisAny(p.finishedAt);
+            const deliveryMs = Date.parse(p.deliveryDate + "T23:59:59");
+            if (finishedMs && deliveryMs && finishedMs <= deliveryMs) onTime++;
+          }
+        }
+      });
+
+      document.getElementById('kpiTotal').textContent = total;
+      document.getElementById('kpiMonth').textContent = createdThisMonth;
+      document.getElementById('kpiYear').textContent = createdThisYear;
+      document.getElementById('kpiDone').textContent = done;
+      document.getElementById('kpiOnTime').textContent = `${onTime} / ${done}`;
+
+      // Auditoria últimos 30 dias
+      try{
+        const since = new Date();
+        since.setDate(since.getDate() - 30);
+
+        // "at" é serverTimestamp -> Timestamp
+        const snap = await db.collection('audit').where('at', '>=', since).get();
+        document.getElementById('kpiAudit').textContent = `${snap.size} eventos`;
+      }catch(e){
+        console.warn('Falha ao ler audit (regras?)', e);
+        document.getElementById('kpiAudit').textContent = 'Sem acesso';
+      }
+    }
+
+    // ========= ENTER TO LOGIN =========
+    document.addEventListener('DOMContentLoaded', ()=>{
+      const pass = document.getElementById('adminPassword');
+      const email = document.getElementById('adminEmail');
+      if(email) email.addEventListener('keypress', e=>{ if(e.key==='Enter') login(); });
+      if(pass) pass.addEventListener('keypress', e=>{ if(e.key==='Enter') login(); });
+      updatePreview();
     });
-  }
 
-  if (pass) {
-    pass.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') login();
-    });
-  }
-});
-    </script>
+    // ========= STARS =========
+    const starsContainer = document.getElementById('stars-container');
+    function createStars(){
+      if(!starsContainer) return;
+      starsContainer.innerHTML = '';
+      const colors = ['purple','cyan','white'];
+      const numStars = 140;
+      for(let i=0;i<numStars;i++){
+        const s = document.createElement('span');
+        s.classList.add('star', colors[Math.floor(Math.random()*colors.length)]);
+        s.style.left = `${Math.random()*window.innerWidth}px`;
+        s.style.top  = `${Math.random()*window.innerHeight}px`;
+        const mx = (Math.random()-0.5)*260;
+        const my = (Math.random()-0.5)*260;
+        s.style.setProperty('--mx', `${mx}px`);
+        s.style.setProperty('--my', `${my}px`);
+        s.style.animationDelay = `${Math.random()*16}s`;
+        starsContainer.appendChild(s);
+      }
+    }
+    createStars();
+    window.addEventListener('resize', createStars);
+  </script>
 </body>
 </html>
