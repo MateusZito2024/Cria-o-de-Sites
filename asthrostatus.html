@@ -1,393 +1,1192 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Asthro | Acompanhamento de Projeto</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700&family=Manrope:wght@400;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/png" href="https://i.imgur.com/3HqwIPk.png">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Asthro | Acompanhamento de Projeto</title>
 
-    <style>
-        /* Tipografia Padronizada */
-        h2, h3, h4 {
-            font-family: 'Archivo', sans-serif;
-            opacity: 1 !important;
-        }
-        p, a, input, textarea, button, .message {
-            font-family: 'Manrope', sans-serif;
-            font-weight: 400;
-        }
+  <script src="https://cdn.tailwindcss.com"></script>
 
-        /* 🚨 NOVO: Estilos do Body e Fundo do Primeiro Código */
-        html, body {
-            font-family: 'Manrope', sans-serif;
-            /* Fundo Gradiente Animado */
-            background: linear-gradient(135deg, #111111, #111111);
-            background-size: 400% 400%;
-            animation: gradientTransition 20s ease-in-out infinite;
-            color: #edf1f7;
-            margin: 0;
-            padding: 0;
-            position: relative;
-            overflow-x: hidden;
-            overflow-y: auto;
-            min-height: 100vh; /* Alterado de 100% para 100vh para garantir que o fundo cubra a tela */
-            width: 100vw;
-            display: flex;
-            flex-direction: column; /* Necessário para o rodapé ficar no fundo */
-        }
-        
-        main {
-            flex-grow: 1; /* Permite que o conteúdo principal ocupe o espaço restante */
-        }
+  <!-- Firebase compat (igual ao seu) -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
 
-        @keyframes gradientTransition {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700&family=Manrope:wght@400;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="https://i.imgur.com/3HqwIPk.png">
 
-        /* Container de Estrelas (Background) */
-        .stars-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            pointer-events: none;
-        }
-        .star {
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: #ffffff;
-            border-radius: 50%;
-            box-shadow: 0 0 5px 1px rgba(255, 255, 255, 0.5);
-            opacity: 0.3;
-            animation: floatStar 15s infinite ease-in-out;
-        }
-        .star.purple { background: #6627ff; box-shadow: 0 0 5px 1px rgba(106, 13, 173, 0.5); }
-        .star.pink { background: #0bf4ed; box-shadow: 0 0 5px 1px rgba(232, 121, 249, 0.5); }
-        .star.white { background: #edf1f7; box-shadow: 0 0 5px 1px rgba(255, 255, 255, 0.5); }
-        @keyframes floatStar {
-            0% { opacity: 0.3; transform: translate(0, 0); }
-            50% { opacity: 0.6; transform: translate(var(--move-x), var(--move-y)); }
-            100% { opacity: 0.3; transform: translate(0, 0); }
-        }
+  <style>
+    /* ====== BASE DO SEU SITE (fundo + tipografia) ====== */
+    *, *::before, *::after { box-sizing: border-box; }
 
-        /* 🚨 NOVO: Estilos do Cabeçalho e Links */
-        .brand-name { font-family: 'Great Vibes', cursive; line-height: 2; padding: 1rem; display: block; overflow: visible; font-size: clamp(2rem, 6vw, 2.5rem); }
-        .nav-link {
-            font-family: 'Manrope', sans-serif;
-            position: relative;
-            text-decoration: none;
-            color: #edf1f7;
-            transition: color 0.3s ease;
-            font-size: clamp(1rem, 3vw, 1.125rem);
-        }
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -4px;
-            left: 0;
-            background: linear-gradient(135deg, #6627ff, #0bf4ed);
-            transition: width 0.3s ease;
-        }
-        .nav-link:hover::after { width: 100%; }
-        .nav-link:hover { color: #0bf4ed; }
-        .gradient-text {
-            background: linear-gradient(135deg, #6627ff, #0bf4ed);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 10;
-            background: transparent;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 0 1rem;
-            box-sizing: border-box;
-        }
-        nav > div { display: flex; justify-content: space-between; align-items: center; width: 100%; }
-        nav .flex.items-center.content-layer:last-child { margin-left: auto; }
-        
-        /* 🚨 NOVO: Estilo para a barra de progresso (Manutenção do seu estilo, apenas ajustado para o fundo) */
-        .status-bar { height: 10px; background-color: #374151; border-radius: 5px; overflow: hidden; margin-top: 1rem; }
-        .progress-fill { height: 100%; background: linear-gradient(90deg, #6627ff, #0bf4ed); transition: width 0.5s ease; }
-        
-        /* 🚨 NOVO: Estilo para o botão de busca para aplicar a pulsação do código 1 */
-        @keyframes colorPulse {
-            0% { background-color: #6627ff; }
-            50% { background-color: #0bf4ed; }
-            100% { background-color: #6627ff; }
-        }
-        .search-button {
-            /* Cor de fundo base (Violeta Cósmico para fallback) */
-            background: #6627ff;
-            /* Aplicação da pulsação de cor sutil (5 segundos) */
-            animation: colorPulse 5s infinite ease-in-out;
-            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
-        }
-        .search-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(102, 39, 255, 0.6);
-            animation: none; /* Desativa a pulsação no hover */
-            background: #0bf4ed; /* Azul Prisma no hover */
-        }
-        
-        /* 🚨 NOVO: Estilos do Mobile (Copiados do Código 1) */
-        .hamburger { display: none; flex-direction: column; justify-content: space-around; width: 2rem; height: 2rem; background: transparent; border: none; cursor: pointer; padding: 0; z-index: 40; }
-        .hamburger span { width: 100%; height: 3px; background: #edf1f7; transition: all 0.3s ease; }
-        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
-        .hamburger.active span:nth-child(2) { opacity: 0; }
-        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(7px, -7px); }
-        .nav-menu-mobile { display: none; }
-        .mobile-menu-logo { display: none; width: 80%; max-width: 150px; height: auto; filter: drop-shadow(0 0 5px rgba(102, 39, 255, 0.4)); }
+    html, body {
+      font-family: 'Manrope', sans-serif;
+      background: linear-gradient(135deg, #111111, #111111);
+      background-size: 400% 400%;
+      animation: gradientTransition 20s ease-in-out infinite;
+      color: #edf1f7;
+      margin: 0;
+      padding: 0;
+      position: relative;
+      overflow-x: hidden;
+      overflow-y: auto;
+      min-height: 100%;
+      width: 100vw;
+    }
 
-        @media (max-width: 768px) {
-            nav { background: rgba(17, 17, 17, 0.95); padding: 0.5rem 1rem; width: 100%; box-sizing: border-box; }
-            .mobile-menu-logo { display: block; margin-top: 3rem; }
-            nav .flex.items-center.space-x-6 { display: none; }
-            .hamburger { display: flex; }
-            .nav-menu-mobile {
-                position: fixed; top: 0; right: -100%; height: 100vh; width: 100%; max-width: 300px;
-                background: rgba(17, 17, 17, 0.9);
-                backdrop-filter: blur(10px);
-                -webkit-backdrop-filter: blur(10px);
-                border-left: 1px solid rgba(102, 39, 255, 0.5);
-                flex-direction: column; justify-content: center; align-items: center; gap: 1.5rem;
-                transition: right 0.3s ease; z-index: 30; display: flex; box-sizing: border-box;
-                padding: 0 1rem; box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
-            }
-            .nav-menu-mobile.active { right: 0; }
-            .brand-name { font-size: clamp(1.75rem, 8vw, 2rem); padding: 0.5rem; }
-            .nav-menu-mobile .nav-link {
-                display: block; width: 90%; padding: 0.8rem 1.5rem; border-radius: 0.75rem;
-                background: rgba(102, 39, 255, 0.1); color: #f8f8f8; text-align: center;
-                font-size: clamp(1.125rem, 4vw, 1.3rem); font-weight: 600;
-                border: 1px solid rgba(255, 255, 255, 0.2); backdrop-filter: blur(5px);
-                -webkit-backdrop-filter: blur(5px); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-                transition: all 0.3s ease;
-            }
-            .nav-menu-mobile .nav-link:hover {
-                background: linear-gradient(135deg, rgba(102, 39, 255, 0.3), rgba(11, 244, 237, 0.3));
-                transform: translateY(-4px) scale(1.02);
-                box-shadow: 0 8px 16px rgba(11, 244, 237, 0.6);
-                border-color: #0bf4ed;
-            }
-            .nav-menu-mobile .nav-link::after { display: none; }
-            
-            /* Ajuste o padding do body/main para considerar o nav fixo */
-            body.p-8 { padding-top: 5rem; }
-            .content-layer { margin-top: 5rem; }
-        }
+    @keyframes gradientTransition {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
 
-        /* Garantir que todos os elementos de conteúdo estejam acima das estrelas */
-        .content-layer { position: relative; z-index: 2; }
-    </style>
+    h2, h3, h4 {
+      font-family: 'Archivo', sans-serif;
+      opacity: 1 !important;
+    }
+    p, a, input, textarea, button, .message, span {
+      font-family: 'Manrope', sans-serif;
+      font-weight: 400;
+    }
+
+    img {
+      -webkit-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      -webkit-user-drag: none;
+      pointer-events: auto;
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #6627ff, #0bf4ed);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .animated-gradient-text {
+      background: linear-gradient(90deg, #6627ff, #edf1f7, #0bf4ed, #6627ff);
+      background-size: 400% 100%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradientShift 8s ease-in-out infinite;
+    }
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* ====== ESTRELAS (igual ao seu) ====== */
+    .stars-container {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: #ffffff;
+      border-radius: 50%;
+      box-shadow: 0 0 5px 1px rgba(255, 255, 255, 0.5);
+      opacity: 0.3;
+      animation: floatStar 15s infinite ease-in-out;
+    }
+
+    .star.purple { background: #6627ff; box-shadow: 0 0 5px 1px rgba(106, 13, 173, 0.5); }
+    .star.pink   { background: #0bf4ed; box-shadow: 0 0 5px 1px rgba(232, 121, 249, 0.5); }
+    .star.white  { background: #edf1f7; box-shadow: 0 0 5px 1px rgba(255, 255, 255, 0.5); }
+
+    @keyframes floatStar {
+      0%   { opacity: 0.3; transform: translate(0, 0); }
+      50%  { opacity: 0.6; transform: translate(var(--move-x), var(--move-y)); }
+      100% { opacity: 0.3; transform: translate(0, 0); }
+    }
+
+    /* ====== NAV/HEADER (mesmo do seu exemplo) ====== */
+    .nav-link {
+      font-family: 'Manrope', sans-serif;
+      position: relative;
+      text-decoration: none;
+      color: #edf1f7;
+      transition: color 0.3s ease;
+      font-size: clamp(1rem, 3vw, 1.125rem);
+      font-weight: 700;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -4px;
+      left: 0;
+      background: linear-gradient(135deg, #6627ff, #0bf4ed);
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after { width: 100%; }
+    .nav-link:hover { color: #0bf4ed; }
+
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 90;
+      background: transparent;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 0 1rem;
+      box-sizing: border-box;
+    }
+    nav > div {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+
+    .content-layer { position: relative; z-index: 2; }
+
+    /* Dropdown desktop (igual ao seu) */
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%) translateY(10px);
+      min-width: 260px;
+
+      background: rgba(255, 255, 255, 0);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+
+      border: 2px solid #6627ff;
+      border-radius: 1rem;
+      padding: 0.75rem;
+
+      z-index: 50;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+    }
+    .dropdown.active .dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(5px);
+    }
+    .dropdown-menu a {
+      display: block;
+      padding: 0.8rem 1rem;
+      color: #edf1f7;
+      font-size: 1rem;
+      font-weight: 500;
+      text-decoration: none;
+      border-radius: 0.5rem;
+      transition: all 0.3s ease;
+    }
+    .dropdown-menu a:hover {
+      background: linear-gradient(90deg, rgba(102, 39, 255, 0.2), rgba(11, 244, 237, 0.2));
+      color: #0bf4ed;
+      transform: translateX(5px);
+    }
+    .dropdown-arrow { display: inline-block; transition: transform 0.3s ease; }
+    .dropdown.active .dropdown-arrow { transform: rotate(180deg); }
+
+    @media (max-width: 768px) {
+      .dropdown { display: none !important; }
+    }
+
+    /* Hambúrguer + menu mobile (igual ao seu) */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: space-around;
+      width: 2rem;
+      height: 2rem;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      z-index: 40;
+    }
+    .hamburger span {
+      width: 100%;
+      height: 3px;
+      background: #edf1f7;
+      transition: all 0.3s ease;
+    }
+    .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+    .hamburger.active span:nth-child(2) { opacity: 0; }
+    .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(7px, -7px); }
+
+    .nav-menu-mobile { display: none; }
+
+    /* Modal mobile ferramentas (igual ao seu) */
+    .tools-modal {
+      position: fixed;
+      z-index: 2000;
+      left: 0; top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.95);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .tools-modal.open { display: flex; opacity: 1; }
+
+    .modal-content-tools {
+      background: #111111;
+      border: 2px solid #6627ff;
+      border-radius: 1rem;
+      padding: 2rem 1.5rem;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 0 30px rgba(102, 39, 255, 0.7);
+      animation: fadeIn 0.3s ease-out;
+      position: relative;
+      text-align: center;
+    }
+    .modal-close {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      color: #edf1f7;
+      font-size: 2.5rem;
+      font-weight: 300;
+      line-height: 1;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .modal-close:hover { color: #0bf4ed; transform: scale(1.1); }
+
+    .modal-link {
+      display: block;
+      background: rgba(102, 39, 255, 0.15);
+      border: 1px solid rgba(102, 39, 255, 0.5);
+      border-radius: 0.75rem;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      color: #edf1f7;
+      font-size: 1.25rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    }
+    .modal-link-subtitle {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 400;
+      color: #bbb;
+      margin-top: 0.25rem;
+    }
+    .modal-link:hover {
+      background: linear-gradient(90deg, rgba(102, 39, 255, 0.4), rgba(11, 244, 237, 0.4));
+      border-color: #0bf4ed;
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 8px 15px rgba(11, 244, 237, 0.5);
+    }
+
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    @media (max-width: 768px) {
+      nav { background: rgba(17, 17, 17, 0.95); padding: 0.5rem 1rem; width: 100%; }
+      nav .flex.items-center.space-x-6 { display: none; }
+      .hamburger { display: flex; }
+
+      .nav-menu-mobile {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        height: 100vh;
+        width: 100%;
+        max-width: 300px;
+        background: rgba(17, 17, 17, 0.9);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-left: 1px solid rgba(102, 39, 255, 0.5);
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 1.5rem;
+        transition: right 0.3s ease;
+        z-index: 30;
+        display: flex;
+        padding: 0 1rem;
+        box-sizing: border-box;
+        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
+      }
+      .nav-menu-mobile.active { right: 0; }
+      .nav-menu-mobile .nav-link:first-child { margin-top: 6rem; }
+
+      .nav-menu-mobile .nav-link {
+        display: block;
+        width: 90%;
+        padding: 0.8rem 1.5rem;
+        border-radius: 0.75rem;
+        background: rgba(102, 39, 255, 0.1);
+        color: #f8f8f8;
+        text-align: center;
+        font-size: clamp(1.125rem, 4vw, 1.3rem);
+        font-weight: 600;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+      }
+      .nav-menu-mobile .nav-link:hover {
+        background: linear-gradient(135deg, rgba(102, 39, 255, 0.3), rgba(11, 244, 237, 0.3));
+        transform: translateY(-4px) scale(1.02);
+        box-shadow: 0 8px 16px rgba(11, 244, 237, 0.6);
+        border-color: #0bf4ed;
+      }
+      .nav-menu-mobile .nav-link::after { display: none; }
+    }
+
+    /* ====== FOOTER (mesmo do seu exemplo) ====== */
+    footer p { text-align: center; font-family: 'Manrope', sans-serif; font-weight: 400; }
+
+    .social-links-png {
+      margin-top: 1rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 50px;
+    }
+    .social-img-icon {
+      width: 35px; height: 35px;
+      transition: transform 0.3s ease, filter 0.3s ease;
+      filter: brightness(85%);
+      -webkit-user-drag: none;
+      user-select: none;
+    }
+    .social-links-png a:hover .social-img-icon {
+      transform: scale(1.15) rotate(2deg);
+      filter: brightness(100%);
+      width: 35px; height: 35px;
+    }
+    .social-links-png a:nth-child(1) .social-img-icon { width: 30px !important; height: 30px !important; }
+    .social-links-png a:nth-child(2) .social-img-icon { width: 45px !important; height: 45px !important; }
+    .social-links-png a:nth-child(3) .social-img-icon { width: 45px !important; height: 45px !important; }
+
+    .social-links-png a:nth-child(1):hover .social-img-icon { filter: drop-shadow(0 0 10px #E1306C) brightness(100%); transform: scale(1.15) rotate(5deg); }
+    .social-links-png a:nth-child(2):hover .social-img-icon { filter: drop-shadow(0 0 10px #0bf4ed) brightness(100%); transform: scale(1.15); }
+    .social-links-png a:nth-child(3):hover .social-img-icon { filter: drop-shadow(0 0 10px #FF0000) brightness(100%); transform: scale(1.15) translateY(-2px); }
+
+    /* ====== CORPO NOVO DO ACOMPANHAMENTO (rocket) ====== */
+    .page-pad { padding-top: 8.5rem; padding-bottom: 4rem; }
+
+    .glass-card {
+      background: rgba(17, 17, 17, 0.78);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border-radius: 1.5rem;
+      border: 1px solid rgba(102, 39, 255, 0.40);
+      box-shadow: 0 8px 32px rgba(0,0,0,.37), 0 0 15px rgba(165, 180, 252, .16);
+    }
+
+    .field {
+      background: rgba(55, 65, 81, 0.55);
+      border: 1px solid rgba(102, 39, 255, 0.55);
+      border-radius: 0.75rem;
+      color: #edf1f7;
+      outline: none;
+      padding: 0.85rem 1rem;
+      width: 100%;
+    }
+    .field:focus {
+      border-color: rgba(11, 244, 237, 0.8);
+      box-shadow: 0 0 0 3px rgba(11, 244, 237, 0.15);
+    }
+
+    @keyframes colorPulse {
+      0% { background-color: #6627ff; }
+      50% { background-color: #0bf4ed; }
+      100% { background-color: #6627ff; }
+    }
+    .btn-search {
+      color: white;
+      padding: 0.85rem 1.2rem;
+      border-radius: 0.75rem;
+      font-weight: 800;
+      cursor: pointer;
+      border: none;
+      animation: colorPulse 5s infinite ease-in-out;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+      white-space: nowrap;
+    }
+    .btn-search:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(11, 244, 237, 0.6);
+      animation: none;
+    }
+
+    .status-bar {
+      height: 10px;
+      background-color: #374151;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 0.75rem;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #6627ff, #0bf4ed);
+      width: 0%;
+    }
+
+    /* Track/rocket */
+    .track-wrap {
+      position: relative;
+      height: 460px;
+      border-radius: 1.25rem;
+      border: 1px solid rgba(102,39,255,.45);
+      background: rgba(17,17,17,.55);
+      overflow: hidden;
+    }
+    .track-line {
+      position: absolute;
+      left: 52%;
+      top: 18px;
+      bottom: 18px;
+      width: 3px;
+      transform: translateX(-50%);
+      border-radius: 999px;
+      background: linear-gradient(180deg, rgba(102,39,255,.55), rgba(11,244,237,.40));
+    }
+
+    .milestone {
+      position: absolute;
+      left: 52%;
+      transform: translateX(-50%);
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(237,241,247,.18);
+      border: 1px solid rgba(237,241,247,.18);
+      box-shadow: 0 0 12px rgba(102,39,255,.18);
+    }
+    .milestone.active {
+      background: rgba(11,244,237,.70);
+      border-color: rgba(11,244,237,.85);
+      box-shadow: 0 0 18px rgba(11,244,237,.35);
+    }
+
+    .rocket {
+      position: absolute;
+      left: 52%;
+      transform: translateX(-50%);
+      width: 56px;
+      height: 56px;
+      will-change: top;
+      filter: drop-shadow(0 10px 18px rgba(0,0,0,.55));
+    }
+    .rocket .flame {
+      transform-origin: center top;
+      animation: flameIdle 520ms ease-in-out infinite alternate;
+    }
+    .rocket.flying .flame {
+      animation: flameFly 170ms ease-in-out infinite alternate;
+    }
+    @keyframes flameIdle { from { transform: scaleY(.85); opacity:.75 } to { transform: scaleY(1.05); opacity: 1 } }
+    @keyframes flameFly  { from { transform: scaleY(.65); opacity:.70 } to { transform: scaleY(1.30); opacity: 1 } }
+
+    /* tag grudada no foguete (mostra % certinho) */
+    .rocket-tag {
+      position: absolute;
+      left: calc(52% + 52px);
+      transform: translateY(-50%);
+      padding: 0.35rem 0.65rem;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 0.85rem;
+      color: #edf1f7;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 6px 18px rgba(0,0,0,.35);
+      white-space: nowrap;
+    }
+    .rocket-tag b { color: #0bf4ed; }
+
+    /* régua de porcentagens ao lado (fixas e alinhadas na mesma altura das milestones) */
+    .scale {
+      position: absolute;
+      left: calc(52% + 120px);
+      top: 0;
+      bottom: 0;
+      width: 120px;
+      pointer-events: none;
+    }
+    .scale-item {
+      position: absolute;
+      left: 0;
+      transform: translateY(-50%);
+      font-weight: 800;
+      font-size: 0.8rem;
+      color: rgba(237,241,247,.75);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+    }
+    .scale-item .dash {
+      width: 16px;
+      height: 2px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(102,39,255,.65), rgba(11,244,237,.55));
+      opacity: .9;
+    }
+    .scale-item strong { color: #edf1f7; }
+
+    @media (max-width: 1024px) {
+      .scale { left: calc(52% + 105px); width: 105px; }
+      .rocket-tag { left: calc(52% + 46px); }
+    }
+    @media (max-width: 768px) {
+      .scale { display: none; } /* no mobile some a régua pra ficar limpo */
+      .rocket-tag { left: calc(52% + 46px); }
+    }
+  </style>
 </head>
+
 <body class="text-gray-100">
-    <div class="stars-container" id="stars-container"></div>
+  <div class="stars-container" id="stars-container"></div>
 
-    <nav class="shadow-lg fixed w-full z-10">
-        <div class="flex justify-between h-16 items-center">
-            <div class="flex items-center content-layer">
-                <img src="https://i.imgur.com/sE44ypp.png" alt="Logo da Asthro" class="h-40 md:h-40" />
-            </div>
-            <button class="hamburger" aria-label="Toggle menu">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-            <div class="flex items-center space-x-6 content-layer desktop-nav">
-                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/index.html" class="nav-link text-lg transition">Início</a>
-                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/servi%C3%A7os.html" class="nav-link text-lg transition">Serviços</a>
-                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/sobre.html" class="nav-link text-lg transition">Sobre</a>
-                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/portf%C3%B3lio.html" class="nav-link text-lg transition">Portfólio</a>
-                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/contato.html" class="nav-link text-lg transition">Contato</a>
-            </div>
-            <div class="nav-menu-mobile content-layer">
-                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/index.html" class="nav-link text-lg transition block">Início</a>
-                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/servi%C3%A7os.html" class="nav-link text-lg transition block">Serviços</a>
-                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/sobre.html" class="nav-link text-lg transition block">Sobre</a>
-                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/portf%C3%B3lio.html" class="nav-link text-lg transition block">Portfólio</a>
-                <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/contato.html" class="nav-link text-lg transition block">Contato</a>
-                <img src="https://i.imgur.com/sE44ypp.png" alt="Asthro" class="mobile-menu-logo" />
-            </div>
+  <!-- ===== NAV (SEU NAV) ===== -->
+  <nav class="shadow-lg fixed w-full z-[90]">
+    <div class="flex justify-between h-16 items-center">
+
+      <div class="flex items-center content-layer">
+        <img src="https://raw.githubusercontent.com/MateusZito2024/Cria-o-de-Sites/refs/heads/main/LOGO%20PNG.png"
+             alt="Logo da Asthro" class="h-40 md:h-40" />
+      </div>
+
+      <button class="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+
+      <div class="flex items-center space-x-6 content-layer desktop-nav">
+        <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/index.html" class="nav-link text-lg transition">Início</a>
+        <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/servi%C3%A7os.html" class="nav-link text-lg transition">Serviços</a>
+
+        <div class="dropdown relative h-full flex items-center" id="toolsDropdownContainer">
+          <a href="#" id="toolsDropdownToggle" class="nav-link text-lg transition flex items-center gap-1" aria-expanded="false" aria-controls="toolsMenu">
+            Ferramentas
+            <svg class="dropdown-arrow w-3 h-3 ml-1" id="toolsArrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          </a>
+          <div class="dropdown-menu absolute" id="toolsMenu">
+            <a href="https://asthro.com.br/asthroscolors.html" class="nav-link block">AsthroColors (Gerador de Paleta)</a>
+            <a href="https://asthro.com.br/asthrospeed.html" class="nav-link block">AsthroSpeed (Análise de Sites)</a>
+            <a href="https://asthro.com.br/asthrozero.html" class="nav-link block">AsthroZero (Removedor de Fundo)</a>
+          </div>
         </div>
-    </nav>
 
-    <main class="content-layer pt-24 pb-8"> <header class="text-center mb-12">
-            <h1 class="text-4xl font-bold gradient-text" style="font-family: 'Archivo', sans-serif;">Acompanhamento de Projeto</h1>
-            <p class="text-lg mt-2">Insira o ID do seu projeto para ver o status atualizado em tempo real.</p>
-        </header>
+        <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/sobre.html" class="nav-link text-lg transition">Sobre</a>
+        <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/portf%C3%B3lio.html" class="nav-link text-lg transition">Portfólio</a>
+        <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/contato.html" class="nav-link text-lg transition">Contato</a>
+        <a href="https://asthro.com.br/politicas.html" class="nav-link text-lg transition">Políticas</a>
+      </div>
 
-        <div class="max-w-xl mx-auto p-6 rounded-xl bg-gray-900 neon-border">
-            <div id="project-search">
-                <label for="projectId" class="block text-sm font-medium text-gray-400 mb-2">ID do Projeto:</label>
-                <div class="flex space-x-4">
-                    <input type="text" id="projectId" placeholder="Ex: ASTHRO-001" class="flex-grow p-3 rounded-lg bg-gray-800 text-white border-gray-600 focus:ring-purple-500 focus:border-purple-500">
-                    <button onclick="fetchProjectStatus()" class="search-button text-white font-semibold py-3 px-6 rounded-lg transition duration-300">Buscar</button>
-                </div>
-                <p id="search-feedback" class="mt-4 text-red-400 hidden">Projeto não encontrado.</p>
-            </div>
+      <div class="nav-menu-mobile content-layer">
+        <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/index.html" class="nav-link text-lg transition block">Início</a>
+        <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/servi%C3%A7os.html" class="nav-link text-lg transition block">Serviços</a>
+        <button id="mobileToolsButton" class="nav-link text-lg transition block w-full text-center" style="cursor: pointer;">
+          Ferramentas
+        </button>
+        <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/sobre.html" class="nav-link text-lg transition block">Sobre</a>
+        <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/portf%C3%B3lio.html" class="nav-link text-lg transition block">Portfólio</a>
+        <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/contato.html" class="nav-link text-lg transition block">Contato</a>
+        <a href="https://asthro.com.br/politicas.html" class="nav-link text-lg transition">Políticas</a>
+      </div>
 
-            <div id="project-details" class="mt-8 hidden">
-                <h2 class="text-3xl font-bold gradient-text mb-4" id="projectName"></h2>
-                
-                <div class="space-y-4 text-left">
-                    <p class="text-sm text-gray-400">Progresso:</p>
-                    <div class="status-bar">
-                        <div id="progressBar" class="progress-fill" style="width: 0%;"></div>
-                    </div>
-                    <div id="statusLabels" class="flex justify-between mt-1 text-xs text-gray-400">
-                        <span>Início</span>
-                        <span>Andamento</span>
-                        <span>Revisão</span>
-                        <span>Concluído</span>
-                    </div>
+      <div id="mobileToolsModal" class="tools-modal">
+        <div class="modal-content-tools">
+          <button class="modal-close">&times;</button>
+          <h3 class="animated-gradient-text text-3xl font-bold mb-8">Nossas Ferramentas</h3>
 
-                    <div class="border-t border-gray-700 pt-4">
-                        <p class="text-md font-semibold text-gray-300">Etapa Atual:</p>
-                        <p id="currentStatus" class="text-xl text-white"></p>
-                    </div>
+          <a href="https://asthro.com.br/asthrocolors.html" class="modal-link">
+            AsthroColors
+            <span class="modal-link-subtitle">Gerador de Paletas de Cores</span>
+          </a>
 
-                    <div class="border-t border-gray-700 pt-4">
-                        <p class="text-md font-semibold text-gray-300">Previsão de Entrega:</p>
-                        <p id="deliveryDate" class="text-lg text-yellow-400"></p>
-                    </div>
+          <a href="https://asthro.com.br/asthrospeed.html" class="modal-link">
+            AsthroSpeed
+            <span class="modal-link-subtitle">Analisador de Performance e SEO</span>
+          </a>
 
-                    <div class="border-t border-gray-700 pt-4">
-                        <p class="text-md font-semibold text-gray-300">Notas do Consultor:</p>
-                        <p id="notes" class="text-md text-gray-400 italic"></p>
-                    </div>
-                </div>
-            </div>
+          <a href="https://asthro.com.br/asthrozero.html" class="modal-link">
+            AsthroZero
+            <span class="modal-link-subtitle">Removedor de Fundo de Imagens</span>
+          </a>
+
+          <p class="text-sm text-gray-400 mt-10">Clique fora para fechar</p>
         </div>
-    </main>
+      </div>
 
-    <footer class="text-gray-200 py-8">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 content-layer">
-        <p class="text-center">© 2025 Asthro. Todos os direitos reservados.</p>
     </div>
-</footer>
+  </nav>
 
-    <script>
-        // LÓGICA DO FIREBASE (INTACTA)
-        const FIREBASE_CONFIG = {
-            apiKey: "AIzaSyBb8jAT-VR5723XaxZnH4jcw-PxOlRKn8w",
-            authDomain: "asthro-status-tracker.firebaseapp.com",
-            projectId: "asthro-status-tracker",
-            storageBucket: "asthro-status-tracker.firebasestorage.app",
-            messagingSenderId: "1023071296327",
-            appId: "1:1023071296327:web:477b39bd6d846fff148a62"
-        };
-        
-        firebase.initializeApp(FIREBASE_CONFIG);
-        const db = firebase.firestore();
+  <!-- ===== CORPO (NOVO) ===== -->
+  <main class="content-layer page-pad">
+    <section class="max-w-6xl mx-auto px-4">
+      <div class="text-center mb-12">
+        <h2 class="text-5xl font-bold animated-gradient-text">Acompanhamento de Projeto</h2>
+        <p class="text-xl text-gray-200 mt-6 max-w-2xl mx-auto">
+          Digite o ID do seu projeto e veja o foguete subir suavemente até o estágio atual.
+        </p>
+      </div>
 
-        const statusMap = {
-            'setup': { name: 'Setup Inicial', percent: 10 },
-            'design_andamento': { name: 'Design e Criação', percent: 35 },
-            'dev_andamento': { name: 'Desenvolvimento em Andamento', percent: 65 },
-            'revisao_cliente': { name: 'Revisão do Cliente', percent: 85 },
-            'concluido': { name: 'Concluído e Entregue', percent: 100 }
-        };
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- CARD ESQUERDA -->
+        <div class="glass-card p-6 md:p-8">
+          <h3 class="text-2xl font-bold mb-2 text-center animated-gradient-text">Consultar ID</h3>
+          <p class="text-center text-gray-300 mb-6">Depois que consultar, a página fica <b class="text-cyan-300">ao vivo</b> (atualiza sozinha se você editar no admin).</p>
 
-        async function fetchProjectStatus() {
-            const projectIdInput = document.getElementById('projectId').value.trim().toUpperCase();
-            const searchFeedback = document.getElementById('search-feedback');
-            const detailsDiv = document.getElementById('project-details');
+          <div class="flex flex-col sm:flex-row gap-3">
+            <input id="projectId" class="field" placeholder="Ex: ASTHRO-001" />
+            <button id="searchBtn" class="btn-search">Buscar</button>
+          </div>
 
-            searchFeedback.classList.add('hidden');
-            detailsDiv.classList.add('hidden');
+          <p id="search-feedback" class="mt-4 hidden text-center text-red-400 font-bold"></p>
 
-            if (!projectIdInput) return;
+          <div id="project-details" class="mt-8 hidden">
+            <div class="bg-white/5 border border-white/10 backdrop-blur-md rounded-2xl p-6">
+              <div class="flex flex-col gap-1">
+                <h4 id="projectName" class="text-3xl font-bold gradient-text text-center"></h4>
+                <p class="text-center text-gray-400 text-sm">
+                  ID: <span id="projectCode" class="text-gray-200 font-semibold"></span>
+                  <span id="liveBadge" class="ml-2 inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-3 py-1 text-[10px] uppercase tracking-widest text-cyan-300 hidden">
+                    <span style="width:8px;height:8px;border-radius:999px;background:#0bf4ed;box-shadow:0 0 12px rgba(11,244,237,.6)"></span>
+                    Ao vivo
+                  </span>
+                </p>
+              </div>
 
-            try {
-                const docRef = db.collection('projects').doc(projectIdInput);
-                const doc = await docRef.get();
+              <div class="mt-6">
+                <p class="text-sm text-gray-300 font-semibold">Progresso</p>
+                <div class="status-bar">
+                  <div id="progressBar" class="progress-fill"></div>
+                </div>
+                <div class="flex justify-between text-xs text-gray-400 mt-2">
+                  <span>Setup</span><span>Design</span><span>Dev</span><span>Revisão</span><span>Entrega</span>
+                </div>
+              </div>
 
-                if (doc.exists) {
-                    const data = doc.data();
-                    updateUI(data);
-                } else {
-                    searchFeedback.textContent = `Projeto com ID "${projectIdInput}" não encontrado. Verifique o ID.`;
-                    searchFeedback.classList.remove('hidden');
-                }
-            } catch (error) {
-                console.error("Erro ao buscar o projeto:", error);
-                searchFeedback.textContent = "Erro de conexão. Tente novamente.";
-                searchFeedback.classList.remove('hidden');
-            }
+              <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-white/5 border border-white/10 rounded-xl p-4">
+                  <p class="text-sm text-gray-400 font-semibold">Etapa atual</p>
+                  <p id="currentStatus" class="text-lg font-bold text-cyan-200 mt-1"></p>
+                </div>
+
+                <div class="bg-white/5 border border-white/10 rounded-xl p-4">
+                  <p class="text-sm text-gray-400 font-semibold">Previsão de entrega</p>
+                  <p id="deliveryDate" class="text-lg font-bold text-yellow-300 mt-1"></p>
+                </div>
+
+                <div class="md:col-span-2 bg-white/5 border border-white/10 rounded-xl p-4">
+                  <p class="text-sm text-gray-400 font-semibold">Notas do consultor</p>
+                  <p id="notes" class="text-gray-200 mt-2"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD DIREITA (FOGUETE) -->
+        <div class="glass-card p-6 md:p-8">
+          <div class="flex items-center justify-between gap-4 flex-wrap">
+            <h3 class="text-2xl font-bold animated-gradient-text">Missão</h3>
+            <div class="bg-white/5 border border-white/10 backdrop-blur-md rounded-full px-5 py-2 shadow-xl">
+              <p class="text-[11px] md:text-xs text-gray-300 tracking-widest uppercase">
+                Status: <span id="missionStatus" class="text-cyan-300 font-bold">Aguardando ID</span>
+              </p>
+            </div>
+          </div>
+
+          <div class="mt-6 track-wrap" id="track">
+            <div class="track-line"></div>
+
+            <!-- milestones (posicionados pelo JS para bater 100% certinho) -->
+            <span class="milestone" id="m10"></span>
+            <span class="milestone" id="m35"></span>
+            <span class="milestone" id="m65"></span>
+            <span class="milestone" id="m85"></span>
+            <span class="milestone" id="m100"></span>
+
+            <!-- rocket -->
+            <div class="rocket" id="rocket" aria-hidden="true">
+              <svg viewBox="0 0 64 64" width="56" height="56">
+                <defs>
+                  <linearGradient id="gBody" x1="0" x2="1">
+                    <stop offset="0" stop-color="#6627ff" stop-opacity="0.95"/>
+                    <stop offset="1" stop-color="#0bf4ed" stop-opacity="0.65"/>
+                  </linearGradient>
+                </defs>
+
+                <g class="flame">
+                  <path d="M32 58c6-7 3-12 0-16c-3 4-6 9 0 16z" fill="#ff2766" opacity="0.85"/>
+                  <path d="M32 56c4-5 2-8 0-11c-2 3-4 6 0 11z" fill="#ffd700" opacity="0.85"/>
+                </g>
+
+                <path d="M32 6c10 8 14 22 14 32c0 10-6 16-14 16s-14-6-14-16c0-10 4-24 14-32z"
+                      fill="url(#gBody)" stroke="rgba(255,255,255,.18)" stroke-width="1.2"/>
+                <circle cx="32" cy="28" r="6.5" fill="rgba(17,17,17,.65)" stroke="rgba(255,255,255,.25)" stroke-width="1.2"/>
+                <circle cx="32" cy="28" r="3.2" fill="rgba(11,244,237,.35)"/>
+                <path d="M18 44c-6 2-10 6-10 10c6 0 12-4 16-8z" fill="rgba(102,39,255,.35)"/>
+                <path d="M46 44c6 2 10 6 10 10c-6 0-12-4-16-8z" fill="rgba(11,244,237,.25)"/>
+              </svg>
+            </div>
+
+            <!-- tag % grudada no foguete -->
+            <div class="rocket-tag" id="rocketTag"><b>0%</b> • Setup</div>
+
+            <!-- régua fixa com % alinhadas -->
+            <div class="scale" id="scale">
+              <div class="scale-item" data-p="100"><span class="dash"></span><strong>100%</strong> Concluído</div>
+              <div class="scale-item" data-p="85"><span class="dash"></span><strong>85%</strong> Revisão</div>
+              <div class="scale-item" data-p="65"><span class="dash"></span><strong>65%</strong> Desenvolvimento</div>
+              <div class="scale-item" data-p="35"><span class="dash"></span><strong>35%</strong> Design</div>
+              <div class="scale-item" data-p="10"><span class="dash"></span><strong>10%</strong> Setup</div>
+            </div>
+          </div>
+
+          <p class="mt-4 text-sm text-gray-300">
+            * sempre que consultar ou quando você atualizar o projeto no admin, o foguete anima suavemente até a etapa.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== FOOTER (SEU FOOTER) ===== -->
+  <footer class="py-12">
+    <div class="max-w-7xl mx-auto px-4 content-layer">
+      <div class="flex flex-col items-center">
+
+        <div class="social-links-png flex justify-center space-x-6 mb-8">
+          <a href="https://www.instagram.com/agencia_asthro/" target="_blank" rel="noopener">
+            <img src="https://i.imgur.com/ztvOJV3.png" class="social-img-icon" alt="Instagram"/>
+          </a>
+          <a href="https://www.tiktok.com/@asthroagencia" target="_blank" rel="noopener">
+            <img src="https://i.imgur.com/yrBBMaJ.png" class="social-img-icon" alt="TikTok"/>
+          </a>
+          <a href="https://www.youtube.com/@asthroag%C3%AAncia" target="_blank" rel="noopener">
+            <img src="https://i.imgur.com/0vJwT4o.png" class="social-img-icon" alt="YouTube"/>
+          </a>
+        </div>
+
+        <div class="bg-white/5 border border-white/10 backdrop-blur-md rounded-full px-6 py-2 flex flex-col md:flex-row items-center gap-4 shadow-xl">
+          <p class="text-[10px] md:text-xs text-gray-300 tracking-widest uppercase">
+            Asthro <span class="mx-2 text-cyan-400">|</span> 64.229.666/0001-07
+          </p>
+        </div>
+
+        <p class="mt-4 text-[10px] text-gray-500 uppercase tracking-tighter">© 2026 • Todos os direitos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // =========================
+    // FIREBASE (mesma lógica)
+    // =========================
+    const FIREBASE_CONFIG = {
+      apiKey: "AIzaSyBb8jAT-VR5723XaxZnH4jcw-PxOlRKn8w",
+      authDomain: "asthro-status-tracker.firebaseapp.com",
+      projectId: "asthro-status-tracker",
+      storageBucket: "asthro-status-tracker.firebasestorage.app",
+      messagingSenderId: "1023071296327",
+      appId: "1:1023071296327:web:477b39bd6d846fff148a62"
+    };
+
+    firebase.initializeApp(FIREBASE_CONFIG);
+    const db = firebase.firestore();
+
+    const statusMap = {
+      setup:            { name: 'Setup Inicial', percent: 10 },
+      design_andamento: { name: 'Design e Criação', percent: 35 },
+      dev_andamento:    { name: 'Desenvolvimento em Andamento', percent: 65 },
+      revisao_cliente:  { name: 'Revisão do Cliente', percent: 85 },
+      concluido:        { name: 'Concluído e Entregue', percent: 100 }
+    };
+
+    // =========================
+    // ELEMENTOS
+    // =========================
+    const projectIdEl = document.getElementById('projectId');
+    const searchBtn = document.getElementById('searchBtn');
+
+    const feedbackEl = document.getElementById('search-feedback');
+    const detailsEl = document.getElementById('project-details');
+
+    const projectNameEl = document.getElementById('projectName');
+    const projectCodeEl = document.getElementById('projectCode');
+    const currentStatusEl = document.getElementById('currentStatus');
+    const deliveryDateEl = document.getElementById('deliveryDate');
+    const notesEl = document.getElementById('notes');
+    const progressBarEl = document.getElementById('progressBar');
+
+    const missionStatusEl = document.getElementById('missionStatus');
+    const rocketEl = document.getElementById('rocket');
+    const rocketTagEl = document.getElementById('rocketTag');
+    const trackEl = document.getElementById('track');
+
+    const liveBadge = document.getElementById('liveBadge');
+
+    const milestones = {
+      10: document.getElementById('m10'),
+      35: document.getElementById('m35'),
+      65: document.getElementById('m65'),
+      85: document.getElementById('m85'),
+      100: document.getElementById('m100')
+    };
+
+    const scaleEl = document.getElementById('scale');
+    const scaleItems = Array.from(scaleEl.querySelectorAll('.scale-item'));
+
+    let unsub = null;
+
+    // =========================
+    // ROCKET GEOMETRIA (posições reais)
+    // =========================
+    function getTrackMetrics(){
+      const rect = trackEl.getBoundingClientRect();
+      const paddingTop = 18;
+      const paddingBottom = 18;
+      const rocketH = 56;
+
+      const usable = rect.height - paddingTop - paddingBottom;
+      return { rect, paddingTop, paddingBottom, usable, rocketH };
+    }
+
+    // Percent -> top em px (onde o foguete deve parar)
+    function percentToTop(percent){
+      const p = Math.max(0, Math.min(100, Number(percent) || 0));
+      const { paddingTop, usable, rocketH } = getTrackMetrics();
+
+      // 0% = fundo, 100% = topo
+      const top = paddingTop + (1 - (p / 100)) * (usable - rocketH);
+      return top;
+    }
+
+    // Percent -> y para “linha/label” (centralizado)
+    function percentToYCenter(percent){
+      const p = Math.max(0, Math.min(100, Number(percent) || 0));
+      const { paddingTop, usable } = getTrackMetrics();
+      const y = paddingTop + (1 - (p / 100)) * usable;
+      return y;
+    }
+
+    function positionScaleAndMilestones(){
+      // posiciona milestones e labels na altura exata
+      Object.keys(milestones).forEach(k => {
+        const p = Number(k);
+        const y = percentToYCenter(p);
+        milestones[p].style.top = `${y}px`;
+      });
+
+      scaleItems.forEach(item => {
+        const p = Number(item.getAttribute('data-p'));
+        const y = percentToYCenter(p);
+        item.style.top = `${y}px`;
+      });
+    }
+
+    // =========================
+    // ANIMAÇÃO SUAVE (requestAnimationFrame)
+    // =========================
+    let currentRocketTop = null;
+    let animFrame = null;
+
+    function easeInOutCubic(t){
+      return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2;
+    }
+
+    function setMilestonesActive(percent){
+      const p = Number(percent) || 0;
+      Object.keys(milestones).forEach(k => {
+        const v = Number(k);
+        milestones[v].classList.toggle('active', p >= v);
+      });
+    }
+
+    function setRocketTag(topPx, percent, label){
+      // tag fica alinhada no meio do foguete (top + 28)
+      rocketTagEl.style.top = `${topPx + 28}px`;
+      rocketTagEl.innerHTML = `<b>${Math.round(percent)}%</b> • ${label}`;
+    }
+
+    function animateRocketTo(targetPercent, label){
+      const targetTop = percentToTop(targetPercent);
+
+      // init
+      if (currentRocketTop === null){
+        currentRocketTop = targetTop;
+        rocketEl.style.top = `${currentRocketTop}px`;
+        setRocketTag(currentRocketTop, targetPercent, label);
+        setMilestonesActive(targetPercent);
+        return;
+      }
+
+      const startTop = currentRocketTop;
+      const delta = targetTop - startTop;
+      const duration = 1200; // suave
+      const startTime = performance.now();
+
+      if (animFrame) cancelAnimationFrame(animFrame);
+      rocketEl.classList.add('flying');
+
+      const step = (now) => {
+        const t = Math.min(1, (now - startTime) / duration);
+        const e = easeInOutCubic(t);
+        const top = startTop + delta * e;
+
+        rocketEl.style.top = `${top}px`;
+
+        // Percent “interpolado” só pra mostrar acompanhando (fica lindo)
+        const interpPercent = (delta === 0)
+          ? targetPercent
+          : ( (startTop === targetTop) ? targetPercent : (
+              // converte top -> percent aproximado, pra tag ir mudando junto
+              // (não precisa perfeito, mas fica suave)
+              (() => {
+                const { paddingTop, usable, rocketH } = getTrackMetrics();
+                const ratio = 1 - ((top - paddingTop) / (usable - rocketH));
+                return Math.max(0, Math.min(100, ratio * 100));
+              })()
+            ));
+
+        setRocketTag(top, interpPercent, label);
+        setMilestonesActive(interpPercent);
+
+        if (t < 1){
+          animFrame = requestAnimationFrame(step);
+        } else {
+          currentRocketTop = targetTop;
+          rocketEl.classList.remove('flying');
+          setRocketTag(currentRocketTop, targetPercent, label); // garante final “certinho”
+          setMilestonesActive(targetPercent);
+        }
+      };
+
+      animFrame = requestAnimationFrame(step);
+    }
+
+    // =========================
+    // UI / BUSCA
+    // =========================
+    function safeText(v, fallback='—'){
+      if (v === null || v === undefined) return fallback;
+      const s = String(v).trim();
+      return s ? s : fallback;
+    }
+
+    function updateUI(projectId, data){
+      const statusInfo = statusMap[data.status] || statusMap.setup;
+
+      projectNameEl.textContent = safeText(data.clientName, 'Projeto');
+      projectCodeEl.textContent = projectId;
+
+      currentStatusEl.textContent = statusInfo.name;
+      deliveryDateEl.textContent = safeText(data.deliveryDate, 'Em breve');
+      notesEl.textContent = safeText(data.notes, 'Nenhuma nota recente.');
+
+      progressBarEl.style.width = `${statusInfo.percent}%`;
+
+      missionStatusEl.textContent = statusInfo.name;
+
+      detailsEl.classList.remove('hidden');
+
+      // posiciona tudo antes de animar (importante pra ficar “certinho”)
+      positionScaleAndMilestones();
+      animateRocketTo(statusInfo.percent, statusInfo.name);
+    }
+
+    async function fetchProjectStatus(){
+      const projectId = projectIdEl.value.trim().toUpperCase();
+
+      feedbackEl.classList.add('hidden');
+      detailsEl.classList.add('hidden');
+      missionStatusEl.textContent = 'Consultando...';
+      liveBadge.classList.add('hidden');
+
+      if (!projectId){
+        missionStatusEl.textContent = 'Aguardando ID';
+        return;
+      }
+
+      // para listener anterior
+      if (typeof unsub === 'function'){
+        unsub();
+        unsub = null;
+      }
+
+      try{
+        const docRef = db.collection('projects').doc(projectId);
+        const doc = await docRef.get();
+
+        if (!doc.exists){
+          missionStatusEl.textContent = 'Projeto não encontrado';
+          feedbackEl.textContent = `Projeto com ID "${projectId}" não encontrado. Verifique o ID.`;
+          feedbackEl.classList.remove('hidden');
+          return;
         }
 
-        function updateUI(data) {
-            const statusInfo = statusMap[data.status] || statusMap['setup'];
-            
-            document.getElementById('projectName').textContent = data.clientName || 'Projeto sem nome';
-            document.getElementById('currentStatus').textContent = statusInfo.name;
-            document.getElementById('deliveryDate').textContent = data.deliveryDate || 'Em breve';
-            document.getElementById('notes').textContent = data.notes || 'Nenhuma nota recente.';
-            
-            document.getElementById('progressBar').style.width = `${statusInfo.percent}%`;
-            
-            document.getElementById('project-details').classList.remove('hidden');
-        }
+        updateUI(projectId, doc.data());
 
-        // LÓGICA DO MENU MOBILE E ESTRELAS (Copiado do Código 1)
-        const hamburger = document.querySelector('.hamburger');
-        const navMenu = document.querySelector('.nav-menu-mobile');
-        
-        function toggleMenu() {
-            if(hamburger && navMenu){
-                hamburger.classList.toggle('active');
-                navMenu.classList.toggle('active');
-                document.body.style.overflowY = navMenu.classList.contains('active') ? 'hidden' : 'auto';
-            }
-        }
+        // realtime
+        unsub = docRef.onSnapshot((snap) => {
+          if (snap.exists){
+            liveBadge.classList.remove('hidden');
+            updateUI(projectId, snap.data());
+          }
+        });
 
-        if (hamburger && navMenu) {
-            hamburger.addEventListener('click', toggleMenu);
-        }
+      } catch (err){
+        console.error('Erro ao buscar projeto:', err);
+        missionStatusEl.textContent = 'Erro de conexão';
+        feedbackEl.textContent = 'Erro de conexão. Tente novamente.';
+        feedbackEl.classList.remove('hidden');
+      }
+    }
 
-        const starsContainer = document.getElementById('stars-container');
-        function createStars() {
-            if (!starsContainer) return;
-            // Limpa estrelas existentes para evitar duplicação ou estouro em redimensionamento
-            starsContainer.innerHTML = '';
-            const colors = ['purple', 'pink', 'white'];
-            const numStars = 150;
-            for (let i = 0; i < numStars; i++) {
-                const star = document.createElement('span');
-                star.classList.add('star', colors[Math.floor(Math.random() * colors.length)]);
-                star.style.left = `${Math.random() * window.innerWidth}px`;
-                star.style.top = `${Math.random() * window.innerHeight}px`;
-                const moveX = (Math.random() - 0.5) * 300;
-                const moveY = (Math.random() - 0.5) * 300;
-                star.style.setProperty('--move-x', `${moveX}px`);
-                star.style.setProperty('--move-y', `${moveY}px`);
-                star.style.animationDelay = `${Math.random() * 15}s`;
-                starsContainer.appendChild(star);
-            }
+    searchBtn.addEventListener('click', fetchProjectStatus);
+    projectIdEl.addEventListener('keypress', (e) => { if (e.key === 'Enter') fetchProjectStatus(); });
+
+    // =========================
+    // DROPDOWN (desktop)
+    // =========================
+    document.addEventListener('DOMContentLoaded', () => {
+      const toolsDropdownToggle = document.getElementById('toolsDropdownToggle');
+      const toolsDropdownContainer = document.getElementById('toolsDropdownContainer');
+      const toolsMenu = document.getElementById('toolsMenu');
+
+      if (toolsDropdownToggle && toolsDropdownContainer && toolsMenu) {
+        toolsDropdownToggle.addEventListener('click', (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          toolsDropdownContainer.classList.toggle('active');
+          const isExpanded = toolsDropdownContainer.classList.contains('active');
+          toolsDropdownToggle.setAttribute('aria-expanded', isExpanded);
+        });
+
+        document.addEventListener('click', (event) => {
+          if (!toolsDropdownContainer.contains(event.target)) {
+            toolsDropdownContainer.classList.remove('active');
+            toolsDropdownToggle.setAttribute('aria-expanded', 'false');
+          }
+        });
+
+        toolsMenu.querySelectorAll('a').forEach(link => {
+          link.addEventListener('click', () => {
+            setTimeout(() => {
+              toolsDropdownContainer.classList.remove('active');
+              toolsDropdownToggle.setAttribute('aria-expanded', 'false');
+            }, 50);
+          });
+        });
+      }
+    });
+
+    // =========================
+    // HAMBURGER (mobile)
+    // =========================
+    const hamburger = document.querySelector('.hamburger');
+    const navMenu = document.querySelector('.nav-menu-mobile');
+
+    function toggleMenu() {
+      if (hamburger && navMenu) {
+        hamburger.classList.toggle('active');
+        navMenu.classList.toggle('active');
+        document.body.style.overflowY = navMenu.classList.contains('active') ? 'hidden' : 'auto';
+      }
+    }
+
+    if (hamburger && navMenu) {
+      hamburger.addEventListener('click', toggleMenu);
+      document.addEventListener('click', (e) => {
+        if (window.innerWidth <= 768 && !hamburger.contains(e.target) && !navMenu.contains(e.target) && navMenu.classList.contains('active')) {
+          toggleMenu();
         }
-        createStars();
-        window.addEventListener('resize', createStars);
-        
-        // Bloquear clique direito em imagens
-        document.addEventListener('contextmenu', function(e) {
-            if (e.target.tagName === 'IMG') {
-                e.preventDefault();
-            }
-        }, false);
-    </script>
+      });
+    }
+
+    // =========================
+    // MODAL ferramentas (mobile)
+    // =========================
+    const mobileToolsButton = document.getElementById('mobileToolsButton');
+    const mobileToolsModal = document.getElementById('mobileToolsModal');
+    const modalCloseButton = document.querySelector('#mobileToolsModal .modal-close');
+
+    function openModal() { mobileToolsModal.classList.add('open'); }
+    function closeModal() { mobileToolsModal.classList.remove('open'); }
+
+    if (mobileToolsButton && mobileToolsModal && modalCloseButton) {
+      mobileToolsButton.addEventListener('click', openModal);
+      modalCloseButton.addEventListener('click', closeModal);
+      window.addEventListener('click', (event) => { if (event.target === mobileToolsModal) closeModal(); });
+      mobileToolsModal.querySelectorAll('.modal-link').forEach(link => {
+        link.addEventListener('click', () => setTimeout(closeModal, 100));
+      });
+    }
+
+    // =========================
+    // ESTRELAS
+    // =========================
+    const starsContainer = document.getElementById('stars-container');
+    function createStars() {
+      if (!starsContainer) return;
+      starsContainer.innerHTML = '';
+      const colors = ['purple', 'pink', 'white'];
+      const numStars = 150;
+
+      for (let i = 0; i < numStars; i++) {
+        const star = document.createElement('span');
+        star.classList.add('star', colors[Math.floor(Math.random() * colors.length)]);
+        star.style.left = `${Math.random() * window.innerWidth}px`;
+        star.style.top = `${Math.random() * window.innerHeight}px`;
+
+        const moveX = (Math.random() - 0.5) * 300;
+        const moveY = (Math.random() - 0.5) * 300;
+        star.style.setProperty('--move-x', `${moveX}px`);
+        star.style.setProperty('--move-y', `${moveY}px`);
+        star.style.animationDelay = `${Math.random() * 15}s`;
+        starsContainer.appendChild(star);
+      }
+    }
+    createStars();
+    window.addEventListener('resize', () => {
+      createStars();
+      positionScaleAndMilestones();
+      // reaplica a tag no lugar certo (se já tinha percent)
+      if (currentRocketTop !== null) {
+        rocketTagEl.style.top = `${currentRocketTop + 28}px`;
+      }
+    });
+
+    // posiciona a régua/milestones ao carregar
+    window.addEventListener('load', () => {
+      positionScaleAndMilestones();
+      // estado inicial “Setup 0”
+      currentRocketTop = percentToTop(0);
+      rocketEl.style.top = `${currentRocketTop}px`;
+      rocketTagEl.style.top = `${currentRocketTop + 28}px`;
+    });
+
+    // bloquear clique direito em imagens
+    document.addEventListener('contextmenu', function(e) {
+      if (e.target.tagName === 'IMG') e.preventDefault();
+    }, false);
+  </script>
 </body>
 </html>
