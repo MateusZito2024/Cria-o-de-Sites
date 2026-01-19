@@ -1,860 +1,657 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="google-adsense-account" content="ca-pub-9426731634299392">
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
   <title>Asthro | Portal de Freelancers</title>
 
+  <link rel="icon" type="image/png" href="https://i.imgur.com/3HqwIPk.png">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
-
-  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700&family=Manrope:wght@400;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
-  <link rel="icon" type="image/png" href="https://i.imgur.com/3HqwIPk.png">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
-    /* ====== BASE ====== */
-    *, *::before, *::after { box-sizing: border-box; }
-    body {
-      font-family: 'Manrope', sans-serif;
-      margin: 0;
-      padding: 0;
-      overflow-x: hidden;
-      background: transparent;
-      width: 100%;
-      color: #edf1f7;
-    }
-
-    nav, section, footer { position: relative; z-index: 1; pointer-events: none; }
-    nav *, section *, footer * { pointer-events: auto; }
-
-    #particles-js{
-      position: fixed; inset: 0;
-      width: 100%; height: 100%;
-      z-index: 0; background: #111111;
-    }
-
-    .content-layer { position: relative; z-index: 2; }
-
-    h2, h3 { font-family: 'Archivo', sans-serif; }
-
-    .gradient-text{
-      background: linear-gradient(135deg, #6627ff, #0bf4ed);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    /* ====== NAV (IGUAL AO SEU) ====== */
-    .nav-link{
-      font-family: 'Manrope', sans-serif;
-      position: relative;
-      text-decoration: none;
-      color: #edf1f7;
-      transition: color .3s ease;
-      font-size: clamp(1rem, 3vw, 1.125rem);
-    }
-    .nav-link::after{
-      content:'';
-      position:absolute;
-      width:0; height:2px;
-      bottom:-4px; left:0;
-      background: linear-gradient(135deg, #6627ff, #0bf4ed);
-      transition: width .3s ease;
-    }
-    .nav-link:hover::after{ width:100%; }
-    .nav-link:hover{ color:#0bf4ed; }
-
-    nav{
-      position: fixed;
-      top:0; width:100%;
-      z-index:10;
-      background: transparent;
-      box-shadow: 0 4px 6px rgba(0,0,0,.1);
-      padding: 0 1rem;
-    }
-    nav > div{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      width:100%;
-    }
-
-    /* Hamburger */
-    .hamburger{
-      display:none;
-      flex-direction:column;
-      justify-content:space-around;
-      width:2rem; height:2rem;
-      background:transparent;
-      border:none;
-      cursor:pointer;
-      padding:0;
-      z-index:40;
-    }
-    .hamburger span{
-      width:100%;
-      height:3px;
-      background:#edf1f7;
-      transition:all .3s ease;
-    }
-    .hamburger.active span:nth-child(1){ transform: rotate(45deg) translate(5px,5px); }
-    .hamburger.active span:nth-child(2){ opacity:0; }
-    .hamburger.active span:nth-child(3){ transform: rotate(-45deg) translate(7px,-7px); }
-
-    .nav-menu-mobile{
-      position: fixed;
-      top:0; right:-100%;
-      height:100vh; width:100%;
-      max-width:300px;
-      background: rgba(17,17,17,0.9);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border-left: 1px solid rgba(102,39,255,0.5);
-      flex-direction: column;
-      justify-content:flex-start;
-      align-items:center;
-      gap: 1.5rem;
-      transition: right .3s ease;
-      z-index:30;
-      display:flex;
-      padding: 0 1rem;
-      box-shadow: -5px 0 15px rgba(0,0,0,0.3);
-    }
-    .nav-menu-mobile.active{ right:0; }
-    .nav-menu-mobile .nav-link:first-child{ margin-top: 6rem; }
-
-    .nav-menu-mobile .nav-link{
-      display:block;
-      width:90%;
-      padding: .8rem 1.5rem;
-      border-radius: .75rem;
-      background: rgba(102,39,255,0.1);
-      color:#f8f8f8;
-      text-align:center;
-      font-size: clamp(1.125rem, 4vw, 1.3rem);
-      font-weight:600;
-      border:1px solid rgba(255,255,255,0.2);
-      backdrop-filter: blur(5px);
-      -webkit-backdrop-filter: blur(5px);
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-      transition: all .3s ease;
-    }
-    .nav-menu-mobile .nav-link:hover{
-      background: linear-gradient(135deg, rgba(102,39,255,0.3), rgba(11,244,237,0.3));
-      transform: translateY(-4px) scale(1.02);
-      box-shadow: 0 8px 16px rgba(11,244,237,0.6);
-      border-color:#0bf4ed;
-    }
-    .nav-menu-mobile .nav-link::after{ display:none; }
-
-    /* Dropdown Ferramentas Desktop */
-    .dropdown-menu{
-      position:absolute;
-      top:100%;
-      left:50%;
-      transform: translateX(-50%) translateY(10px);
-      min-width:260px;
-      background: rgba(255,255,255,0);
-      backdrop-filter: blur(25px);
-      -webkit-backdrop-filter: blur(25px);
-      border: 2px solid #6627ff;
-      border-radius: 1rem;
-      padding: .75rem;
-      z-index:50;
-      opacity:0;
-      visibility:hidden;
-      transition: opacity .3s ease, visibility .3s ease, transform .3s ease;
-    }
-    .dropdown.active .dropdown-menu{
-      opacity:1;
-      visibility:visible;
-      transform: translateX(-50%) translateY(5px);
-    }
-    .dropdown-link{
-      display:block;
-      padding: .8rem 1rem;
+    *{ box-sizing:border-box; }
+    body{
+      font-family:'Manrope',sans-serif;
+      background:#0b0b12;
       color:#edf1f7;
-      text-decoration:none;
-      border-radius:.5rem;
-      transition: all .3s ease;
-      position:relative;
+      overflow-x:hidden;
     }
-    .dropdown-link::after{
-      content:'';
-      position:absolute;
-      width:0;
-      height:1px;
-      bottom:0px;
-      left:1rem;
-      background: linear-gradient(135deg, #6627ff, #0bf4ed);
-      transition: width .3s ease;
-      max-width: calc(100% - 2rem);
+    #particles-js{
+      position:fixed; inset:0;
+      width:100%; height:100%;
+      z-index:0;
+      background: radial-gradient(1200px 700px at 10% 20%, rgba(102,39,255,0.18), transparent 60%),
+                  radial-gradient(900px 700px at 90% 70%, rgba(11,244,237,0.14), transparent 55%),
+                  #070712;
     }
-    .dropdown-link:hover::after{ width: calc(100% - 2rem); }
-    .dropdown-link:hover{
-      background: linear-gradient(90deg, rgba(102,39,255,0.2), rgba(11,244,237,0.2));
-      color:#0bf4ed;
-      transform: translateX(5px);
-    }
+    .layer{ position:relative; z-index:2; }
 
-    /* ====== PORTAL ASTHRO (NOVO) ====== */
-    @keyframes floaty {
-      0% { transform: translateY(0); }
-      50% { transform: translateY(-6px); }
-      100% { transform: translateY(0); }
-    }
-    @keyframes glow {
-      0% { box-shadow: 0 0 18px rgba(102,39,255,0.25); }
-      50% { box-shadow: 0 0 28px rgba(11,244,237,0.32); }
-      100% { box-shadow: 0 0 18px rgba(102,39,255,0.25); }
-    }
-
-    .glass-card{
-      background: rgba(10,10,15,0.62);
-      border: 1px solid rgba(11,244,237,0.22);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+    .glass{
+      background: rgba(10,10,15,0.64);
+      border: 1px solid rgba(255,255,255,0.10);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       border-radius: 1.25rem;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.55);
-      overflow: hidden;
+      box-shadow: 0 18px 50px rgba(0,0,0,0.55);
     }
-
-    .neon-border{
-      border: 1px solid rgba(102,39,255,0.45);
-      box-shadow: 0 0 20px rgba(102,39,255,0.22), 0 0 8px rgba(11,244,237,0.18);
+    .neon{
+      border: 1px solid rgba(102,39,255,0.40);
+      box-shadow: 0 0 22px rgba(102,39,255,0.20), 0 0 12px rgba(11,244,237,0.08);
     }
-
-    .chip{
-      border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(255,255,255,0.05);
-      padding: .35rem .6rem;
-      border-radius: 999px;
-      font-size: .75rem;
-      color: #cbd5e1;
-      white-space: nowrap;
+    .gradient-text{
+      background: linear-gradient(135deg,#6627ff,#0bf4ed);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
     }
-
-    .btn-astro{
-      background: linear-gradient(135deg, #6627ff, #0bf4ed);
+    .btn{
+      border-radius:999px;
+      font-weight:800;
+      transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
+      user-select:none;
+    }
+    .btn-primary{
+      background: linear-gradient(135deg,#6627ff,#0bf4ed);
       border: 1px solid rgba(11,244,237,0.55);
-      box-shadow: 0 0 14px rgba(102,39,255,0.35);
-      transition: transform .25s ease, box-shadow .25s ease, filter .25s ease;
+      box-shadow: 0 0 16px rgba(102,39,255,0.25);
     }
-    .btn-astro:hover{
-      transform: translateY(-2px) scale(1.01);
-      box-shadow: 0 0 24px rgba(11,244,237,0.55), 0 0 14px rgba(102,39,255,0.45);
+    .btn-primary:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 0 26px rgba(11,244,237,0.45);
       filter: brightness(1.05);
     }
-
     .btn-ghost{
       background: rgba(255,255,255,0.06);
       border: 1px solid rgba(255,255,255,0.12);
-      transition: transform .2s ease, box-shadow .2s ease;
     }
     .btn-ghost:hover{
       transform: translateY(-2px);
-      box-shadow: 0 10px 20px rgba(0,0,0,0.35);
+      box-shadow: 0 10px 22px rgba(0,0,0,0.35);
     }
 
-    .tab-btn{
-      padding: .55rem 1rem;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.14);
-      background: rgba(255,255,255,0.05);
-      color: #e2e8f0;
-      transition: all .25s ease;
-      font-weight: 700;
-      font-size: .9rem;
-    }
-    .tab-btn.active{
-      background: linear-gradient(135deg, rgba(102,39,255,0.35), rgba(11,244,237,0.25));
-      border-color: rgba(11,244,237,0.55);
-      box-shadow: 0 0 22px rgba(11,244,237,0.18);
-      color: #0bf4ed;
-    }
-
-    .input-astro{
+    .input{
       width:100%;
       background: rgba(255,255,255,0.04);
       border: 1px solid rgba(255,255,255,0.12);
-      border-radius: .9rem;
-      padding: .8rem 1rem;
+      border-radius: 1rem;
+      padding: .85rem 1rem;
       color:#edf1f7;
       outline:none;
       transition: border .2s ease, box-shadow .2s ease;
     }
-    .input-astro:focus{
+    .input:focus{
       border-color: rgba(11,244,237,0.65);
       box-shadow: 0 0 0 4px rgba(11,244,237,0.10);
     }
 
+    .chip{
+      padding:.35rem .65rem;
+      border-radius:999px;
+      font-size:.75rem;
+      border:1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.05);
+      color:#cbd5e1;
+      white-space:nowrap;
+    }
+
+    .toast{
+      position:fixed;
+      bottom:18px;
+      left:50%;
+      transform:translateX(-50%);
+      z-index:999999;
+      max-width:min(560px,92vw);
+      display:none;
+      padding:.85rem 1.1rem;
+      border-radius:999px;
+      background: rgba(10,10,15,0.92);
+      border: 1px solid rgba(11,244,237,0.30);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.55);
+      text-align:center;
+      font-weight:800;
+      color:#e2e8f0;
+    }
+    .toast.show{ display:block; }
+
+    /* Layout Dashboard */
+    .app-shell{
+      display:grid;
+      grid-template-columns: 300px 1fr;
+      min-height: 100vh;
+    }
+    @media (max-width: 1024px){
+      .app-shell{ grid-template-columns: 1fr; }
+      .sidebar{ position:fixed; left:-100%; top:0; height:100vh; width:min(300px,85vw); transition:left .25s ease; z-index:50; }
+      .sidebar.open{ left:0; }
+      .overlay{
+        position:fixed; inset:0; background:rgba(0,0,0,0.65);
+        display:none; z-index:49;
+      }
+      .overlay.show{ display:block; }
+    }
+
+    .menu-btn{
+      width:100%;
+      text-align:left;
+      padding:.85rem 1rem;
+      border-radius:1rem;
+      border:1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.04);
+      transition: all .2s ease;
+      font-weight:800;
+      color:#edf1f7;
+    }
+    .menu-btn:hover{
+      transform: translateY(-1px);
+      border-color: rgba(11,244,237,0.45);
+      box-shadow: 0 10px 22px rgba(0,0,0,0.35);
+    }
+    .menu-btn.active{
+      background: linear-gradient(135deg, rgba(102,39,255,0.25), rgba(11,244,237,0.14));
+      border-color: rgba(11,244,237,0.55);
+      color:#0bf4ed;
+      box-shadow: 0 0 18px rgba(11,244,237,0.12);
+    }
+
     .project-card{
-      position: relative;
-      border-radius: 1.25rem;
-      overflow: hidden;
-      background: rgba(31,41,55,0.55);
-      border: 1px solid rgba(102,39,255,0.30);
-      box-shadow: 0 12px 28px rgba(0,0,0,0.45);
-      transition: transform .25s ease, box-shadow .25s ease, border .25s ease;
-      animation: glow 4.5s ease-in-out infinite;
+      border-radius:1.25rem;
+      border: 1px solid rgba(102,39,255,0.25);
+      background: rgba(31,41,55,0.52);
+      box-shadow: 0 14px 34px rgba(0,0,0,0.45);
+      overflow:hidden;
+      transition: transform .2s ease, border .2s ease, box-shadow .2s ease;
     }
     .project-card:hover{
-      transform: translateY(-6px);
+      transform: translateY(-5px);
       border-color: rgba(11,244,237,0.55);
-      box-shadow: 0 16px 34px rgba(0,0,0,0.55);
+      box-shadow: 0 18px 44px rgba(0,0,0,0.55);
     }
-    .project-card .top-line{
-      height: 4px;
-      width: 100%;
-      background: linear-gradient(90deg, #6627ff, #0bf4ed);
-      opacity: .9;
-    }
+    .top-line{ height:4px; background: linear-gradient(90deg,#6627ff,#0bf4ed); opacity:.95; }
 
     .badge-open{
       background: rgba(11,244,237,0.12);
-      border: 1px solid rgba(11,244,237,0.30);
-      color: #0bf4ed;
-      padding: .25rem .6rem;
-      border-radius: 999px;
-      font-size: .75rem;
-      font-weight: 800;
-      letter-spacing: .02em;
+      border:1px solid rgba(11,244,237,0.28);
+      color:#0bf4ed;
+      padding:.25rem .6rem;
+      border-radius:999px;
+      font-size:.75rem;
+      font-weight:900;
+      letter-spacing:.02em;
     }
-
     .badge-closed{
       background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.12);
-      color: #cbd5e1;
-      padding: .25rem .6rem;
-      border-radius: 999px;
-      font-size: .75rem;
-      font-weight: 800;
-      letter-spacing: .02em;
+      border:1px solid rgba(255,255,255,0.12);
+      color:#cbd5e1;
+      padding:.25rem .6rem;
+      border-radius:999px;
+      font-size:.75rem;
+      font-weight:900;
+      letter-spacing:.02em;
     }
 
     /* Modal */
-    .modal-overlay{
-      position: fixed;
-      inset:0;
-      background: rgba(0,0,0,0.72);
+    .modal{
+      position:fixed; inset:0;
       display:none;
-      align-items:center;
-      justify-content:center;
-      z-index: 9999;
-      padding: 1rem;
+      align-items:center; justify-content:center;
+      padding:1rem;
+      z-index:9999;
+      background: rgba(0,0,0,0.72);
     }
-    .modal-overlay.open{ display:flex; }
-
+    .modal.open{ display:flex; }
     .modal-box{
-      width: min(920px, 100%);
-      max-height: 90vh;
+      width:min(980px,100%);
+      max-height:90vh;
       overflow:auto;
-      border-radius: 1.25rem;
-      position: relative;
+      border-radius:1.25rem;
+      position:relative;
     }
-    .modal-close{
+    .xbtn{
       position:absolute;
-      top: 12px;
-      right: 14px;
-      width: 42px; height: 42px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.15);
+      top:12px; right:14px;
+      width:42px; height:42px;
+      border-radius:999px;
       background: rgba(255,255,255,0.06);
+      border:1px solid rgba(255,255,255,0.14);
       color:#edf1f7;
-      font-size: 1.4rem;
+      font-size:1.4rem;
       display:flex;
       align-items:center;
       justify-content:center;
       cursor:pointer;
       transition: transform .2s ease, background .2s ease;
-      z-index: 50;
+      z-index:50;
     }
-    .modal-close:hover{
+    .xbtn:hover{
       transform: scale(1.05);
       background: rgba(11,244,237,0.12);
-    }
-
-    /* Toast */
-    .toast{
-      position: fixed;
-      bottom: 18px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(10,10,15,0.9);
-      border: 1px solid rgba(11,244,237,0.30);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      padding: .85rem 1.1rem;
-      border-radius: 999px;
-      box-shadow: 0 10px 24px rgba(0,0,0,0.5);
-      display:none;
-      z-index: 99999;
-      max-width: min(560px, 92vw);
-      text-align: center;
-      color: #e2e8f0;
-      font-weight: 700;
-    }
-    .toast.show{ display:block; }
-
-    /* Footer icons */
-    .social-links-png{
-      margin-top: 1rem;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      height: 50px;
-    }
-    .social-img-icon{
-      width: 35px;
-      height: 35px;
-      transition: transform .3s ease, filter .3s ease;
-      filter: brightness(85%);
-      -webkit-user-drag: none;
-      user-select:none;
-    }
-    .social-links-png a:hover .social-img-icon{
-      transform: scale(1.15) rotate(2deg);
-      filter: brightness(100%);
-    }
-    .social-links-png a:nth-child(1) .social-img-icon { width: 30px !important; height: 30px !important; }
-    .social-links-png a:nth-child(2) .social-img-icon { width: 45px !important; height: 45px !important; }
-    .social-links-png a:nth-child(3) .social-img-icon { width: 45px !important; height: 45px !important; }
-
-    .social-links-png a:nth-child(1):hover .social-img-icon { filter: drop-shadow(0 0 10px #E1306C) brightness(100%); transform: scale(1.15) rotate(5deg); }
-    .social-links-png a:nth-child(2):hover .social-img-icon { filter: drop-shadow(0 0 10px #0bf4ed) brightness(100%); transform: scale(1.15); }
-    .social-links-png a:nth-child(3):hover .social-img-icon { filter: drop-shadow(0 0 10px #FF0000) brightness(100%); transform: scale(1.15) translateY(-2px); }
-
-    /* Mobile */
-    @media (max-width: 768px){
-      nav { background: rgba(17,17,17,0.95); padding: .5rem 1rem; }
-      nav .desktop-nav{ display:none; }
-      .hamburger{ display:flex; }
     }
   </style>
 </head>
 
-<body class="text-gray-100">
+<body>
   <div id="particles-js"></div>
 
-  <!-- ===== NAV (IGUAL AO SEU) ===== -->
-  <nav class="shadow-lg fixed w-full z-10">
-    <div class="flex justify-between h-16 items-center">
-      <div class="flex items-center content-layer">
-        <img src="https://raw.githubusercontent.com/MateusZito2024/Cria-o-de-Sites/refs/heads/main/LOGO%20PNG.png"
-             alt="Logo da Asthro" class="h-40 md:h-40" />
-      </div>
+  <!-- TOAST -->
+  <div id="toast" class="toast">Mensagem</div>
 
-      <button class="hamburger" aria-label="Toggle menu">
-        <span></span><span></span><span></span>
-      </button>
+  <!-- OVERLAY (mobile sidebar) -->
+  <div id="overlay" class="overlay"></div>
 
-      <div class="flex items-center space-x-6 content-layer desktop-nav">
-        <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/index.html" class="nav-link text-lg transition">Início</a>
-        <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/servi%C3%A7os.html" class="nav-link text-lg transition">Serviços</a>
-
-        <div class="relative dropdown" id="toolsDropdownContainer">
-          <a href="#" id="toolsDropdownToggle" class="nav-link text-lg transition flex items-center gap-1 cursor-pointer select-none" aria-expanded="false">
-            Ferramentas
-            <svg class="dropdown-arrow w-4 h-4 ml-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-            </svg>
-          </a>
-          <div id="toolsMenu" class="dropdown-menu">
-            <a href="https://asthro.com.br/asthrocolors.html" class="dropdown-link">AsthroColors (Gerador de Paleta)</a>
-            <a href="https://asthro.com.br/asthrospeed.html" class="dropdown-link">AsthroSpeed (Análise de Sites)</a>
-            <a href="https://asthro.com.br/asthrozero.html" class="dropdown-link">AsthroZero (Removedor de Fundo)</a>
-          </div>
-        </div>
-
-        <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/sobre.html" class="nav-link text-lg transition">Sobre</a>
-        <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/portf%C3%B3lio.html" class="nav-link text-lg transition">Portfólio</a>
-        <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/contato.html" class="nav-link text-lg transition">Contato</a>
-        <a href="https://asthro.com.br/politicas.html" class="nav-link text-lg transition">Políticas</a>
-
-        <!-- Destaque do Portal -->
-        <span class="ml-2 px-3 py-1 rounded-full text-xs font-extrabold"
-              style="background:rgba(11,244,237,0.12); border:1px solid rgba(11,244,237,0.35); color:#0bf4ed;">
-          Portal Freelancers
-        </span>
-      </div>
-
-      <div class="nav-menu-mobile content-layer">
-        <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/index.html" class="nav-link text-lg transition block">Início</a>
-        <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/servi%C3%A7os.html" class="nav-link text-lg transition block">Serviços</a>
-        <a href="https://asthro.com.br/asthrocolors.html" class="nav-link text-lg transition block">AsthroColors</a>
-        <a href="https://asthro.com.br/asthrospeed.html" class="nav-link text-lg transition block">AsthroSpeed</a>
-        <a href="https://asthro.com.br/asthrozero.html" class="nav-link text-lg transition block">AsthroZero</a>
-        <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/sobre.html" class="nav-link text-lg transition block">Sobre</a>
-        <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/portf%C3%B3lio.html" class="nav-link text-lg transition block">Portfólio</a>
-        <a href="https://mateuszito2024.github.io/Cria-o-de-Sites/contato.html" class="nav-link text-lg transition block">Contato</a>
-        <a href="https://asthro.com.br/politicas.html" class="nav-link text-lg transition block">Políticas</a>
-      </div>
-    </div>
-  </nav>
-
-  <!-- ===== HERO ===== -->
-  <section class="min-h-screen flex items-center pt-24 pb-16">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 content-layer w-full">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-
-        <div class="lg:col-span-7">
-          <div class="glass-card neon-border p-8 md:p-10">
-            <div class="flex items-center gap-3 mb-4">
-              <span class="chip">Asthro Network</span>
-              <span class="chip">Trabalhos reais</span>
-              <span class="chip">Vagas limitadas</span>
-            </div>
-
-            <h2 class="text-4xl md:text-6xl font-extrabold leading-tight">
-              Portal de <span class="gradient-text">Freelancers</span><br />
-              <span style="opacity:.9;">da Asthro</span>
-            </h2>
-
-            <p class="text-gray-300 text-lg md:text-xl mt-4 max-w-2xl">
-              Entre, monte seu perfil e se inscreva em projetos premium publicados pela Asthro.
-              Aqui a seleção é séria: estética, performance e profissionalismo.
-            </p>
-
-            <div class="mt-8 flex flex-col sm:flex-row gap-3">
-              <button id="openAuthBtn" class="btn-astro px-6 py-3 rounded-full font-extrabold">
-                Entrar / Criar Conta
-              </button>
-
-              <a href="#projects" class="btn-ghost px-6 py-3 rounded-full font-extrabold text-center">
-                Ver Projetos
-              </a>
-            </div>
-
-            <div class="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div class="glass-card p-4" style="animation: floaty 3.2s ease-in-out infinite;">
-                <div class="text-sm text-gray-300">Projetos Ativos</div>
-                <div id="statOpen" class="text-3xl font-extrabold gradient-text">--</div>
-              </div>
-              <div class="glass-card p-4" style="animation: floaty 3.8s ease-in-out infinite;">
-                <div class="text-sm text-gray-300">Freelancers Online</div>
-                <div id="statOnline" class="text-3xl font-extrabold gradient-text">--</div>
-              </div>
-              <div class="glass-card p-4" style="animation: floaty 4.4s ease-in-out infinite;">
-                <div class="text-sm text-gray-300">Inscrições</div>
-                <div id="statApps" class="text-3xl font-extrabold gradient-text">--</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Card do Usuário -->
-        <div class="lg:col-span-5">
-          <div class="glass-card neon-border p-6 md:p-8">
-            <div class="flex items-center justify-between gap-3">
-              <div>
-                <h3 class="text-2xl font-extrabold gradient-text">Seu Painel</h3>
-                <p class="text-gray-300 mt-1 text-sm">
-                  Logado, você pode editar perfil, salvar portfólio e se inscrever em projetos.
-                </p>
-              </div>
-
-              <div class="w-12 h-12 rounded-full flex items-center justify-center"
-                   style="background:rgba(11,244,237,0.12); border:1px solid rgba(11,244,237,0.25);">
-                <span style="color:#0bf4ed; font-weight:900;">A</span>
-              </div>
-            </div>
-
-            <div id="userBox" class="mt-6">
-              <!-- Renderizado pelo JS -->
-              <div class="text-gray-300 text-sm">
-                Você ainda não está logado. Clique em <span class="gradient-text font-extrabold">Entrar / Criar Conta</span>
-                para começar.
-              </div>
-            </div>
-
-            <div class="mt-6 flex gap-3">
-              <button id="btnMyArea" class="btn-ghost px-5 py-3 rounded-full font-extrabold w-full" disabled>
-                Minha Área
-              </button>
-              <button id="btnLogout" class="btn-ghost px-5 py-3 rounded-full font-extrabold w-full" disabled>
-                Sair
-              </button>
-            </div>
-
-            <div class="mt-6 p-4 rounded-xl"
-                 style="background: rgba(102,39,255,0.08); border:1px dashed rgba(102,39,255,0.4);">
-              <div class="text-sm text-gray-200 font-extrabold mb-1">Dica Asthro</div>
-              <div class="text-sm text-gray-300">
-                Complete seu perfil com <span class="gradient-text font-extrabold">portfólio + skills</span>.
-                Isso aumenta muito sua chance de ser selecionado.
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== ÁREA LOGADA ===== -->
-  <section id="memberArea" class="py-14 hidden">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 content-layer">
-      <div class="glass-card neon-border p-6 md:p-8">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+  <!-- AUTH SCREEN (TELA PROFISSIONAL INICIAL) -->
+  <main id="authScreen" class="layer min-h-screen flex items-center justify-center px-4 py-10">
+    <div class="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+      <!-- Left -->
+      <section class="lg:col-span-6 glass neon p-8 md:p-10">
+        <div class="flex items-center gap-4">
+          <img
+            src="https://raw.githubusercontent.com/MateusZito2024/Cria-o-de-Sites/refs/heads/main/LOGO%20PNG.png"
+            alt="Asthro"
+            class="h-20 w-auto select-none"
+            style="image-rendering:auto"
+            draggable="false"
+          />
           <div>
-            <h2 class="text-3xl md:text-4xl font-extrabold">
-              Área do <span class="gradient-text">Freelancer</span>
+            <div class="text-sm text-gray-300 font-semibold">Asthro Network</div>
+            <div class="text-2xl md:text-3xl font-extrabold gradient-text">Portal de Freelancers</div>
+          </div>
+        </div>
+
+        <h1 class="mt-6 text-3xl md:text-5xl font-extrabold leading-tight" style="font-family:'Archivo',sans-serif;">
+          Entre no portal e pegue<br/>
+          <span class="gradient-text">projetos premium</span>
+        </h1>
+
+        <p class="mt-4 text-gray-300 text-base md:text-lg max-w-xl">
+          Um sistema limpo, organizado e sério — feito para freelancers entenderem tudo rápido,
+          sem poluição visual, com estética Asthro.
+        </p>
+
+        <div class="mt-6 flex flex-wrap gap-2">
+          <span class="chip">Projetos reais</span>
+          <span class="chip">Inscrição organizada</span>
+          <span class="chip">Perfil profissional</span>
+          <span class="chip">Seleção premium</span>
+        </div>
+
+        <div class="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="glass p-4">
+            <div class="text-xs text-gray-300 font-bold">Projetos Ativos</div>
+            <div id="statOpen" class="text-3xl font-extrabold gradient-text">--</div>
+          </div>
+          <div class="glass p-4">
+            <div class="text-xs text-gray-300 font-bold">Freelancers Online</div>
+            <div id="statOnline" class="text-3xl font-extrabold gradient-text">--</div>
+          </div>
+          <div class="glass p-4">
+            <div class="text-xs text-gray-300 font-bold">Inscrições</div>
+            <div id="statApps" class="text-3xl font-extrabold gradient-text">--</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right (Auth box) -->
+      <section class="lg:col-span-6 glass neon p-8 md:p-10">
+        <div class="flex items-center justify-between gap-3 flex-wrap">
+          <div>
+            <h2 class="text-2xl md:text-3xl font-extrabold gradient-text" style="font-family:'Archivo',sans-serif;">
+              Acessar Portal
             </h2>
-            <p class="text-gray-300 mt-1">
-              Gerencie suas inscrições, perfil e preferências.
+            <p class="text-gray-300 mt-1 text-sm">
+              Entre com sua conta ou crie uma nova em segundos.
             </p>
           </div>
 
-          <div class="flex flex-wrap gap-2">
-            <button class="tab-btn active" data-tab="tabProjects">Projetos</button>
-            <button class="tab-btn" data-tab="tabApplications">Minhas Inscrições</button>
-            <button class="tab-btn" data-tab="tabProfile">Meu Perfil</button>
+          <div class="flex gap-2">
+            <button id="tabLogin" class="btn btn-ghost px-5 py-2 text-sm active" style="border-color:rgba(11,244,237,0.45); color:#0bf4ed;">
+              Login
+            </button>
+            <button id="tabRegister" class="btn btn-ghost px-5 py-2 text-sm">
+              Criar conta
+            </button>
           </div>
         </div>
 
-        <!-- Tabs -->
-        <div class="mt-6">
-          <!-- TAB: PROJECTS -->
-          <div id="tabProjects" class="tab-panel">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
-              <div class="lg:col-span-4">
-                <div class="glass-card p-5">
-                  <h3 class="text-xl font-extrabold gradient-text">Filtro Inteligente</h3>
-                  <p class="text-gray-300 text-sm mt-1">
-                    Ache os projetos que mais combinam com seu estilo.
-                  </p>
-
-                  <div class="mt-4 space-y-3">
-                    <input id="searchInput" class="input-astro" placeholder="Buscar (ex: Landing Page, Motion, Branding...)" />
-
-                    <select id="categoryFilter" class="input-astro">
-                      <option value="">Categoria (todas)</option>
-                      <option value="Design">Design</option>
-                      <option value="Web">Web</option>
-                      <option value="Social Media">Social Media</option>
-                      <option value="Motion">Motion</option>
-                      <option value="Branding">Branding</option>
-                    </select>
-
-                    <select id="levelFilter" class="input-astro">
-                      <option value="">Nível (todos)</option>
-                      <option value="Iniciante">Iniciante</option>
-                      <option value="Intermediário">Intermediário</option>
-                      <option value="Avançado">Avançado</option>
-                    </select>
-
-                    <select id="typeFilter" class="input-astro">
-                      <option value="">Tipo (todos)</option>
-                      <option value="Remoto">Remoto</option>
-                      <option value="Híbrido">Híbrido</option>
-                      <option value="Presencial">Presencial</option>
-                    </select>
-
-                    <button id="btnApplyFilters" class="btn-astro w-full px-6 py-3 rounded-full font-extrabold">
-                      Aplicar filtros
-                    </button>
-
-                    <button id="btnClearFilters" class="btn-ghost w-full px-6 py-3 rounded-full font-extrabold">
-                      Limpar filtros
-                    </button>
-                  </div>
-
-                  <div class="mt-5 p-4 rounded-xl"
-                       style="background: rgba(11,244,237,0.06); border:1px solid rgba(11,244,237,0.20);">
-                    <div class="text-sm font-extrabold" style="color:#0bf4ed;">Como a Asthro seleciona?</div>
-                    <div class="text-sm text-gray-300 mt-1">
-                      Qualidade visual + consistência + portfólio + alinhamento com o projeto.
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="lg:col-span-8">
-                <div class="flex items-center justify-between flex-wrap gap-3 mb-4">
-                  <h3 id="projectsTitle" class="text-2xl font-extrabold gradient-text">Vitrine de Projetos</h3>
-
-                  <div class="flex gap-2">
-                    <button id="btnRefreshProjects" class="btn-ghost px-5 py-3 rounded-full font-extrabold">
-                      Atualizar
-                    </button>
-                    <a href="#projects" class="btn-astro px-5 py-3 rounded-full font-extrabold">
-                      Ver Lista
-                    </a>
-                  </div>
-                </div>
-
-                <div id="projectsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                  <!-- Cards via JS -->
-                </div>
-
-                <div id="projectsEmpty" class="hidden mt-6 text-center text-gray-300">
-                  Nenhum projeto encontrado com esses filtros.
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- TAB: APPLICATIONS -->
-          <div id="tabApplications" class="tab-panel hidden">
-            <div class="glass-card p-6">
-              <h3 class="text-2xl font-extrabold gradient-text">Minhas Inscrições</h3>
-              <p class="text-gray-300 mt-1">Aqui ficam seus projetos inscritos.</p>
-
-              <div id="appsList" class="mt-5 grid grid-cols-1 gap-4">
-                <!-- Itens via JS -->
-              </div>
-
-              <div id="appsEmpty" class="hidden mt-5 text-center text-gray-300">
-                Você ainda não se inscreveu em nenhum projeto.
-              </div>
-            </div>
-          </div>
-
-          <!-- TAB: PROFILE -->
-          <div id="tabProfile" class="tab-panel hidden">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
-              <div class="lg:col-span-5">
-                <div class="glass-card p-6">
-                  <h3 class="text-2xl font-extrabold gradient-text">Seu Perfil</h3>
-                  <p class="text-gray-300 mt-1 text-sm">
-                    Esses dados ajudam a Asthro a te selecionar mais rápido.
-                  </p>
-
-                  <div class="mt-4 space-y-3">
-                    <input id="profileName" class="input-astro" placeholder="Seu nome (ex: Mateus Sena)" />
-                    <input id="profileRole" class="input-astro" placeholder="Sua área (ex: Web Designer / Motion / Dev)" />
-                    <input id="profilePortfolio" class="input-astro" placeholder="Link do portfólio (Behance, Site, Drive...)" />
-                    <input id="profileSkills" class="input-astro" placeholder="Skills (ex: Figma, After Effects, React...)" />
-                    <textarea id="profileBio" class="input-astro" rows="4" placeholder="Bio rápida (seu estilo, experiência, etc.)"></textarea>
-
-                    <button id="btnSaveProfile" class="btn-astro w-full px-6 py-3 rounded-full font-extrabold">
-                      Salvar Perfil
-                    </button>
-                  </div>
-
-                  <div class="mt-4 text-xs text-gray-400">
-                    🔒 Seus dados ficam salvos no seu usuário (Firestore).
-                  </div>
-                </div>
-              </div>
-
-              <div class="lg:col-span-7">
-                <div class="glass-card p-6">
-                  <h3 class="text-2xl font-extrabold gradient-text">Preview do seu Cartão</h3>
-                  <p class="text-gray-300 mt-1">Como a Asthro verá você dentro do sistema.</p>
-
-                  <div class="mt-5 p-6 rounded-2xl"
-                       style="background: linear-gradient(135deg, rgba(102,39,255,0.15), rgba(11,244,237,0.08));
-                              border:1px solid rgba(11,244,237,0.18);">
-                    <div class="flex items-start justify-between gap-4">
-                      <div>
-                        <div id="previewName" class="text-2xl font-extrabold">Seu nome aqui</div>
-                        <div id="previewRole" class="text-gray-300 mt-1">Sua área aqui</div>
-
-                        <div class="mt-3 flex flex-wrap gap-2" id="previewChips">
-                          <span class="chip">skills</span>
-                          <span class="chip">portfolio</span>
-                          <span class="chip">Asthro standard</span>
-                        </div>
-                      </div>
-
-                      <div class="w-16 h-16 rounded-full flex items-center justify-center"
-                           style="background: rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12);">
-                        <span class="gradient-text font-extrabold text-2xl">★</span>
-                      </div>
-                    </div>
-
-                    <div id="previewBio" class="text-gray-300 mt-4 text-sm">
-                      Uma bio bem escrita te destaca. Mostre sua força: estética, técnica e entrega.
-                    </div>
-
-                    <div class="mt-4 flex gap-3 flex-wrap">
-                      <a id="previewPortfolio" href="#" target="_blank"
-                         class="btn-ghost px-5 py-2 rounded-full font-extrabold text-sm hidden">
-                        Abrir Portfólio
-                      </a>
-                      <span class="chip">Atualizado automaticamente</span>
-                    </div>
-                  </div>
-
-                  <div class="mt-5 p-4 rounded-xl"
-                       style="background: rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.10);">
-                    <div class="text-sm text-gray-200 font-extrabold">Seja Selecionado Mais Rápido</div>
-                    <ul class="text-sm text-gray-300 mt-2 space-y-1 list-disc ml-5">
-                      <li>Portfólio atualizado e com projetos reais</li>
-                      <li>Bio objetiva e profissional</li>
-                      <li>Skills alinhadas com a vaga</li>
-                      <li>Responda rápido quando a Asthro chamar</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          </div>
-
+        <div class="mt-6 space-y-3">
+          <input id="authName" class="input hidden" placeholder="Seu nome (para cadastro)"/>
+          <input id="authEmail" class="input" placeholder="Seu e-mail"/>
+          <input id="authPass" class="input" type="password" placeholder="Sua senha"/>
         </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- ===== LISTA PÚBLICA DE PROJETOS (mesmo deslogado vê) ===== -->
-  <section id="projects" class="py-14">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 content-layer">
-      <div class="text-center mb-10">
-        <h2 class="text-4xl md:text-5xl font-extrabold gradient-text">Projetos Publicados</h2>
-        <p class="text-gray-300 mt-3 max-w-3xl mx-auto">
-          Abaixo estão os projetos disponíveis. Para se inscrever, basta criar sua conta no portal.
-        </p>
-      </div>
+        <div class="mt-5 grid grid-cols-1 gap-3">
+          <button id="btnAuthMain" class="btn btn-primary px-6 py-3">
+            Entrar
+          </button>
 
-      <div class="glass-card neon-border p-6 md:p-8">
-        <div class="flex items-center justify-between flex-wrap gap-3 mb-4">
-          <div class="flex items-center gap-2">
-            <span class="chip">Vitrine</span>
-            <span class="chip">Acesso premium</span>
-          </div>
-          <button id="btnPublicRefresh" class="btn-ghost px-5 py-3 rounded-full font-extrabold">
-            Atualizar lista
+          <button id="btnGoogle" class="btn btn-ghost px-6 py-3">
+            Entrar com Google
           </button>
         </div>
 
-        <div id="publicProjectsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          <!-- Cards via JS -->
+        <div class="mt-5 flex items-center justify-between gap-3 flex-wrap">
+          <div class="text-xs text-gray-400">
+            🔒 Autenticação segura com Firebase Auth
+          </div>
+
+          <button id="btnEnterDemo" class="text-xs font-extrabold gradient-text hover:opacity-90">
+            Entrar em modo DEMO
+          </button>
         </div>
 
-        <div id="publicEmpty" class="hidden mt-6 text-center text-gray-300">
-          Nenhum projeto ativo agora. Volte em breve!
+        <div class="mt-6 p-4 rounded-2xl"
+             style="background: rgba(102,39,255,0.08); border:1px dashed rgba(102,39,255,0.35);">
+          <div class="text-sm font-extrabold text-gray-100">Importante</div>
+          <div class="text-sm text-gray-300 mt-1">
+            Se o Firebase não estiver configurado, o portal entra em <b>modo DEMO</b> automaticamente.
+          </div>
         </div>
-      </div>
+      </section>
     </div>
-  </section>
+  </main>
 
-  <!-- ===== MODAL: DETALHES DO PROJETO ===== -->
-  <div id="projectModal" class="modal-overlay">
-    <div class="modal-box glass-card neon-border">
-      <button class="modal-close" id="closeProjectModal">×</button>
+  <!-- DASHBOARD APP -->
+  <main id="appScreen" class="layer hidden">
+    <div class="app-shell">
+      <!-- Sidebar -->
+      <aside id="sidebar" class="sidebar glass neon p-5">
+        <div class="flex items-center justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <img
+              src="https://raw.githubusercontent.com/MateusZito2024/Cria-o-de-Sites/refs/heads/main/LOGO%20PNG.png"
+              alt="Asthro"
+              class="h-14 w-auto select-none"
+              draggable="false"
+            />
+          </div>
+
+          <button id="btnCloseSidebar" class="btn btn-ghost px-4 py-2 lg:hidden">
+            ✕
+          </button>
+        </div>
+
+        <div class="mt-5 p-4 rounded-2xl"
+             style="background: linear-gradient(135deg, rgba(102,39,255,0.14), rgba(11,244,237,0.07));
+                    border: 1px solid rgba(11,244,237,0.18);">
+          <div class="text-xs text-gray-300 font-bold">Logado como</div>
+          <div id="sbName" class="text-lg font-extrabold gradient-text mt-1">--</div>
+          <div id="sbEmail" class="text-xs text-gray-300 mt-1">--</div>
+        </div>
+
+        <nav class="mt-5 space-y-2">
+          <button class="menu-btn active" data-page="pageProjects">📌 Projetos</button>
+          <button class="menu-btn" data-page="pageApps">📨 Minhas inscrições</button>
+          <button class="menu-btn" data-page="pageProfile">👤 Meu perfil</button>
+          <button class="menu-btn" data-page="pageSettings">⚙️ Preferências</button>
+        </nav>
+
+        <div class="mt-5 space-y-3">
+          <button id="btnLogout" class="btn btn-ghost w-full px-6 py-3">
+            Sair
+          </button>
+
+          <a href="https://asthro.com.br" target="_blank"
+             class="btn btn-primary w-full px-6 py-3 text-center block">
+            Site Asthro
+          </a>
+        </div>
+
+        <div class="mt-6 text-[10px] text-gray-500 uppercase tracking-widest text-center">
+          © 2026 • Asthro Network
+        </div>
+      </aside>
+
+      <!-- Content -->
+      <section class="p-5 md:p-8">
+        <!-- Topbar -->
+        <header class="flex items-center justify-between gap-3 mb-6">
+          <div>
+            <h2 id="pageTitle" class="text-2xl md:text-3xl font-extrabold gradient-text" style="font-family:'Archivo',sans-serif;">
+              Projetos
+            </h2>
+            <p id="pageSubtitle" class="text-gray-300 text-sm mt-1">
+              Encontre vagas compatíveis com seu perfil e se inscreva.
+            </p>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button id="btnOpenSidebar" class="btn btn-ghost px-4 py-2 lg:hidden">
+              ☰ Menu
+            </button>
+            <button id="btnRefresh" class="btn btn-ghost px-5 py-2">
+              Atualizar
+            </button>
+          </div>
+        </header>
+
+        <!-- PAGES -->
+        <!-- Projects -->
+        <div id="pageProjects" class="page">
+          <div class="glass neon p-6">
+            <div class="flex flex-col lg:flex-row gap-4 justify-between">
+              <div class="w-full lg:max-w-xl">
+                <div class="text-sm text-gray-300 font-bold">Filtro rápido</div>
+                <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <input id="searchInput" class="input" placeholder="Buscar (ex: Landing Page, Motion, Branding...)"/>
+
+                  <select id="categoryFilter" class="input">
+                    <option value="">Categoria (todas)</option>
+                    <option value="Design">Design</option>
+                    <option value="Web">Web</option>
+                    <option value="Social Media">Social Media</option>
+                    <option value="Motion">Motion</option>
+                    <option value="Branding">Branding</option>
+                  </select>
+
+                  <select id="levelFilter" class="input">
+                    <option value="">Nível (todos)</option>
+                    <option value="Iniciante">Iniciante</option>
+                    <option value="Intermediário">Intermediário</option>
+                    <option value="Avançado">Avançado</option>
+                  </select>
+
+                  <select id="typeFilter" class="input">
+                    <option value="">Tipo (todos)</option>
+                    <option value="Remoto">Remoto</option>
+                    <option value="Híbrido">Híbrido</option>
+                    <option value="Presencial">Presencial</option>
+                  </select>
+                </div>
+
+                <div class="mt-3 flex gap-2 flex-wrap">
+                  <button id="btnApplyFilters" class="btn btn-primary px-6 py-3">
+                    Aplicar filtros
+                  </button>
+                  <button id="btnClearFilters" class="btn btn-ghost px-6 py-3">
+                    Limpar
+                  </button>
+                </div>
+              </div>
+
+              <div class="w-full lg:max-w-md">
+                <div class="p-5 rounded-2xl"
+                     style="background: rgba(11,244,237,0.06); border:1px solid rgba(11,244,237,0.18);">
+                  <div class="text-sm font-extrabold" style="color:#0bf4ed;">Padrão Asthro</div>
+                  <div class="text-sm text-gray-300 mt-1">
+                    Clareza, estética e entrega. Seu perfil completo aumenta MUITO sua seleção.
+                  </div>
+                  <div class="mt-3 flex flex-wrap gap-2">
+                    <span class="chip">Portfólio forte</span>
+                    <span class="chip">Resposta rápida</span>
+                    <span class="chip">Qualidade</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-6 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5" id="projectsGrid"></div>
+            <div id="projectsEmpty" class="hidden mt-6 text-center text-gray-300">
+              Nenhum projeto encontrado com esses filtros.
+            </div>
+          </div>
+        </div>
+
+        <!-- Applications -->
+        <div id="pageApps" class="page hidden">
+          <div class="glass neon p-6">
+            <h3 class="text-xl md:text-2xl font-extrabold gradient-text" style="font-family:'Archivo',sans-serif;">
+              Minhas inscrições
+            </h3>
+            <p class="text-gray-300 mt-1 text-sm">
+              Aqui você acompanha os projetos em que você se inscreveu.
+            </p>
+
+            <div id="appsList" class="mt-5 grid grid-cols-1 gap-4"></div>
+            <div id="appsEmpty" class="hidden mt-5 text-center text-gray-300">
+              Você ainda não se inscreveu em nenhum projeto.
+            </div>
+          </div>
+        </div>
+
+        <!-- Profile -->
+        <div id="pageProfile" class="page hidden">
+          <div class="grid grid-cols-1 xl:grid-cols-12 gap-5">
+            <div class="xl:col-span-5 glass neon p-6">
+              <h3 class="text-xl md:text-2xl font-extrabold gradient-text" style="font-family:'Archivo',sans-serif;">
+                Meu perfil
+              </h3>
+              <p class="text-gray-300 mt-1 text-sm">
+                Preencha com capricho. Isso te destaca.
+              </p>
+
+              <div class="mt-4 space-y-3">
+                <input id="profileName" class="input" placeholder="Seu nome"/>
+                <input id="profileRole" class="input" placeholder="Sua área (ex: Web Designer / Motion / Dev)"/>
+                <input id="profilePortfolio" class="input" placeholder="Link do portfólio (Behance, Site, Drive...)"/>
+                <input id="profileSkills" class="input" placeholder="Skills (ex: Figma, After Effects, React...)"/>
+                <textarea id="profileBio" class="input" rows="4" placeholder="Bio rápida (objetiva e profissional)"></textarea>
+
+                <button id="btnSaveProfile" class="btn btn-primary w-full px-6 py-3">
+                  Salvar perfil
+                </button>
+              </div>
+
+              <div class="mt-4 text-xs text-gray-400">
+                🔒 Esses dados ficam salvos no seu usuário (Firestore).
+              </div>
+            </div>
+
+            <div class="xl:col-span-7 glass neon p-6">
+              <h3 class="text-xl md:text-2xl font-extrabold gradient-text" style="font-family:'Archivo',sans-serif;">
+                Preview do seu cartão
+              </h3>
+              <p class="text-gray-300 mt-1 text-sm">
+                Como a Asthro vê você dentro do sistema.
+              </p>
+
+              <div class="mt-5 p-6 rounded-2xl"
+                   style="background: linear-gradient(135deg, rgba(102,39,255,0.15), rgba(11,244,237,0.08));
+                          border:1px solid rgba(11,244,237,0.18);">
+                <div class="flex items-start justify-between gap-4">
+                  <div>
+                    <div id="previewName" class="text-2xl font-extrabold">Seu nome aqui</div>
+                    <div id="previewRole" class="text-gray-300 mt-1">Sua área aqui</div>
+
+                    <div id="previewChips" class="mt-3 flex flex-wrap gap-2">
+                      <span class="chip">skills</span>
+                      <span class="chip">portfolio</span>
+                      <span class="chip">Asthro standard</span>
+                    </div>
+                  </div>
+
+                  <div class="w-16 h-16 rounded-full flex items-center justify-center"
+                       style="background: rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12);">
+                    <span class="gradient-text font-extrabold text-2xl">★</span>
+                  </div>
+                </div>
+
+                <div id="previewBio" class="text-gray-300 mt-4 text-sm">
+                  Uma bio bem escrita te destaca. Mostre estética, técnica e entrega.
+                </div>
+
+                <div class="mt-4 flex gap-3 flex-wrap">
+                  <a id="previewPortfolio" href="#" target="_blank"
+                     class="btn btn-ghost px-5 py-2 text-sm hidden text-center">
+                    Abrir portfólio
+                  </a>
+                  <span class="chip">Atualiza automaticamente</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Settings -->
+        <div id="pageSettings" class="page hidden">
+          <div class="glass neon p-6">
+            <h3 class="text-xl md:text-2xl font-extrabold gradient-text" style="font-family:'Archivo',sans-serif;">
+              Preferências
+            </h3>
+            <p class="text-gray-300 mt-1 text-sm">
+              Ajustes visuais simples para deixar confortável.
+            </p>
+
+            <div class="mt-5 grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="p-5 rounded-2xl"
+                   style="background: rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.10);">
+                <div class="text-sm font-extrabold text-gray-100">Partículas</div>
+                <div class="text-sm text-gray-300 mt-1">Se quiser o site mais “clean”, desative aqui.</div>
+                <button id="btnToggleParticles" class="btn btn-ghost px-6 py-3 mt-4 w-full">
+                  Desativar partículas
+                </button>
+              </div>
+
+              <div class="p-5 rounded-2xl"
+                   style="background: rgba(11,244,237,0.06); border:1px solid rgba(11,244,237,0.18);">
+                <div class="text-sm font-extrabold" style="color:#0bf4ed;">Dica</div>
+                <div class="text-sm text-gray-300 mt-1">
+                  O segredo do profissional é: <b>foco</b> + <b>organização</b> + <b>clareza</b>.
+                </div>
+                <div class="mt-3 flex flex-wrap gap-2">
+                  <span class="chip">Sem excesso</span>
+                  <span class="chip">Info rápida</span>
+                  <span class="chip">Visual premium</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+    </div>
+  </main>
+
+  <!-- PROJECT MODAL -->
+  <div id="projectModal" class="modal">
+    <div class="modal-box glass neon">
+      <button id="closeProjectModal" class="xbtn">×</button>
 
       <div class="p-6 md:p-8">
         <div class="flex flex-col md:flex-row md:items-start justify-between gap-4">
           <div>
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-2 flex-wrap">
               <span id="modalStatus" class="badge-open">ABERTO</span>
               <span id="modalCategory" class="chip">Categoria</span>
               <span id="modalType" class="chip">Remoto</span>
               <span id="modalLevel" class="chip">Intermediário</span>
             </div>
-            <h3 id="modalTitle" class="text-3xl md:text-4xl font-extrabold mt-3 gradient-text">Título</h3>
-            <p id="modalShort" class="text-gray-300 mt-3 text-base md:text-lg">Descrição curta</p>
+            <h3 id="modalTitle" class="text-3xl md:text-4xl font-extrabold mt-3 gradient-text" style="font-family:'Archivo',sans-serif;">
+              Título
+            </h3>
+            <p id="modalShort" class="text-gray-300 mt-3 text-base md:text-lg">
+              Descrição curta
+            </p>
           </div>
 
           <div class="flex flex-col gap-2 min-w-[240px]">
-            <div class="glass-card p-4">
-              <div class="text-xs text-gray-300">Orçamento</div>
+            <div class="glass p-4">
+              <div class="text-xs text-gray-300 font-bold">Orçamento</div>
               <div id="modalBudget" class="text-2xl font-extrabold gradient-text">R$ --</div>
             </div>
-            <div class="glass-card p-4">
-              <div class="text-xs text-gray-300">Prazo</div>
+            <div class="glass p-4">
+              <div class="text-xs text-gray-300 font-bold">Prazo</div>
               <div id="modalDeadline" class="text-xl font-extrabold text-gray-100">--</div>
             </div>
           </div>
@@ -862,38 +659,32 @@
 
         <div class="mt-6 grid grid-cols-1 lg:grid-cols-12 gap-5">
           <div class="lg:col-span-8">
-            <div class="glass-card p-5">
-              <h4 class="text-xl font-extrabold gradient-text">Detalhes</h4>
+            <div class="glass p-5">
+              <h4 class="text-xl font-extrabold gradient-text" style="font-family:'Archivo',sans-serif;">Detalhes</h4>
               <p id="modalDescription" class="text-gray-300 mt-2 leading-relaxed">
                 Conteúdo do projeto...
               </p>
 
               <div class="mt-4">
                 <div class="text-sm text-gray-200 font-extrabold">Skills desejadas</div>
-                <div id="modalSkills" class="mt-2 flex flex-wrap gap-2">
-                  <span class="chip">Skill</span>
-                </div>
+                <div id="modalSkills" class="mt-2 flex flex-wrap gap-2"></div>
               </div>
             </div>
           </div>
 
           <div class="lg:col-span-4">
-            <div class="glass-card p-5">
-              <h4 class="text-xl font-extrabold gradient-text">Inscrição</h4>
+            <div class="glass p-5">
+              <h4 class="text-xl font-extrabold gradient-text" style="font-family:'Archivo',sans-serif;">Inscrição</h4>
               <p class="text-gray-300 text-sm mt-2">
                 Envie uma mini mensagem e um link do seu portfólio.
               </p>
 
               <div class="mt-4 space-y-3">
-                <input id="applyPortfolio" class="input-astro" placeholder="Seu portfólio (opcional)" />
-                <textarea id="applyMessage" class="input-astro" rows="4" placeholder="Mensagem (ex: por que você é ideal?)"></textarea>
+                <input id="applyPortfolio" class="input" placeholder="Seu portfólio (opcional)"/>
+                <textarea id="applyMessage" class="input" rows="4" placeholder="Mensagem (ex: por que você é ideal?)"></textarea>
 
-                <button id="btnApplyProject" class="btn-astro w-full px-6 py-3 rounded-full font-extrabold">
-                  Inscrever-se nesse Projeto
-                </button>
-
-                <button id="btnOpenAuthInsideModal" class="btn-ghost w-full px-6 py-3 rounded-full font-extrabold hidden">
-                  Fazer Login para se Inscrever
+                <button id="btnApplyProject" class="btn btn-primary w-full px-6 py-3">
+                  Inscrever-se nesse projeto
                 </button>
               </div>
 
@@ -908,166 +699,29 @@
     </div>
   </div>
 
-  <!-- ===== AUTH MODAL ===== -->
-  <div id="authModal" class="modal-overlay">
-    <div class="modal-box glass-card neon-border">
-      <button class="modal-close" id="closeAuthModal">×</button>
-
-      <div class="p-6 md:p-8">
-        <div class="flex items-center justify-between flex-wrap gap-3">
-          <div>
-            <h3 class="text-3xl font-extrabold gradient-text">Acessar Portal</h3>
-            <p class="text-gray-300 mt-1">Entre com sua conta ou crie uma nova em segundos.</p>
-          </div>
-          <div class="flex gap-2">
-            <button id="modeLogin" class="tab-btn active">Login</button>
-            <button id="modeRegister" class="tab-btn">Criar conta</button>
-          </div>
-        </div>
-
-        <div class="mt-6 grid grid-cols-1 lg:grid-cols-12 gap-5">
-          <div class="lg:col-span-7">
-            <div class="glass-card p-6">
-              <div class="space-y-3">
-                <input id="authName" class="input-astro hidden" placeholder="Seu nome (para cadastro)" />
-                <input id="authEmail" class="input-astro" placeholder="Seu e-mail" />
-                <input id="authPass" class="input-astro" type="password" placeholder="Sua senha" />
-              </div>
-
-              <div class="mt-5 flex flex-col gap-3">
-                <button id="btnAuthMain" class="btn-astro w-full px-6 py-3 rounded-full font-extrabold">
-                  Entrar
-                </button>
-
-                <button id="btnGoogle" class="btn-ghost w-full px-6 py-3 rounded-full font-extrabold">
-                  Entrar com Google
-                </button>
-              </div>
-
-              <div class="mt-4 text-xs text-gray-400">
-                🔒 Autenticação segura com Firebase Auth.
-              </div>
-            </div>
-          </div>
-
-          <div class="lg:col-span-5">
-            <div class="glass-card p-6">
-              <h4 class="text-xl font-extrabold gradient-text">Padrão Asthro</h4>
-              <p class="text-gray-300 text-sm mt-2">
-                O portal foi criado para manter o alto nível de qualidade e estética em cada entrega.
-              </p>
-
-              <div class="mt-4 space-y-2">
-                <div class="chip">Interface premium</div>
-                <div class="chip">Projetos selecionados</div>
-                <div class="chip">Inscrição organizada</div>
-                <div class="chip">Perfil profissional</div>
-              </div>
-
-              <div class="mt-5 p-4 rounded-xl"
-                   style="background: rgba(102,39,255,0.08); border:1px solid rgba(102,39,255,0.25);">
-                <div class="text-sm font-extrabold text-gray-100">Importante</div>
-                <div class="text-sm text-gray-300 mt-1">
-                  Se você ainda não configurou o Firebase, o portal funciona em <b>modo DEMO</b>.
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-  <!-- ===== TOAST ===== -->
-  <div id="toast" class="toast">Mensagem</div>
-
-  <!-- ===== FOOTER (IGUAL AO SEU) ===== -->
-  <footer class="py-12">
-    <div class="max-w-7xl mx-auto px-4 content-layer">
-      <div class="flex flex-col items-center">
-        <div class="social-links-png flex justify-center space-x-6 mb-8">
-          <a href="https://www.instagram.com/agencia_asthro/" target="_blank"><img src="https://i.imgur.com/ztvOJV3.png" class="social-img-icon" /></a>
-          <a href="https://www.tiktok.com/@asthroagencia" target="_blank"><img src="https://i.imgur.com/yrBBMaJ.png" class="social-img-icon" /></a>
-          <a href="https://www.youtube.com/@asthroag%C3%AAncia" target="_blank"><img src="https://i.imgur.com/0vJwT4o.png" class="social-img-icon" /></a>
-        </div>
-
-        <div class="bg-white/5 border border-white/10 backdrop-blur-md rounded-full px-6 py-2 flex flex-col md:flex-row items-center gap-4 shadow-xl">
-          <p class="text-[10px] md:text-xs text-gray-300 tracking-widest uppercase">
-            Asthro <span class="mx-2 text-cyan-400">|</span> 64.229.666/0001-07
-          </p>
-        </div>
-
-        <p class="mt-4 text-[10px] text-gray-500 uppercase tracking-tighter">© 2026 • Todos os direitos reservados.</p>
-      </div>
-    </div>
-  </footer>
-
-  <!-- ====== SCRIPTS ====== -->
   <script>
-    // Partículas (igual ao seu)
-    particlesJS('particles-js', {
-      particles: {
-        number: { value: window.innerWidth <= 768 ? 90 : 200, density: { enable: true, value_area: 800 } },
-        color: { value: ['#6627ff', '#0bf4ed', '#30fca9'] },
-        shape: { type: 'circle' },
-        opacity: { value: 0.8, random: false },
-        size: { value: 4, random: true },
-        line_linked: { enable: true, distance: 120, color: '#0bf4ed', opacity: 0.6, width: 1 },
-        move: { enable: true, speed: 1, direction: 'none', random: true, straight: false, out_mode: 'out', bounce: false }
-      },
-      interactivity: {
-        detect_on: 'canvas',
-        events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' }, resize: true },
-        modes: { repulse: { distance: 50, duration: 0.1 }, push: { particles_nb: 6 } }
-      },
-      retina_detect: true
-    });
-
-    // Menu mobile
-    const hamburger = document.querySelector('.hamburger');
-    const navMenu = document.querySelector('.nav-menu-mobile');
-    function toggleMenu() {
-      hamburger.classList.toggle('active');
-      navMenu.classList.toggle('active');
-      document.body.style.overflowY = navMenu.classList.contains('active') ? 'hidden' : 'auto';
+    // Partículas
+    let particlesEnabled = true;
+    function initParticles(){
+      particlesJS('particles-js', {
+        particles: {
+          number: { value: window.innerWidth <= 768 ? 70 : 160, density: { enable: true, value_area: 800 } },
+          color: { value: ['#6627ff', '#0bf4ed', '#30fca9'] },
+          shape: { type: 'circle' },
+          opacity: { value: 0.75 },
+          size: { value: 4, random: true },
+          line_linked: { enable: true, distance: 120, color: '#0bf4ed', opacity: 0.5, width: 1 },
+          move: { enable: true, speed: 1, random: true, out_mode: 'out' }
+        },
+        interactivity: {
+          detect_on: 'canvas',
+          events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' }, resize: true },
+          modes: { repulse: { distance: 60, duration: 0.12 }, push: { particles_nb: 6 } }
+        },
+        retina_detect: true
+      });
     }
-    hamburger.addEventListener('click', toggleMenu);
-    document.addEventListener('click', (e) => {
-      if (!hamburger.contains(e.target) && !navMenu.contains(e.target) && navMenu.classList.contains('active')) {
-        toggleMenu();
-      }
-    });
-
-    // Dropdown Ferramentas (desktop)
-    const toolsDropdownContainer = document.getElementById('toolsDropdownContainer');
-    const toolsToggle = document.getElementById('toolsDropdownToggle');
-    const toolsMenu = document.getElementById('toolsMenu');
-    const toolsArrow = toolsToggle.querySelector('svg');
-
-    toolsToggle.addEventListener('click', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      const isOpen = toolsDropdownContainer.classList.contains('active');
-      if (!isOpen) {
-        toolsDropdownContainer.classList.add('active');
-        toolsArrow.style.transform = 'rotate(180deg)';
-        toolsToggle.setAttribute('aria-expanded','true');
-      } else {
-        toolsDropdownContainer.classList.remove('active');
-        toolsArrow.style.transform = '';
-        toolsToggle.setAttribute('aria-expanded','false');
-      }
-    });
-    document.addEventListener('click', function() {
-      if (toolsDropdownContainer.classList.contains('active')) {
-        toolsDropdownContainer.classList.remove('active');
-        toolsArrow.style.transform = '';
-        toolsToggle.setAttribute('aria-expanded','false');
-      }
-    });
-    toolsMenu.addEventListener('click', (e) => e.stopPropagation());
+    initParticles();
 
     // Toast
     const toastEl = document.getElementById('toast');
@@ -1078,18 +732,22 @@
       clearTimeout(toastTimer);
       toastTimer = setTimeout(() => toastEl.classList.remove('show'), 2600);
     }
+
+    function escapeHtml(str){
+      return String(str || "")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
   </script>
 
-  <!-- ====== FIREBASE + PORTAL LOGIC ====== -->
   <script type="module">
     /**
-     * ✅ ESTE PORTAL FUNCIONA DE 2 JEITOS:
-     * 1) MODO DEMO (sem Firebase configurado) -> mostra projetos fictícios e login fake
-     * 2) MODO REAL (com Firebase Auth + Firestore) -> login real e projetos do banco
+     * ✅ CONFIGURE SEU FIREBASE AQUI
+     * Firebase Console > Configurações do projeto > Seus apps > Web
      */
-
-    // ====== 1) CONFIGURE AQUI O SEU FIREBASE ======
-    // 👉 Vá em Firebase Console > Configurações do projeto > Seus apps > Web
     const firebaseConfig = {
       apiKey: "SUA_API_KEY_AQUI",
       authDomain: "SEU_AUTH_DOMAIN_AQUI",
@@ -1101,111 +759,143 @@
 
     const isFirebaseReady = !!firebaseConfig.apiKey && !firebaseConfig.apiKey.includes("SUA_");
 
-    // Imports Firebase (somente se for usar real)
-    let app, auth, db;
+    // Firebase imports seguros (SEM dar erro de variável não declarada)
+    let initializeApp, getAuth, getFirestore;
     let createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut;
     let GoogleAuthProvider, signInWithPopup, updateProfile;
-    let getFirestore, collection, getDocs, query, where, orderBy, addDoc, serverTimestamp, doc, setDoc, getDoc;
+    let collection, getDocs, query, where, orderBy, addDoc, serverTimestamp, doc, setDoc, getDoc;
 
-    if (isFirebaseReady) {
+    let auth = null;
+    let db = null;
+
+    if (isFirebaseReady){
       const fbApp = await import("https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js");
       const fbAuth = await import("https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js");
       const fbDb = await import("https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js");
 
-      ({ initializeApp } = fbApp);
-      ({ getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup, updateProfile } = fbAuth);
-      ({ getFirestore, collection, getDocs, query, where, orderBy, addDoc, serverTimestamp, doc, setDoc, getDoc } = fbDb);
+      initializeApp = fbApp.initializeApp;
 
-      app = initializeApp(firebaseConfig);
+      getAuth = fbAuth.getAuth;
+      createUserWithEmailAndPassword = fbAuth.createUserWithEmailAndPassword;
+      signInWithEmailAndPassword = fbAuth.signInWithEmailAndPassword;
+      onAuthStateChanged = fbAuth.onAuthStateChanged;
+      signOut = fbAuth.signOut;
+
+      GoogleAuthProvider = fbAuth.GoogleAuthProvider;
+      signInWithPopup = fbAuth.signInWithPopup;
+      updateProfile = fbAuth.updateProfile;
+
+      getFirestore = fbDb.getFirestore;
+      collection = fbDb.collection;
+      getDocs = fbDb.getDocs;
+      query = fbDb.query;
+      where = fbDb.where;
+      orderBy = fbDb.orderBy;
+      addDoc = fbDb.addDoc;
+      serverTimestamp = fbDb.serverTimestamp;
+      doc = fbDb.doc;
+      setDoc = fbDb.setDoc;
+      getDoc = fbDb.getDoc;
+
+      const app = initializeApp(firebaseConfig);
       auth = getAuth(app);
       db = getFirestore(app);
     }
 
-    // ====== 2) ELEMENTOS ======
-    const openAuthBtn = document.getElementById('openAuthBtn');
-    const authModal = document.getElementById('authModal');
-    const closeAuthModal = document.getElementById('closeAuthModal');
+    // ===== ELEMENTOS =====
+    const authScreen = document.getElementById("authScreen");
+    const appScreen = document.getElementById("appScreen");
 
-    const modeLogin = document.getElementById('modeLogin');
-    const modeRegister = document.getElementById('modeRegister');
-    const authName = document.getElementById('authName');
-    const authEmail = document.getElementById('authEmail');
-    const authPass = document.getElementById('authPass');
-    const btnAuthMain = document.getElementById('btnAuthMain');
-    const btnGoogle = document.getElementById('btnGoogle');
+    // Auth UI
+    const tabLogin = document.getElementById("tabLogin");
+    const tabRegister = document.getElementById("tabRegister");
+    const authName = document.getElementById("authName");
+    const authEmail = document.getElementById("authEmail");
+    const authPass = document.getElementById("authPass");
+    const btnAuthMain = document.getElementById("btnAuthMain");
+    const btnGoogle = document.getElementById("btnGoogle");
+    const btnEnterDemo = document.getElementById("btnEnterDemo");
 
-    const userBox = document.getElementById('userBox');
-    const btnMyArea = document.getElementById('btnMyArea');
-    const btnLogout = document.getElementById('btnLogout');
-    const memberArea = document.getElementById('memberArea');
+    // Sidebar + mobile
+    const sidebar = document.getElementById("sidebar");
+    const overlay = document.getElementById("overlay");
+    const btnOpenSidebar = document.getElementById("btnOpenSidebar");
+    const btnCloseSidebar = document.getElementById("btnCloseSidebar");
 
-    const publicProjectsGrid = document.getElementById('publicProjectsGrid');
-    const publicEmpty = document.getElementById('publicEmpty');
-    const btnPublicRefresh = document.getElementById('btnPublicRefresh');
+    // Sidebar user
+    const sbName = document.getElementById("sbName");
+    const sbEmail = document.getElementById("sbEmail");
 
-    const projectsGrid = document.getElementById('projectsGrid');
-    const projectsEmpty = document.getElementById('projectsEmpty');
-    const btnRefreshProjects = document.getElementById('btnRefreshProjects');
+    // Stats
+    const statOpen = document.getElementById("statOpen");
+    const statOnline = document.getElementById("statOnline");
+    const statApps = document.getElementById("statApps");
 
-    const searchInput = document.getElementById('searchInput');
-    const categoryFilter = document.getElementById('categoryFilter');
-    const levelFilter = document.getElementById('levelFilter');
-    const typeFilter = document.getElementById('typeFilter');
-    const btnApplyFilters = document.getElementById('btnApplyFilters');
-    const btnClearFilters = document.getElementById('btnClearFilters');
+    // Pages
+    const menuButtons = document.querySelectorAll(".menu-btn");
+    const pages = document.querySelectorAll(".page");
+    const pageTitle = document.getElementById("pageTitle");
+    const pageSubtitle = document.getElementById("pageSubtitle");
+    const btnRefresh = document.getElementById("btnRefresh");
 
-    const statOpen = document.getElementById('statOpen');
-    const statOnline = document.getElementById('statOnline');
-    const statApps = document.getElementById('statApps');
+    // Projects
+    const projectsGrid = document.getElementById("projectsGrid");
+    const projectsEmpty = document.getElementById("projectsEmpty");
+    const searchInput = document.getElementById("searchInput");
+    const categoryFilter = document.getElementById("categoryFilter");
+    const levelFilter = document.getElementById("levelFilter");
+    const typeFilter = document.getElementById("typeFilter");
+    const btnApplyFilters = document.getElementById("btnApplyFilters");
+    const btnClearFilters = document.getElementById("btnClearFilters");
 
-    // Tabs
-    const tabButtons = document.querySelectorAll('.tab-btn[data-tab]');
-    const tabPanels = document.querySelectorAll('.tab-panel');
-
-    // Modal Projeto
-    const projectModal = document.getElementById('projectModal');
-    const closeProjectModal = document.getElementById('closeProjectModal');
-    const modalStatus = document.getElementById('modalStatus');
-    const modalCategory = document.getElementById('modalCategory');
-    const modalType = document.getElementById('modalType');
-    const modalLevel = document.getElementById('modalLevel');
-    const modalTitle = document.getElementById('modalTitle');
-    const modalShort = document.getElementById('modalShort');
-    const modalBudget = document.getElementById('modalBudget');
-    const modalDeadline = document.getElementById('modalDeadline');
-    const modalDescription = document.getElementById('modalDescription');
-    const modalSkills = document.getElementById('modalSkills');
-
-    const applyPortfolio = document.getElementById('applyPortfolio');
-    const applyMessage = document.getElementById('applyMessage');
-    const btnApplyProject = document.getElementById('btnApplyProject');
-    const btnOpenAuthInsideModal = document.getElementById('btnOpenAuthInsideModal');
+    // Apps
+    const appsList = document.getElementById("appsList");
+    const appsEmpty = document.getElementById("appsEmpty");
 
     // Profile
-    const profileName = document.getElementById('profileName');
-    const profileRole = document.getElementById('profileRole');
-    const profilePortfolio = document.getElementById('profilePortfolio');
-    const profileSkills = document.getElementById('profileSkills');
-    const profileBio = document.getElementById('profileBio');
-    const btnSaveProfile = document.getElementById('btnSaveProfile');
+    const profileName = document.getElementById("profileName");
+    const profileRole = document.getElementById("profileRole");
+    const profilePortfolio = document.getElementById("profilePortfolio");
+    const profileSkills = document.getElementById("profileSkills");
+    const profileBio = document.getElementById("profileBio");
+    const btnSaveProfile = document.getElementById("btnSaveProfile");
 
-    const previewName = document.getElementById('previewName');
-    const previewRole = document.getElementById('previewRole');
-    const previewChips = document.getElementById('previewChips');
-    const previewBio = document.getElementById('previewBio');
-    const previewPortfolio = document.getElementById('previewPortfolio');
+    const previewName = document.getElementById("previewName");
+    const previewRole = document.getElementById("previewRole");
+    const previewChips = document.getElementById("previewChips");
+    const previewBio = document.getElementById("previewBio");
+    const previewPortfolio = document.getElementById("previewPortfolio");
 
-    const appsList = document.getElementById('appsList');
-    const appsEmpty = document.getElementById('appsEmpty');
+    // Settings
+    const btnToggleParticles = document.getElementById("btnToggleParticles");
 
-    // ====== 3) DEMO DATA ======
+    // Modal Projeto
+    const projectModal = document.getElementById("projectModal");
+    const closeProjectModal = document.getElementById("closeProjectModal");
+    const modalStatus = document.getElementById("modalStatus");
+    const modalCategory = document.getElementById("modalCategory");
+    const modalType = document.getElementById("modalType");
+    const modalLevel = document.getElementById("modalLevel");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalShort = document.getElementById("modalShort");
+    const modalBudget = document.getElementById("modalBudget");
+    const modalDeadline = document.getElementById("modalDeadline");
+    const modalDescription = document.getElementById("modalDescription");
+    const modalSkills = document.getElementById("modalSkills");
+    const applyPortfolio = document.getElementById("applyPortfolio");
+    const applyMessage = document.getElementById("applyMessage");
+    const btnApplyProject = document.getElementById("btnApplyProject");
+
+    const btnLogout = document.getElementById("btnLogout");
+
+    // ====== DEMO DATA ======
     const demoProjects = [
       {
         id: "demo-1",
         status: "open",
         title: "Landing Page Premium (Alta conversão)",
         short: "Criação de landing page com estética premium, responsiva e rápida.",
-        description: "Projeto para criar uma landing page com visual premium, animações suaves, copy organizada e foco total em conversão. Preferência por estilo dark + neon. Entrega com performance e SEO básico.",
+        description: "Projeto para criar uma landing page com visual premium, animações suaves, copy organizada e foco total em conversão. Preferência por estilo dark + neon.",
         category: "Web",
         type: "Remoto",
         level: "Intermediário",
@@ -1219,7 +909,7 @@
         status: "open",
         title: "Identidade Visual (Branding + Manual)",
         short: "Marca completa com paleta, tipografia e guia de uso.",
-        description: "Rebranding para empresa do nicho premium. Precisamos de uma marca limpa, moderna, com assinatura forte. Entrega: logo, variações, paleta, tipografia e manual curto.",
+        description: "Rebranding premium. Entrega: logo, variações, paleta, tipografia e manual curto.",
         category: "Branding",
         type: "Remoto",
         level: "Avançado",
@@ -1233,111 +923,59 @@
         status: "open",
         title: "Pacote Social Media (12 posts + 6 stories)",
         short: "Artes consistentes com estética clean e moderna.",
-        description: "Criação de kit social media com estética premium e identidade bem alinhada. Layouts minimalistas e com variações, mantendo consistência visual.",
+        description: "Criação de kit social com consistência visual e variações mantendo padrão premium.",
         category: "Social Media",
         type: "Remoto",
         level: "Iniciante",
         budgetMin: 450,
         budgetMax: 900,
         deadline: "5 dias",
-        skills: ["Design", "Canva/PS", "Tipografia", "Direção de Arte"]
+        skills: ["Design", "Tipografia", "Direção de Arte"]
       },
       {
         id: "demo-4",
         status: "closed",
         title: "Motion Reel (Intro + Lower Third)",
         short: "Motion clean e impactante, com neon sutil.",
-        description: "Projeto de motion curto com intro de 4-6s + lower thirds. Direção: futurista, neon controlado, sem exagero.",
+        description: "Intro 4–6s + lower thirds. Direção futurista, neon controlado, sem exagero.",
         category: "Motion",
         type: "Remoto",
         level: "Intermediário",
         budgetMin: 700,
         budgetMax: 1400,
         deadline: "6 dias",
-        skills: ["After Effects", "Motion", "SFX", "Timing"]
-      },
+        skills: ["After Effects", "Motion", "Timing"]
+      }
     ];
 
-    // ====== 4) ESTADO ======
+    // ====== STATE ======
     let currentUser = null;
     let allProjects = [];
     let currentProject = null;
+    let authMode = "login"; // login | register
 
-    // ====== 5) MODAIS ======
-    function openModal(el){ el.classList.add('open'); }
-    function closeModal(el){ el.classList.remove('open'); }
-
-    openAuthBtn.addEventListener('click', () => openModal(authModal));
-    closeAuthModal.addEventListener('click', () => closeModal(authModal));
-    authModal.addEventListener('click', (e) => { if(e.target === authModal) closeModal(authModal); });
-
-    closeProjectModal.addEventListener('click', () => closeModal(projectModal));
-    projectModal.addEventListener('click', (e) => { if(e.target === projectModal) closeModal(projectModal); });
-
-    btnOpenAuthInsideModal.addEventListener('click', () => {
-      closeModal(projectModal);
-      openModal(authModal);
-    });
-
-    // ====== 6) AUTH UI ======
-    let authMode = "login";
-
-    function setAuthMode(mode){
-      authMode = mode;
-      if (mode === "login"){
-        modeLogin.classList.add('active');
-        modeRegister.classList.remove('active');
-        authName.classList.add('hidden');
-        btnAuthMain.textContent = "Entrar";
-      } else {
-        modeRegister.classList.add('active');
-        modeLogin.classList.remove('active');
-        authName.classList.remove('hidden');
-        btnAuthMain.textContent = "Criar conta";
-      }
+    // ====== HELPERS ======
+    function showAuth(){
+      authScreen.classList.remove("hidden");
+      appScreen.classList.add("hidden");
+    }
+    function showApp(){
+      authScreen.classList.add("hidden");
+      appScreen.classList.remove("hidden");
     }
 
-    modeLogin.addEventListener('click', () => setAuthMode("login"));
-    modeRegister.addEventListener('click', () => setAuthMode("register"));
-
-    // ====== 7) RENDER USER BOX ======
-    function renderUserBox(){
-      if (!currentUser){
-        userBox.innerHTML = `
-          <div class="text-gray-300 text-sm">
-            Você ainda não está logado. Clique em <span class="gradient-text font-extrabold">Entrar / Criar Conta</span> para começar.
-          </div>
-        `;
-        btnMyArea.disabled = true;
-        btnLogout.disabled = true;
-        memberArea.classList.add('hidden');
-        return;
-      }
-
-      const displayName = currentUser.displayName || "Freelancer Asthro";
-      const email = currentUser.email || "--";
-
-      userBox.innerHTML = `
-        <div class="glass-card p-4">
-          <div class="text-sm text-gray-300">Logado como</div>
-          <div class="text-2xl font-extrabold gradient-text mt-1">${escapeHtml(displayName)}</div>
-          <div class="text-sm text-gray-300 mt-1">${escapeHtml(email)}</div>
-        </div>
-        <div class="mt-3 text-xs text-gray-400">
-          Você já pode se inscrever nos projetos e editar seu perfil.
-        </div>
-      `;
-      btnMyArea.disabled = false;
-      btnLogout.disabled = false;
-      memberArea.classList.remove('hidden');
+    function openSidebar(){
+      sidebar.classList.add("open");
+      overlay.classList.add("show");
+    }
+    function closeSidebar(){
+      sidebar.classList.remove("open");
+      overlay.classList.remove("show");
     }
 
-    btnMyArea.addEventListener('click', () => {
-      if (!currentUser) return showToast("Faça login para acessar sua área.");
-      memberArea.scrollIntoView({ behavior: "smooth" });
-    });
+    function openModal(el){ el.classList.add("open"); }
+    function closeModal(el){ el.classList.remove("open"); }
 
-    // ====== 8) RENDER PROJECTS ======
     function formatBRL(min, max){
       if (!min && !max) return "A combinar";
       const fmt = (v) => Number(v).toLocaleString('pt-BR', { style:'currency', currency:'BRL' });
@@ -1346,23 +984,27 @@
       return `até ${fmt(max)}`;
     }
 
-    function projectCardHTML(p, buttonText = "Ver detalhes"){
+    function projectCardHTML(p){
       const statusClass = p.status === "open" ? "badge-open" : "badge-closed";
       const statusText = p.status === "open" ? "ABERTO" : "ENCERRADO";
-
       const chips = (p.skills || []).slice(0, 4).map(s => `<span class="chip">${escapeHtml(s)}</span>`).join("");
 
       return `
-        <div class="project-card">
+        <article class="project-card">
           <div class="top-line"></div>
           <div class="p-5">
-            <div class="flex items-center justify-between gap-3">
+            <div class="flex items-center justify-between gap-3 flex-wrap">
               <span class="${statusClass}">${statusText}</span>
               <span class="chip">${escapeHtml(p.category || "Geral")}</span>
             </div>
 
-            <h4 class="text-xl font-extrabold mt-3 text-gray-100">${escapeHtml(p.title)}</h4>
-            <p class="text-gray-300 text-sm mt-2 leading-relaxed">${escapeHtml(p.short || "")}</p>
+            <h4 class="text-xl font-extrabold mt-3 text-gray-100">
+              ${escapeHtml(p.title || "")}
+            </h4>
+
+            <p class="text-gray-300 text-sm mt-2 leading-relaxed">
+              ${escapeHtml(p.short || "")}
+            </p>
 
             <div class="mt-3 flex flex-wrap gap-2">
               <span class="chip">${escapeHtml(p.type || "Remoto")}</span>
@@ -1372,12 +1014,12 @@
 
             <div class="mt-4 flex items-center justify-between gap-3">
               <div>
-                <div class="text-xs text-gray-300">Orçamento</div>
+                <div class="text-xs text-gray-300 font-bold">Orçamento</div>
                 <div class="text-sm font-extrabold gradient-text">${formatBRL(p.budgetMin, p.budgetMax)}</div>
               </div>
 
-              <button class="btn-astro px-4 py-2 rounded-full font-extrabold text-sm btnDetails" data-id="${escapeHtml(p.id)}">
-                ${buttonText}
+              <button class="btn btn-primary px-4 py-2 text-sm btnDetails" data-id="${escapeHtml(p.id)}">
+                Ver detalhes
               </button>
             </div>
 
@@ -1385,53 +1027,32 @@
               ${chips || `<span class="chip">Asthro style</span>`}
             </div>
           </div>
-        </div>
+        </article>
       `;
     }
 
-    function renderPublicProjects(list){
-      publicProjectsGrid.innerHTML = "";
-      if (!list.length){
-        publicEmpty.classList.remove('hidden');
-        return;
-      }
-      publicEmpty.classList.add('hidden');
-
-      list.forEach(p => {
-        publicProjectsGrid.insertAdjacentHTML('beforeend', projectCardHTML(p, "Detalhes"));
-      });
-
-      attachDetailsEvents();
-    }
-
-    function renderMemberProjects(list){
+    function renderProjects(list){
       projectsGrid.innerHTML = "";
+      projectsEmpty.classList.add("hidden");
+
       if (!list.length){
-        projectsEmpty.classList.remove('hidden');
+        projectsEmpty.classList.remove("hidden");
         return;
       }
-      projectsEmpty.classList.add('hidden');
 
-      list.forEach(p => {
-        projectsGrid.insertAdjacentHTML('beforeend', projectCardHTML(p, "Abrir"));
-      });
+      list.forEach(p => projectsGrid.insertAdjacentHTML("beforeend", projectCardHTML(p)));
 
-      attachDetailsEvents();
-    }
-
-    function attachDetailsEvents(){
-      document.querySelectorAll('.btnDetails').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const id = btn.getAttribute('data-id');
+      document.querySelectorAll(".btnDetails").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const id = btn.getAttribute("data-id");
           const p = allProjects.find(x => x.id === id);
           if (!p) return;
-          openProjectModal(p);
+          openProject(p);
         });
       });
     }
 
-    // ====== 9) MODAL PROJETO ======
-    function openProjectModal(p){
+    function openProject(p){
       currentProject = p;
 
       modalStatus.className = p.status === "open" ? "badge-open" : "badge-closed";
@@ -1440,7 +1061,6 @@
       modalCategory.textContent = p.category || "Geral";
       modalType.textContent = p.type || "Remoto";
       modalLevel.textContent = p.level || "Intermediário";
-
       modalTitle.textContent = p.title || "";
       modalShort.textContent = p.short || "";
       modalDescription.textContent = p.description || "";
@@ -1449,25 +1069,15 @@
 
       modalSkills.innerHTML = "";
       (p.skills || []).forEach(s => {
-        modalSkills.insertAdjacentHTML('beforeend', `<span class="chip">${escapeHtml(s)}</span>`);
+        modalSkills.insertAdjacentHTML("beforeend", `<span class="chip">${escapeHtml(s)}</span>`);
       });
-      if (!(p.skills || []).length) {
-        modalSkills.insertAdjacentHTML('beforeend', `<span class="chip">Asthro standard</span>`);
-      }
-
-      // Botões conforme login
-      if (!currentUser) {
-        btnApplyProject.classList.add('hidden');
-        btnOpenAuthInsideModal.classList.remove('hidden');
-      } else {
-        btnApplyProject.classList.remove('hidden');
-        btnOpenAuthInsideModal.classList.add('hidden');
+      if (!(p.skills || []).length){
+        modalSkills.insertAdjacentHTML("beforeend", `<span class="chip">Asthro standard</span>`);
       }
 
       openModal(projectModal);
     }
 
-    // ====== 10) FILTROS ======
     function applyFilters(){
       const txt = (searchInput.value || "").toLowerCase().trim();
       const cat = categoryFilter.value;
@@ -1484,82 +1094,62 @@
         const matchCat = !cat || p.category === cat;
         const matchLvl = !lvl || p.level === lvl;
         const matchTyp = !typ || p.type === typ;
+
         return matchTxt && matchCat && matchLvl && matchTyp;
       });
 
-      renderMemberProjects(filtered);
+      renderProjects(filtered);
       showToast("Filtros aplicados ✔");
     }
 
-    btnApplyFilters.addEventListener('click', applyFilters);
-    btnClearFilters.addEventListener('click', () => {
-      searchInput.value = "";
-      categoryFilter.value = "";
-      levelFilter.value = "";
-      typeFilter.value = "";
-      renderMemberProjects(allProjects);
-      showToast("Filtros limpos ✔");
-    });
+    function setPage(pageId){
+      pages.forEach(p => p.classList.add("hidden"));
+      document.getElementById(pageId).classList.remove("hidden");
 
-    // ====== 11) INSCRIÇÃO EM PROJETO ======
-    btnApplyProject.addEventListener('click', async () => {
-      if (!currentUser) {
-        showToast("Faça login para se inscrever.");
-        return;
+      menuButtons.forEach(b => b.classList.remove("active"));
+      document.querySelector(`.menu-btn[data-page="${pageId}"]`)?.classList.add("active");
+
+      const titles = {
+        pageProjects: ["Projetos", "Encontre vagas compatíveis com seu perfil e se inscreva."],
+        pageApps: ["Minhas inscrições", "Acompanhe seus envios com clareza."],
+        pageProfile: ["Meu perfil", "Deixe seus dados profissionais completos."],
+        pageSettings: ["Preferências", "Deixe o portal confortável para você."]
+      };
+
+      const [t, s] = titles[pageId] || ["Portal", "Bem-vindo ao painel."];
+      pageTitle.textContent = t;
+      pageSubtitle.textContent = s;
+
+      // Fecha sidebar no mobile ao trocar página
+      closeSidebar();
+    }
+
+    function setAuthMode(mode){
+      authMode = mode;
+
+      if (mode === "login"){
+        tabLogin.style.borderColor = "rgba(11,244,237,0.45)";
+        tabLogin.style.color = "#0bf4ed";
+        tabRegister.style.borderColor = "rgba(255,255,255,0.12)";
+        tabRegister.style.color = "#edf1f7";
+        authName.classList.add("hidden");
+        btnAuthMain.textContent = "Entrar";
+      } else {
+        tabRegister.style.borderColor = "rgba(11,244,237,0.45)";
+        tabRegister.style.color = "#0bf4ed";
+        tabLogin.style.borderColor = "rgba(255,255,255,0.12)";
+        tabLogin.style.color = "#edf1f7";
+        authName.classList.remove("hidden");
+        btnAuthMain.textContent = "Criar conta";
       }
-      if (!currentProject) return;
+    }
 
-      if (currentProject.status !== "open") {
-        showToast("Este projeto está encerrado.");
-        return;
-      }
-
-      const message = (applyMessage.value || "").trim();
-      const portfolio = (applyPortfolio.value || "").trim();
-
-      try {
-        if (!isFirebaseReady) {
-          // DEMO
-          showToast("Inscrição enviada (DEMO) ✔");
-          applyMessage.value = "";
-          applyPortfolio.value = "";
-          closeModal(projectModal);
-          return;
-        }
-
-        await addDoc(collection(db, "applications"), {
-          userId: currentUser.uid,
-          userEmail: currentUser.email || "",
-          userName: currentUser.displayName || "",
-          projectId: currentProject.id,
-          projectTitle: currentProject.title || "",
-          portfolio: portfolio || "",
-          message: message || "",
-          createdAt: serverTimestamp(),
-          status: "sent"
-        });
-
-        showToast("Inscrição enviada com sucesso ✔");
-        applyMessage.value = "";
-        applyPortfolio.value = "";
-        closeModal(projectModal);
-
-        await loadMyApplications();
-        await updateStats();
-
-      } catch (err) {
-        console.error(err);
-        showToast("Erro ao enviar inscrição. Verifique regras do Firebase.");
-      }
-    });
-
-    // ====== 12) PERFIL ======
     function setPreview(){
       const nm = profileName.value.trim() || "Seu nome aqui";
       const rl = profileRole.value.trim() || "Sua área aqui";
       const pf = profilePortfolio.value.trim();
       const sk = profileSkills.value.trim();
-      const bio = profileBio.value.trim() || "Uma bio bem escrita te destaca. Mostre sua força: estética, técnica e entrega.";
+      const bio = profileBio.value.trim() || "Uma bio bem escrita te destaca. Mostre estética, técnica e entrega.";
 
       previewName.textContent = nm;
       previewRole.textContent = rl;
@@ -1567,119 +1157,124 @@
 
       previewChips.innerHTML = "";
       const skillsArr = sk ? sk.split(",").map(s => s.trim()).filter(Boolean) : [];
-      skillsArr.slice(0, 6).forEach(s => previewChips.insertAdjacentHTML('beforeend', `<span class="chip">${escapeHtml(s)}</span>`));
-      if (!skillsArr.length) {
-        previewChips.insertAdjacentHTML('beforeend', `<span class="chip">skills</span>`);
-        previewChips.insertAdjacentHTML('beforeend', `<span class="chip">Asthro standard</span>`);
+      skillsArr.slice(0, 6).forEach(s => previewChips.insertAdjacentHTML("beforeend", `<span class="chip">${escapeHtml(s)}</span>`));
+      if (!skillsArr.length){
+        previewChips.insertAdjacentHTML("beforeend", `<span class="chip">skills</span>`);
+        previewChips.insertAdjacentHTML("beforeend", `<span class="chip">Asthro standard</span>`);
       }
 
-      if (pf) {
+      if (pf){
         previewPortfolio.href = pf;
-        previewPortfolio.classList.remove('hidden');
+        previewPortfolio.classList.remove("hidden");
       } else {
-        previewPortfolio.classList.add('hidden');
+        previewPortfolio.classList.add("hidden");
       }
     }
 
-    [profileName, profileRole, profilePortfolio, profileSkills, profileBio].forEach(el => {
-      el.addEventListener('input', setPreview);
-    });
+    async function updateStats(){
+      try{
+        const openCount = allProjects.filter(p => p.status === "open").length;
+        statOpen.textContent = String(openCount);
+        statOnline.textContent = String(Math.max(8, openCount * 3 + 11));
 
-    btnSaveProfile.addEventListener('click', async () => {
-      if (!currentUser) return showToast("Faça login para salvar seu perfil.");
-
-      const data = {
-        name: profileName.value.trim(),
-        role: profileRole.value.trim(),
-        portfolio: profilePortfolio.value.trim(),
-        skills: profileSkills.value.trim(),
-        bio: profileBio.value.trim(),
-        updatedAt: isFirebaseReady ? serverTimestamp() : new Date().toISOString(),
-      };
-
-      try {
-        if (!isFirebaseReady) {
-          showToast("Perfil salvo (DEMO) ✔");
+        if (!isFirebaseReady){
+          statApps.textContent = "--";
           return;
         }
-
-        await setDoc(doc(db, "freelancers", currentUser.uid), {
-          uid: currentUser.uid,
-          email: currentUser.email || "",
-          displayName: currentUser.displayName || "",
-          ...data
-        }, { merge: true });
-
-        showToast("Perfil salvo com sucesso ✔");
-      } catch (err) {
-        console.error(err);
-        showToast("Erro ao salvar perfil. Verifique regras do Firebase.");
+        const snap = await getDocs(collection(db, "applications"));
+        statApps.textContent = String(snap.size);
+      } catch {
+        statApps.textContent = "--";
       }
-    });
+    }
 
-    async function loadProfile(){
-      if (!currentUser) return;
+    async function loadProjects(){
+      // Skeleton simples
+      projectsGrid.innerHTML = "";
+      projectsEmpty.classList.add("hidden");
 
-      if (!isFirebaseReady) {
-        profileName.value = currentUser.displayName || "";
-        setPreview();
+      const placeholders = Array.from({length:6}).map(() => `
+        <div class="glass p-5 animate-pulse">
+          <div class="h-4 w-24 bg-white/10 rounded mb-3"></div>
+          <div class="h-6 w-3/4 bg-white/10 rounded mb-2"></div>
+          <div class="h-4 w-full bg-white/10 rounded mb-2"></div>
+          <div class="h-4 w-2/3 bg-white/10 rounded mb-4"></div>
+          <div class="h-10 w-36 bg-white/10 rounded-full"></div>
+        </div>
+      `).join("");
+      projectsGrid.innerHTML = placeholders;
+
+      if (!isFirebaseReady){
+        allProjects = demoProjects;
+        renderProjects(allProjects);
+        await updateStats();
         return;
       }
 
       try{
-        const ref = doc(db, "freelancers", currentUser.uid);
-        const snap = await getDoc(ref);
-        if (snap.exists()){
-          const d = snap.data();
-          profileName.value = d.name || currentUser.displayName || "";
-          profileRole.value = d.role || "";
-          profilePortfolio.value = d.portfolio || "";
-          profileSkills.value = d.skills || "";
-          profileBio.value = d.bio || "";
-          setPreview();
-        } else {
-          profileName.value = currentUser.displayName || "";
-          setPreview();
-        }
-      } catch(err){
+        const q = query(collection(db, "projects"), orderBy("createdAt","desc"));
+        const snap = await getDocs(q);
+
+        const items = [];
+        snap.forEach(d => items.push({ id: d.id, ...d.data() }));
+
+        allProjects = items.map(p => ({
+          ...p,
+          status: p.status || "open",
+          skills: Array.isArray(p.skills) ? p.skills : [],
+          budgetMin: Number(p.budgetMin || 0) || null,
+          budgetMax: Number(p.budgetMax || 0) || null
+        }));
+
+        renderProjects(allProjects);
+        await updateStats();
+      } catch (err){
         console.error(err);
+        allProjects = demoProjects;
+        renderProjects(allProjects);
+        showToast("Erro no Firestore. Mostrando DEMO.");
+        await updateStats();
       }
     }
 
-    // ====== 13) MINHAS INSCRIÇÕES ======
     async function loadMyApplications(){
       appsList.innerHTML = "";
-      appsEmpty.classList.add('hidden');
+      appsEmpty.classList.add("hidden");
 
       if (!currentUser){
-        appsEmpty.classList.remove('hidden');
+        appsEmpty.classList.remove("hidden");
         appsEmpty.textContent = "Faça login para ver suas inscrições.";
         return;
       }
 
-      if (!isFirebaseReady) {
-        appsEmpty.classList.remove('hidden');
+      if (!isFirebaseReady){
+        appsEmpty.classList.remove("hidden");
         appsEmpty.textContent = "No modo DEMO, inscrições não ficam salvas.";
         return;
       }
 
       try{
-        const q = query(collection(db, "applications"), where("userId","==",currentUser.uid), orderBy("createdAt","desc"));
+        const q = query(
+          collection(db, "applications"),
+          where("userId","==",currentUser.uid),
+          orderBy("createdAt","desc")
+        );
         const snap = await getDocs(q);
+
         const items = [];
-        snap.forEach(docu => items.push({ id: docu.id, ...docu.data() }));
+        snap.forEach(d => items.push({ id:d.id, ...d.data() }));
 
         if (!items.length){
-          appsEmpty.classList.remove('hidden');
+          appsEmpty.classList.remove("hidden");
           return;
         }
 
         items.forEach(a => {
-          appsList.insertAdjacentHTML('beforeend', `
-            <div class="glass-card p-4">
+          appsList.insertAdjacentHTML("beforeend", `
+            <div class="glass p-4">
               <div class="flex items-start justify-between gap-3">
                 <div>
-                  <div class="text-sm text-gray-300">Projeto</div>
+                  <div class="text-sm text-gray-300 font-bold">Projeto</div>
                   <div class="text-xl font-extrabold gradient-text mt-1">${escapeHtml(a.projectTitle || "Projeto")}</div>
                   <div class="text-xs text-gray-400 mt-1">Status: ${escapeHtml(a.status || "sent")}</div>
                 </div>
@@ -1690,124 +1285,149 @@
             </div>
           `);
         });
-
-      } catch(err){
+      } catch (err){
         console.error(err);
-        appsEmpty.classList.remove('hidden');
+        appsEmpty.classList.remove("hidden");
         appsEmpty.textContent = "Erro ao carregar inscrições (verifique regras).";
       }
     }
 
-    // ====== 14) STATS ======
-    async function updateStats(){
-      try{
-        const openCount = allProjects.filter(p => p.status === "open").length;
-        statOpen.textContent = openCount;
+    async function loadProfile(){
+      if (!currentUser) return;
 
-        // só visual
-        statOnline.textContent = String(Math.max(8, openCount * 3 + 11));
-
-        if (!isFirebaseReady){
-          statApps.textContent = "--";
-          return;
-        }
-
-        // Conta inscrições (não obrigatório, mas bonito)
-        const snap = await getDocs(collection(db, "applications"));
-        statApps.textContent = String(snap.size);
-      } catch(e){
-        statApps.textContent = "--";
-      }
-    }
-
-    // ====== 15) LOAD PROJECTS ======
-    async function loadProjects(){
-      // skeleton
-      publicProjectsGrid.innerHTML = "";
-      projectsGrid.innerHTML = "";
-      publicEmpty.classList.add('hidden');
-      projectsEmpty.classList.add('hidden');
-
-      const placeholders = Array.from({ length: 6 }).map(() => `
-        <div class="glass-card p-5 animate-pulse">
-          <div class="h-4 w-24 bg-white/10 rounded mb-3"></div>
-          <div class="h-6 w-3/4 bg-white/10 rounded mb-2"></div>
-          <div class="h-4 w-full bg-white/10 rounded mb-2"></div>
-          <div class="h-4 w-2/3 bg-white/10 rounded mb-4"></div>
-          <div class="h-10 w-36 bg-white/10 rounded-full"></div>
-        </div>
-      `).join("");
-
-      publicProjectsGrid.innerHTML = placeholders;
-      projectsGrid.innerHTML = placeholders;
-
-      // DEMO
       if (!isFirebaseReady){
-        allProjects = demoProjects;
-        renderPublicProjects(allProjects);
-        renderMemberProjects(allProjects);
-        await updateStats();
+        profileName.value = currentUser.displayName || "";
+        setPreview();
         return;
       }
 
-      // REAL (Firestore)
       try{
-        const q = query(collection(db, "projects"), orderBy("createdAt", "desc"));
-        const snap = await getDocs(q);
-        const items = [];
-        snap.forEach(d => items.push({ id: d.id, ...d.data() }));
+        const ref = doc(db, "freelancers", currentUser.uid);
+        const snap = await getDoc(ref);
 
-        // Normaliza campos
-        allProjects = items.map(p => ({
-          ...p,
-          status: p.status || "open",
-          skills: Array.isArray(p.skills) ? p.skills : [],
-          budgetMin: Number(p.budgetMin || 0) || null,
-          budgetMax: Number(p.budgetMax || 0) || null,
-        }));
+        if (snap.exists()){
+          const d = snap.data();
+          profileName.value = d.name || currentUser.displayName || "";
+          profileRole.value = d.role || "";
+          profilePortfolio.value = d.portfolio || "";
+          profileSkills.value = d.skills || "";
+          profileBio.value = d.bio || "";
+        } else {
+          profileName.value = currentUser.displayName || "";
+        }
 
-        renderPublicProjects(allProjects.filter(p => p.status === "open"));
-        renderMemberProjects(allProjects);
-
-        await updateStats();
-
-      } catch(err){
+        setPreview();
+      } catch (err){
         console.error(err);
-        allProjects = demoProjects;
-        renderPublicProjects(allProjects);
-        renderMemberProjects(allProjects);
-        showToast("Erro no Firestore. Mostrando DEMO.");
       }
     }
 
-    btnPublicRefresh.addEventListener('click', loadProjects);
-    btnRefreshProjects.addEventListener('click', loadProjects);
+    async function saveProfile(){
+      if (!currentUser){
+        showToast("Faça login para salvar seu perfil.");
+        return;
+      }
 
-    // ====== 16) TABS ======
-    tabButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        tabButtons.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        const id = btn.getAttribute('data-tab');
+      const data = {
+        name: profileName.value.trim(),
+        role: profileRole.value.trim(),
+        portfolio: profilePortfolio.value.trim(),
+        skills: profileSkills.value.trim(),
+        bio: profileBio.value.trim(),
+        updatedAt: isFirebaseReady ? serverTimestamp() : new Date().toISOString(),
+      };
 
-        tabPanels.forEach(p => p.classList.add('hidden'));
-        document.getElementById(id).classList.remove('hidden');
-      });
-    });
+      if (!isFirebaseReady){
+        showToast("Perfil salvo (DEMO) ✔");
+        return;
+      }
 
-    // ====== 17) LOGIN / REGISTER ======
-    function clearAuthInputs(){
-      authEmail.value = "";
-      authPass.value = "";
-      authName.value = "";
+      try{
+        await setDoc(doc(db, "freelancers", currentUser.uid), {
+          uid: currentUser.uid,
+          email: currentUser.email || "",
+          displayName: currentUser.displayName || "",
+          ...data
+        }, { merge:true });
+
+        showToast("Perfil salvo com sucesso ✔");
+      } catch (err){
+        console.error(err);
+        showToast("Erro ao salvar perfil. Verifique regras do Firebase.");
+      }
+    }
+
+    async function applyProject(){
+      if (!currentUser){
+        showToast("Você precisa estar logado.");
+        return;
+      }
+      if (!currentProject) return;
+
+      if (currentProject.status !== "open"){
+        showToast("Este projeto está encerrado.");
+        return;
+      }
+
+      const msg = (applyMessage.value || "").trim();
+      const pf = (applyPortfolio.value || "").trim();
+
+      if (!msg){
+        showToast("Escreva uma mensagem curta antes de enviar.");
+        return;
+      }
+
+      if (!isFirebaseReady){
+        showToast("Inscrição enviada (DEMO) ✔");
+        applyMessage.value = "";
+        applyPortfolio.value = "";
+        closeModal(projectModal);
+        return;
+      }
+
+      try{
+        await addDoc(collection(db, "applications"), {
+          userId: currentUser.uid,
+          userEmail: currentUser.email || "",
+          userName: currentUser.displayName || "",
+          projectId: currentProject.id,
+          projectTitle: currentProject.title || "",
+          portfolio: pf || "",
+          message: msg || "",
+          createdAt: serverTimestamp(),
+          status: "sent"
+        });
+
+        showToast("Inscrição enviada ✔");
+        applyMessage.value = "";
+        applyPortfolio.value = "";
+        closeModal(projectModal);
+
+        await loadMyApplications();
+        await updateStats();
+      } catch (err){
+        console.error(err);
+        showToast("Erro ao enviar inscrição. Verifique regras do Firebase.");
+      }
     }
 
     function setUserState(user){
       currentUser = user;
-      renderUserBox();
+
+      if (!user){
+        showAuth();
+        return;
+      }
+
+      sbName.textContent = user.displayName || "Freelancer Asthro";
+      sbEmail.textContent = user.email || "--";
+
+      showApp();
+      setPage("pageProjects");
     }
 
-    btnAuthMain.addEventListener('click', async () => {
+    // ====== AUTH ACTIONS ======
+    async function authMain(){
       const email = authEmail.value.trim();
       const pass = authPass.value.trim();
       const name = authName.value.trim();
@@ -1817,12 +1437,11 @@
         return;
       }
 
-      // DEMO MODE
+      // DEMO
       if (!isFirebaseReady){
         setUserState({ uid:"demo", email, displayName: name || "Freelancer DEMO" });
-        closeModal(authModal);
         showToast("Logado (DEMO) ✔");
-        clearAuthInputs();
+        await loadProjects();
         await loadMyApplications();
         await loadProfile();
         return;
@@ -1832,54 +1451,62 @@
         if (authMode === "login"){
           const cred = await signInWithEmailAndPassword(auth, email, pass);
           setUserState(cred.user);
-          closeModal(authModal);
           showToast("Login realizado ✔");
-          clearAuthInputs();
-          await loadMyApplications();
-          await loadProfile();
         } else {
           const cred = await createUserWithEmailAndPassword(auth, email, pass);
           if (name){
-            await updateProfile(cred.user, { displayName: name });
+            await updateProfile(cred.user, { displayName:name });
           }
           setUserState(auth.currentUser);
-          closeModal(authModal);
           showToast("Conta criada ✔");
-          clearAuthInputs();
-          await loadMyApplications();
-          await loadProfile();
         }
-      } catch(err){
-        console.error(err);
-        showToast("Erro: verifique e-mail/senha ou Firebase.");
-      }
-    });
 
-    btnGoogle.addEventListener('click', async () => {
+        authEmail.value = "";
+        authPass.value = "";
+        authName.value = "";
+
+        await loadProjects();
+        await loadMyApplications();
+        await loadProfile();
+      } catch (err){
+        console.error(err);
+
+        // Mensagens mais humanas
+        const code = String(err?.code || "");
+        if (code.includes("auth/invalid-email")) return showToast("E-mail inválido.");
+        if (code.includes("auth/email-already-in-use")) return showToast("Esse e-mail já está cadastrado.");
+        if (code.includes("auth/wrong-password")) return showToast("Senha incorreta.");
+        if (code.includes("auth/weak-password")) return showToast("Senha fraca. Use pelo menos 6 caracteres.");
+        if (code.includes("auth/user-not-found")) return showToast("Conta não encontrada.");
+        return showToast("Erro ao autenticar. Verifique Firebase.");
+      }
+    }
+
+    async function authGoogle(){
       if (!isFirebaseReady){
         setUserState({ uid:"demo", email:"demo@asthro.com", displayName:"Freelancer Google (DEMO)" });
-        closeModal(authModal);
         showToast("Logado (DEMO) ✔");
+        await loadProjects();
         await loadMyApplications();
         await loadProfile();
         return;
       }
+
       try{
         const provider = new GoogleAuthProvider();
         const cred = await signInWithPopup(auth, provider);
         setUserState(cred.user);
-        closeModal(authModal);
         showToast("Login Google ✔");
+        await loadProjects();
         await loadMyApplications();
         await loadProfile();
-      } catch(err){
+      } catch (err){
         console.error(err);
         showToast("Erro no login Google.");
       }
-    });
+    }
 
-    // Logout
-    btnLogout.addEventListener('click', async () => {
+    async function doLogout(){
       if (!currentUser) return;
 
       if (!isFirebaseReady){
@@ -1887,43 +1514,99 @@
         showToast("Saiu (DEMO).");
         return;
       }
+
       try{
         await signOut(auth);
         setUserState(null);
         showToast("Você saiu.");
-      } catch(err){
+      } catch (err){
         console.error(err);
       }
+    }
+
+    // ====== EVENTS ======
+    tabLogin.addEventListener("click", () => setAuthMode("login"));
+    tabRegister.addEventListener("click", () => setAuthMode("register"));
+    btnAuthMain.addEventListener("click", authMain);
+    btnGoogle.addEventListener("click", authGoogle);
+
+    btnEnterDemo.addEventListener("click", async () => {
+      setUserState({ uid:"demo", email:"demo@asthro.com", displayName:"Freelancer DEMO" });
+      showToast("Entrou no modo DEMO ✔");
+      await loadProjects();
+      await loadMyApplications();
+      await loadProfile();
     });
+
+    btnOpenSidebar.addEventListener("click", openSidebar);
+    btnCloseSidebar.addEventListener("click", closeSidebar);
+    overlay.addEventListener("click", closeSidebar);
+
+    menuButtons.forEach(btn => {
+      btn.addEventListener("click", () => setPage(btn.getAttribute("data-page")));
+    });
+
+    btnRefresh.addEventListener("click", async () => {
+      await loadProjects();
+      if (currentUser) await loadMyApplications();
+      showToast("Atualizado ✔");
+    });
+
+    btnApplyFilters.addEventListener("click", applyFilters);
+    btnClearFilters.addEventListener("click", () => {
+      searchInput.value = "";
+      categoryFilter.value = "";
+      levelFilter.value = "";
+      typeFilter.value = "";
+      renderProjects(allProjects);
+      showToast("Filtros limpos ✔");
+    });
+
+    closeProjectModal.addEventListener("click", () => closeModal(projectModal));
+    projectModal.addEventListener("click", (e) => { if (e.target === projectModal) closeModal(projectModal); });
+
+    btnApplyProject.addEventListener("click", applyProject);
+    btnSaveProfile.addEventListener("click", saveProfile);
+    btnLogout.addEventListener("click", doLogout);
+
+    [profileName, profileRole, profilePortfolio, profileSkills, profileBio].forEach(el => {
+      el.addEventListener("input", setPreview);
+    });
+
+    // Preferências: partículas
+    btnToggleParticles.addEventListener("click", () => {
+      particlesEnabled = !particlesEnabled;
+      const el = document.getElementById("particles-js");
+      el.style.display = particlesEnabled ? "block" : "none";
+      btnToggleParticles.textContent = particlesEnabled ? "Desativar partículas" : "Ativar partículas";
+      showToast(particlesEnabled ? "Partículas ativadas ✔" : "Partículas desativadas ✔");
+    });
+
+    // ===== INIT =====
+    setAuthMode("login");
+    showAuth();
+    setPreview();
 
     // Observa auth real
     if (isFirebaseReady){
       onAuthStateChanged(auth, async (user) => {
         setUserState(user);
+        await loadProjects();
         if (user){
           await loadMyApplications();
           await loadProfile();
         }
+        await updateStats();
       });
     } else {
-      setUserState(null);
+      // Sem firebase: mostra stats e lista demo na tela de login
+      allProjects = demoProjects;
+      await updateStats();
     }
 
-    // ====== 18) HELPERS ======
-    function escapeHtml(str){
-      return String(str || "")
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
-    }
-
-    // ====== INIT ======
-    setAuthMode("login");
+    // Sempre carrega lista na tela (para stats bonitos e o dashboard pronto)
     await loadProjects();
     await updateStats();
-    setPreview();
   </script>
 </body>
 </html>
