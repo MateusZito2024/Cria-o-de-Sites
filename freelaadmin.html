@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Asthro Admin | Control Center</title>
+  <link rel="icon" type="image/png" href="https://i.imgur.com/3HqwIPk.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    /* ===== Admin visual TOTALMENTE diferente do portal ===== */
+    :root{
+      --bg:#070A12;
+      --panel:#0B1020;
+      --panel2:#0C1428;
+      --line:rgba(255,255,255,.08);
+      --text:#E9EEF9;
+      --muted:#A6B0C3;
+      --cyan:#0bf4ed;
+      --violet:#6627ff;
+    }
+
+    body{
+      background: radial-gradient(1200px 700px at 10% 15%, rgba(102,39,255,.15), transparent 60%),
+                  radial-gradient(900px 600px at 90% 60%, rgba(11,244,237,.10), transparent 55%),
+                  var(--bg);
+      color: var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Manrope", Arial, sans-serif;
+      overflow-x:hidden;
+    }
+
+    /* Grid de fundo bem sutil (admin vibe) */
+    .gridlines{
+      background-image:
+        linear-gradient(to right, rgba(255,255,255,.045) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,.045) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: radial-gradient(ellipse at center, rgba(0,0,0,.65) 20%, rgba(0,0,0,.0) 70%);
+      opacity:.55;
+      position: fixed; inset:0; z-index:0;
+      pointer-events:none;
+    }
+
+    .shell{
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Painéis */
+    .panel{
+      background: linear-gradient(180deg, rgba(12,20,40,.82), rgba(7,10,18,.72));
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: 0 18px 48px rgba(0,0,0,.55);
+    }
+    .panel-soft{
+      background: rgba(255,255,255,.03);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+    }
+
+    /* Botões admin */
+    .btn{
+      border-radius: 999px;
+      font-weight: 900;
+      letter-spacing: .02em;
+      transition: transform .15s ease, filter .15s ease, box-shadow .15s ease;
+      user-select:none;
+    }
+    .btn:hover{ transform: translateY(-1px); filter: brightness(1.05); }
+    .btn:active{ transform: translateY(0px); filter: brightness(.98); }
+
+    .btn-primary{
+      background: linear-gradient(135deg, var(--violet), var(--cyan));
+      border: 1px solid rgba(11,244,237,.45);
+      box-shadow: 0 0 20px rgba(102,39,255,.18);
+    }
+    .btn-ghost{
+      background: rgba(255,255,255,.04);
+      border: 1px solid var(--line);
+    }
+    .btn-danger{
+      background: rgba(255,80,120,.10);
+      border: 1px solid rgba(255,80,120,.25);
+      color: #ff8fb0;
+    }
+
+    .tag{
+      font-size: .72rem;
+      padding:.22rem .55rem;
+      border-radius: 999px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+      white-space:nowrap;
+    }
+
+    .badge-open{
+      background: rgba(11,244,237,.10);
+      border: 1px solid rgba(11,244,237,.30);
+      color: var(--cyan);
+      padding: .18rem .55rem;
+      border-radius: 999px;
+      font-size: .74rem;
+      font-weight: 900;
+    }
+    .badge-closed{
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      color: #cbd5e1;
+      padding: .18rem .55rem;
+      border-radius: 999px;
+      font-size: .74rem;
+      font-weight: 900;
+    }
+
+    .input{
+      width:100%;
+      padding:.85rem 1rem;
+      border-radius: 14px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.12);
+      color: var(--text);
+      outline:none;
+      transition: box-shadow .15s ease, border-color .15s ease;
+    }
+    .input:focus{
+      border-color: rgba(11,244,237,.45);
+      box-shadow: 0 0 0 4px rgba(11,244,237,.10);
+    }
+
+    /* Sidebar compacta (diferente do portal) */
+    .side-btn{
+      display:flex;
+      align-items:center;
+      gap:.65rem;
+      padding:.85rem .95rem;
+      border-radius: 14px;
+      border: 1px solid transparent;
+      color: var(--muted);
+      font-weight: 900;
+      transition: background .15s ease, border-color .15s ease, transform .15s ease;
+    }
+    .side-btn:hover{
+      background: rgba(255,255,255,.03);
+      border-color: rgba(255,255,255,.08);
+      transform: translateX(2px);
+      color: var(--text);
+    }
+    .side-btn.active{
+      background: linear-gradient(135deg, rgba(102,39,255,.18), rgba(11,244,237,.10));
+      border-color: rgba(11,244,237,.22);
+      color: var(--text);
+    }
+
+    /* Kanban */
+    .kanban-col{
+      min-width: 320px;
+    }
+    .kanban-card{
+      border-radius: 16px;
+      background: rgba(255,255,255,.03);
+      border: 1px solid var(--line);
+      padding: 14px;
+      transition: transform .15s ease, border-color .15s ease;
+    }
+    .kanban-card:hover{
+      transform: translateY(-2px);
+      border-color: rgba(11,244,237,.22);
+    }
+
+    /* Modal */
+    .modal{
+      position:fixed;
+      inset:0;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding: 16px;
+      background: rgba(0,0,0,.65);
+      z-index: 9999;
+    }
+    .modal.open{ display:flex; }
+
+    /* Toast */
+    .toast{
+      position: fixed;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(12,20,40,.92);
+      border: 1px solid rgba(11,244,237,.22);
+      border-radius: 999px;
+      padding: .8rem 1.05rem;
+      font-weight: 900;
+      display:none;
+      z-index: 99999;
+      box-shadow: 0 18px 48px rgba(0,0,0,.55);
+      max-width: min(560px, 92vw);
+      text-align:center;
+    }
+    .toast.show{ display:block; }
+
+    /* login screen */
+    .login-wrap{
+      min-height: 100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 18px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="gridlines"></div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast">Mensagem</div>
+
+  <!-- ===== LOGIN (ADMIN) — NÃO TEM NADA a ver com o portal do freelancer ===== -->
+  <section id="loginScreen" class="login-wrap">
+    <div class="w-full max-w-6xl panel p-6 md:p-8">
+      <div class="flex items-center justify-between gap-4 flex-wrap">
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 rounded-2xl flex items-center justify-center"
+               style="background: rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.10);">
+            <span class="font-black text-cyan-300 text-xl">⛭</span>
+          </div>
+          <div>
+            <div class="text-xs uppercase tracking-[.18em] text-gray-300 font-bold">Control Center</div>
+            <div class="text-2xl md:text-3xl font-extrabold">Asthro Admin</div>
+          </div>
+        </div>
+
+        <div class="flex gap-2 flex-wrap">
+          <span class="tag">Gerenciamento</span>
+          <span class="tag">Projetos</span>
+          <span class="tag">Inscrições</span>
+        </div>
+      </div>
+
+      <div class="mt-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- Visual lateral "console" -->
+        <div class="lg:col-span-7 panel-soft p-6">
+          <div class="text-sm text-gray-300 font-bold uppercase tracking-widest">Console</div>
+          <div class="mt-2 text-3xl md:text-4xl font-extrabold leading-tight">
+            Publique vagas<br>
+            <span class="text-cyan-300">sem bagunça visual</span>.
+          </div>
+
+          <p class="mt-3 text-gray-300 max-w-xl">
+            Um painel criativo e limpo para você controlar as postagens do portal freelancer
+            sem parecer landing page e sem repetir layout.
+          </p>
+
+          <div class="mt-5 grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div class="panel-soft p-4">
+              <div class="text-xs text-gray-300 font-bold">Modo</div>
+              <div class="text-lg font-extrabold mt-1">Kanban</div>
+            </div>
+            <div class="panel-soft p-4">
+              <div class="text-xs text-gray-300 font-bold">Controle</div>
+              <div class="text-lg font-extrabold mt-1">Status</div>
+            </div>
+            <div class="panel-soft p-4">
+              <div class="text-xs text-gray-300 font-bold">Central</div>
+              <div class="text-lg font-extrabold mt-1">Inscrições</div>
+            </div>
+          </div>
+
+          <div class="mt-5 panel-soft p-4 text-sm text-gray-300">
+            <b class="text-gray-100">Obs:</b> esse admin salva na coleção <b class="text-cyan-300">projects</b>,
+            e o portal freelancer só “consome” os dados.
+          </div>
+        </div>
+
+        <!-- Form login -->
+        <div class="lg:col-span-5 panel-soft p-6">
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="text-xs uppercase tracking-[.18em] text-gray-300 font-bold">Acesso</div>
+              <div class="text-2xl font-extrabold">Login Admin</div>
+            </div>
+            <span class="tag">Firebase Auth</span>
+          </div>
+
+          <div class="mt-5 space-y-3">
+            <input id="email" class="input" placeholder="E-mail admin" />
+            <input id="pass" class="input" type="password" placeholder="Senha" />
+          </div>
+
+          <div class="mt-5 grid grid-cols-1 gap-3">
+            <button id="btnLogin" class="btn btn-primary px-6 py-3">Entrar</button>
+            <button id="btnGoogle" class="btn btn-ghost px-6 py-3">Entrar com Google</button>
+          </div>
+
+          <div class="mt-4 text-xs text-gray-400">
+            🔒 Permitido apenas emails autorizados no ADMIN_EMAILS.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===== DASHBOARD (ADMIN) ===== -->
+  <main id="dashScreen" class="hidden shell">
+    <div class="max-w-[1400px] mx-auto px-4 md:px-6 py-6">
+
+      <!-- Topbar super clean -->
+      <header class="panel p-4 md:p-5 flex items-center justify-between gap-3 flex-wrap">
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-2xl flex items-center justify-center"
+               style="background: rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.10);">
+            <span class="text-cyan-300 font-black">⛭</span>
+          </div>
+
+          <div>
+            <div class="text-xs uppercase tracking-[.18em] text-gray-300 font-bold">Asthro Control Center</div>
+            <div id="headerTitle" class="text-xl md:text-2xl font-extrabold">Projetos (Kanban)</div>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 flex-wrap">
+          <div class="panel-soft px-4 py-2 text-xs text-gray-300 font-bold">
+            Admin: <span id="adminEmail" class="text-cyan-300 font-extrabold">--</span>
+          </div>
+
+          <button id="btnRefresh" class="btn btn-ghost px-5 py-2.5">Atualizar</button>
+          <button id="btnNew" class="btn btn-primary px-5 py-2.5">+ Novo Projeto</button>
+          <button id="btnLogout" class="btn btn-ghost px-5 py-2.5">Sair</button>
+        </div>
+      </header>
+
+      <!-- Layout do admin: Sidebar + Conteúdo (diferentão do portal) -->
+      <div class="mt-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- Sidebar -->
+        <aside class="lg:col-span-3 panel p-4 md:p-5">
+          <div class="text-xs uppercase tracking-[.18em] text-gray-300 font-bold">Navegação</div>
+
+          <div class="mt-4 space-y-2">
+            <button class="side-btn active" data-page="kanban">🧩 Kanban de Projetos</button>
+            <button class="side-btn" data-page="inscricoes">📥 Inscrições</button>
+            <button class="side-btn" data-page="freelancers">👤 Freelancers</button>
+          </div>
+
+          <div class="mt-5 panel-soft p-4">
+            <div class="text-xs text-gray-300 font-bold uppercase tracking-widest">Busca rápida</div>
+            <input id="quickSearch" class="input mt-2" placeholder="Buscar projeto..." />
+            <select id="statusFilter" class="input mt-3">
+              <option value="">Status (todos)</option>
+              <option value="open">Abertos</option>
+              <option value="closed">Encerrados</option>
+            </select>
+          </div>
+
+          <div class="mt-5 panel-soft p-4">
+            <div class="text-xs text-gray-300 font-bold uppercase tracking-widest">Resumo</div>
+            <div class="mt-3 grid grid-cols-3 gap-2">
+              <div class="panel-soft p-3 text-center">
+                <div class="text-[10px] text-gray-300 font-bold uppercase">Abertos</div>
+                <div id="statOpen" class="text-xl font-extrabold text-cyan-300 mt-1">--</div>
+              </div>
+              <div class="panel-soft p-3 text-center">
+                <div class="text-[10px] text-gray-300 font-bold uppercase">Total</div>
+                <div id="statTotal" class="text-xl font-extrabold text-cyan-300 mt-1">--</div>
+              </div>
+              <div class="panel-soft p-3 text-center">
+                <div class="text-[10px] text-gray-300 font-bold uppercase">Inscr.</div>
+                <div id="statApps" class="text-xl font-extrabold text-cyan-300 mt-1">--</div>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+
+        <!-- Conteúdo -->
+        <section class="lg:col-span-9 space-y-6">
+
+          <!-- PAGE: KANBAN -->
+          <section id="pageKanban" class="panel p-4 md:p-5">
+            <div class="flex items-center justify-between gap-3 flex-wrap">
+              <div>
+                <div class="text-xs uppercase tracking-[.18em] text-gray-300 font-bold">Modo</div>
+                <div class="text-2xl font-extrabold">Kanban (bem admin)</div>
+                <div class="text-sm text-gray-300 mt-1">
+                  Arrumado, objetivo e com ações rápidas por projeto.
+                </div>
+              </div>
+
+              <div class="flex gap-2 flex-wrap">
+                <span class="tag">Open</span>
+                <span class="tag">Closed</span>
+                <span class="tag">Edit</span>
+                <span class="tag">Delete</span>
+              </div>
+            </div>
+
+            <div class="mt-5 overflow-x-auto">
+              <div class="flex gap-4 pb-2" style="min-width: 980px;">
+                <!-- COL: OPEN -->
+                <div class="kanban-col w-full panel-soft p-4">
+                  <div class="flex items-center justify-between">
+                    <div class="font-extrabold text-cyan-300">Abertos</div>
+                    <span id="countOpen" class="tag">0</span>
+                  </div>
+                  <div id="colOpen" class="mt-4 space-y-3"></div>
+                </div>
+
+                <!-- COL: CLOSED -->
+                <div class="kanban-col w-full panel-soft p-4">
+                  <div class="flex items-center justify-between">
+                    <div class="font-extrabold text-gray-200">Encerrados</div>
+                    <span id="countClosed" class="tag">0</span>
+                  </div>
+                  <div id="colClosed" class="mt-4 space-y-3"></div>
+                </div>
+
+                <!-- COL: INSIGHTS -->
+                <div class="kanban-col w-full panel-soft p-4">
+                  <div class="flex items-center justify-between">
+                    <div class="font-extrabold">Insights</div>
+                    <span class="tag">admin</span>
+                  </div>
+
+                  <div class="mt-4 space-y-3">
+                    <div class="panel-soft p-4">
+                      <div class="text-xs text-gray-300 font-bold uppercase tracking-widest">Regra</div>
+                      <div class="text-sm text-gray-200 mt-2">
+                        Projetos com <b class="text-cyan-300">título curto</b> e
+                        <b class="text-cyan-300">skills claras</b> melhoram as inscrições.
+                      </div>
+                    </div>
+
+                    <div class="panel-soft p-4">
+                      <div class="text-xs text-gray-300 font-bold uppercase tracking-widest">Sugestão</div>
+                      <div class="text-sm text-gray-200 mt-2">
+                        Coloque orçamento em faixa (<b>mín</b> e <b>máx</b>) pra filtrar curiosos.
+                      </div>
+                    </div>
+
+                    <div class="panel-soft p-4">
+                      <div class="text-xs text-gray-300 font-bold uppercase tracking-widest">Ação</div>
+                      <button id="btnNew2" class="btn btn-primary w-full px-5 py-3 mt-2">
+                        + Criar um Projeto agora
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </section>
+
+
+          <!-- PAGE: INSCRIÇÕES -->
+          <section id="pageApps" class="panel p-4 md:p-5 hidden">
+            <div class="flex items-center justify-between gap-3 flex-wrap">
+              <div>
+                <div class="text-xs uppercase tracking-[.18em] text-gray-300 font-bold">Central</div>
+                <div class="text-2xl font-extrabold">Inscrições</div>
+                <div class="text-sm text-gray-300 mt-1">
+                  Visual limpo e leitura rápida dos candidatos.
+                </div>
+              </div>
+
+              <div class="flex gap-2 flex-wrap items-center">
+                <select id="appsFilterProject" class="input" style="max-width: 380px;">
+                  <option value="">Filtrar por projeto</option>
+                </select>
+              </div>
+            </div>
+
+            <div id="appsList" class="mt-5 grid grid-cols-1 gap-4"></div>
+            <div id="appsEmpty" class="hidden mt-6 text-center text-gray-300">Nenhuma inscrição encontrada.</div>
+          </section>
+
+
+          <!-- PAGE: FREELANCERS -->
+          <section id="pageFreelancers" class="panel p-4 md:p-5 hidden">
+            <div class="flex items-center justify-between gap-3 flex-wrap">
+              <div>
+                <div class="text-xs uppercase tracking-[.18em] text-gray-300 font-bold">Base</div>
+                <div class="text-2xl font-extrabold">Freelancers</div>
+                <div class="text-sm text-gray-300 mt-1">
+                  Consulta rápida de perfis cadastrados.
+                </div>
+              </div>
+
+              <input id="freelaSearch" class="input" style="max-width:320px" placeholder="Buscar freelancer..." />
+            </div>
+
+            <div class="mt-5 overflow-x-auto">
+              <table class="w-full min-w-[920px] text-left">
+                <thead>
+                  <tr class="text-xs uppercase tracking-widest text-gray-300">
+                    <th class="py-3 px-3">Nome</th>
+                    <th class="py-3 px-3">Área</th>
+                    <th class="py-3 px-3">Email</th>
+                    <th class="py-3 px-3">Skills</th>
+                    <th class="py-3 px-3">Portfólio</th>
+                  </tr>
+                </thead>
+                <tbody id="freelaTbody" class="text-sm"></tbody>
+              </table>
+            </div>
+
+            <div id="freelaEmpty" class="hidden mt-6 text-center text-gray-300">Nenhum freelancer encontrado.</div>
+          </section>
+
+        </section>
+      </div>
+    </div>
+  </main>
+
+
+  <!-- ===== MODAL PROJETO (CREATE/EDIT) ===== -->
+  <div id="modalProject" class="modal">
+    <div class="panel w-full max-w-5xl p-5 md:p-6">
+      <div class="flex items-center justify-between gap-3 flex-wrap">
+        <div>
+          <div class="text-xs uppercase tracking-[.18em] text-gray-300 font-bold">Projeto</div>
+          <div id="modalTitle" class="text-2xl font-extrabold">Novo Projeto</div>
+          <div class="text-sm text-gray-300 mt-1">Preencha e salve. Isso atualiza o portal freelancer.</div>
+        </div>
+
+        <div class="flex gap-2 flex-wrap">
+          <button id="btnSave" class="btn btn-primary px-5 py-2.5">Salvar</button>
+          <button id="btnDelete" class="btn btn-danger px-5 py-2.5 hidden">Excluir</button>
+          <button id="btnClose" class="btn btn-ghost px-5 py-2.5">Fechar</button>
+        </div>
+      </div>
+
+      <div class="mt-5 grid grid-cols-1 lg:grid-cols-12 gap-4">
+        <div class="lg:col-span-7 panel-soft p-4 space-y-3">
+          <input id="pTitle" class="input" placeholder="Título (ex: Landing Premium)" />
+          <input id="pShort" class="input" placeholder="Resumo curto (aparece no card)" />
+          <textarea id="pDesc" class="input" rows="6" placeholder="Descrição completa"></textarea>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <select id="pStatus" class="input">
+              <option value="open">ABERTO</option>
+              <option value="closed">ENCERRADO</option>
+            </select>
+
+            <select id="pCategory" class="input">
+              <option value="Web">Web</option>
+              <option value="Design">Design</option>
+              <option value="Social Media">Social Media</option>
+              <option value="Motion">Motion</option>
+              <option value="Branding">Branding</option>
+            </select>
+
+            <select id="pType" class="input">
+              <option value="Remoto">Remoto</option>
+              <option value="Híbrido">Híbrido</option>
+              <option value="Presencial">Presencial</option>
+            </select>
+
+            <select id="pLevel" class="input">
+              <option value="Iniciante">Iniciante</option>
+              <option value="Intermediário">Intermediário</option>
+              <option value="Avançado">Avançado</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5 panel-soft p-4 space-y-3">
+          <input id="pDeadline" class="input" placeholder="Prazo (ex: 7 dias)" />
+          <input id="pSkills" class="input" placeholder="Skills separadas por vírgula (Figma, Tailwind...)" />
+
+          <div class="grid grid-cols-2 gap-3">
+            <input id="pBudgetMin" class="input" placeholder="Orçamento mín (ex: 900)" />
+            <input id="pBudgetMax" class="input" placeholder="Orçamento máx (ex: 1600)" />
+          </div>
+
+          <div class="panel-soft p-4">
+            <div class="text-xs uppercase tracking-widest text-gray-300 font-bold">Preview</div>
+            <div class="mt-3 flex items-center gap-2 flex-wrap">
+              <span id="prevBadge" class="badge-open">ABERTO</span>
+              <span id="prevMeta" class="tag">Web • Remoto • Intermediário</span>
+            </div>
+            <div id="prevTitle" class="text-lg font-extrabold mt-2">Título</div>
+            <div id="prevShort" class="text-sm text-gray-300 mt-1">Resumo</div>
+          </div>
+
+          <div class="text-xs text-gray-400">
+            ✅ Esse admin é intencionalmente diferente do portal dos freelas (visual de sistema).
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ===== Firebase Admin Logic ===== -->
+  <script type="module">
+    /**
+     * ✅ MUDE APENAS AQUI
+     */
+    const firebaseConfig = {
+      apiKey: "AIzaSyCOHWJfxBHhEfGx4CglEF4sD8BTqIKBpC4",
+      authDomain: "asthro-portal.firebaseapp.com",
+      projectId: "asthro-portal",
+      storageBucket: "asthro-portal.firebasestorage.app",
+      messagingSenderId: "230705425631",
+      appId: "1:230705425631:web:c76e9690e20c819ae74d6a"
+    };
+
+    /**
+     * ✅ EMAILS PERMITIDOS NO ADMIN
+     */
+    const ADMIN_EMAILS = [
+      "contato@asthro.com.br"
+      // "seuadmin@gmail.com"
+    ];
+
+    // Firebase imports
+    const fbApp  = await import("https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js");
+    const fbAuth = await import("https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js");
+    const fbDb   = await import("https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js");
+
+    const { initializeApp } = fbApp;
+    const {
+      getAuth, onAuthStateChanged,
+      signInWithEmailAndPassword, signOut,
+      GoogleAuthProvider, signInWithPopup
+    } = fbAuth;
+
+    const {
+      getFirestore, collection, getDocs, query, where, orderBy,
+      addDoc, updateDoc, deleteDoc, doc, serverTimestamp
+    } = fbDb;
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // UI
+    const loginScreen = document.getElementById("loginScreen");
+    const dashScreen  = document.getElementById("dashScreen");
+
+    const btnLogin = document.getElementById("btnLogin");
+    const btnGoogle = document.getElementById("btnGoogle");
+    const btnLogout = document.getElementById("btnLogout");
+
+    const emailEl = document.getElementById("email");
+    const passEl  = document.getElementById("pass");
+    const adminEmailEl = document.getElementById("adminEmail");
+
+    const btnRefresh = document.getElementById("btnRefresh");
+    const btnNew = document.getElementById("btnNew");
+    const btnNew2 = document.getElementById("btnNew2");
+
+    // pages
+    const headerTitle = document.getElementById("headerTitle");
+    const pageKanban = document.getElementById("pageKanban");
+    const pageApps = document.getElementById("pageApps");
+    const pageFreelancers = document.getElementById("pageFreelancers");
+
+    const quickSearch = document.getElementById("quickSearch");
+    const statusFilter = document.getElementById("statusFilter");
+
+    // stats
+    const statOpen = document.getElementById("statOpen");
+    const statTotal = document.getElementById("statTotal");
+    const statApps = document.getElementById("statApps");
+    const countOpen = document.getElementById("countOpen");
+    const countClosed = document.getElementById("countClosed");
+
+    // kanban cols
+    const colOpen = document.getElementById("colOpen");
+    const colClosed = document.getElementById("colClosed");
+
+    // apps
+    const appsFilterProject = document.getElementById("appsFilterProject");
+    const appsList = document.getElementById("appsList");
+    const appsEmpty = document.getElementById("appsEmpty");
+
+    // freelancers
+    const freelaSearch = document.getElementById("freelaSearch");
+    const freelaTbody = document.getElementById("freelaTbody");
+    const freelaEmpty = document.getElementById("freelaEmpty");
+
+    // modal
+    const modalProject = document.getElementById("modalProject");
+    const modalTitle = document.getElementById("modalTitle");
+    const btnSave = document.getElementById("btnSave");
+    const btnDelete = document.getElementById("btnDelete");
+    const btnClose = document.getElementById("btnClose");
+
+    const pTitle = document.getElementById("pTitle");
+    const pShort = document.getElementById("pShort");
+    const pDesc  = document.getElementById("pDesc");
+    const pStatus = document.getElementById("pStatus");
+    const pCategory = document.getElementById("pCategory");
+    const pType = document.getElementById("pType");
+    const pLevel = document.getElementById("pLevel");
+    const pDeadline = document.getElementById("pDeadline");
+    const pSkills = document.getElementById("pSkills");
+    const pBudgetMin = document.getElementById("pBudgetMin");
+    const pBudgetMax = document.getElementById("pBudgetMax");
+
+    const prevBadge = document.getElementById("prevBadge");
+    const prevMeta = document.getElementById("prevMeta");
+    const prevTitle = document.getElementById("prevTitle");
+    const prevShort = document.getElementById("prevShort");
+
+    // Toast
+    const toastEl = document.getElementById("toast");
+    let toastTimer = null;
+    function toast(msg){
+      toastEl.textContent = msg;
+      toastEl.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(()=> toastEl.classList.remove("show"), 2500);
+    }
+
+    // state
+    let currentUser = null;
+    let allProjects = [];
+    let allApps = [];
+    let allFreelancers = [];
+    let editingId = null;
+
+    // helpers
+    function isAdmin(user){
+      const e = (user?.email || "").toLowerCase().trim();
+      return ADMIN_EMAILS.map(x => x.toLowerCase().trim()).includes(e);
+    }
+
+    function escapeHtml(str){
+      return String(str || "")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+
+    function parseSkills(str){
+      return (str || "").split(",").map(s=>s.trim()).filter(Boolean);
+    }
+
+    function numOrNull(v){
+      const n = Number(String(v || "").replace(",", "."));
+      if (!n || n <= 0) return null;
+      return n;
+    }
+
+    function openModal(){
+      modalProject.classList.add("open");
+    }
+    function closeModal(){
+      modalProject.classList.remove("open");
+    }
+
+    function updatePreview(){
+      const st = pStatus.value === "open" ? "ABERTO" : "ENCERRADO";
+      prevBadge.className = (pStatus.value === "open") ? "badge-open" : "badge-closed";
+      prevBadge.textContent = st;
+
+      prevMeta.textContent = `${pCategory.value} • ${pType.value} • ${pLevel.value}`;
+      prevTitle.textContent = pTitle.value.trim() || "Título";
+      prevShort.textContent = pShort.value.trim() || "Resumo";
+    }
+    [pTitle,pShort,pStatus,pCategory,pType,pLevel].forEach(el=>{
+      el.addEventListener("input", updatePreview);
+      el.addEventListener("change", updatePreview);
+    });
+
+    // nav
+    const sideBtns = document.querySelectorAll(".side-btn[data-page]");
+    function showPage(pg){
+      sideBtns.forEach(b=>b.classList.remove("active"));
+      document.querySelector(`.side-btn[data-page="${pg}"]`)?.classList.add("active");
+
+      pageKanban.classList.add("hidden");
+      pageApps.classList.add("hidden");
+      pageFreelancers.classList.add("hidden");
+
+      if (pg === "kanban"){
+        headerTitle.textContent = "Projetos (Kanban)";
+        pageKanban.classList.remove("hidden");
+      }
+      if (pg === "inscricoes"){
+        headerTitle.textContent = "Inscrições";
+        pageApps.classList.remove("hidden");
+      }
+      if (pg === "freelancers"){
+        headerTitle.textContent = "Freelancers";
+        pageFreelancers.classList.remove("hidden");
+      }
+    }
+    sideBtns.forEach(btn=>{
+      btn.addEventListener("click", ()=> showPage(btn.getAttribute("data-page")));
+    });
+
+    // load data
+    async function loadProjects(){
+      const qy = query(collection(db, "projects"), orderBy("createdAt","desc"));
+      const snap = await getDocs(qy);
+      const items = [];
+      snap.forEach(d => items.push({ id:d.id, ...d.data() }));
+
+      allProjects = items.map(p=>({
+        ...p,
+        status: p.status || "open",
+        skills: Array.isArray(p.skills) ? p.skills : [],
+        budgetMin: (typeof p.budgetMin === "number") ? p.budgetMin : (p.budgetMin ? Number(p.budgetMin) : null),
+        budgetMax: (typeof p.budgetMax === "number") ? p.budgetMax : (p.budgetMax ? Number(p.budgetMax) : null),
+      }));
+    }
+
+    async function loadApps(){
+      const qy = query(collection(db, "applications"), orderBy("createdAt","desc"));
+      const snap = await getDocs(qy);
+      const items = [];
+      snap.forEach(d => items.push({ id:d.id, ...d.data() }));
+      allApps = items;
+    }
+
+    async function loadFreelancers(){
+      const qy = query(collection(db, "freelancers"), orderBy("updatedAt","desc"));
+      const snap = await getDocs(qy);
+      const items = [];
+      snap.forEach(d => items.push({ id:d.id, ...d.data() }));
+      allFreelancers = items;
+    }
+
+    function updateStats(){
+      statTotal.textContent = String(allProjects.length);
+      statOpen.textContent  = String(allProjects.filter(p=>p.status==="open").length);
+      statApps.textContent  = String(allApps.length);
+
+      countOpen.textContent   = String(allProjects.filter(p=>p.status==="open").length);
+      countClosed.textContent = String(allProjects.filter(p=>p.status==="closed").length);
+    }
+
+    function fillAppsFilter(){
+      appsFilterProject.innerHTML = `<option value="">Filtrar por projeto</option>`;
+      allProjects.forEach(p=>{
+        appsFilterProject.insertAdjacentHTML("beforeend", `
+          <option value="${escapeHtml(p.id)}">${escapeHtml(p.title || "Projeto")}</option>
+        `);
+      });
+    }
+
+    // render kanban
+    function cardHTML(p){
+      const badge = p.status === "open" ? `<span class="badge-open">ABERTO</span>` : `<span class="badge-closed">ENCERRADO</span>`;
+      const skills = (p.skills || []).slice(0,4).map(s=>`<span class="tag">${escapeHtml(s)}</span>`).join("") || `<span class="tag">Asthro</span>`;
+      const meta = `${escapeHtml(p.category || "—")} • ${escapeHtml(p.type || "—")} • ${escapeHtml(p.level || "—")}`;
+
+      return `
+        <div class="kanban-card">
+          <div class="flex items-center justify-between gap-2">
+            ${badge}
+            <span class="tag">${escapeHtml(p.deadline || "Prazo flexível")}</span>
+          </div>
+
+          <div class="mt-2 text-base font-extrabold">${escapeHtml(p.title || "")}</div>
+          <div class="text-sm text-gray-300 mt-1">${escapeHtml(p.short || "")}</div>
+
+          <div class="mt-3 text-xs text-gray-300">${meta}</div>
+
+          <div class="mt-3 flex flex-wrap gap-2">
+            ${skills}
+          </div>
+
+          <div class="mt-4 flex gap-2 flex-wrap">
+            <button class="btn btn-ghost px-4 py-2 text-xs" data-edit="${escapeHtml(p.id)}">Editar</button>
+            <button class="btn btn-primary px-4 py-2 text-xs" data-toggle="${escapeHtml(p.id)}">
+              ${p.status === "open" ? "Encerrar" : "Reabrir"}
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderKanban(){
+      colOpen.innerHTML = "";
+      colClosed.innerHTML = "";
+
+      const txt = (quickSearch.value || "").toLowerCase().trim();
+      const st  = statusFilter.value;
+
+      const filtered = allProjects.filter(p=>{
+        const matchTxt = !txt || (
+          (p.title || "").toLowerCase().includes(txt) ||
+          (p.short || "").toLowerCase().includes(txt) ||
+          (p.description || "").toLowerCase().includes(txt)
+        );
+        const matchStatus = !st || p.status === st;
+        return matchTxt && matchStatus;
+      });
+
+      const opens = filtered.filter(p=>p.status==="open");
+      const closeds = filtered.filter(p=>p.status==="closed");
+
+      opens.forEach(p=> colOpen.insertAdjacentHTML("beforeend", cardHTML(p)));
+      closeds.forEach(p=> colClosed.insertAdjacentHTML("beforeend", cardHTML(p)));
+
+      document.querySelectorAll("[data-edit]").forEach(btn=>{
+        btn.addEventListener("click", ()=> openEdit(btn.getAttribute("data-edit")));
+      });
+      document.querySelectorAll("[data-toggle]").forEach(btn=>{
+        btn.addEventListener("click", ()=> toggleStatus(btn.getAttribute("data-toggle")));
+      });
+    }
+
+    function renderApps(){
+      appsList.innerHTML = "";
+      appsEmpty.classList.add("hidden");
+
+      const pid = appsFilterProject.value;
+      const filtered = allApps.filter(a=> !pid || a.projectId === pid);
+
+      if (!filtered.length){
+        appsEmpty.classList.remove("hidden");
+        return;
+      }
+
+      filtered.forEach(a=>{
+        appsList.insertAdjacentHTML("beforeend", `
+          <div class="panel-soft p-4">
+            <div class="flex items-start justify-between gap-3 flex-wrap">
+              <div>
+                <div class="text-xs uppercase tracking-widest text-gray-300 font-bold">Projeto</div>
+                <div class="text-lg font-extrabold text-cyan-300 mt-1">${escapeHtml(a.projectTitle || "Projeto")}</div>
+              </div>
+              <span class="tag">status: ${escapeHtml(a.status || "sent")}</span>
+            </div>
+
+            <div class="mt-3 text-sm text-gray-200">
+              <b>Freelancer:</b> ${escapeHtml(a.userName || "Sem nome")} <br/>
+              <b>Email:</b> ${escapeHtml(a.userEmail || "--")}
+            </div>
+
+            ${a.portfolio ? `
+              <div class="mt-2 text-sm text-gray-200">
+                <b>Portfólio:</b>
+                <a class="text-cyan-300 font-extrabold" href="${escapeHtml(a.portfolio)}" target="_blank">abrir</a>
+              </div>
+            ` : ""}
+
+            ${a.message ? `
+              <div class="mt-2 text-sm text-gray-200">
+                <b>Mensagem:</b> ${escapeHtml(a.message)}
+              </div>
+            ` : ""}
+          </div>
+        `);
+      });
+    }
+
+    function renderFreelancers(){
+      freelaTbody.innerHTML = "";
+      freelaEmpty.classList.add("hidden");
+
+      const txt = (freelaSearch.value || "").toLowerCase().trim();
+
+      const filtered = allFreelancers.filter(f=>{
+        const matchTxt = !txt || (
+          (f.name || "").toLowerCase().includes(txt) ||
+          (f.role || "").toLowerCase().includes(txt) ||
+          (f.email || "").toLowerCase().includes(txt) ||
+          (f.skills || "").toLowerCase().includes(txt)
+        );
+        return matchTxt;
+      });
+
+      if (!filtered.length){
+        freelaEmpty.classList.remove("hidden");
+        return;
+      }
+
+      filtered.forEach(f=>{
+        freelaTbody.insertAdjacentHTML("beforeend", `
+          <tr class="border-t border-white/5 hover:bg-white/5 transition">
+            <td class="py-3 px-3 font-extrabold">${escapeHtml(f.name || "—")}</td>
+            <td class="py-3 px-3">${escapeHtml(f.role || "—")}</td>
+            <td class="py-3 px-3">${escapeHtml(f.email || "—")}</td>
+            <td class="py-3 px-3 text-gray-300">${escapeHtml(f.skills || "—")}</td>
+            <td class="py-3 px-3">
+              ${
+                f.portfolio
+                  ? `<a class="text-cyan-300 font-extrabold" href="${escapeHtml(f.portfolio)}" target="_blank">abrir</a>`
+                  : "—"
+              }
+            </td>
+          </tr>
+        `);
+      });
+    }
+
+    async function loadAll(){
+      await loadProjects();
+      await loadApps();
+      await loadFreelancers();
+
+      updateStats();
+      fillAppsFilter();
+      renderKanban();
+      renderApps();
+      renderFreelancers();
+    }
+
+    // modal create/edit
+    function resetModal(){
+      editingId = null;
+      modalTitle.textContent = "Novo Projeto";
+      btnDelete.classList.add("hidden");
+
+      pTitle.value = "";
+      pShort.value = "";
+      pDesc.value = "";
+      pStatus.value = "open";
+      pCategory.value = "Web";
+      pType.value = "Remoto";
+      pLevel.value = "Intermediário";
+      pDeadline.value = "";
+      pSkills.value = "";
+      pBudgetMin.value = "";
+      pBudgetMax.value = "";
+
+      updatePreview();
+    }
+
+    function openEdit(id){
+      const p = allProjects.find(x=>x.id===id);
+      if (!p) return;
+
+      editingId = id;
+      modalTitle.textContent = "Editar Projeto";
+      btnDelete.classList.remove("hidden");
+
+      pTitle.value = p.title || "";
+      pShort.value = p.short || "";
+      pDesc.value = p.description || "";
+      pStatus.value = p.status || "open";
+      pCategory.value = p.category || "Web";
+      pType.value = p.type || "Remoto";
+      pLevel.value = p.level || "Intermediário";
+      pDeadline.value = p.deadline || "";
+      pSkills.value = (p.skills || []).join(", ");
+      pBudgetMin.value = p.budgetMin || "";
+      pBudgetMax.value = p.budgetMax || "";
+
+      updatePreview();
+      openModal();
+    }
+
+    async function saveProject(){
+      if (!currentUser) return toast("Faça login.");
+      if (!isAdmin(currentUser)) return toast("Acesso negado.");
+
+      const data = {
+        title: pTitle.value.trim(),
+        short: pShort.value.trim(),
+        description: pDesc.value.trim(),
+        status: pStatus.value,
+        category: pCategory.value,
+        type: pType.value,
+        level: pLevel.value,
+        deadline: pDeadline.value.trim(),
+        skills: parseSkills(pSkills.value),
+        budgetMin: numOrNull(pBudgetMin.value),
+        budgetMax: numOrNull(pBudgetMax.value),
+        updatedAt: serverTimestamp()
+      };
+
+      if (!data.title || !data.short) return toast("Preencha Título e Resumo.");
+
+      try{
+        if (!editingId){
+          await addDoc(collection(db, "projects"), { ...data, createdAt: serverTimestamp() });
+          toast("Projeto criado ✔");
+        } else {
+          await updateDoc(doc(db, "projects", editingId), data);
+          toast("Projeto atualizado ✔");
+        }
+
+        closeModal();
+        await loadAll();
+
+      } catch(e){
+        console.error(e);
+        toast("Erro ao salvar. Verifique regras do Firestore.");
+      }
+    }
+
+    async function deleteProject(){
+      if (!editingId) return;
+      if (!confirm("Excluir este projeto?")) return;
+
+      try{
+        await deleteDoc(doc(db, "projects", editingId));
+        toast("Projeto excluído ✔");
+        closeModal();
+        await loadAll();
+      } catch(e){
+        console.error(e);
+        toast("Erro ao excluir. Verifique regras.");
+      }
+    }
+
+    async function toggleStatus(id){
+      const p = allProjects.find(x=>x.id===id);
+      if (!p) return;
+
+      const next = p.status === "open" ? "closed" : "open";
+      try{
+        await updateDoc(doc(db, "projects", id), {
+          status: next,
+          updatedAt: serverTimestamp()
+        });
+        toast(next === "open" ? "Projeto reaberto ✔" : "Projeto encerrado ✔");
+        await loadAll();
+      } catch(e){
+        console.error(e);
+        toast("Erro ao mudar status.");
+      }
+    }
+
+    // events
+    btnNew.addEventListener("click", ()=>{ resetModal(); openModal(); });
+    btnNew2.addEventListener("click", ()=>{ resetModal(); openModal(); });
+    btnClose.addEventListener("click", closeModal);
+    modalProject.addEventListener("click", (e)=>{ if (e.target === modalProject) closeModal(); });
+
+    btnSave.addEventListener("click", saveProject);
+    btnDelete.addEventListener("click", deleteProject);
+
+    btnRefresh.addEventListener("click", async ()=>{
+      await loadAll();
+      toast("Atualizado ✔");
+    });
+
+    quickSearch.addEventListener("input", renderKanban);
+    statusFilter.addEventListener("change", renderKanban);
+    appsFilterProject.addEventListener("change", renderApps);
+    freelaSearch.addEventListener("input", renderFreelancers);
+
+    // login
+    btnLogin.addEventListener("click", async ()=>{
+      const email = emailEl.value.trim();
+      const pass  = passEl.value.trim();
+      if (!email || !pass) return toast("Preencha e-mail e senha.");
+
+      try{
+        const cred = await signInWithEmailAndPassword(auth, email, pass);
+        if (!isAdmin(cred.user)){
+          toast("Esse usuário não é admin.");
+          await signOut(auth);
+          return;
+        }
+        toast("Login admin ✔");
+      } catch(e){
+        console.error(e);
+        toast("Erro no login.");
+      }
+    });
+
+    btnGoogle.addEventListener("click", async ()=>{
+      try{
+        const provider = new GoogleAuthProvider();
+        const cred = await signInWithPopup(auth, provider);
+        if (!isAdmin(cred.user)){
+          toast("Esse usuário não é admin.");
+          await signOut(auth);
+          return;
+        }
+        toast("Login Google ✔");
+      } catch(e){
+        console.error(e);
+        toast("Erro no login Google.");
+      }
+    });
+
+    btnLogout.addEventListener("click", async ()=>{
+      await signOut(auth);
+      toast("Você saiu.");
+    });
+
+    // auth state
+    onAuthStateChanged(auth, async (user)=>{
+      currentUser = user;
+
+      if (!user){
+        dashScreen.classList.add("hidden");
+        loginScreen.classList.remove("hidden");
+        return;
+      }
+
+      if (!isAdmin(user)){
+        toast("Acesso negado.");
+        await signOut(auth);
+        return;
+      }
+
+      adminEmailEl.textContent = user.email || "--";
+      loginScreen.classList.add("hidden");
+      dashScreen.classList.remove("hidden");
+
+      showPage("kanban");
+      updatePreview();
+      await loadAll();
+    });
+
+    // init
+    updatePreview();
+  </script>
+</body>
+</html>
